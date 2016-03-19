@@ -13,9 +13,9 @@ namespace Anarchy_Online_Damage_Meter
         private FileStream logFileStream;
         
 
-        public LogFileReader()
+        public LogFileReader(string filename)
         {
-            filename = @"C:\Users\nicga\AppData\Local\Funcom\Anarchy Online\70dad3e6\Anarchy Online\Prefs\eugenedavid\Char484883214\Chat\Windows\Window4\Log.txt";
+            //filename = @"C:\Users\nicga\AppData\Local\Funcom\Anarchy Online\70dad3e6\Anarchy Online\Prefs\eugenedavid\Char484883214\Chat\Windows\Window4\Log.txt";
             logFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             StreamReader logStreamRead = new StreamReader(logFileStream);
             //logStreamRead.BaseStream.Seek(0,SeekOrigin.End);

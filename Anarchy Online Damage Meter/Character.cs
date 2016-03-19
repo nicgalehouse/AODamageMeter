@@ -11,8 +11,6 @@ namespace Anarchy_Online_Damage_Meter
     {
         private string name;
 
-
-
         private List<Event> events;
 
         public Character(Event loggedEvent)
@@ -25,6 +23,10 @@ namespace Anarchy_Online_Damage_Meter
             return name;
         }
 
+        public void addEvent(Event loggedEvent)
+        {
+            events.Add(loggedEvent);
+        }
 
     }
 }

@@ -26,13 +26,14 @@ namespace Anarchy_Online_Damage_Meter
 
                 InitializeComponent();
 
-                MainProgram();
+                DamageMeter anarchyOnline = new DamageMeter(@"C:\Users\nicga\AppData\Local\Funcom\Anarchy Online\70dad3e6\Anarchy Online\Prefs\eugenedavid\Char484883214\Chat\Windows\Window4\Log.txt");
 
         }
 
         public void MainProgram()
         {
-            LogFileReader Test = new LogFileReader();
+            //filename = @"C:\Users\nicga\AppData\Local\Funcom\Anarchy Online\70dad3e6\Anarchy Online\Prefs\eugenedavid\Char484883214\Chat\Windows\Window4\Log.txt";
+            //LogFileReader Test = new LogFileReader();
             //System.Threading.Thread.Sleep(5000);
         }
     }
