@@ -11,11 +11,24 @@ namespace Anarchy_Online_Damage_Meter
         private int startTime = -1;
         private int endTime = -1;
         private int totalDamage;
-        private List<Character> characters;
+        private List<Character> charactersList = new List<Character>();
+
+        public Fight()
+        {
+
+        }
 
         public Fight(Event loggedEvent)
         {
+            addEvent(loggedEvent);
+        }
 
+        public void listCharacters()
+        {
+            foreach(Character character in charactersList)
+            {
+                Console.WriteLine(character.getName());
+            }
         }
 
         public void addEvent(Event loggedEvent)
@@ -23,15 +36,15 @@ namespace Anarchy_Online_Damage_Meter
 
             setTimes(loggedEvent);
 
-            int index = characters.FindIndex(Character => Character.getName() == loggedEvent.GetSource());
+            int index = charactersList.FindIndex(Character => Character.getName() == loggedEvent.GetSource());
 
             if (index != -1)
             {
-                characters[index].addEvent(loggedEvent);
+                charactersList[index].addEvent(loggedEvent);
             }
             else
             {
-                characters.Add(new Character(loggedEvent));
+                charactersList.Add(new Character(loggedEvent));
             }   
 
         }
@@ -48,7 +61,7 @@ namespace Anarchy_Online_Damage_Meter
 
         private bool characterExists(Event loggedEvent)
         {
-            return characters.Any(Character => Character.getName() == loggedEvent.GetSource());
+            return charactersList.Any(Character => Character.getName() == loggedEvent.GetSource());
         }
 
     }

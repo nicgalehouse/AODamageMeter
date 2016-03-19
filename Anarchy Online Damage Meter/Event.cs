@@ -11,8 +11,8 @@ namespace Anarchy_Online_Damage_Meter
         private string key = "";
         private int timeStamp = 0;
         private string action = "";
-        private string source = "";
-        private string target = "";
+        private string source = "Unknown-Source";
+        private string target = "Unknown-Source";
         private int amount = 0;
         private string amountType = "";
         private string modifier = "";
@@ -297,14 +297,34 @@ namespace Anarchy_Online_Damage_Meter
                     break;
 
                 //You were healed for AMOUNT points.
+                //You got healed by SOURCE for AMOUNT points of health.
                 case "15":
 
-                    indexOfAmount = 20;
-                    lengthOfAmount = line.Length - 8 - indexOfAmount;
+                    //You were healed for AMOUNT points.
+                    if (line[4] == 'w')
+                    {
+                        indexOfAmount = 20;
+                        lengthOfAmount = line.LastIndexOf(" ") - indexOfAmount;
 
-                    action = "Regen";
-                    source = "userOfTheDamageMeter";
-                    target = "userOfTheDamageMeter";
+                        source = "userOfTheDamageMeter";
+                        target = "userOfTheDamageMeter";
+
+                    }
+                    //You got healed by SOURCE for AMOUNT points of health.
+                    else
+                    {
+                        indexOfSource = 18;
+                        lengthOfSource = line.LastIndexOf(" for ") - indexOfSource;
+
+                        indexOfAmount = indexOfSource + lengthOfSource + 5;
+                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+
+                        source = line.Substring(indexOfSource, lengthOfSource);
+                        target = "userOfTheDamageMeter";
+
+                    }
+
+                    action = "Heal";
                     amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                     amountType = "Heal";
 
@@ -362,11 +382,13 @@ namespace Anarchy_Online_Damage_Meter
                 //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage.
                 //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
                 //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
+                //Someone's reflect shield hit you for AMOUNT points of damage.
+                //Someone's damage shield hit you for AMOUNT points of damage.
                 //You absorbed AMOUNT points of AMOUNTTYPE damage.
                 case "06":
 
                     //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage.
-                    if (!line.StartsWith("You absorbed "))
+                    if (!line.StartsWith("You absorbed ") && !line.StartsWith("Someone's"))
                     {
 
                         indexOfSource = 0;
@@ -393,9 +415,10 @@ namespace Anarchy_Online_Damage_Meter
                             lengthOfAmountType = line.Length - 22 - indexOfAmountType;
                             modifier = "Glance";
                         }
+                        amountType = line.Substring(indexOfAmountType, lengthOfAmountType);
                     }
                     //You absorbed AMOUNT points of AMOUNTTYPE damage.
-                    else
+                    else if (!line.StartsWith("Someone's"))
                     {
 
                         indexOfAmount = 13;
@@ -406,19 +429,54 @@ namespace Anarchy_Online_Damage_Meter
 
                         action = "Absorb";
                         source = "userOfTheDamageMeter";
+                        amountType = line.Substring(indexOfAmountType, lengthOfAmountType);
+                    }
+                    //Someone's reflect shield hit you for AMOUNT points of damage.
+                    //Someone's damage shield hit you for AMOUNT points of damage.
+                    else
+                    {
+                        //Someone's damage shield hit you for AMOUNT points of damage.
+                        if (line[10] == 'd')
+                        {
+                            indexOfAmount = 36;
+                            lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                            amountType = "Shield";
+                        }
+                        //Someone's reflect shield hit you for AMOUNT points of damage.
+                        else
+                        {
+                            indexOfAmount = 37;
+                            lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                            amountType = "Reflect";
+                        }
                     }
 
                     target = "userOfTheDamageMeter";
                     amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
-                    amountType = line.Substring(indexOfAmountType, lengthOfAmountType);
 
                     break;
 
                 //SOURCE tried to hit you, but missed!
+                //SOURCE tries to attack you with Brawl, but misses!
+                //SOURCE tries to attack you with FastAttack, but misses!
+                //SOURCE tries to attack you with FlingShot, but misses!
                 case "13":
 
                     indexOfSource = 0;
-                    lengthOfSource = line.IndexOf(" tried ") - indexOfSource;
+
+                    if (line.LastIndexOf("you,") == -1)
+                    {
+
+                        lengthOfSource = line.IndexOf(" tries ") - indexOfSource;
+                        //should be changed in future
+                        amountType = "SpecialAttack";
+
+                    }
+                    else
+                    {
+                        lengthOfSource = line.IndexOf(" tried ") - indexOfSource;
+                        amountType = "Auto Attack";
+                    }
 
                     action = "Miss";
                     source = line.Substring(indexOfSource, lengthOfSource);

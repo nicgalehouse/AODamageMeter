@@ -11,10 +11,11 @@ namespace Anarchy_Online_Damage_Meter
     {
         private string name;
 
-        private List<Event> events;
+        private List<Event> events = new List<Event>();
 
         public Character(Event loggedEvent)
         {
+            name = loggedEvent.GetSource();
             events.Add(loggedEvent);
         }
 
