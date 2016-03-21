@@ -34,14 +34,14 @@ namespace Anarchy_Online_Damage_Meter
 
                     Console.WriteLine("*****************************LINE NUMBER " + lineNumber + " **************************");
                     Console.WriteLine(line);
-                    Console.WriteLine("Key: " + parsedLine.GetKey());
-                    Console.WriteLine("Event Time: " + parsedLine.GetTimeStamp());
-                    Console.WriteLine("Event Amount: " + parsedLine.GetAmount());
-                    Console.WriteLine("Event Amount Type: " + parsedLine.GetAmountType());
-                    Console.WriteLine("Event Target: " + parsedLine.GetTarget());
-                    Console.WriteLine("Event Action: " + parsedLine.GetAction());
-                    Console.WriteLine("Event Source: " + parsedLine.GetSource());
-                    Console.WriteLine("Event Modifier: " + parsedLine.GetModifier());
+                    Console.WriteLine("Key: " + parsedLine.Key);
+                    Console.WriteLine("Event Time: " + parsedLine.Timestamp);
+                    Console.WriteLine("Event Amount: " + parsedLine.Amount);
+                    Console.WriteLine("Event Amount Type: " + parsedLine.AmountType);
+                    Console.WriteLine("Event Target: " + parsedLine.Target);
+                    Console.WriteLine("Event Action: " + parsedLine.Action);
+                    Console.WriteLine("Event Source: " + parsedLine.Source);
+                    Console.WriteLine("Event Modifier: " + parsedLine.Modifier);
 
                     lineNumber++;
 

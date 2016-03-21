@@ -24,7 +24,7 @@ namespace Anarchy_Online_Damage_Meter
         public MainWindow()
         {
             InitializeComponent();
-            DamageMeter anarchyOnline = new DamageMeter(@"C:\Users\nicga\AppData\Local\Funcom\Anarchy Online\70dad3e6\Anarchy Online\Prefs\eugenedavid\Char484883214\Chat\Windows\Window4\Log.txt");
+            DamageMeter anarchyOnline = new DamageMeter(@"C:\Users\nicga\AppData\Local\Funcom\Anarchy Online\70dad3e6\Anarchy Online\Prefs\pearljam\Char1088088\Chat\Windows\Window2\Log.txt");
             Console.WriteLine("Done Reading");
             anarchyOnline.listOverallCharacters();
         }

@@ -18,36 +18,18 @@ namespace Anarchy_Online_Damage_Meter
             FileStream logFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             StreamReader logStreamRead = new StreamReader(logFileStream);
             String line;
-            int lineNumber = 1;
-            while (!logStreamRead.EndOfStream)
+
+            //while (!logStreamRead.EndOfStream)
+            while (true)
             {
                 //System.Threading.WaitHandle.WaitTimeout;
                 line = logStreamRead.ReadLine();
                 if (line != null)
                 {
-                    //parse log START
                     Event parsedLine = new Event(line);
                     overallFight.addEvent(new Event(line));
-
-                    
-                    Console.WriteLine(lineNumber);
-                    /*
-                    Console.WriteLine(line);
-                    Console.WriteLine("Key: " + parsedLine.GetKey());
-                    Console.WriteLine("Event Time: " + parsedLine.GetTimeStamp());
-                    Console.WriteLine("Event Amount: " + parsedLine.GetAmount());
-                    Console.WriteLine("Event Amount Type: " + parsedLine.GetAmountType());
-                    Console.WriteLine("Event Target: " + parsedLine.GetTarget());
-                    Console.WriteLine("Event Action: " + parsedLine.GetAction());
-                    Console.WriteLine("Event Source: " + parsedLine.GetSource());
-                    Console.WriteLine("Event Modifier: " + parsedLine.GetModifier());
-                    */
-                    
-                    lineNumber++;
-
-                    //parse log END
-
                 }
+                overallFight.listCharacterDamage();
                 //System.Threading.Thread.Sleep(1500);
 
             }
@@ -61,7 +43,7 @@ namespace Anarchy_Online_Damage_Meter
 
         public void listOverallCharacters()
         {
-            overallFight.listCharacters();
+            overallFight.listCharacterDamage();
         }
 
         public void report()
