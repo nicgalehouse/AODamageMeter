@@ -15,6 +15,19 @@ namespace Anarchy_Online_Damage_Meter
         private List<Event> history = new List<Event>();
         private List<Character> charactersList = new List<Character>();
 
+        public List<Character> CharactersList
+        {
+            get
+            {
+                return charactersList;
+            }
+
+            private set
+            {
+                charactersList = value;
+            }
+        }
+
         public int StartTime
         {
             get

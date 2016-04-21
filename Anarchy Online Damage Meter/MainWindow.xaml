@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Anarchy_Online_Damage_Meter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+       
+        Title="Anarchy Online Damage Meter" TextBlock.TextAlignment="Center" Width="500" Height="500">
+
+    <!-- <ListView Name="listViewDamageMeter" Margin="-5,-5,-5,-5" > -->
+    <ListView Name="listViewDamageMeter" ItemsSource="{Binding listViewCharacters}" Margin="-5,-5,-5,-5" >
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}   {1}">
+                            <Binding Path="Name"/>
+                            <Binding Path="DamageDone" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+    
+    
+
+
+
 </Window>

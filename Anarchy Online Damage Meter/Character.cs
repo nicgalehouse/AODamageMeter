@@ -20,6 +20,8 @@ namespace Anarchy_Online_Damage_Meter
         private int _healingDone;
         private int _healingReceived;
         private int _absorbAmount;
+        private int _dpsRelativeToFightStart;
+        private int _dpsRelativeToPlayerStart;
 
         private List<Event> _damageTakenEvents = new List<Event>();
         private List<Event> _damageDoneEvents = new List<Event>();
