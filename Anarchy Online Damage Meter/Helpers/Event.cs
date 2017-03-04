@@ -4,224 +4,80 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anarchy_Online_Damage_Meter
+namespace Anarchy_Online_Damage_Meter.Helpers
 {
-    class Event
+    public class Event
     {
-        
-        private string _key = "";
-        private int _timestamp = 0;
-        //Damage, Nano, Heal, Absorb, PetDamage, Miss
-        private string _action = "";
-        private string _source = "Unknown-Source";
-        private string _target = "Unknown-Source";
-        private int _amount = 0;
-        private string _amountType = "";
+        public int Timestamp;
+        //Damage, Nano, Heal, Absorb
+        public string ActionType;
+        public string Source;
+        public string Target;
+        public int Amount;
+        public string AmountType;
         //Crit, Glance
-        private string _modifier = "";
-
-        public string Key
-        {
-            get
-            {
-                return _key;
-            }
-
-            private set
-            {
-                _key = value;
-            }
-        }
-
-        public int Timestamp
-        {
-            get
-            {
-                return _timestamp;
-            }
-
-            private set
-            {
-                _timestamp = value;
-            }
-        }
-
-        public string Action
-        {
-            get
-            {
-                return _action;
-            }
-
-            private set
-            {
-                _action = value;
-            }
-        }
-
-        public string Source
-        {
-            get
-            {
-                return _source;
-            }
-
-            private set
-            {
-                _source = value;
-            }
-        }
-
-        public string Target
-        {
-            get
-            {
-                return _target;
-            }
-
-            private set
-            {
-                _target = value;
-            }
-        }
-
-        public int Amount
-        {
-            get
-            {
-                return _amount;
-            }
-
-            private set
-            {
-                _amount = value;
-            }
-        }
-
-        public string AmountType
-        {
-            get
-            {
-                return _amountType;
-            }
-
-            private set
-            {
-                _amountType = value;
-            }
-        }
-
-        public string Modifier
-        {
-            get
-            {
-                return _modifier;
-            }
-
-            private set
-            {
-                _modifier = value;
-            }
-        }
+        public string Modifier;
+        public string Line;
 
         public Event(string line)
         {
-            Key = line.Substring(17, 2);
-            SetTime(Key, line);
-            SetAttributes(Key, ParseMessage(Key, line));
+            Line = line;
+            SetAttributes(Key, GetUsefulEventString());
         }
 
-        private void SetKey(string line)
-        {
-            //EXAMPLE LINE:
-            //["#000000004200000a#","Other hit by other","",1457816347]SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage.
-            //Digits indexed at 17 and 18, "0a" in this example. 
-            Key = line.Substring(17, 2);
-        }
+        // All lines start like this:
+        // ["#000000004200000a#"...
+        // Last two characters between the number signs seem to be unique.
+        private string Key
+            => Line?.Substring(17, 2) ?? null;
 
-        private void SetTime(string key, string line)
+        public int? GetTime()
         {
-            int timeLength = 10;
-            switch (key)
+            switch (Key)
             {
-                case "0a":
-                    Timestamp = Convert.ToInt32(line.Substring(46, timeLength));
-                    break;
-                case "05":
-                    Timestamp = Convert.ToInt32(line.Substring(51, timeLength));
-                    break;
-                case "04":
-                    Timestamp = Convert.ToInt32(line.Substring(45, timeLength));
-                    break;
-                case "15":
-                    Timestamp = Convert.ToInt32(line.Substring(41, timeLength));
-                    break;
-                case "08":
-                    Timestamp = Convert.ToInt32(line.Substring(41, timeLength));
-                    break;
-                case "06":
-                    Timestamp = Convert.ToInt32(line.Substring(45, timeLength));
-                    break;
-                case "13":
-                    Timestamp = Convert.ToInt32(line.Substring(40, timeLength));
-                    break;
-                case "16":
-                    Timestamp = Convert.ToInt32(line.Substring(39, timeLength));
-                    break;
-                case "12":
-                    Timestamp = Convert.ToInt32(line.Substring(39, timeLength));
-                    break;
-                case "17":
-                    Timestamp = Convert.ToInt32(line.Substring(41, timeLength));
-                    break;
-                case "09":
-                    Timestamp = Convert.ToInt32(line.Substring(49, timeLength));
-                    break;
-                case "0b":
-                    Timestamp = Convert.ToInt32(line.Substring(37, timeLength));
-                    break;
-                case "18":
-                    Timestamp = Convert.ToInt32(line.Substring(40, timeLength));
-                    break;
+                case "0b": return int.Parse(Line.Substring(37, 10));
+                case "16": return int.Parse(Line.Substring(39, 10));
+                case "12": return int.Parse(Line.Substring(39, 10));
+                case "13": return int.Parse(Line.Substring(40, 10));
+                case "18": return int.Parse(Line.Substring(40, 10));
+                case "15": return int.Parse(Line.Substring(41, 10));
+                case "08": return int.Parse(Line.Substring(41, 10));
+                case "17": return int.Parse(Line.Substring(41, 10));
+                case "04": return int.Parse(Line.Substring(45, 10));
+                case "06": return int.Parse(Line.Substring(45, 10));
+                case "0a": return int.Parse(Line.Substring(46, 10));
+                case "09": return int.Parse(Line.Substring(49, 10));
+                case "05": return int.Parse(Line.Substring(51, 10));
+                default: return null;
             }
         }
 
-        private string ParseMessage(string key, string line)
+        private string GetUsefulEventString()
         {
-            switch (key)
+            switch (Key)
             {
-                case "0a":
-                    return line.Substring(57, line.Length - 57);
-                case "05":
-                    return line.Substring(62, line.Length - 62);
-                case "04":
-                    return line.Substring(56, line.Length - 56);
-                case "15":
-                    return line.Substring(52, line.Length - 52);
-                case "08":
-                    return line.Substring(52, line.Length - 52);
-                case "06":
-                    return line.Substring(56, line.Length - 56);
-                case "13":
-                    return line.Substring(51, line.Length - 51);
-                case "16":
-                    return line.Substring(50, line.Length - 50);
-                case "12":
-                    return line.Substring(50, line.Length - 50);
-                case "17":
-                    return line.Substring(52, line.Length - 52);
-                case "09":
-                    return line.Substring(60, line.Length - 60);
-                case "0b":
-                    return line.Substring(48, line.Length - 48);
-                case "18":
-                    return line.Substring(51, line.Length - 51);
+                case "0a": return Line.Substring(57, Line.Length - 57);
+                case "05": return Line.Substring(62, Line.Length - 62);
+                case "04": return Line.Substring(56, Line.Length - 56);
+                case "15": return Line.Substring(52, Line.Length - 52);
+                case "08": return Line.Substring(52, Line.Length - 52);
+                case "06": return Line.Substring(56, Line.Length - 56);
+                case "13": return Line.Substring(51, Line.Length - 51);
+                case "16": return Line.Substring(50, Line.Length - 50);
+                case "12": return Line.Substring(50, Line.Length - 50);
+                case "17": return Line.Substring(52, Line.Length - 52);
+                case "09": return Line.Substring(60, Line.Length - 60);
+                case "0b": return Line.Substring(48, Line.Length - 48);
+                case "18": return Line.Substring(51, Line.Length - 51);
+                default: return null;
             }
-            return "";
         }
 
         private void SetAttributes(string key, string line)
         {
+            if (line == null)
+                return;
+
             int indexOfSource, lengthOfSource;
             int indexOfTarget, lengthOfTarget;
             int indexOfAmount, lengthOfAmount;
@@ -244,6 +100,7 @@ namespace Anarchy_Online_Damage_Meter
                     //Someone absorbed AMOUNT points of AMOUNTTYPE damage.
                     if (line.LastIndexOf("Someone absorbed ") != -1)
                     {
+                        ActionType = "Absorb";
                         break;
                     }
                     //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage.
@@ -327,7 +184,7 @@ namespace Anarchy_Online_Damage_Meter
 
                     Target = line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
-                    Action = "Damage";
+                    ActionType = "Damage";
 
                     break;
 
@@ -343,8 +200,8 @@ namespace Anarchy_Online_Damage_Meter
                         indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
                         lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
-                        Action = "Damage";
-                        Source = "userOfTheDamageMeter";
+                        ActionType = "Damage";
+                        Source = "Me";
                         Target = line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                         AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
@@ -395,7 +252,7 @@ namespace Anarchy_Online_Damage_Meter
                     indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
                     lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
-                    Action = "Nano";
+                    ActionType = "Nano";
                     Target = line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
@@ -412,8 +269,8 @@ namespace Anarchy_Online_Damage_Meter
                         indexOfAmount = 20;
                         lengthOfAmount = line.LastIndexOf(" ") - indexOfAmount;
 
-                        Source = "userOfTheDamageMeter";
-                        Target = "userOfTheDamageMeter";
+                        Source = "Me";
+                        Target = "Me";
 
                     }
                     //You got healed by SOURCE for AMOUNT points of health.
@@ -426,11 +283,11 @@ namespace Anarchy_Online_Damage_Meter
                         lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
 
                         Source = line.Substring(indexOfSource, lengthOfSource);
-                        Target = "userOfTheDamageMeter";
+                        Target = "Me";
 
                     }
 
-                    Action = "Heal";
+                    ActionType = "Heal";
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Heal";
 
@@ -448,8 +305,8 @@ namespace Anarchy_Online_Damage_Meter
                         indexOfAmount = indexOfTarget + lengthOfTarget + 5;
                         lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
 
-                        Action = "Damage";
-                        Source = "userOfTheDamageMeter";
+                        ActionType = "Damage";
+                        Source = "Me";
                         Target = line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                         AmountType = "Shield";
@@ -465,8 +322,8 @@ namespace Anarchy_Online_Damage_Meter
                         indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
                         lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
-                        Action = "Damage";
-                        Source = "userOfTheDamageMeter";
+                        ActionType = "Damage";
+                        Source = "Me";
                         Target = line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                         AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
@@ -506,7 +363,7 @@ namespace Anarchy_Online_Damage_Meter
                         indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
                         lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
-                        Action = "Damage";
+                        ActionType = "Damage";
                         Source = line.Substring(indexOfSource, lengthOfSource);
 
                         //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
@@ -533,8 +390,8 @@ namespace Anarchy_Online_Damage_Meter
                         indexOfAmountType = indexOfAmount + 8;
                         lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
-                        Action = "Absorb";
-                        Source = "userOfTheDamageMeter";
+                        ActionType = "Absorb";
+                        Source = "Me";
                         AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
                     }
                     //Someone's reflect shield hit you for AMOUNT points of damage.
@@ -557,7 +414,7 @@ namespace Anarchy_Online_Damage_Meter
                         }
                     }
 
-                    Target = "userOfTheDamageMeter";
+                    Target = "Me";
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
 
                     break;
@@ -584,9 +441,9 @@ namespace Anarchy_Online_Damage_Meter
                         AmountType = "Auto Attack";
                     }
 
-                    Action = "Miss";
+                    ActionType = "Damage";
                     Source = line.Substring(indexOfSource, lengthOfSource);
-                    Target = "userOfTheDamageMeter";
+                    Target = "Me";
 
                     break;
 
@@ -599,9 +456,9 @@ namespace Anarchy_Online_Damage_Meter
                     indexOfAmount = indexOfSource + lengthOfSource + 5;
                     lengthOfAmount = line.Length - 8 - indexOfAmount;
 
-                    Action = "Heal";
+                    ActionType = "Heal";
                     Source = line.Substring(indexOfSource, lengthOfSource);
-                    Target = "userOfTheDamageMeter";
+                    Target = "Me";
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Nano";
 
@@ -614,8 +471,8 @@ namespace Anarchy_Online_Damage_Meter
                     indexOfTarget = 17;
                     lengthOfTarget = line.Length - 13 - indexOfTarget;
 
-                    Action = "Miss";
-                    Source = "userOfTheDamageMeter";
+                    ActionType = "Miss";
+                    Source = "Me";
                     Target = line.Substring(indexOfTarget, lengthOfTarget);
 
                     break;
@@ -629,8 +486,8 @@ namespace Anarchy_Online_Damage_Meter
                     indexOfAmount = indexOfTarget + lengthOfTarget + 5;
                     lengthOfAmount = line.Length - 8 - indexOfAmount;
 
-                    Action = "Heal";
-                    Source = "userOfTheDamageMeter";
+                    ActionType = "Heal";
+                    Source = "Me";
                     Target = line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Nano";
@@ -665,8 +522,8 @@ namespace Anarchy_Online_Damage_Meter
                         lengthOfAmountType = line.Length - 22 - indexOfAmountType;
                         Modifier = "Glance";
                     }
-
-                    Action = "PetDamage";
+                    
+                    ActionType = "Damage"; //PetDamage
                     Source = line.Substring(indexOfSource, lengthOfSource);
                     Target = line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
@@ -688,6 +545,8 @@ namespace Anarchy_Online_Damage_Meter
                 //Wait for current nano program execution to finish.
                 //Unable to execute nano program. You can't execute this nano on the target.
                 case "18":
+
+                    ActionType = "Utility";
                     /*
                     indexOfTimeStart = 40;
                     indexOfMessageStart = indexOfTimeStart + timeLength + 1;
@@ -695,8 +554,6 @@ namespace Anarchy_Online_Damage_Meter
                     eventTime = Convert.ToInt32(line.Substring(indexOfTimeStart, timeLength));
                     */
                     break;
-
-
             }
         }
     }
