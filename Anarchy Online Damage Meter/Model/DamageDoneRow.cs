@@ -48,14 +48,12 @@ namespace Anarchy_Online_Damage_Meter.Model
             => new DamageDoneRow
             {
                 Name = character.Name,
-                Icon = character.Profession != null
-                    ? "../Icons/" + character.Profession + ".png"
-                    : "../Icons/Unknown2.png",
+                Icon = Professions.GetProfessionIcon(character.Profession),
                 DPS = character.DPSrelativeToPlayerStart,
                 DamageDone = character.DamageDone,
                 PercentOfDamageDone = character.PercentOfDamageDone,
                 Width = character.PercentOfMaxDamage,
-                Color = "#BF350C"
+                Color = Professions.GetProfessionColor(character.Profession)
             };
     }
 }

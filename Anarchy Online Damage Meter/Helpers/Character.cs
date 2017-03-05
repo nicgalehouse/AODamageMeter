@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml;
 
 namespace Anarchy_Online_Damage_Meter.Helpers
 {
@@ -19,7 +17,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
         public long CurrentTime;
 
         public string Name;
-        public string Profession;
+        public Profession Profession;
 
         public int DamageDone;
         public int DamageTaken;
@@ -42,7 +40,9 @@ namespace Anarchy_Online_Damage_Meter.Helpers
         {
             Name = isSource ? loggedEvent.Source
                 : loggedEvent.Target;
-            SetProfession();
+
+            Profession = Professions.SetProfession(Name);
+
             TimeOfFirstEvent = elapsedTime;
 
             AddEvent(loggedEvent, isSource);
@@ -101,30 +101,6 @@ namespace Anarchy_Online_Damage_Meter.Helpers
             ActiveSeconds = (double)(currentTime - TimeOfFirstEvent) / 1000L;
             DPSrelativeToPlayerStart = Math.Round(ActiveSeconds != 0 ? DamageDone / ActiveSeconds : DamageDone, 0);
             DPSRelativeToFightStart = Math.Round(CurrentTime != 0 ? (double)(DamageDone / CurrentTime / 1000L) : DamageDone, 0);
-        }
-
-        public void SetProfession()
-        {
-            string url = "http://people.anarchy-online.com/character/bio/d/5/name/" + Name + "/bio.xml";
-
-            try
-            {
-                using (XmlTextReader reader = new XmlTextReader(url))
-                {
-                    while (reader.Read())
-                    {
-                        if (reader.Name == "profession")
-                        {
-                            Profession = reader.ReadInnerXml();
-                            return;
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                Profession = null;
-            }
         }
 
         public void SetPercentOfMaxDamage(int maxDamageDone)

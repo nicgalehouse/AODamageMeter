@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Anarchy_Online_Damage_Meter.Helpers
 {
     public class Event
     {
         public int Timestamp;
-        //Damage, Nano, Heal, Absorb
-        public string ActionType;
+        public string ActionType; //Damage, Nano, Heal, Absorb
         public string Source;
         public string Target;
         public int Amount;
         public string AmountType;
-        //Crit, Glance
-        public string Modifier;
+        public string Modifier; //Crit, Glance
         public string Line;
 
-        public Event(string line)
+
+        public Event(string line, string meterOwner)
         {
             Line = line;
-            SetAttributes(Key, GetUsefulEventString());
+            SetAttributes(Key, GetUsefulEventString(), meterOwner);
         }
 
         // All lines start like this:
@@ -73,7 +68,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
             }
         }
 
-        private void SetAttributes(string key, string line)
+        private void SetAttributes(string key, string line, string meterOwner)
         {
             if (line == null)
                 return;
@@ -201,7 +196,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                         lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
                         ActionType = "Damage";
-                        Source = "Me";
+                        Source = meterOwner;
                         Target = line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                         AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
@@ -269,8 +264,8 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                         indexOfAmount = 20;
                         lengthOfAmount = line.LastIndexOf(" ") - indexOfAmount;
 
-                        Source = "Me";
-                        Target = "Me";
+                        Source = meterOwner;
+                        Target = meterOwner;
 
                     }
                     //You got healed by SOURCE for AMOUNT points of health.
@@ -283,7 +278,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                         lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
 
                         Source = line.Substring(indexOfSource, lengthOfSource);
-                        Target = "Me";
+                        Target = meterOwner;
 
                     }
 
@@ -306,7 +301,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                         lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
 
                         ActionType = "Damage";
-                        Source = "Me";
+                        Source = meterOwner;
                         Target = line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                         AmountType = "Shield";
@@ -323,7 +318,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                         lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
                         ActionType = "Damage";
-                        Source = "Me";
+                        Source = meterOwner;
                         Target = line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                         AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
@@ -391,7 +386,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                         lengthOfAmountType = line.Length - 8 - indexOfAmountType;
 
                         ActionType = "Absorb";
-                        Source = "Me";
+                        Source = meterOwner;
                         AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
                     }
                     //Someone's reflect shield hit you for AMOUNT points of damage.
@@ -414,7 +409,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                         }
                     }
 
-                    Target = "Me";
+                    Target = meterOwner;
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
 
                     break;
@@ -443,7 +438,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
 
                     ActionType = "Damage";
                     Source = line.Substring(indexOfSource, lengthOfSource);
-                    Target = "Me";
+                    Target = meterOwner;
 
                     break;
 
@@ -458,7 +453,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
 
                     ActionType = "Heal";
                     Source = line.Substring(indexOfSource, lengthOfSource);
-                    Target = "Me";
+                    Target = meterOwner;
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Nano";
 
@@ -472,7 +467,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                     lengthOfTarget = line.Length - 13 - indexOfTarget;
 
                     ActionType = "Miss";
-                    Source = "Me";
+                    Source = meterOwner;
                     Target = line.Substring(indexOfTarget, lengthOfTarget);
 
                     break;
@@ -487,7 +482,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
                     lengthOfAmount = line.Length - 8 - indexOfAmount;
 
                     ActionType = "Heal";
-                    Source = "Me";
+                    Source = meterOwner;
                     Target = line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Nano";

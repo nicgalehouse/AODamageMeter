@@ -6,14 +6,20 @@ using Anarchy_Online_Damage_Meter.ViewModel;
 
 namespace Anarchy_Online_Damage_Meter
 {
-    public class DamageMeter2
+    public class Meter
     {
+        private MainWindowViewModel viewModel;
+        private BackgroundWorker worker;
+
+        public Meter(MainWindowViewModel viewModel)
+        {
+            this.viewModel = viewModel;
+        }
+
         //        public Fight CurrentFight = new Fight();
         //        private List<Fight> pastFights = new List<Fight>();
         //        private FileStream logFileStream;
         //        public StreamReader LogStreamReader;
-
-        //        private BackgroundWorker worker;
 
         //        public DamageMeter2() { }
 
@@ -87,11 +93,5 @@ namespace Anarchy_Online_Damage_Meter
         //                Start();
         //            }
         //        }
-        private MainWindowViewModel mainWindowViewModel;
-
-        public DamageMeter2(MainWindowViewModel mainWindowViewModel)
-        {
-            this.mainWindowViewModel = mainWindowViewModel;
-        }
     }
 }

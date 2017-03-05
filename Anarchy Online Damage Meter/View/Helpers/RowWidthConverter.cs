@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Anarchy_Online_Damage_Meter.View.Helpers

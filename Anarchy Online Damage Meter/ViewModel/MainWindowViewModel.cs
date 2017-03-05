@@ -13,6 +13,7 @@ using System.Windows;
 using Anarchy_Online_Damage_Meter.Helpers;
 using Anarchy_Online_Damage_Meter.Extensions;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Anarchy_Online_Damage_Meter.ViewModel
 {
@@ -49,9 +50,10 @@ namespace Anarchy_Online_Damage_Meter.ViewModel
 
             bool? result = dialog.ShowDialog();
 
-            if (result == true)
+            if (result == true && logFile != dialog.FileName)
             {
                 logFile = dialog.FileName;
+
                 Meter = new DamageMeter(logFile);
 
                 StartBackgroundWorker();
@@ -66,6 +68,8 @@ namespace Anarchy_Online_Damage_Meter.ViewModel
 
         public MainWindowViewModel()
         {
+            IEnumerable<string> localAll = Process.GetProcessesByName("AnarchyOnline").Select(p => p.MainWindowTitle);
+
             LiveCollection = (ICollectionViewLiveShaping)CollectionViewSource.GetDefaultView(DamageDoneRows);
             LiveCollection.IsLiveSorting = true;
 
