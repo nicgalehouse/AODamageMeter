@@ -130,12 +130,14 @@
     </Compile>
     <Compile Include="Helpers\Character.cs" />
     <Compile Include="Helpers\CharacterBio.cs" />
+    <Compile Include="Helpers\NumberFormatter.cs" />
     <Compile Include="Helpers\Meter.cs" />
     <Compile Include="Helpers\DamageMeter.cs" />
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
     <Compile Include="Helpers\Fight.cs" />
     <Compile Include="Helpers\Event.cs" />
     <Compile Include="Helpers\Professions.cs" />
+    <Compile Include="Model\DpsRow.cs" />
     <Compile Include="Model\Row.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\Helpers\RowWidthConverter.cs" />
@@ -213,6 +215,7 @@
   <ItemGroup>
     <Resource Include="Icons\Unknown.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

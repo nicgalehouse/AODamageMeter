@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Collections.Generic;
-using Anarchy_Online_Damage_Meter.Helpers;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Anarchy_Online_Damage_Meter.ViewModel;
 
 namespace Anarchy_Online_Damage_Meter
@@ -15,6 +12,7 @@ namespace Anarchy_Online_Damage_Meter
         {
             this.viewModel = viewModel;
         }
+
 
         //        public Fight CurrentFight = new Fight();
         //        private List<Fight> pastFights = new List<Fight>();

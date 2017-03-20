@@ -82,7 +82,7 @@
             </DataGrid.Resources>
 
             <DataGrid.Columns>
-                <DataGridTemplateColumn SortMemberPath="DamageDone" Width="*">
+                <DataGridTemplateColumn SortMemberPath="Width" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid>
@@ -111,7 +111,7 @@
                                         <Border.Background>
                                             <SolidColorBrush Opacity="0"/>
                                         </Border.Background>
-                                        <TextBlock Text="{Binding Name}"
+                                        <TextBlock Text="{Binding LeftText}"
                                                    Foreground="White"
                                                    VerticalAlignment="Center"/>
                                     </Border>
@@ -120,16 +120,10 @@
                                         <Border.Background>
                                             <SolidColorBrush Opacity="0"/>
                                         </Border.Background>
-                                        <TextBlock Foreground="White"
-                                                   VerticalAlignment="Center">
-                                            <TextBlock.Text>
-                                                <MultiBinding StringFormat=" {0} ({1}, {2}%)">
-                                                    <Binding Path="DamageDone"/>
-                                                    <Binding Path="DPS"/>
-                                                    <Binding Path="PercentOfDamageDone"/>
-                                                </MultiBinding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
+                                        <TextBlock
+                                            Text="{Binding RightText}"
+                                            Foreground="White"
+                                            VerticalAlignment="Center"/>
                                     </Border>
 
 

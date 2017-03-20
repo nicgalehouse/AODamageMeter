@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Anarchy_Online_Damage_Meter.Helpers;
 using System.Diagnostics;
+using Anarchy_Online_Damage_Meter.Model;
 
 namespace Anarchy_Online_Damage_Meter
 {
@@ -12,7 +13,6 @@ namespace Anarchy_Online_Damage_Meter
         private FileStream logFileStream;
         private StreamReader LogStreamReader;
         private string meterOwner = null;
-
 
         public DamageMeter() { }
 

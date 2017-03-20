@@ -43,7 +43,7 @@ namespace Anarchy_Online_Damage_Meter.Helpers
             "212121"  //Unknown
            };
 
-        public static string GetProfessionIcon(Profession profession)
+        public static string GetIcon(Profession profession)
             => "../Icons/" + profession.ToString() + ".png";
 
         public static string GetProfessionColor(Profession profession)

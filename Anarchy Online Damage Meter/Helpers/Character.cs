@@ -28,8 +28,8 @@ namespace Anarchy_Online_Damage_Meter.Helpers
         public int AbsorbAmount;
         public int HitAttempts;
         public int GlanceCount;
-        public double CriticalStrikeChance;
 
+        public double CriticalStrikeChance;
         public double PercentOfDamageDone;
         public double PercentOfMaxDamage;
         public double DPSrelativeToPlayerStart;
@@ -99,8 +99,8 @@ namespace Anarchy_Online_Damage_Meter.Helpers
         public void Update(long currentTime)
         {
             ActiveSeconds = (double)(currentTime - TimeOfFirstEvent) / 1000L;
-            DPSrelativeToPlayerStart = Math.Round(ActiveSeconds != 0 ? DamageDone / ActiveSeconds : DamageDone, 0);
-            DPSRelativeToFightStart = Math.Round(CurrentTime != 0 ? (double)(DamageDone / CurrentTime / 1000L) : DamageDone, 0);
+            DPSrelativeToPlayerStart = Math.Round(ActiveSeconds > 1 ? DamageDone / ActiveSeconds : DamageDone, 0);
+            DPSRelativeToFightStart = Math.Round(CurrentTime > 1 ? (double)DamageDone / CurrentTime / 1000L : DamageDone, 0);
         }
 
         public void SetPercentOfMaxDamage(int maxDamageDone)
