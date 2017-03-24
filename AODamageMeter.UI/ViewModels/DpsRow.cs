@@ -5,7 +5,7 @@ namespace AODamageMeter.UI.ViewModels
 {
     public class DpsRow : Row
     {
-        public DpsRow(Character character)
+        public DpsRow(FightCharacter character)
         {
             LeftText = character.Name;
             Icon = Professions.GetIcon(character.Profession);
@@ -14,7 +14,7 @@ namespace AODamageMeter.UI.ViewModels
             RightText = NumberFormatter.ThousandsSeparator(character.PercentOfMaxDamage);
         }
 
-        public override void Update(Character character)
+        public override void Update(FightCharacter character)
         {
             Width = character.PercentOfMaxDamage;
             RightText = NumberFormatter.ThousandsSeparator(character.DamageDone) + "(" + character.DPSrelativeToPlayerStart + ")";

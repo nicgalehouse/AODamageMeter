@@ -67,7 +67,7 @@ namespace AODamageMeter.UI.ViewModels
             set { SetProperty(ref _displayDamageDone,double.Parse(value).ToString("#,##")); }
         }
 
-        public void Update(Character character)
+        public void Update(FightCharacter character)
         {
             DPS = character.DPSrelativeToPlayerStart;
             DamageDone = character.DamageDone;
@@ -78,7 +78,7 @@ namespace AODamageMeter.UI.ViewModels
             Width = character.PercentOfMaxDamage;
         }
 
-        public static DamageDoneRow Create(Character character)
+        public static DamageDoneRow Create(FightCharacter character)
             => new DamageDoneRow
             {
                 DPS = character.DPSrelativeToPlayerStart,

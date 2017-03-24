@@ -9,16 +9,16 @@ namespace AODamageMeter
 {
     public class Fight
     {
-        private List<Event> history = new List<Event>();
+        private List<FightEvent> history = new List<FightEvent>();
 
-        public List<Character> CharactersList = new List<Character>();
+        public List<FightCharacter> CharactersList = new List<FightCharacter>();
         public int StartTime { get; set; }
         public int TimeOfLatestAction { get; set; }
         public Stopwatch Duration { get; set; } = new Stopwatch();
 
         public Fight() { }
 
-        public void AddEvent(Event loggedEvent)
+        public void AddEvent(FightEvent loggedEvent)
         {
             if (!Duration.IsRunning)
                 Duration.Start();
@@ -34,7 +34,7 @@ namespace AODamageMeter
             }
             else
             {
-                CharactersList.Add(new Character(loggedEvent, true, Duration.ElapsedMilliseconds));
+                CharactersList.Add(new FightCharacter(loggedEvent, true, Duration.ElapsedMilliseconds));
             }
 
             if (targestIndex != -1)
@@ -43,7 +43,7 @@ namespace AODamageMeter
             }
             else
             {
-                CharactersList.Add(new Character(loggedEvent, false, Duration.ElapsedMilliseconds));
+                CharactersList.Add(new FightCharacter(loggedEvent, false, Duration.ElapsedMilliseconds));
             }
 
             UpdateCharacters();
@@ -51,7 +51,7 @@ namespace AODamageMeter
 
         public void UpdateCharactersTime()
         {
-            foreach (Character character in CharactersList)
+            foreach (FightCharacter character in CharactersList)
             {
                 character.Update(Duration.ElapsedMilliseconds);
             }
@@ -62,7 +62,7 @@ namespace AODamageMeter
             int maxDamage = CharactersList.Max(x => x.DamageDone);
             int totalDamage = CharactersList.Sum(x => x.DamageDone);
 
-            foreach (Character character in CharactersList)
+            foreach (FightCharacter character in CharactersList)
             {
                 character.SetPercentOfMaxDamage(maxDamage);
                 character.SetPercentOfDamageDone(totalDamage);

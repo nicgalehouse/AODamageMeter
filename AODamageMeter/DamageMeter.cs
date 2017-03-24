@@ -1,73 +1,63 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace AODamageMeter
 {
     public class DamageMeter
     {
-        public Fight CurrentFight = new Fight();
-        private List<Fight> pastFights = new List<Fight>();
-        private FileStream logFileStream;
-        private StreamReader LogStreamReader;
-        private string meterOwner = null;
+        private string _logPath;
+        private FileStream _logFileStream;
+        private StreamReader _logStreamReader;
+        private string _owningCharacterName;
 
-        public DamageMeter() { }
+        public DamageMeter()
+        { }
 
-        public DamageMeter(string filename)
+        public DamageMeter(string logPath)
         {
-            FindDamageMeterOwner(filename);
-            logFileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            LogStreamReader = new StreamReader(logFileStream);
-            LogStreamReader.ReadToEnd();
+            _logPath = logPath;
+            _logFileStream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            _logStreamReader = new StreamReader(_logFileStream);
+            _logStreamReader.ReadToEnd();
+
+            SetOwningCharacterName();
         }
 
-        public void FindDamageMeterOwner(string filename)
+        private void SetOwningCharacterName()
         {
-            DirectoryInfo characterDirectory = new DirectoryInfo(filename);
-            string characterID = null; 
+            string owningCharacterID = _logPath.Split('\\', '/')
+                .LastOrDefault(d => d.StartsWith("Char"))
+                ?.Remove(0, "Char".Length);
 
-            try
+            if (owningCharacterID != null)
             {
-                while (characterDirectory.Parent.Exists)
+                var potentialCharacterNames = Process.GetProcessesByName("AnarchyOnline")
+                    .Where(p => p.MainWindowTitle.StartsWith("Anarchy Online - "))
+                    .Select(p => p.MainWindowTitle.Remove(0, "Anarchy Online - ".Length));
+
+                foreach (string characterName in potentialCharacterNames)
                 {
-                    string directoryName = characterDirectory.Parent.ToString();
-
-                    if (directoryName.Contains("Char"))
+                    string characterID = new CharacterBio(characterName).CharacterInfo?.CharacterID;
+                    if (owningCharacterID == characterID)
                     {
-                        characterID = directoryName.Substring(4);
-                    }
-
-                    characterDirectory = characterDirectory.Parent;
-                }
-            }
-            catch { }
-
-            if (characterID != null)
-            {
-                IEnumerable<Process> processes = Process.GetProcessesByName("AnarchyOnline");
-                foreach (Process p in processes)
-                {
-                    string anarchyOnlineTitle = "Anarchy Online - ";
-                    string characterName = p.MainWindowTitle.Substring(anarchyOnlineTitle.Length);
-
-                    CharacterBio bio = new CharacterBio(characterName);
-
-                    if (bio.CharacterInfo.CharacterID == characterID)
-                    {
-                        meterOwner = bio.CharacterInfo.Name;
+                        _owningCharacterName = characterName;
+                        break;
                     }
                 }
             }
 
+            _owningCharacterName = _owningCharacterName ?? "You";
         }
+
+        public Fight CurrentFight { get; set; } = new Fight();
 
         public void Update()
         {
             string line;
-            while ((line = LogStreamReader.ReadLine()) != null)
+            while ((line = _logStreamReader.ReadLine()) != null)
             {
-                CurrentFight.AddEvent(new Event(line, meterOwner));
+                CurrentFight.AddEvent(new FightEvent(line, _owningCharacterName));
             }
             CurrentFight.UpdateCharactersTime();
         }

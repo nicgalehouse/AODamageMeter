@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace AODamageMeter
 {
-    public class Character
+    public class FightCharacter
     {
-        public List<Event> DamageTakenEvents = new List<Event>();
-        public List<Event> DamageDoneEvents = new List<Event>();
-        public List<Event> HealingDoneEvents = new List<Event>();
-        public List<Event> HealingReceivedEvents = new List<Event>();
-        public List<Event> AbsorbEvents = new List<Event>();
+        public List<FightEvent> DamageTakenEvents = new List<FightEvent>();
+        public List<FightEvent> DamageDoneEvents = new List<FightEvent>();
+        public List<FightEvent> HealingDoneEvents = new List<FightEvent>();
+        public List<FightEvent> HealingReceivedEvents = new List<FightEvent>();
+        public List<FightEvent> AbsorbEvents = new List<FightEvent>();
 
         public double ActiveSeconds;
 
@@ -36,7 +36,7 @@ namespace AODamageMeter
         public double DPSRelativeToFightStart;
         public double MissChance;
 
-        public Character(Event loggedEvent, bool isSource, long elapsedTime)
+        public FightCharacter(FightEvent loggedEvent, bool isSource, long elapsedTime)
         {
             Name = isSource ? loggedEvent.Source
                 : loggedEvent.Target;
@@ -48,7 +48,7 @@ namespace AODamageMeter
             AddEvent(loggedEvent, isSource);
         }
 
-        public void AddEvent(Event loggedEvent, bool isSource)
+        public void AddEvent(FightEvent loggedEvent, bool isSource)
         {
             if (isSource)
             {

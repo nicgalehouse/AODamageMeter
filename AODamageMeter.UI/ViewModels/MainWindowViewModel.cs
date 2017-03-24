@@ -112,7 +112,7 @@ namespace AODamageMeter.UI.ViewModels
 
         public void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            foreach (var character in (IEnumerable<Character>)e.UserState)
+            foreach (var character in (IEnumerable<FightCharacter>)e.UserState)
             {
                 if (Rows.Any(r => r.LeftText == character.Name))
                 {

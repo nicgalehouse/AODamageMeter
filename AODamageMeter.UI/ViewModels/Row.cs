@@ -43,6 +43,6 @@ namespace AODamageMeter.UI.ViewModels
             { SetProperty(ref _rightText, value); }
         }
 
-        public abstract void Update(Character character);
+        public abstract void Update(FightCharacter character);
     }
 }
