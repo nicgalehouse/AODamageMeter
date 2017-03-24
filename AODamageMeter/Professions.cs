@@ -1,7 +1,9 @@
-﻿using System;
+﻿using AODamageMeter.Properties;
+using System;
+using System.Drawing;
 using System.Xml;
 
-namespace AODamageMeter.Helpers
+namespace AODamageMeter
 {
     public enum Profession
     {
@@ -43,8 +45,8 @@ namespace AODamageMeter.Helpers
             "212121"  //Unknown
            };
 
-        public static string GetIcon(Profession profession)
-            => "../Icons/" + profession.ToString() + ".png";
+        public static Bitmap GetIcon(Profession profession)
+            => Resources.MartialArtist;// "../Icons/" + profession.ToString() + ".png";
 
         public static string GetProfessionColor(Profession profession)
             => "#" + Colors[(int)profession];

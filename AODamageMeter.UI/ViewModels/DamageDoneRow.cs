@@ -1,13 +1,13 @@
-﻿using AODamageMeter.Helpers;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using System;
+using System.Drawing;
 
-namespace AODamageMeter.Model
+namespace AODamageMeter.UI.ViewModels
 {
     public class DamageDoneRow : BindableBase
     {
         public string Name { get; set; }
-        public string Icon { get; set; }
+        public Bitmap Icon { get; set; }
         public string Color { get; set; }
 
         private double _percentOfDamageDone;

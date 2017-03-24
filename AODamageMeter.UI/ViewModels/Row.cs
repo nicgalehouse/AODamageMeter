@@ -1,7 +1,7 @@
-﻿using AODamageMeter.Helpers;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
+using System.Drawing;
 
-namespace AODamageMeter.Model
+namespace AODamageMeter.UI.ViewModels
 {
     public abstract class Row : BindableBase
     {
@@ -12,8 +12,8 @@ namespace AODamageMeter.Model
             set { SetProperty(ref _leftText, value); }
         }
 
-        string _icon;
-        public string Icon
+        Bitmap _icon;
+        public Bitmap Icon
         {
             get
             { return _icon; }

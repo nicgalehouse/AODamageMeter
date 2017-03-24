@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace AODamageMeter.View.Helpers
+namespace AODamageMeter.UI.Views.Helpers
 {
     public class RowWidthConverter : IMultiValueConverter
     {

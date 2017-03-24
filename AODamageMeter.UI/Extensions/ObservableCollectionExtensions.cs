@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace AODamageMeter.Extensions
+namespace AODamageMeter.UI.Extensions
 {
     public static class ObservableCollectionExtensions
     {

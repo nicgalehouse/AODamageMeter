@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AODamageMeter.Helpers
+namespace AODamageMeter
 {
     public class Event
     {

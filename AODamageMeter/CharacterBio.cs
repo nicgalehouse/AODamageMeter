@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
 
-namespace AODamageMeter.Helpers
+namespace AODamageMeter
 {
     public class CharacterBio
     {

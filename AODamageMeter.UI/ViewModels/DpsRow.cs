@@ -1,7 +1,7 @@
-﻿using System;
-using AODamageMeter.Helpers;
+﻿using AODamageMeter.Helpers;
+using System;
 
-namespace AODamageMeter.Model
+namespace AODamageMeter.UI.ViewModels
 {
     public class DpsRow : Row
     {

@@ -1,10 +1,8 @@
-﻿using System;
+﻿using AODamageMeter.UI.ViewModels;
 using System.Windows;
-using Microsoft.Win32;
-using AODamageMeter.ViewModel;
 using System.Windows.Input;
 
-namespace AODamageMeter.View
+namespace AODamageMeter.UI.Views
 {
     public partial class MainWindow : Window
     {

@@ -1,8 +1,6 @@
-﻿using System.IO;
-using System.Collections.Generic;
-using AODamageMeter.Helpers;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using AODamageMeter.Model;
+using System.IO;
 
 namespace AODamageMeter
 {

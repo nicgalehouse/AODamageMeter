@@ -56,7 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AODamageMeter\AODamageMeter.csproj">
-      <Project>{0da22b8f-9c0c-4c13-b3bd-c19b388d89e4}</Project>
+      <Project>{d55d5daf-e8cc-4f4e-a30f-d1358f89d934}</Project>
       <Name>AODamageMeter</Name>
     </ProjectReference>
   </ItemGroup>

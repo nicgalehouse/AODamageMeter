@@ -1,21 +1,19 @@
-using AODamageMeter.Model;
+using AODamageMeter.UI.Extensions;
+using AODamageMeter.UI.Views;
+using Microsoft.Win32;
+using Prism.Commands;
 using Prism.Mvvm;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Prism.Commands;
-using Microsoft.Win32;
-using System.Linq;
 using System.ComponentModel;
-using System.Windows.Data;
-using AODamageMeter.View;
-using System.Windows;
-using AODamageMeter.Helpers;
-using AODamageMeter.Extensions;
-using System.Threading;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
 
-namespace AODamageMeter.ViewModel
+namespace AODamageMeter.UI.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
