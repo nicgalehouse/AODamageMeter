@@ -10,6 +10,7 @@ namespace AODamageMeter
         private FileStream _logFileStream;
         private StreamReader _logStreamReader;
         private string _owningCharacterName;
+        //private List<Fight> pastFights = new List<Fight>();
 
         public DamageMeter()
         { }
