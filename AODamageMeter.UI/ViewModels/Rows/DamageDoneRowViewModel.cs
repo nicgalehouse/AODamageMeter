@@ -1,10 +1,11 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Drawing;
+using System.Windows.Media.Imaging;
 
-namespace AODamageMeter.UI.ViewModels
+namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneRow : BindableBase
+    public class DamageDoneRowViewModel : RowViewModelBase
     {
         public string Name { get; set; }
         public Bitmap Icon { get; set; }
@@ -49,6 +50,8 @@ namespace AODamageMeter.UI.ViewModels
                     formatted = dps.ToString("#,##");
                 }
 
+                BitmapImage x;
+
                 SetProperty(ref _displayDPS, formatted);
             }
         }
@@ -78,8 +81,8 @@ namespace AODamageMeter.UI.ViewModels
             Width = character.PercentOfMaxDamage;
         }
 
-        public static DamageDoneRow Create(FightCharacter character)
-            => new DamageDoneRow
+        public static DamageDoneRowViewModel Create(FightCharacter character)
+            => new DamageDoneRowViewModel
             {
                 DPS = character.DPSrelativeToPlayerStart,
                 DamageDone = character.DamageDone,

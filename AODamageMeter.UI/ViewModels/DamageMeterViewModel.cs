@@ -9,21 +9,34 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class DamageMeterViewModel : BindableBase
     {
-        public DamageMeter Meter = new DamageMeter();
+        private string _logFile;
+
+        public DamageMeterViewModel()
+        {
+
+        }
+
+        public void SetLogFile(string logFile)
+        {
+            DamageMeter.Dispose();
+            DamageMeter = new DamageMeter(logFile);
+        }
+
+        public DamageMeter DamageMeter { get; set; } = new DamageMeter();
 
         private BackgroundWorker worker;
-        private string logFile;
 
         //private ObservableCollection<DamageDoneRow> DamageDoneRows = new ObservableCollection<DamageDoneRow>();
-        private ObservableCollection<Row> Rows = new ObservableCollection<Row>();
+        private ObservableCollection<RowViewModelBase> Rows = new ObservableCollection<RowViewModelBase>();
 
         public ICollectionViewLiveShaping LiveCollection { get; set; }
 
@@ -42,19 +55,10 @@ namespace AODamageMeter.UI.ViewModels
             if (worker != null)
                 worker.CancelAsync();
 
-            OpenFileDialog dialog = new OpenFileDialog();
-
-            dialog.FileName = "Log.txt";
-            dialog.DefaultExt = ".txt";
-            dialog.Filter = "Log File(*.txt)|*.txt";
-
-            bool? result = dialog.ShowDialog();
-
             if (result == true && logFile != dialog.FileName)
             {
                 logFile = dialog.FileName;
 
-                Meter = new DamageMeter(logFile);
 
                 StartBackgroundWorker();
             }
@@ -64,19 +68,6 @@ namespace AODamageMeter.UI.ViewModels
         public void Terminate()
         {
             Application.Current.Shutdown();
-        }
-
-        public MainWindowViewModel()
-        {
-            IEnumerable<string> localAll = Process.GetProcessesByName("AnarchyOnline").Select(p => p.MainWindowTitle);
-
-            //LiveCollection = (ICollectionViewLiveShaping)CollectionViewSource.GetDefaultView(DamageDoneRows);
-            LiveCollection = (ICollectionViewLiveShaping)CollectionViewSource.GetDefaultView(Rows);
-
-            LiveCollection.IsLiveSorting = true;
-
-            //MainWindow.View.DamageMeter.Items.SortDescriptions.Add(new SortDescription("DamageDone", ListSortDirection.Descending));
-            MainWindow.View.DamageMeter.Items.SortDescriptions.Add(new SortDescription("Width", ListSortDirection.Descending));
         }
 
         void StartBackgroundWorker()
@@ -120,7 +111,7 @@ namespace AODamageMeter.UI.ViewModels
                 }
                 else if (character.DamageDone != 0)
                 {
-                    Rows.Add(new DpsRow(character));
+                    Rows.Add(new DpsRowViewModel(character));
                 }
             }
         }

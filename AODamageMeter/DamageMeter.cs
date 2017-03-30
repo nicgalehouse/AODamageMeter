@@ -1,10 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AODamageMeter
 {
-    public class DamageMeter
+    public class DamageMeter : IDisposable
     {
         private string _logPath;
         private FileStream _logFileStream;
@@ -23,6 +25,17 @@ namespace AODamageMeter
             _logStreamReader.ReadToEnd();
 
             SetOwningCharacterName();
+        }
+
+        public DamageMeter(string logPath, Action<DamageMeter> updater, TimeSpan updateInterval)
+            : this(logPath)
+        {
+            Task.Run(async () =>
+            {
+                updater(this);
+
+                await Task.Delay(updateInterval);
+            });
         }
 
         private void SetOwningCharacterName()
@@ -61,6 +74,12 @@ namespace AODamageMeter
                 CurrentFight.AddEvent(new FightEvent(line, _owningCharacterName));
             }
             CurrentFight.UpdateCharactersTime();
+        }
+
+        public void Dispose()
+        {
+            _logFileStream.Dispose();
+            _logStreamReader.Dispose();
         }
     }
 }

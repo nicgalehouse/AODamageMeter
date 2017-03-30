@@ -1,11 +1,10 @@
 ﻿using AODamageMeter.Helpers;
-using System;
 
-namespace AODamageMeter.UI.ViewModels
+namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DpsRow : Row
+    public class DpsRowViewModel : RowViewModelBase
     {
-        public DpsRow(FightCharacter character)
+        public DpsRowViewModel(FightCharacter character)
         {
             LeftText = character.Name;
             Icon = Professions.GetIcon(character.Profession);
