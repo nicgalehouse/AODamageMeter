@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -6,21 +7,25 @@ namespace AODamageMeter
 {
     public class Fight
     {
-        private List<FightEvent> history = new List<FightEvent>();
+        private readonly DamageMeter _damageMeter;
+        private Stopwatch _stopwatch;
+        private readonly List<FightEvent> _events = new List<FightEvent>();
+        private readonly Dictionary<Character, FightCharacter> _characters = new Dictionary<Character, FightCharacter>();
 
-        public List<FightCharacter> CharactersList = new List<FightCharacter>();
-        public int StartTime { get; set; }
-        public int TimeOfLatestAction { get; set; }
-        public Stopwatch Duration { get; set; } = new Stopwatch();
+        public DateTime? StartTime => _events.FirstOrDefault()?.Timestamp;
+        public DateTime? LatestEventTime => _events.LastOrDefault()?.Timestamp;
+        public TimeSpan? Duration => _stopwatch?.Elapsed;
+        public IReadOnlyList<FightEvent> Events => _events;
+        public ICollection<FightCharacter> Characters => _characters.Values;
 
-        public Fight() { }
+        public Fight(DamageMeter damageMeter)
+            => _damageMeter = damageMeter;
 
-        public void AddEvent(FightEvent loggedEvent)
+        public void AddFightEvent(string line)
         {
-            if (!Duration.IsRunning)
-                Duration.Start();
+            _stopwatch = _stopwatch ?? Stopwatch.StartNew();
 
-            history.Add(loggedEvent);
+            _events.Add(new FightEvent(_damageMeter, this, line));
 
             int sourceIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Source);
             int targestIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Target);

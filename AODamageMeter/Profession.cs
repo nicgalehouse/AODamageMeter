@@ -1,8 +1,6 @@
 ﻿using AODamageMeter.Professions;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Xml;
 
 namespace AODamageMeter
 {
@@ -32,24 +30,5 @@ namespace AODamageMeter
 
         public abstract string Name { get; }
         public abstract Color Color { get; }
-        public abstract Bitmap Icon { get; }
-
-        public static Profession SetProfession(string playerName)
-        {
-            try
-            {
-                using (var reader =  new XmlTextReader("http://people.anarchy-online.com/character/bio/d/5/name/" + playerName + "/bio.xml"))
-                {
-                    while (reader.Read())
-                    {
-                        if (reader.Name == "profession")
-                            return Profession.All.FirstOrDefault(p => p.Name == reader.ReadInnerXml()) ?? Profession.Unknown;
-                    }
-                }
-            }
-            catch { }
-
-            return Profession.Unknown;
-        }
     }
 }

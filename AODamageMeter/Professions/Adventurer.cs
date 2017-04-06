@@ -1,5 +1,4 @@
-﻿using AODamageMeter.Properties;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace AODamageMeter.Professions
 {
@@ -7,6 +6,5 @@ namespace AODamageMeter.Professions
     {
         public override string Name => "Adventurer";
         public override Color Color => Color.FromArgb(104, 159, 56); // #689F38
-        public override Bitmap Icon => Resources.Adventurer;
     }
 }

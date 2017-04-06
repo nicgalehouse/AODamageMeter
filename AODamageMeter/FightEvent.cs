@@ -1,213 +1,85 @@
-﻿using System;
+﻿using AODamageMeter.FightEvents;
+using AODamageMeter.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AODamageMeter
 {
-    public class FightEvent
+    public abstract class FightEvent
     {
-        public int Timestamp;
-        public string ActionType; //Damage, Nano, Heal, Absorb
+        private readonly DamageMeter _damageMeter;
+        private readonly Fight _fight;
+
+        public FightEvent(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        {
+            _damageMeter = damageMeter;
+            _fight = fight;
+            Timestamp = timestamp;
+            Description = description;
+            Parse();
+        }
+
+        public static FightEvent Create(DamageMeter damageMeter, Fight fight, string line)
+        {
+            int lastIndexOfArrayPart = line.IndexOf(']');
+            string[] arrayPart = line.Substring(1, lastIndexOfArrayPart - 1)
+                .Split(',')
+                .Select(p => p.Trim(' ', '"'))
+                .ToArray();
+            string type = arrayPart[1];
+            DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
+            string description = line.Substring(lastIndexOfArrayPart + 1);
+
+            if (type == "Other hit by other") return new OtherHitByOther(damageMeter, fight, timestamp, description);
+        }
+
+        public DateTime Timestamp { get; }
+        public string Description { get; }
+
+        protected abstract void Parse();
+
+        public string ActionType { get; protected set; } //Damage, Nano, Heal, Absorb
         public string Source;
         public string Target;
         public int Amount;
         public string AmountType;
         public string Modifier; //Crit, Glance
-        public string Line;
 
-
-        public FightEvent(string line, string owningCharacterName)
+        private void SetAttributes()
         {
-            Line = line;
-            SetAttributes(Key, GetUsefulEventString(), owningCharacterName);
-        }
+            int indexOfSource, lengthOfSource,
+                indexOfTarget, lengthOfTarget,
+                indexOfAmount, lengthOfAmount,
+                indexOfAmountType, lengthOfAmountType;
 
-        // All lines start like this:
-        // ["#000000004200000a#"...
-        // Last two characters between the number signs seem to be unique.
-        private string Key
-            => Line?.Substring(17, 2) ?? null;
-
-        public int? GetTime()
-        {
             switch (Key)
             {
-                case "0b": return int.Parse(Line.Substring(37, 10));
-                case "16": return int.Parse(Line.Substring(39, 10));
-                case "12": return int.Parse(Line.Substring(39, 10));
-                case "13": return int.Parse(Line.Substring(40, 10));
-                case "18": return int.Parse(Line.Substring(40, 10));
-                case "15": return int.Parse(Line.Substring(41, 10));
-                case "08": return int.Parse(Line.Substring(41, 10));
-                case "17": return int.Parse(Line.Substring(41, 10));
-                case "04": return int.Parse(Line.Substring(45, 10));
-                case "06": return int.Parse(Line.Substring(45, 10));
-                case "0a": return int.Parse(Line.Substring(46, 10));
-                case "09": return int.Parse(Line.Substring(49, 10));
-                case "05": return int.Parse(Line.Substring(51, 10));
-                default: return null;
-            }
-        }
-
-        private string GetUsefulEventString()
-        {
-            switch (Key)
-            {
-                case "0a": return Line.Substring(57, Line.Length - 57);
-                case "05": return Line.Substring(62, Line.Length - 62);
-                case "04": return Line.Substring(56, Line.Length - 56);
-                case "15": return Line.Substring(52, Line.Length - 52);
-                case "08": return Line.Substring(52, Line.Length - 52);
-                case "06": return Line.Substring(56, Line.Length - 56);
-                case "13": return Line.Substring(51, Line.Length - 51);
-                case "16": return Line.Substring(50, Line.Length - 50);
-                case "12": return Line.Substring(50, Line.Length - 50);
-                case "17": return Line.Substring(52, Line.Length - 52);
-                case "09": return Line.Substring(60, Line.Length - 60);
-                case "0b": return Line.Substring(48, Line.Length - 48);
-                case "18": return Line.Substring(51, Line.Length - 51);
-                default: return null;
-            }
-        }
-
-        private void SetAttributes(string key, string line, string owningCharacterName)
-        {
-            if (line == null)
-                return;
-
-            int indexOfSource, lengthOfSource;
-            int indexOfTarget, lengthOfTarget;
-            int indexOfAmount, lengthOfAmount;
-            int indexOfAmountType, lengthOfAmountType;
-
-            switch (key)
-            {
-                //Every "you", "me" == SOURCE
-                //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage.
-                //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                //SOURCE's reflect shield hit TARGET for AMOUNT points of damage.
-                //SOURCE's damage shield hit TARGET for AMOUNT points of damage.
-                //Something hit TARGET for AMOUNT points of damage by damage shield.
-                //Something hit TARGET for AMOUNT points of damage by reflect shield.
-                //Someone absorbed AMOUNT points of AMOUNTTYPE damage.
-                case "0a":
-
-                    //We don't have enough info about this event to do anything.
-                    //Someone absorbed AMOUNT points of AMOUNTTYPE damage.
-                    if (line.LastIndexOf("Someone absorbed ") != -1)
-                    {
-                        ActionType = "Absorb";
-                        break;
-                    }
-                    //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage.
-                    if (line.IndexOf(" shield hit ") == -1 && line.IndexOf("shield.") == -1)
-                    {
-                        indexOfSource = 0;
-                        lengthOfSource = line.IndexOf(" hit ") - indexOfSource;
-                        // + 5 to skip the " hit " indices
-                        indexOfTarget = indexOfSource + lengthOfSource + 5;
-                        lengthOfTarget = line.IndexOf(" for ") - indexOfTarget;
-
-                        indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
-
-                        indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                        lengthOfAmountType = line.IndexOf(" damage.") - indexOfAmountType;
-
-                        AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
-                        Source = line.Substring(indexOfSource, lengthOfSource);
-
-                        //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                        if (line[line.Length - 1] == '!')
-                        {
-                            Modifier = "Crit";
-                        }
-                        //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                        else if (line[line.Length - 2] == 't')
-                        {
-                            Modifier = "Glance";
-                        }
-                    }
-                    //SOURCE's reflect shield hit TARGET for AMOUNT points of damage.
-                    //SOURCE's damage shield hit TARGET for AMOUNT points of damage.
-                    else if (line.IndexOf(" shield hit ") != -1)
-                    {
-                        indexOfSource = 0;
-                        //SOURCE's reflect shield hit TARGET for AMOUNT points of damage.
-                        if (line.IndexOf(" reflect ") != -1)
-                        {
-                            lengthOfSource = line.IndexOf(" reflect shield ") - 2 - indexOfSource;
-                            indexOfTarget = indexOfSource + lengthOfSource + 22;
-                            AmountType = "Reflect";
-                        }
-                        //SOURCE's damage shield hit TARGET for AMOUNT points of damage.
-                        else
-                        {
-                            lengthOfSource = line.IndexOf(" damage shield ") - 2 - indexOfSource;
-                            indexOfTarget = indexOfSource + lengthOfSource + 21;
-                            AmountType = "Shield";
-                        }
-
-                        lengthOfTarget = line.IndexOf(" for ") - indexOfTarget;
-
-                        indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
-
-                        Source = line.Substring(indexOfSource, lengthOfSource);
-                    }
-                    //Something hit TARGET for AMOUNT points of damage by damage shield.
-                    //Something hit TARGET for AMOUNT points of damage by reflect shield.
-                    else
-                    {
-                        indexOfTarget = 14;
-                        lengthOfTarget = line.IndexOf(" for ") - indexOfTarget;
-
-                        indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
-
-                        //Something hit TARGET for AMOUNT points of damage by damage shield.
-                        if (line[line.Length - 9] == 'e')
-                        {
-                            AmountType = "Shield";
-                        }
-                        //Something hit TARGET for AMOUNT points of damage by reflect shield.
-                        else
-                        {
-                            AmountType = "Reflect";
-                        }
-
-                    }
-
-                    Target = line.Substring(indexOfTarget, lengthOfTarget);
-                    Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
-                    ActionType = "Damage";
-
-                    break;
-
                 //You hit TARGET with nanobots for AMOUNT points of AMOUNTTYPE damage.
                 case "05":
                     {
                         indexOfTarget = 8;
-                        lengthOfTarget = line.IndexOf(" with ") - indexOfTarget;
+                        lengthOfTarget = Line.IndexOf(" with ") - indexOfTarget;
 
                         indexOfAmount = indexOfTarget + lengthOfTarget + 19;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
 
                         indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                        lengthOfAmountType = line.Length - 8 - indexOfAmountType;
+                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
 
                         ActionType = "Damage";
                         Source = owningCharacterName;
-                        Target = line.Substring(indexOfTarget, lengthOfTarget);
-                        Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
-                        AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
+                        Target = Line.Substring(indexOfTarget, lengthOfTarget);
+                        Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
+                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
 
                         //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                        if (line[line.Length - 1] == '!')
+                        if (Line[Line.Length - 1] == '!')
                         {
                             Modifier = "Crit";
                         }
                         //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                        else if (line[line.Length - 2] == 't')
+                        else if (Line[Line.Length - 2] == 't')
                         {
                             Modifier = "Glance";
                         }
@@ -220,24 +92,24 @@ namespace AODamageMeter
                 case "04":
 
                     indexOfTarget = 0;
-                    lengthOfTarget = line.IndexOf(" was ");
+                    lengthOfTarget = Line.IndexOf(" was ");
 
                     //TARGET was attacked with nanobots from SOURCE for AMOUNT points of AMOUNTTYPE damage.
-                    if (line.IndexOf(" from ") != -1)
+                    if (Line.IndexOf(" from ") != -1)
                     {
                         indexOfSource = indexOfTarget + lengthOfTarget + 33;
-                        lengthOfSource = line.IndexOf(" for ") - indexOfSource;
+                        lengthOfSource = Line.IndexOf(" for ") - indexOfSource;
                         indexOfAmount = indexOfSource + lengthOfSource + 5;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
 
-                        Source = line.Substring(indexOfSource, lengthOfSource);
+                        Source = Line.Substring(indexOfSource, lengthOfSource);
 
                     }
                     //TARGET was attacked with nanobots for AMOUNT points of AMOUNTTYPE damage.
                     else
                     {
                         indexOfAmount = indexOfTarget + lengthOfTarget + 32;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
 
                         //might not be true
                         Source = "Unknown-Source";
@@ -245,12 +117,12 @@ namespace AODamageMeter
                     }
 
                     indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                    lengthOfAmountType = line.Length - 8 - indexOfAmountType;
+                    lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
 
                     ActionType = "Nano";
-                    Target = line.Substring(indexOfTarget, lengthOfTarget);
-                    Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
-                    AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
+                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
+                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
+                    AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
 
                     break;
 
@@ -259,10 +131,10 @@ namespace AODamageMeter
                 case "15":
 
                     //You were healed for AMOUNT points.
-                    if (line[4] == 'w')
+                    if (Line[4] == 'w')
                     {
                         indexOfAmount = 20;
-                        lengthOfAmount = line.LastIndexOf(" ") - indexOfAmount;
+                        lengthOfAmount = Line.LastIndexOf(" ") - indexOfAmount;
 
                         Source = owningCharacterName;
                         Target = owningCharacterName;
@@ -272,18 +144,18 @@ namespace AODamageMeter
                     else
                     {
                         indexOfSource = 18;
-                        lengthOfSource = line.LastIndexOf(" for ") - indexOfSource;
+                        lengthOfSource = Line.LastIndexOf(" for ") - indexOfSource;
 
                         indexOfAmount = indexOfSource + lengthOfSource + 5;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
 
-                        Source = line.Substring(indexOfSource, lengthOfSource);
+                        Source = Line.Substring(indexOfSource, lengthOfSource);
                         Target = owningCharacterName;
 
                     }
 
                     ActionType = "Heal";
-                    Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
+                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Heal";
 
                     break;
@@ -292,44 +164,44 @@ namespace AODamageMeter
                 //Your damage shield hit TARGET for AMOUNT points of damage.
                 case "08":
 
-                    if (line.StartsWith("Your"))
+                    if (Line.StartsWith("Your"))
                     {
                         indexOfTarget = 23;
-                        lengthOfTarget = line.IndexOf(" for ") - indexOfTarget;
+                        lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
 
                         indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
 
                         ActionType = "Damage";
                         Source = owningCharacterName;
-                        Target = line.Substring(indexOfTarget, lengthOfTarget);
-                        Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
+                        Target = Line.Substring(indexOfTarget, lengthOfTarget);
+                        Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
                         AmountType = "Shield";
                     }
                     else
                     {
                         indexOfTarget = 8;
-                        lengthOfTarget = line.IndexOf(" for ") - indexOfTarget;
+                        lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
 
                         indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
 
                         indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                        lengthOfAmountType = line.Length - 8 - indexOfAmountType;
+                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
 
                         ActionType = "Damage";
                         Source = owningCharacterName;
-                        Target = line.Substring(indexOfTarget, lengthOfTarget);
-                        Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
-                        AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
+                        Target = Line.Substring(indexOfTarget, lengthOfTarget);
+                        Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
+                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
 
                         //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                        if (line[line.Length - 1] == '!')
+                        if (Line[Line.Length - 1] == '!')
                         {
                             Modifier = "Crit";
                         }
                         //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                        else if (line[line.Length - 2] == 't')
+                        else if (Line[Line.Length - 2] == 't')
                         {
                             Modifier = "Glance";
                         }
@@ -346,71 +218,71 @@ namespace AODamageMeter
                 case "06":
 
                     //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage.
-                    if (!line.StartsWith("You absorbed ") && !line.StartsWith("Someone's"))
+                    if (!Line.StartsWith("You absorbed ") && !Line.StartsWith("Someone's"))
                     {
 
                         indexOfSource = 0;
-                        lengthOfSource = line.IndexOf(" hit ") - indexOfSource;
+                        lengthOfSource = Line.IndexOf(" hit ") - indexOfSource;
 
                         indexOfAmount = indexOfSource + lengthOfSource + 13;
-                        lengthOfAmount = line.LastIndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.LastIndexOf(" points ") - indexOfAmount;
 
                         indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                        lengthOfAmountType = line.Length - 8 - indexOfAmountType;
+                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
 
                         ActionType = "Damage";
-                        Source = line.Substring(indexOfSource, lengthOfSource);
+                        Source = Line.Substring(indexOfSource, lengthOfSource);
 
                         //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                        if (line[line.Length - 1] == '!')
+                        if (Line[Line.Length - 1] == '!')
                         {
-                            lengthOfAmountType = line.Length - 22 - indexOfAmountType;
+                            lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
                             Modifier = "Crit";
                         }
                         //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                        else if (line[line.Length - 2] == 't')
+                        else if (Line[Line.Length - 2] == 't')
                         {
-                            lengthOfAmountType = line.Length - 22 - indexOfAmountType;
+                            lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
                             Modifier = "Glance";
                         }
-                        AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
+                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
                     }
                     //You absorbed AMOUNT points of AMOUNTTYPE damage.
-                    else if (!line.StartsWith("Someone's"))
+                    else if (!Line.StartsWith("Someone's"))
                     {
 
                         indexOfAmount = 13;
-                        lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
 
                         indexOfAmountType = indexOfAmount + 8;
-                        lengthOfAmountType = line.Length - 8 - indexOfAmountType;
+                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
 
                         ActionType = "Absorb";
                         Source = owningCharacterName;
-                        AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
+                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
                     }
                     //Someone's reflect shield hit you for AMOUNT points of damage.
                     //Someone's damage shield hit you for AMOUNT points of damage.
                     else
                     {
                         //Someone's damage shield hit you for AMOUNT points of damage.
-                        if (line[10] == 'd')
+                        if (Line[10] == 'd')
                         {
                             indexOfAmount = 36;
-                            lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                            lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
                             AmountType = "Shield";
                         }
                         //Someone's reflect shield hit you for AMOUNT points of damage.
                         else
                         {
                             indexOfAmount = 37;
-                            lengthOfAmount = line.IndexOf(" points ") - indexOfAmount;
+                            lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
                             AmountType = "Reflect";
                         }
                     }
 
                     Target = owningCharacterName;
-                    Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
+                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
 
                     break;
 
@@ -422,22 +294,22 @@ namespace AODamageMeter
 
                     indexOfSource = 0;
 
-                    if (line.LastIndexOf("you,") == -1)
+                    if (Line.LastIndexOf("you,") == -1)
                     {
 
-                        lengthOfSource = line.IndexOf(" tries ") - indexOfSource;
+                        lengthOfSource = Line.IndexOf(" tries ") - indexOfSource;
                         //should be changed in future
                         AmountType = "SpecialAttack";
 
                     }
                     else
                     {
-                        lengthOfSource = line.IndexOf(" tried ") - indexOfSource;
+                        lengthOfSource = Line.IndexOf(" tried ") - indexOfSource;
                         AmountType = "Auto Attack";
                     }
 
                     ActionType = "Damage";
-                    Source = line.Substring(indexOfSource, lengthOfSource);
+                    Source = Line.Substring(indexOfSource, lengthOfSource);
                     Target = owningCharacterName;
 
                     break;
@@ -446,15 +318,15 @@ namespace AODamageMeter
                 case "16":
 
                     indexOfSource = 18;
-                    lengthOfSource = line.IndexOf(" for ") - indexOfSource;
+                    lengthOfSource = Line.IndexOf(" for ") - indexOfSource;
 
                     indexOfAmount = indexOfSource + lengthOfSource + 5;
-                    lengthOfAmount = line.Length - 8 - indexOfAmount;
+                    lengthOfAmount = Line.Length - 8 - indexOfAmount;
 
                     ActionType = "Heal";
-                    Source = line.Substring(indexOfSource, lengthOfSource);
+                    Source = Line.Substring(indexOfSource, lengthOfSource);
                     Target = owningCharacterName;
-                    Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
+                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Nano";
 
                     break;
@@ -464,11 +336,11 @@ namespace AODamageMeter
 
 
                     indexOfTarget = 17;
-                    lengthOfTarget = line.Length - 13 - indexOfTarget;
+                    lengthOfTarget = Line.Length - 13 - indexOfTarget;
 
                     ActionType = "Miss";
                     Source = owningCharacterName;
-                    Target = line.Substring(indexOfTarget, lengthOfTarget);
+                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
 
                     break;
 
@@ -476,15 +348,15 @@ namespace AODamageMeter
                 case "17":
 
                     indexOfTarget = 22;
-                    lengthOfTarget = line.LastIndexOf(" for ") - indexOfTarget;
+                    lengthOfTarget = Line.LastIndexOf(" for ") - indexOfTarget;
 
                     indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                    lengthOfAmount = line.Length - 8 - indexOfAmount;
+                    lengthOfAmount = Line.Length - 8 - indexOfAmount;
 
                     ActionType = "Heal";
                     Source = owningCharacterName;
-                    Target = line.Substring(indexOfTarget, lengthOfTarget);
-                    Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
+                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
+                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
                     AmountType = "Nano";
 
                     break;
@@ -494,36 +366,36 @@ namespace AODamageMeter
                 case "09":
 
                     indexOfSource = 0;
-                    lengthOfSource = line.IndexOf(" hit ") - indexOfSource;
+                    lengthOfSource = Line.IndexOf(" hit ") - indexOfSource;
                     // + 5 to skip the " hit " indices
                     indexOfTarget = lengthOfSource + 5;
-                    lengthOfTarget = line.IndexOf(" for ") - indexOfTarget;
+                    lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
                     // + 5 to skip the " for " indices
                     indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                    lengthOfAmount = line.LastIndexOf(" points ") - indexOfAmount;
+                    lengthOfAmount = Line.LastIndexOf(" points ") - indexOfAmount;
                     // + 8 to skip the " points " indices, + 3 to skip the "of " indices
                     indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                    lengthOfAmountType = line.Length - 8 - indexOfAmountType;
+                    lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
 
                     //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                    if (line[line.Length - 1] == '!')
+                    if (Line[Line.Length - 1] == '!')
                     {
-                        lengthOfAmountType = line.Length - 22 - indexOfAmountType;
+                        lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
                         Modifier = "Crit";
                     }
                     //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                    else if (line[line.Length - 2] == 't')
+                    else if (Line[Line.Length - 2] == 't')
                     {
-                        lengthOfAmountType = line.Length - 22 - indexOfAmountType;
+                        lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
                         Modifier = "Glance";
                     }
                     
                     ActionType = "Damage"; //PetDamage
-                    Source = line.Substring(indexOfSource, lengthOfSource);
-                    Target = line.Substring(indexOfTarget, lengthOfTarget);
-                    Amount = Convert.ToInt32(line.Substring(indexOfAmount, lengthOfAmount));
-                    AmountType = line.Substring(indexOfAmountType, lengthOfAmountType);
-                    Source = line.Substring(indexOfSource, lengthOfSource);
+                    Source = Line.Substring(indexOfSource, lengthOfSource);
+                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
+                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
+                    AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
+                    Source = Line.Substring(indexOfSource, lengthOfSource);
 
                     break;
 

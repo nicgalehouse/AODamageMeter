@@ -8,72 +8,79 @@ namespace AODamageMeter
 {
     public class DamageMeter : IDisposable
     {
-        private string _logPath;
-        private FileStream _logFileStream;
-        private StreamReader _logStreamReader;
-        private string _owningCharacterName;
-        //private List<Fight> pastFights = new List<Fight>();
+        public static readonly DamageMeter Empty = new DamageMeter();
 
-        public DamageMeter()
+        private readonly string _logPath;
+        private readonly FileStream _logFileStream;
+        private readonly StreamReader _logStreamReader;
+
+        private DamageMeter()
         { }
 
-        public DamageMeter(string logPath)
+        private DamageMeter(string logPath)
         {
             _logPath = logPath;
             _logFileStream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             _logStreamReader = new StreamReader(_logFileStream);
-            _logStreamReader.ReadToEnd();
-
-            SetOwningCharacterName();
         }
 
-        public DamageMeter(string logPath, Action<DamageMeter> updater, TimeSpan updateInterval)
-            : this(logPath)
+        public Character OwningCharacter { get; private set; }
+        public Fight CurrentFight { get; private set; }
+        public bool IsPaused { get; set; }
+
+        public static async Task<DamageMeter> Create(string logPath)
         {
-            Task.Run(async () =>
-            {
-                updater(this);
+            var damageMeter = new DamageMeter(logPath);
+            await damageMeter._logStreamReader.ReadToEndAsync();
+            await damageMeter.SetOwningCharacter();
+            damageMeter.CurrentFight = new Fight(damageMeter);
 
-                await Task.Delay(updateInterval);
-            });
+            return damageMeter;
         }
-
-        private void SetOwningCharacterName()
-        {
-            string owningCharacterID = _logPath.Split('\\', '/')
-                .LastOrDefault(d => d.StartsWith("Char"))
-                ?.Remove(0, "Char".Length);
-
-            if (owningCharacterID != null)
-            {
-                var potentialCharacterNames = Process.GetProcessesByName("AnarchyOnline")
-                    .Where(p => p.MainWindowTitle.StartsWith("Anarchy Online - "))
-                    .Select(p => p.MainWindowTitle.Remove(0, "Anarchy Online - ".Length));
-
-                foreach (string characterName in potentialCharacterNames)
-                {
-                    string characterID = new CharacterBio(characterName).CharacterInfo?.CharacterID;
-                    if (owningCharacterID == characterID)
-                    {
-                        _owningCharacterName = characterName;
-                        break;
-                    }
-                }
-            }
-
-            _owningCharacterName = _owningCharacterName ?? "You";
-        }
-
-        public Fight CurrentFight { get; set; } = new Fight();
 
         public void Update()
         {
             string line;
             while ((line = _logStreamReader.ReadLine()) != null)
             {
-                CurrentFight.AddEvent(new FightEvent(line, _owningCharacterName));
+                CurrentFight.AddFightEvent(line);
             }
             CurrentFight.UpdateCharactersTime();
+        }
+
+        private async Task SetOwningCharacter()
+        {
+            // We can (probably?) find the owning character's ID from the specified log path...
+            string owningCharactersID = _logPath.Split('\\', '/')
+                .LastOrDefault(d => d.StartsWith("Char"))
+                ?.Substring("Char".Length);
+
+            if (owningCharactersID != null)
+            {
+                // ...And the character names that ID might correspond to from the currently opened instances of AO.
+                var potentialCharacterNames = Process.GetProcessesByName("AnarchyOnline")
+                    .Where(p => p.MainWindowTitle.StartsWith("Anarchy Online - "))
+                    .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length));
+
+                // Make the calls to people.anarchy-online.com concurrently.
+                var getCharacterTasks = potentialCharacterNames
+                    .Select(n => Character.GetOrCreateCharacter(n))
+                    .ToArray();
+                var characters = await Task.WhenAll(getCharacterTasks);
+
+                // If everything worked out, there'll be a character with a matching ID now.
+                OwningCharacter = characters.SingleOrDefault(c => owningCharactersID == c.ID);
+
+                // Maybe they just created the character though, so people.anarchy-online.com hasn't indexed it yet
+                // and the ID comes back as null. If there's only one w/ a null ID, deduce it's the owner.
+                if (OwningCharacter == null && characters.Count(c => c.ID == null) == 1)
+                {
+                    OwningCharacter = characters.Single(c => c.ID == null);
+                    OwningCharacter.ID = owningCharactersID;
+                }
+            }
+
+            OwningCharacter = OwningCharacter ?? (await Character.GetOrCreateCharacter("You"));
         }
 
         public void Dispose()

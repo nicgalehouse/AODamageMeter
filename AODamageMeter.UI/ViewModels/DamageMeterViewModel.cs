@@ -1,39 +1,43 @@
 using AODamageMeter.UI.Extensions;
-using AODamageMeter.UI.Views;
-using Microsoft.Win32;
-using Prism.Commands;
-using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public class DamageMeterViewModel : BindableBase
+    public class DamageMeterViewModel : ViewModelBase
     {
         private string _logFile;
 
         public DamageMeterViewModel()
-        {
-
-        }
+        { }
 
         public void SetLogFile(string logFile)
         {
+            DamageMeter.Stop();
             DamageMeter.Dispose();
-            DamageMeter = new DamageMeter(logFile);
+            DamageMeter = new DamageMeter(logFile, TimeSpan.FromSeconds(.3), () =>
+            {
+                foreach (var character in (IEnumerable<FightCharacter>)e.UserState)
+                {
+                    if (Rows.Any(r => r.LeftText == character.Name))
+                    {
+                        Rows.Single(r => r.LeftText == character.Name).Update(character);
+                    }
+                    else if (character.DamageDone != 0)
+                    {
+                        Rows.Add(new DpsRowViewModel(character));
+                    }
+                }
+            });
         }
 
-        public DamageMeter DamageMeter { get; set; } = new DamageMeter();
-
-        private BackgroundWorker worker;
+        public DamageMeter DamageMeter { get; private set; } = DamageMeter.Empty;
 
         //private ObservableCollection<DamageDoneRow> DamageDoneRows = new ObservableCollection<DamageDoneRow>();
         private ObservableCollection<RowViewModelBase> Rows = new ObservableCollection<RowViewModelBase>();
@@ -50,7 +54,7 @@ namespace AODamageMeter.UI.ViewModels
         }
 
         public ICommand FileBrowseCommand => new DelegateCommand(FileBrowse);
-        public void FileBrowse()
+        public async void FileBrowse()
         {
             if (worker != null)
                 worker.CancelAsync();
@@ -58,6 +62,10 @@ namespace AODamageMeter.UI.ViewModels
             if (result == true && logFile != dialog.FileName)
             {
                 logFile = dialog.FileName;
+
+
+                DamageMeter = await DamageMeter.Create(logFile);
+
 
 
                 StartBackgroundWorker();
@@ -103,17 +111,6 @@ namespace AODamageMeter.UI.ViewModels
 
         public void ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            foreach (var character in (IEnumerable<FightCharacter>)e.UserState)
-            {
-                if (Rows.Any(r => r.LeftText == character.Name))
-                {
-                    Rows.Single(r => r.LeftText == character.Name).Update(character);
-                }
-                else if (character.DamageDone != 0)
-                {
-                    Rows.Add(new DpsRowViewModel(character));
-                }
-            }
         }
 
         public void DoWork(object sender, DoWorkEventArgs e)

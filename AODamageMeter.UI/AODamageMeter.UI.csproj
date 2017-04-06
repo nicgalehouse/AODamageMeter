@@ -156,7 +156,24 @@
       <Name>AODamageMeter</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\Adventurer.png" />
+    <Resource Include="Icons\Agent.png" />
+    <Resource Include="Icons\Bureaucrat.png" />
+    <Resource Include="Icons\Doctor.png" />
+    <Resource Include="Icons\Enforcer.png" />
+    <Resource Include="Icons\Engineer.png" />
+    <Resource Include="Icons\Fixer.png" />
+    <Resource Include="Icons\Keeper.png" />
+    <Resource Include="Icons\MartialArtist.png" />
+    <Resource Include="Icons\MetaPhysicist.png" />
+    <Resource Include="Icons\NanoTechnician.png" />
+    <Resource Include="Icons\Shade.png" />
+    <Resource Include="Icons\Soldier.png" />
+    <Resource Include="Icons\Trader.png" />
+    <Resource Include="Icons\Unknown.png" />
+    <Resource Include="Icons\Unknown2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,5 +1,4 @@
-﻿using AODamageMeter.Properties;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace AODamageMeter.Professions
 {
@@ -7,6 +6,5 @@ namespace AODamageMeter.Professions
     {
         public override string Name => "Meta-Physicist";
         public override Color Color => Color.FromArgb(69, 39, 160); // #4527A0
-        public override Bitmap Icon => Resources.MetaPhysicist;
     }
 }
