@@ -1,20 +1,49 @@
 ﻿using System;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace AODamageMeter.FightEvents
 {
-    // SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage.
-    // SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-    // SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-    // SOURCE's reflect shield hit TARGET for AMOUNT points of damage.
-    // SOURCE's damage shield hit TARGET for AMOUNT points of damage.
-    // Something hit TARGET for AMOUNT points of damage by damage shield.
-    // Something hit TARGET for AMOUNT points of damage by reflect shield.
-    // Someone absorbed AMOUNT points of AMOUNTTYPE damage.
     public class OtherHitByOther : FightEvent
     {
-        public OtherHitByOther(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        protected static readonly Regex
+            _normal =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            _crit =         new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Critical hit!$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            _glance =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Glancing hit.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            _reflect =      new Regex(@"^(.+?)'s reflect shield hit (.+?) for (\d+) points of damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            _shield =       new Regex(@"^(.+?)'s damage shield hit (.+?) for (\d+) points of damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            _weirdReflect = new Regex(@"^Something hit (.+?) for (\d+) points of damage by reflect shield.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            _weirdShield =  new Regex(@"^Something hit (.+?) for (\d+) points of damage by damage shield.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            _absorb =       new Regex(@"^Someone absorbed (\d+) points of (.+?) damage.$", RegexOptions.Compiled);
+
+        protected OtherHitByOther(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)
         { }
+
+        public static async Task<OtherHitByOther> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        {
+            var @event = new OtherHitByOther(damageMeter, fight, timestamp, description);
+
+            bool crit = false, glance = false, reflect = false, shield = false, weirdReflect = false, weirdShield = false, absorb = false;
+            if (@event.TryMatch(_normal, out Match match, out bool normal)
+                || @event.TryMatch(_crit, out match, out crit)
+                || @event.TryMatch(_glance, out match, out glance))
+            {
+                var characters = await Character.GetOrCreateCharacters(match.Groups[1].Value, match.Groups[2].Value);
+                @event.Source = characters[0];
+                @event.Target = characters[1];
+                @event.ActionType = ActionType.Damage;
+                @event.Amount = int.Parse(match.Groups[3].Value);
+                @event.AmountType = match.Groups[4].Value.GetAmountType();
+                @event.Modifier = crit ? AODamageMeter.Modifier.Crit
+                    : glance ? AODamageMeter.Modifier.Glance
+                    : (Modifier?)null;
+            }
+            else if (@event.TryMatch(_reflect, out match, out reflect)
+                || @event.TryMatch(_shield, out match, out shield))
+            {
+            }
+        }
 
         protected override void Parse()
         {

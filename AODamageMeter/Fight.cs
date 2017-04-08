@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AODamageMeter
 {
@@ -21,7 +22,7 @@ namespace AODamageMeter
         public Fight(DamageMeter damageMeter)
             => _damageMeter = damageMeter;
 
-        public void AddFightEvent(string line)
+        public async Task AddEvent(string line)
         {
             _stopwatch = _stopwatch ?? Stopwatch.StartNew();
 

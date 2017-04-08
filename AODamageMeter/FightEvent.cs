@@ -3,48 +3,53 @@ using AODamageMeter.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace AODamageMeter
 {
     public abstract class FightEvent
     {
-        private readonly DamageMeter _damageMeter;
-        private readonly Fight _fight;
+        protected readonly DamageMeter _damageMeter;
+        protected readonly Fight _fight;
 
-        public FightEvent(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        protected FightEvent(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
         {
             _damageMeter = damageMeter;
             _fight = fight;
             Timestamp = timestamp;
             Description = description;
-            Parse();
         }
 
-        public static FightEvent Create(DamageMeter damageMeter, Fight fight, string line)
+        public static async Task<FightEvent> Create(DamageMeter damageMeter, Fight fight, string line)
         {
             int lastIndexOfArrayPart = line.IndexOf(']');
-            string[] arrayPart = line.Substring(1, lastIndexOfArrayPart - 1)
-                .Split(',')
-                .Select(p => p.Trim(' ', '"'))
+            string[] arrayPart = line.Substring(1, lastIndexOfArrayPart - 1).Split(',')
+                .Select(p => p.Trim('"'))
                 .ToArray();
             string type = arrayPart[1];
             DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 
-            if (type == "Other hit by other") return new OtherHitByOther(damageMeter, fight, timestamp, description);
+            if (type == "Other hit by other") return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
+            throw new NotImplementedException();
         }
 
         public DateTime Timestamp { get; }
         public string Description { get; }
+        public Character Source { get; protected set; }
+        public Character Target { get; protected set; }
+        public ActionType ActionType { get; protected set; }
+        public int Amount { get; protected set; }
+        public AmountType AmountType { get; protected set; }
+        public Modifier? Modifier { get; protected set; }
 
-        protected abstract void Parse();
-
-        public string ActionType { get; protected set; } //Damage, Nano, Heal, Absorb
-        public string Source;
-        public string Target;
-        public int Amount;
-        public string AmountType;
-        public string Modifier; //Crit, Glance
+        protected bool TryMatch(Regex regex, out Match match, out bool success)
+        {
+            match = regex.Match(Description);
+            success = match.Success;
+            return success;
+        }
 
         private void SetAttributes()
         {

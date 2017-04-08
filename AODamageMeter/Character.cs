@@ -24,6 +24,12 @@ namespace AODamageMeter
         public Profession Profession { get; }
         public string Organization { get; }
 
+        public static Task<Character[]> GetOrCreateCharacters(IEnumerable<string> names)
+            => GetOrCreateCharacters(names.ToArray());
+
+        public static Task<Character[]> GetOrCreateCharacters(params string[] names)
+            => Task.WhenAll(names.Select(n => GetOrCreateCharacter(n)).ToArray());
+
         public static async Task<Character> GetOrCreateCharacter(string name)
         {
             if (_characters.TryGetValue(name, out Character character))
