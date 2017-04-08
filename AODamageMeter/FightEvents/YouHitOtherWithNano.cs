@@ -25,7 +25,7 @@ namespace AODamageMeter.FightEvents
 
             if (fightEvent.TryMatch(Normal, out Match match))
             {
-                fightEvent.SetSourceAsOwner();
+                fightEvent.SetSourceToOwner();
                 await fightEvent.SetTarget(match, 1);
                 fightEvent.ActionType = ActionType.Damage;
                 fightEvent.SetAmount(match, 2);

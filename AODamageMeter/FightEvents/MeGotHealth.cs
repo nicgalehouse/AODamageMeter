@@ -27,14 +27,14 @@ namespace AODamageMeter.FightEvents
             if (fightEvent.TryMatch(Unsourced, out Match match))
             {
                 // Usually this is from you healing yourself, which is a useful metric, so assume it's the case.
-                fightEvent.SetSourceAndTargetAsOwner();
+                fightEvent.SetSourceAndTargetToOwner();
                 fightEvent.ActionType = ActionType.Heal;
                 fightEvent.SetAmount(match, 1);
             }
             else if (fightEvent.TryMatch(Sourced, out match))
             {
                 await fightEvent.SetSource(match, 1);
-                fightEvent.SetTargetAsOwner();
+                fightEvent.SetTargetToOwner();
                 fightEvent.ActionType = ActionType.Heal;
                 fightEvent.SetAmount(match, 2);
             }

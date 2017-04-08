@@ -34,7 +34,7 @@ namespace AODamageMeter.FightEvents
                 || fightEvent.TryMatch(Crit, out match, out crit)
                 || fightEvent.TryMatch(Glance, out match, out glance))
             {
-                fightEvent.SetSourceAsOwner();
+                fightEvent.SetSourceToOwner();
                 await fightEvent.SetTarget(match, 1);
                 fightEvent.ActionType = ActionType.Damage;
                 fightEvent.SetAmount(match, 2);
@@ -43,10 +43,10 @@ namespace AODamageMeter.FightEvents
                     : glance ? Modifiers.Glance
                     : (Modifiers?)null;
             }
-            if (fightEvent.TryMatch(Reflect, out match, out reflect)
+            else if (fightEvent.TryMatch(Reflect, out match, out reflect)
                 || fightEvent.TryMatch(Shield, out match, out shield))
             {
-                fightEvent.SetSourceAsOwner();
+                fightEvent.SetSourceToOwner();
                 await fightEvent.SetTarget(match, 1);
                 fightEvent.ActionType = ActionType.Damage;
                 fightEvent.SetAmount(match, 2);

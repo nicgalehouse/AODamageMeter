@@ -31,11 +31,12 @@ namespace AODamageMeter
             DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 
-            if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
+            if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(damageMeter, fight, timestamp, description);
+            if (eventName == MeHitByMonster.EventName) return await MeHitByMonster.Create(damageMeter, fight, timestamp, description);
             if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(damageMeter, fight, timestamp, description);
+            if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
             if (eventName == YouHitOther.EventName) return await YouHitOther.Create(damageMeter, fight, timestamp, description);
             if (eventName == YouHitOtherWithNano.EventName) return await YouHitOtherWithNano.Create(damageMeter, fight, timestamp, description);
-            if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(damageMeter, fight, timestamp, description);
             throw new NotSupportedException($"{eventName}: {description}");
         }
 
@@ -73,13 +74,13 @@ namespace AODamageMeter
         protected async Task SetTarget(Match match, int index)
             => Target = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
 
-        protected void SetSourceAndTargetAsOwner()
+        protected void SetSourceAndTargetToOwner()
             => Source = Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
 
-        protected void SetSourceAsOwner()
+        protected void SetSourceToOwner()
             => Source = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
 
-        protected void SetTargetAsOwner()
+        protected void SetTargetToOwner()
             => Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
 
         protected void SetAmount(Match match, int index)
@@ -107,83 +108,6 @@ namespace AODamageMeter
 
             switch (Key)
             {
-                //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage.
-                //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                //Someone's reflect shield hit you for AMOUNT points of damage.
-                //Someone's damage shield hit you for AMOUNT points of damage.
-                //You absorbed AMOUNT points of AMOUNTTYPE damage.
-                case "06":
-
-                    //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage.
-                    if (!Line.StartsWith("You absorbed ") && !Line.StartsWith("Someone's"))
-                    {
-
-                        indexOfSource = 0;
-                        lengthOfSource = Line.IndexOf(" hit ") - indexOfSource;
-
-                        indexOfAmount = indexOfSource + lengthOfSource + 13;
-                        lengthOfAmount = Line.LastIndexOf(" points ") - indexOfAmount;
-
-                        indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
-
-                        ActionType = "Damage";
-                        Source = Line.Substring(indexOfSource, lengthOfSource);
-
-                        //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                        if (Line[Line.Length - 1] == '!')
-                        {
-                            lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
-                            Modifier = "Crit";
-                        }
-                        //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                        else if (Line[Line.Length - 2] == 't')
-                        {
-                            lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
-                            Modifier = "Glance";
-                        }
-                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
-                    }
-                    //You absorbed AMOUNT points of AMOUNTTYPE damage.
-                    else if (!Line.StartsWith("Someone's"))
-                    {
-
-                        indexOfAmount = 13;
-                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                        indexOfAmountType = indexOfAmount + 8;
-                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
-
-                        ActionType = "Absorb";
-                        Source = owningCharacterName;
-                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
-                    }
-                    //Someone's reflect shield hit you for AMOUNT points of damage.
-                    //Someone's damage shield hit you for AMOUNT points of damage.
-                    else
-                    {
-                        //Someone's damage shield hit you for AMOUNT points of damage.
-                        if (Line[10] == 'd')
-                        {
-                            indexOfAmount = 36;
-                            lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-                            DamageType = "Shield";
-                        }
-                        //Someone's reflect shield hit you for AMOUNT points of damage.
-                        else
-                        {
-                            indexOfAmount = 37;
-                            lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-                            DamageType = "Reflect";
-                        }
-                    }
-
-                    Target = owningCharacterName;
-                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-
-                    break;
-
                 //SOURCE tried to hit you, but missed!
                 //SOURCE tries to attack you with Brawl, but misses!
                 //SOURCE tries to attack you with FastAttack, but misses!
