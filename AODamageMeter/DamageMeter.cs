@@ -24,10 +24,6 @@ namespace AODamageMeter
             _logStreamReader = new StreamReader(_logFileStream);
         }
 
-        public Character Owner { get; private set; }
-        public Fight CurrentFight { get; private set; }
-        public bool IsPaused { get; set; }
-
         public static async Task<DamageMeter> Create(string logPath)
         {
             var damageMeter = new DamageMeter(logPath);
@@ -38,15 +34,9 @@ namespace AODamageMeter
             return damageMeter;
         }
 
-        public async Task Update()
-        {
-            string line;
-            while ((line = _logStreamReader.ReadLine()) != null)
-            {
-                await CurrentFight.AddEvent(line);
-            }
-            CurrentFight.UpdateCharactersTime();
-        }
+        public Character Owner { get; private set; }
+        public Fight CurrentFight { get; private set; }
+        public bool IsPaused { get; set; }
 
         private async Task SetOwner()
         {
@@ -78,6 +68,16 @@ namespace AODamageMeter
             }
 
             Owner = Owner ?? (await Character.GetOrCreateCharacter("You"));
+        }
+
+        public async Task Update()
+        {
+            string line;
+            while ((line = _logStreamReader.ReadLine()) != null)
+            {
+                await CurrentFight.AddFightEvent(line);
+            }
+            CurrentFight.UpdateCharactersTime();
         }
 
         public void Dispose()

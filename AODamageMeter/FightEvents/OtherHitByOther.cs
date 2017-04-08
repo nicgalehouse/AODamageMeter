@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Modifiers = AODamageMeter.Modifier;
 
 namespace AODamageMeter.FightEvents
 {
     public class OtherHitByOther : FightEvent
     {
-        protected static readonly Regex
+        private static readonly Regex
             _normal =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
             _crit =         new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Critical hit!$", RegexOptions.Compiled | RegexOptions.RightToLeft),
             _glance =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Glancing hit.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
@@ -22,123 +23,50 @@ namespace AODamageMeter.FightEvents
 
         public static async Task<OtherHitByOther> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
         {
-            var @event = new OtherHitByOther(damageMeter, fight, timestamp, description);
+            var fightEvent = new OtherHitByOther(damageMeter, fight, timestamp, description);
 
             bool crit = false, glance = false, reflect = false, shield = false, weirdReflect = false, weirdShield = false, absorb = false;
-            if (@event.TryMatch(_normal, out Match match, out bool normal)
-                || @event.TryMatch(_crit, out match, out crit)
-                || @event.TryMatch(_glance, out match, out glance))
+            if (fightEvent.TryMatch(_normal, out Match match, out bool normal)
+                || fightEvent.TryMatch(_crit, out match, out crit)
+                || fightEvent.TryMatch(_glance, out match, out glance))
             {
-                var characters = await Character.GetOrCreateCharacters(match.Groups[1].Value, match.Groups[2].Value);
-                @event.Source = characters[0];
-                @event.Target = characters[1];
-                @event.ActionType = ActionType.Damage;
-                @event.Amount = int.Parse(match.Groups[3].Value);
-                @event.AmountType = match.Groups[4].Value.GetAmountType();
-                @event.Modifier = crit ? AODamageMeter.Modifier.Crit
-                    : glance ? AODamageMeter.Modifier.Glance
-                    : (Modifier?)null;
+                var fightCharacters = await fight.GetOrCreateFightCharacters(match.Groups[1].Value, match.Groups[2].Value);
+                fightEvent.Source = fightCharacters[0];
+                fightEvent.Target = fightCharacters[1];
+                fightEvent.ActionType = ActionType.Damage;
+                fightEvent.Amount = int.Parse(match.Groups[3].Value);
+                fightEvent.DamageType = match.Groups[4].Value.GetDamageType();
+                fightEvent.Modifier = crit ? Modifiers.Crit
+                    : glance ? Modifiers.Glance
+                    : (Modifiers?)null;
             }
-            else if (@event.TryMatch(_reflect, out match, out reflect)
-                || @event.TryMatch(_shield, out match, out shield))
+            else if (fightEvent.TryMatch(_reflect, out match, out reflect)
+                || fightEvent.TryMatch(_shield, out match, out shield))
             {
+                var fightCharacters = await fight.GetOrCreateFightCharacters(match.Groups[1].Value, match.Groups[2].Value);
+                fightEvent.Source = fightCharacters[0];
+                fightEvent.Target = fightCharacters[1];
+                fightEvent.ActionType = ActionType.Damage;
+                fightEvent.Amount = int.Parse(match.Groups[3].Value);
+                fightEvent.DamageType = reflect ? DamageType.Reflect : DamageType.Shield;
             }
-        }
-
-        protected override void Parse()
-        {
-            // We don't have enough info about this event to do anything.
-            // Someone absorbed AMOUNT points of AMOUNTTYPE damage.
-            if (Description.Contains("Someone absorbed "))
+            else if (fightEvent.TryMatch(_weirdReflect, out match, out weirdReflect)
+                || fightEvent.TryMatch(_weirdShield, out match, out weirdShield))
             {
-                ActionType = "Absorb";
-                return;
+                fightEvent.Target = await fight.GetOrCreateFightCharacter(match.Groups[1].Value);
+                fightEvent.ActionType = ActionType.Damage;
+                fightEvent.Amount = int.Parse(match.Groups[2].Value);
+                fightEvent.DamageType = weirdReflect ? DamageType.Reflect : DamageType.Shield;
             }
-
-            // SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage.
-            if (Line.IndexOf(" shield hit ") == -1 && Line.IndexOf("shield.") == -1)
+            else if (fightEvent.TryMatch(_absorb, out match, out absorb))
             {
-                indexOfSource = 0;
-                lengthOfSource = Line.IndexOf(" hit ") - indexOfSource;
-                // + 5 to skip the " hit " indices
-                indexOfTarget = indexOfSource + lengthOfSource + 5;
-                lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
-
-                indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                lengthOfAmountType = Line.IndexOf(" damage.") - indexOfAmountType;
-
-                AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
-                Source = Line.Substring(indexOfSource, lengthOfSource);
-
-                //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                if (Line[Line.Length - 1] == '!')
-                {
-                    Modifier = "Crit";
-                }
-                //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                else if (Line[Line.Length - 2] == 't')
-                {
-                    Modifier = "Glance";
-                }
+                fightEvent.ActionType = ActionType.Absorb;
+                fightEvent.Amount = int.Parse(match.Groups[1].Value);
+                fightEvent.DamageType = match.Groups[1].Value.GetDamageType();
             }
-            //SOURCE's reflect shield hit TARGET for AMOUNT points of damage.
-            //SOURCE's damage shield hit TARGET for AMOUNT points of damage.
-            else if (Line.IndexOf(" shield hit ") != -1)
-            {
-                indexOfSource = 0;
-                //SOURCE's reflect shield hit TARGET for AMOUNT points of damage.
-                if (Line.IndexOf(" reflect ") != -1)
-                {
-                    lengthOfSource = Line.IndexOf(" reflect shield ") - 2 - indexOfSource;
-                    indexOfTarget = indexOfSource + lengthOfSource + 22;
-                    AmountType = "Reflect";
-                }
-                //SOURCE's damage shield hit TARGET for AMOUNT points of damage.
-                else
-                {
-                    lengthOfSource = Line.IndexOf(" damage shield ") - 2 - indexOfSource;
-                    indexOfTarget = indexOfSource + lengthOfSource + 21;
-                    AmountType = "Shield";
-                }
+            else throw new NotSupportedException(description);
 
-                lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
-
-                indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                Source = Line.Substring(indexOfSource, lengthOfSource);
-            }
-            //Something hit TARGET for AMOUNT points of damage by damage shield.
-            //Something hit TARGET for AMOUNT points of damage by reflect shield.
-            else
-            {
-                indexOfTarget = 14;
-                lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
-
-                indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                //Something hit TARGET for AMOUNT points of damage by damage shield.
-                if (Line[Line.Length - 9] == 'e')
-                {
-                    AmountType = "Shield";
-                }
-                //Something hit TARGET for AMOUNT points of damage by reflect shield.
-                else
-                {
-                    AmountType = "Reflect";
-                }
-
-            }
-
-            Target = Line.Substring(indexOfTarget, lengthOfTarget);
-            Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-            ActionType = "Damage";
-
-            break;
+            return fightEvent;
         }
     }
 }

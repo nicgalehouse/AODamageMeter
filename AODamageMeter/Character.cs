@@ -35,23 +35,19 @@ namespace AODamageMeter
             if (_characters.TryGetValue(name, out Character character))
                 return character;
 
-            if (name.Any(Char.IsWhiteSpace) || name.Length <= 3 || name.Length >= 13) // Some kind of NPC for sure then.
+            if (!name.Any(Char.IsWhiteSpace) && name.Length > 3 && name.Length < 13) // Could be a PC rather than an NPC then.
             {
-                character = new Character(name);
-                _characters.Add(name, character);
-                return character;
-            }
-
-            var response = await _httpClient.GetAsync($"http://people.anarchy-online.com/character/bio/d/5/name/{name}/bio.xml?data_type=json");
-            if (response.IsSuccessStatusCode)
-            {
-                var characterBio = await response.Content.ReadAsAsync<dynamic>();
-                if (characterBio != null) // If the character doesn't exist/hasn't been indexed yet, the JSON returned is null.
+                var response = await _httpClient.GetAsync($"http://people.anarchy-online.com/character/bio/d/5/name/{name}/bio.xml?data_type=json");
+                if (response.IsSuccessStatusCode)
                 {
-                    var characterInfo = characterBio[0];
-                    var organizationInfo = characterBio[1];
-                    var profession = Profession.All.Single(p => p.Name == characterInfo.PROF);
-                    character = new Character(name, characterInfo.CHAR_INSTANCE, organizationInfo?.NAME, profession);
+                    var characterBio = await response.Content.ReadAsAsync<dynamic>();
+                    if (characterBio != null) // If the character doesn't exist/hasn't been indexed yet, the JSON returned is null.
+                    {
+                        var characterInfo = characterBio[0];
+                        var organizationInfo = characterBio[1];
+                        var profession = Profession.All.Single(p => p.Name == characterInfo.PROF);
+                        character = new Character(name, characterInfo.CHAR_INSTANCE, organizationInfo?.NAME, profession);
+                    }
                 }
             }
 

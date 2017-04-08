@@ -9,24 +9,25 @@ namespace AODamageMeter
     public class Fight
     {
         private readonly DamageMeter _damageMeter;
+        private readonly List<FightEvent> _fightEvents = new List<FightEvent>();
+        private readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
         private Stopwatch _stopwatch;
-        private readonly List<FightEvent> _events = new List<FightEvent>();
-        private readonly Dictionary<Character, FightCharacter> _characters = new Dictionary<Character, FightCharacter>();
 
-        public DateTime? StartTime => _events.FirstOrDefault()?.Timestamp;
-        public DateTime? LatestEventTime => _events.LastOrDefault()?.Timestamp;
+        public DateTime? StartTime => _fightEvents.FirstOrDefault()?.Timestamp;
+        public DateTime? LatestTime => _fightEvents.LastOrDefault()?.Timestamp;
         public TimeSpan? Duration => _stopwatch?.Elapsed;
-        public IReadOnlyList<FightEvent> Events => _events;
-        public ICollection<FightCharacter> Characters => _characters.Values;
+        public IReadOnlyList<FightEvent> FightEvents => _fightEvents;
+        public ICollection<FightCharacter> FightCharacters => _fightCharacters.Values;
+        public ICollection<Character> Characters => _fightCharacters.Keys;
 
         public Fight(DamageMeter damageMeter)
             => _damageMeter = damageMeter;
 
-        public async Task AddEvent(string line)
+        public async Task AddFightEvent(string line)
         {
             _stopwatch = _stopwatch ?? Stopwatch.StartNew();
 
-            _events.Add(new FightEvent(_damageMeter, this, line));
+            _fightEvents.Add(new FightEvent(_damageMeter, this, line));
 
             int sourceIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Source);
             int targestIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Target);
@@ -50,6 +51,40 @@ namespace AODamageMeter
             }
 
             UpdateCharacters();
+        }
+
+        public Task<FightCharacter[]> GetOrCreateFightCharacters(IEnumerable<string> names)
+            => GetOrCreateFightCharacters(names.ToArray());
+
+        public async Task<FightCharacter[]> GetOrCreateFightCharacters(params string[] names)
+        {
+            var characters = await Character.GetOrCreateCharacters(names);
+            var fightCharacters = new FightCharacter[characters.Length];
+            for (int i = 0; i < characters.Length; ++i)
+            {
+                if (_fightCharacters.TryGetValue(characters[i], out FightCharacter fightCharacter))
+                {
+                    fightCharacters[i] = fightCharacter;
+                }
+                else
+                {
+                    fightCharacters[i] = new FightCharacter();
+                    _fightCharacters[characters[i]] = fightCharacters[i];
+                }
+            }
+
+            return fightCharacters;
+        }
+
+        public async Task<FightCharacter> GetOrCreateFightCharacter(string name)
+        {
+            var character = await Character.GetOrCreateCharacter(name);
+            if (_fightCharacters.TryGetValue(character, out FightCharacter fightCharacter))
+                return fightCharacter;
+
+            fightCharacter = new FightCharacter();
+            _fightCharacters[character] = fightCharacter;
+            return fightCharacter;
         }
 
         public void UpdateCharactersTime()

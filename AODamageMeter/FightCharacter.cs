@@ -36,17 +36,17 @@ namespace AODamageMeter
         public double DPSRelativeToFightStart;
         public double MissChance;
 
-        public FightCharacter(FightEvent loggedEvent, bool isSource, long elapsedTime)
-        {
-            Name = isSource ? loggedEvent.Source
-                : loggedEvent.Target;
+        //public FightCharacter(FightEvent loggedEvent, bool isSource, long elapsedTime)
+        //{
+        //    Name = isSource ? loggedEvent.Source
+        //        : loggedEvent.Target;
 
-            Profession = Professions.SetProfession(Name);
+        //    Profession = Professions.SetProfession(Name);
 
-            TimeOfFirstEvent = elapsedTime;
+        //    TimeOfFirstEvent = elapsedTime;
 
-            AddEvent(loggedEvent, isSource);
-        }
+        //    AddEvent(loggedEvent, isSource);
+        //}
 
         public void AddEvent(FightEvent loggedEvent, bool isSource)
         {

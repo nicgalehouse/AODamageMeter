@@ -37,11 +37,11 @@ namespace AODamageMeter
 
         public DateTime Timestamp { get; }
         public string Description { get; }
-        public Character Source { get; protected set; }
-        public Character Target { get; protected set; }
+        public FightCharacter Source { get; protected set; }
+        public FightCharacter Target { get; protected set; }
         public ActionType ActionType { get; protected set; }
         public int Amount { get; protected set; }
-        public AmountType AmountType { get; protected set; }
+        public DamageType DamageType { get; protected set; }
         public Modifier? Modifier { get; protected set; }
 
         protected bool TryMatch(Regex regex, out Match match, out bool success)
@@ -76,7 +76,7 @@ namespace AODamageMeter
                         Source = owningCharacterName;
                         Target = Line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
+                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
 
                         //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
                         if (Line[Line.Length - 1] == '!')
@@ -127,7 +127,7 @@ namespace AODamageMeter
                     ActionType = "Nano";
                     Target = Line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
+                    DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
 
                     break;
 
@@ -161,7 +161,7 @@ namespace AODamageMeter
 
                     ActionType = "Heal";
                     Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    AmountType = "Heal";
+                    DamageType = "Heal";
 
                     break;
 
@@ -181,7 +181,7 @@ namespace AODamageMeter
                         Source = owningCharacterName;
                         Target = Line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                        AmountType = "Shield";
+                        DamageType = "Shield";
                     }
                     else
                     {
@@ -198,7 +198,7 @@ namespace AODamageMeter
                         Source = owningCharacterName;
                         Target = Line.Substring(indexOfTarget, lengthOfTarget);
                         Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
+                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
 
                         //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
                         if (Line[Line.Length - 1] == '!')
@@ -250,7 +250,7 @@ namespace AODamageMeter
                             lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
                             Modifier = "Glance";
                         }
-                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
+                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
                     }
                     //You absorbed AMOUNT points of AMOUNTTYPE damage.
                     else if (!Line.StartsWith("Someone's"))
@@ -264,7 +264,7 @@ namespace AODamageMeter
 
                         ActionType = "Absorb";
                         Source = owningCharacterName;
-                        AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
+                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
                     }
                     //Someone's reflect shield hit you for AMOUNT points of damage.
                     //Someone's damage shield hit you for AMOUNT points of damage.
@@ -275,14 +275,14 @@ namespace AODamageMeter
                         {
                             indexOfAmount = 36;
                             lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-                            AmountType = "Shield";
+                            DamageType = "Shield";
                         }
                         //Someone's reflect shield hit you for AMOUNT points of damage.
                         else
                         {
                             indexOfAmount = 37;
                             lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-                            AmountType = "Reflect";
+                            DamageType = "Reflect";
                         }
                     }
 
@@ -304,13 +304,13 @@ namespace AODamageMeter
 
                         lengthOfSource = Line.IndexOf(" tries ") - indexOfSource;
                         //should be changed in future
-                        AmountType = "SpecialAttack";
+                        DamageType = "SpecialAttack";
 
                     }
                     else
                     {
                         lengthOfSource = Line.IndexOf(" tried ") - indexOfSource;
-                        AmountType = "Auto Attack";
+                        DamageType = "Auto Attack";
                     }
 
                     ActionType = "Damage";
@@ -332,7 +332,7 @@ namespace AODamageMeter
                     Source = Line.Substring(indexOfSource, lengthOfSource);
                     Target = owningCharacterName;
                     Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    AmountType = "Nano";
+                    DamageType = "Nano";
 
                     break;
 
@@ -362,7 +362,7 @@ namespace AODamageMeter
                     Source = owningCharacterName;
                     Target = Line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    AmountType = "Nano";
+                    DamageType = "Nano";
 
                     break;
 
@@ -399,7 +399,7 @@ namespace AODamageMeter
                     Source = Line.Substring(indexOfSource, lengthOfSource);
                     Target = Line.Substring(indexOfTarget, lengthOfTarget);
                     Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    AmountType = Line.Substring(indexOfAmountType, lengthOfAmountType);
+                    DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
                     Source = Line.Substring(indexOfSource, lengthOfSource);
 
                     break;
