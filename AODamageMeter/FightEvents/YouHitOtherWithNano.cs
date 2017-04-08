@@ -9,8 +9,8 @@ namespace AODamageMeter.FightEvents
         public const string EventKey = "05";
         public const string EventName = "You hit other with nano";
 
-        private static readonly Regex
-            _normal = new Regex(@"^You hit (.+?) with nanobots for (\d+) points of (.+?) damage.$", RegexOptions.Compiled);
+        public static readonly Regex
+            Normal = new Regex(@"^You hit (.+?) with nanobots for (\d+) points of (.+?) damage.$", RegexOptions.Compiled);
 
         protected YouHitOtherWithNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)
@@ -22,7 +22,8 @@ namespace AODamageMeter.FightEvents
         public static async Task<YouHitOtherWithNano> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
         {
             var fightEvent = new YouHitOtherWithNano(damageMeter, fight, timestamp, description);
-            if (fightEvent.TryMatch(_normal, out Match match, out bool normal))
+
+            if (fightEvent.TryMatch(Normal, out Match match))
             {
                 fightEvent.SetSourceAsOwner();
                 await fightEvent.SetTarget(match, 1);

@@ -27,13 +27,15 @@ namespace AODamageMeter
             string[] arrayPart = line.Substring(1, lastIndexOfArrayPart - 1).Split(',')
                 .Select(p => p.Trim('"'))
                 .ToArray();
-            string name = arrayPart[1];
+            string eventName = arrayPart[1];
             DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 
-            if (name == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
-            if (name == YouHitOtherWithNano.EventName) return await YouHitOtherWithNano.Create(damageMeter, fight, timestamp, description);
-            throw new NotImplementedException();
+            if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
+            if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(damageMeter, fight, timestamp, description);
+            if (eventName == YouHitOtherWithNano.EventName) return await YouHitOtherWithNano.Create(damageMeter, fight, timestamp, description);
+            if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(damageMeter, fight, timestamp, description);
+            throw new NotSupportedException($"{eventName}: {description}");
         }
 
         public abstract string Key { get; }
@@ -44,8 +46,11 @@ namespace AODamageMeter
         public FightCharacter Target { get; protected set; }
         public ActionType ActionType { get; protected set; }
         public int Amount { get; protected set; }
-        public DamageType DamageType { get; protected set; }
+        public DamageType? DamageType { get; protected set; }
         public Modifier? Modifier { get; protected set; }
+
+        protected bool TryMatch(Regex regex, out Match match)
+            => (match = regex.Match(Description)).Success;
 
         protected bool TryMatch(Regex regex, out Match match, out bool success)
         {
@@ -67,8 +72,14 @@ namespace AODamageMeter
         protected async Task SetTarget(Match match, int index)
             => Target = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
 
+        protected void SetSourceAndTargetAsOwner()
+            => Source = Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
+
         protected void SetSourceAsOwner()
             => Source = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
+
+        protected void SetTargetAsOwner()
+            => Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
 
         protected void SetAmount(Match match, int index)
             => Amount = int.Parse(match.Groups[index].Value);
@@ -95,111 +106,6 @@ namespace AODamageMeter
 
             switch (Key)
             {
-                //You hit TARGET with nanobots for AMOUNT points of AMOUNTTYPE damage.
-                case "05":
-                    {
-                        indexOfTarget = 8;
-                        lengthOfTarget = Line.IndexOf(" with ") - indexOfTarget;
-
-                        indexOfAmount = indexOfTarget + lengthOfTarget + 19;
-                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                        indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
-
-                        ActionType = "Damage";
-                        Source = owningCharacterName;
-                        Target = Line.Substring(indexOfTarget, lengthOfTarget);
-                        Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
-
-                        //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                        if (Line[Line.Length - 1] == '!')
-                        {
-                            Modifier = "Crit";
-                        }
-                        //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                        else if (Line[Line.Length - 2] == 't')
-                        {
-                            Modifier = "Glance";
-                        }
-                    }
-
-                    break;
-
-                //TARGET was attacked with nanobots from SOURCE for AMOUNT points of AMOUNTTYPE damage.
-                //TARGET was attacked with nanobots for AMOUNT points of AMOUNTTYPE damage.
-                case "04":
-
-                    indexOfTarget = 0;
-                    lengthOfTarget = Line.IndexOf(" was ");
-
-                    //TARGET was attacked with nanobots from SOURCE for AMOUNT points of AMOUNTTYPE damage.
-                    if (Line.IndexOf(" from ") != -1)
-                    {
-                        indexOfSource = indexOfTarget + lengthOfTarget + 33;
-                        lengthOfSource = Line.IndexOf(" for ") - indexOfSource;
-                        indexOfAmount = indexOfSource + lengthOfSource + 5;
-                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                        Source = Line.Substring(indexOfSource, lengthOfSource);
-
-                    }
-                    //TARGET was attacked with nanobots for AMOUNT points of AMOUNTTYPE damage.
-                    else
-                    {
-                        indexOfAmount = indexOfTarget + lengthOfTarget + 32;
-                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                        //might not be true
-                        Source = "Unknown-Source";
-
-                    }
-
-                    indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                    lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
-
-                    ActionType = "Nano";
-                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
-                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
-
-                    break;
-
-                //You were healed for AMOUNT points.
-                //You got healed by SOURCE for AMOUNT points of health.
-                case "15":
-
-                    //You were healed for AMOUNT points.
-                    if (Line[4] == 'w')
-                    {
-                        indexOfAmount = 20;
-                        lengthOfAmount = Line.LastIndexOf(" ") - indexOfAmount;
-
-                        Source = owningCharacterName;
-                        Target = owningCharacterName;
-
-                    }
-                    //You got healed by SOURCE for AMOUNT points of health.
-                    else
-                    {
-                        indexOfSource = 18;
-                        lengthOfSource = Line.LastIndexOf(" for ") - indexOfSource;
-
-                        indexOfAmount = indexOfSource + lengthOfSource + 5;
-                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                        Source = Line.Substring(indexOfSource, lengthOfSource);
-                        Target = owningCharacterName;
-
-                    }
-
-                    ActionType = "Heal";
-                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    DamageType = "Heal";
-
-                    break;
-
                 //You hit TARGET for AMOUNT points of AMOUNTTYPE damage.
                 //Your damage shield hit TARGET for AMOUNT points of damage.
                 case "08":

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using DamageTypes = AODamageMeter.DamageType;
 using Modifiers = AODamageMeter.Modifier;
 
 namespace AODamageMeter.FightEvents
@@ -10,15 +11,15 @@ namespace AODamageMeter.FightEvents
         public const string EventKey = "0a";
         public const string EventName = "Other hit by other";
 
-        private static readonly Regex
-            _normal =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
-            _crit =         new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Critical hit!$", RegexOptions.Compiled | RegexOptions.RightToLeft),
-            _glance =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Glancing hit.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
-            _reflect =      new Regex(@"^(.+?)'s reflect shield hit (.+?) for (\d+) points of damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
-            _shield =       new Regex(@"^(.+?)'s damage shield hit (.+?) for (\d+) points of damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
-            _weirdReflect = new Regex(@"^Something hit (.+?) for (\d+) points of damage by reflect shield.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
-            _weirdShield =  new Regex(@"^Something hit (.+?) for (\d+) points of damage by damage shield.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
-            _absorb =       new Regex(@"^Someone absorbed (\d+) points of (.+?) damage.$", RegexOptions.Compiled);
+        public static readonly Regex
+            Normal =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            Crit =         new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Critical hit!$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            Glance =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Glancing hit.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            Reflect =      new Regex(@"^(.+?)'s reflect shield hit (.+?) for (\d+) points of damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            Shield =       new Regex(@"^(.+?)'s damage shield hit (.+?) for (\d+) points of damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            WeirdReflect = new Regex(@"^Something hit (.+?) for (\d+) points of damage by reflect shield.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            WeirdShield =  new Regex(@"^Something hit (.+?) for (\d+) points of damage by damage shield.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
+            Absorb =       new Regex(@"^Someone absorbed (\d+) points of (.+?) damage.$", RegexOptions.Compiled);
 
         protected OtherHitByOther(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)
@@ -31,10 +32,10 @@ namespace AODamageMeter.FightEvents
         {
             var fightEvent = new OtherHitByOther(damageMeter, fight, timestamp, description);
 
-            bool crit = false, glance = false, reflect = false, shield = false, weirdReflect = false, weirdShield = false, absorb = false;
-            if (fightEvent.TryMatch(_normal, out Match match, out bool normal)
-                || fightEvent.TryMatch(_crit, out match, out crit)
-                || fightEvent.TryMatch(_glance, out match, out glance))
+            bool crit = false, glance = false, reflect = false, shield = false, weirdReflect = false, weirdShield = false;
+            if (fightEvent.TryMatch(Normal, out Match match, out bool normal)
+                || fightEvent.TryMatch(Crit, out match, out crit)
+                || fightEvent.TryMatch(Glance, out match, out glance))
             {
                 await fightEvent.SetSourceAndTarget(match, 1, 2);
                 fightEvent.ActionType = ActionType.Damage;
@@ -44,23 +45,23 @@ namespace AODamageMeter.FightEvents
                     : glance ? Modifiers.Glance
                     : (Modifiers?)null;
             }
-            else if (fightEvent.TryMatch(_reflect, out match, out reflect)
-                || fightEvent.TryMatch(_shield, out match, out shield))
+            else if (fightEvent.TryMatch(Reflect, out match, out reflect)
+                || fightEvent.TryMatch(Shield, out match, out shield))
             {
                 await fightEvent.SetSourceAndTarget(match, 1, 2);
                 fightEvent.ActionType = ActionType.Damage;
                 fightEvent.SetAmount(match, 3);
-                fightEvent.DamageType = reflect ? DamageType.Reflect : DamageType.Shield;
+                fightEvent.DamageType = reflect ? DamageTypes.Reflect : DamageTypes.Shield;
             }
-            else if (fightEvent.TryMatch(_weirdReflect, out match, out weirdReflect)
-                || fightEvent.TryMatch(_weirdShield, out match, out weirdShield))
+            else if (fightEvent.TryMatch(WeirdReflect, out match, out weirdReflect)
+                || fightEvent.TryMatch(WeirdShield, out match, out weirdShield))
             {
                 await fightEvent.SetTarget(match, 1);
                 fightEvent.ActionType = ActionType.Damage;
                 fightEvent.SetAmount(match, 2);
-                fightEvent.DamageType = weirdReflect ? DamageType.Reflect : DamageType.Shield;
+                fightEvent.DamageType = weirdReflect ? DamageTypes.Reflect : DamageTypes.Shield;
             }
-            else if (fightEvent.TryMatch(_absorb, out match, out absorb))
+            else if (fightEvent.TryMatch(Absorb, out match))
             {
                 fightEvent.ActionType = ActionType.Absorb;
                 fightEvent.SetAmount(match, 1);
