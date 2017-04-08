@@ -38,7 +38,7 @@ namespace AODamageMeter.FightEvents
                 fightEvent.ActionType = ActionType.Heal;
                 fightEvent.SetAmount(match, 2);
             }
-            else throw new NotSupportedException($"{EventKey}, {EventName}: {description}");
+            else throw new NotSupportedException($"{EventName}: {description}");
 
             return fightEvent;
         }

@@ -33,6 +33,7 @@ namespace AODamageMeter
 
             if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
             if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(damageMeter, fight, timestamp, description);
+            if (eventName == YouHitOther.EventName) return await YouHitOther.Create(damageMeter, fight, timestamp, description);
             if (eventName == YouHitOtherWithNano.EventName) return await YouHitOtherWithNano.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(damageMeter, fight, timestamp, description);
             throw new NotSupportedException($"{eventName}: {description}");
@@ -106,55 +107,6 @@ namespace AODamageMeter
 
             switch (Key)
             {
-                //You hit TARGET for AMOUNT points of AMOUNTTYPE damage.
-                //Your damage shield hit TARGET for AMOUNT points of damage.
-                case "08":
-
-                    if (Line.StartsWith("Your"))
-                    {
-                        indexOfTarget = 23;
-                        lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
-
-                        indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                        ActionType = "Damage";
-                        Source = owningCharacterName;
-                        Target = Line.Substring(indexOfTarget, lengthOfTarget);
-                        Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                        DamageType = "Shield";
-                    }
-                    else
-                    {
-                        indexOfTarget = 8;
-                        lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
-
-                        indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                        lengthOfAmount = Line.IndexOf(" points ") - indexOfAmount;
-
-                        indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                        lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
-
-                        ActionType = "Damage";
-                        Source = owningCharacterName;
-                        Target = Line.Substring(indexOfTarget, lengthOfTarget);
-                        Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                        DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
-
-                        //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                        if (Line[Line.Length - 1] == '!')
-                        {
-                            Modifier = "Crit";
-                        }
-                        //You hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                        else if (Line[Line.Length - 2] == 't')
-                        {
-                            Modifier = "Glance";
-                        }
-                    }
-
-                    break;
-
                 //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage.
                 //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
                 //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
