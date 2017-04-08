@@ -52,6 +52,7 @@ namespace AODamageMeter.FightEvents
                 fightEvent.SetAmount(match, 2);
                 fightEvent.DamageType = reflect ? DamageTypes.Reflect : DamageTypes.Shield;
             }
+            else throw new NotSupportedException($"{EventName}: {description}");
 
             return fightEvent;
         }
