@@ -22,7 +22,7 @@ namespace AODamageMeter
             ["Shield"] = DamageType.Shield
         };
 
-        public static DamageType GetDamageType(this string value)
+        public static DamageType GetDamageType(string value)
             => _damageTypes[value];
     }
 }

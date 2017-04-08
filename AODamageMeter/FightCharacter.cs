@@ -5,6 +5,11 @@ namespace AODamageMeter
 {
     public class FightCharacter
     {
+        public Character Character { get; }
+
+
+
+
         public List<FightEvent> DamageTakenEvents = new List<FightEvent>();
         public List<FightEvent> DamageDoneEvents = new List<FightEvent>();
         public List<FightEvent> HealingDoneEvents = new List<FightEvent>();
@@ -35,6 +40,9 @@ namespace AODamageMeter
         public double DPSrelativeToPlayerStart;
         public double DPSRelativeToFightStart;
         public double MissChance;
+
+        public FightCharacter(Character character)
+            => Character = character;
 
         //public FightCharacter(FightEvent loggedEvent, bool isSource, long elapsedTime)
         //{

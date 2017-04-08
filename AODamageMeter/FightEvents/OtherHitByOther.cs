@@ -7,6 +7,9 @@ namespace AODamageMeter.FightEvents
 {
     public class OtherHitByOther : FightEvent
     {
+        public const string EventKey = "0a";
+        public const string EventName = "Other hit by other";
+
         private static readonly Regex
             _normal =       new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage.$", RegexOptions.Compiled | RegexOptions.RightToLeft),
             _crit =         new Regex(@"^(.+?) hit (.+?) for (\d+) points of (.+?) damage. Critical hit!$", RegexOptions.Compiled | RegexOptions.RightToLeft),
@@ -21,6 +24,9 @@ namespace AODamageMeter.FightEvents
             : base(damageMeter, fight, timestamp, description)
         { }
 
+        public override string Key => EventKey;
+        public override string Name => EventName;
+
         public static async Task<OtherHitByOther> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
         {
             var fightEvent = new OtherHitByOther(damageMeter, fight, timestamp, description);
@@ -30,12 +36,10 @@ namespace AODamageMeter.FightEvents
                 || fightEvent.TryMatch(_crit, out match, out crit)
                 || fightEvent.TryMatch(_glance, out match, out glance))
             {
-                var fightCharacters = await fight.GetOrCreateFightCharacters(match.Groups[1].Value, match.Groups[2].Value);
-                fightEvent.Source = fightCharacters[0];
-                fightEvent.Target = fightCharacters[1];
+                await fightEvent.SetSourceAndTarget(match, 1, 2);
                 fightEvent.ActionType = ActionType.Damage;
-                fightEvent.Amount = int.Parse(match.Groups[3].Value);
-                fightEvent.DamageType = match.Groups[4].Value.GetDamageType();
+                fightEvent.SetAmount(match, 3);
+                fightEvent.SetDamageType(match, 4);
                 fightEvent.Modifier = crit ? Modifiers.Crit
                     : glance ? Modifiers.Glance
                     : (Modifiers?)null;
@@ -43,28 +47,26 @@ namespace AODamageMeter.FightEvents
             else if (fightEvent.TryMatch(_reflect, out match, out reflect)
                 || fightEvent.TryMatch(_shield, out match, out shield))
             {
-                var fightCharacters = await fight.GetOrCreateFightCharacters(match.Groups[1].Value, match.Groups[2].Value);
-                fightEvent.Source = fightCharacters[0];
-                fightEvent.Target = fightCharacters[1];
+                await fightEvent.SetSourceAndTarget(match, 1, 2);
                 fightEvent.ActionType = ActionType.Damage;
-                fightEvent.Amount = int.Parse(match.Groups[3].Value);
+                fightEvent.SetAmount(match, 3);
                 fightEvent.DamageType = reflect ? DamageType.Reflect : DamageType.Shield;
             }
             else if (fightEvent.TryMatch(_weirdReflect, out match, out weirdReflect)
                 || fightEvent.TryMatch(_weirdShield, out match, out weirdShield))
             {
-                fightEvent.Target = await fight.GetOrCreateFightCharacter(match.Groups[1].Value);
+                await fightEvent.SetTarget(match, 1);
                 fightEvent.ActionType = ActionType.Damage;
-                fightEvent.Amount = int.Parse(match.Groups[2].Value);
+                fightEvent.SetAmount(match, 2);
                 fightEvent.DamageType = weirdReflect ? DamageType.Reflect : DamageType.Shield;
             }
             else if (fightEvent.TryMatch(_absorb, out match, out absorb))
             {
                 fightEvent.ActionType = ActionType.Absorb;
-                fightEvent.Amount = int.Parse(match.Groups[1].Value);
-                fightEvent.DamageType = match.Groups[1].Value.GetDamageType();
+                fightEvent.SetAmount(match, 1);
+                fightEvent.SetDamageType(match, 2);
             }
-            else throw new NotSupportedException(description);
+            else throw new NotSupportedException($"{EventKey}, {EventName}: {description}");
 
             return fightEvent;
         }

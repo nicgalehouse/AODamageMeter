@@ -17,8 +17,8 @@ namespace AODamageMeter
         public DateTime? LatestTime => _fightEvents.LastOrDefault()?.Timestamp;
         public TimeSpan? Duration => _stopwatch?.Elapsed;
         public IReadOnlyList<FightEvent> FightEvents => _fightEvents;
-        public ICollection<FightCharacter> FightCharacters => _fightCharacters.Values;
-        public ICollection<Character> Characters => _fightCharacters.Keys;
+        public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
+        public IReadOnlyCollection<Character> Characters => _fightCharacters.Keys;
 
         public Fight(DamageMeter damageMeter)
             => _damageMeter = damageMeter;
@@ -62,27 +62,21 @@ namespace AODamageMeter
             var fightCharacters = new FightCharacter[characters.Length];
             for (int i = 0; i < characters.Length; ++i)
             {
-                if (_fightCharacters.TryGetValue(characters[i], out FightCharacter fightCharacter))
-                {
-                    fightCharacters[i] = fightCharacter;
-                }
-                else
-                {
-                    fightCharacters[i] = new FightCharacter();
-                    _fightCharacters[characters[i]] = fightCharacters[i];
-                }
+                fightCharacters[i] = GetOrCreateFightCharacter(characters[i]);
             }
 
             return fightCharacters;
         }
 
         public async Task<FightCharacter> GetOrCreateFightCharacter(string name)
+            => GetOrCreateFightCharacter(await Character.GetOrCreateCharacter(name));
+
+        public FightCharacter GetOrCreateFightCharacter(Character character)
         {
-            var character = await Character.GetOrCreateCharacter(name);
             if (_fightCharacters.TryGetValue(character, out FightCharacter fightCharacter))
                 return fightCharacter;
 
-            fightCharacter = new FightCharacter();
+            fightCharacter = new FightCharacter(character);
             _fightCharacters[character] = fightCharacter;
             return fightCharacter;
         }

@@ -27,14 +27,17 @@ namespace AODamageMeter
             string[] arrayPart = line.Substring(1, lastIndexOfArrayPart - 1).Split(',')
                 .Select(p => p.Trim('"'))
                 .ToArray();
-            string type = arrayPart[1];
+            string name = arrayPart[1];
             DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 
-            if (type == "Other hit by other") return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
+            if (name == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
+            if (name == YouHitOtherWithNano.EventName) return await YouHitOtherWithNano.Create(damageMeter, fight, timestamp, description);
             throw new NotImplementedException();
         }
 
+        public abstract string Key { get; }
+        public abstract string Name { get; }
         public DateTime Timestamp { get; }
         public string Description { get; }
         public FightCharacter Source { get; protected set; }
@@ -50,6 +53,38 @@ namespace AODamageMeter
             success = match.Success;
             return success;
         }
+
+        protected async Task SetSourceAndTarget(Match match, int sourceIndex, int targetIndex)
+        {
+            var fightCharacters = await _fight.GetOrCreateFightCharacters(match.Groups[sourceIndex].Value, match.Groups[targetIndex].Value);
+            Source = fightCharacters[0];
+            Target = fightCharacters[1];
+        }
+
+        protected async Task SetSource(Match match, int index)
+            => Source = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
+
+        protected async Task SetTarget(Match match, int index)
+            => Target = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
+
+        protected void SetSourceAsOwner()
+            => Source = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
+
+        protected void SetAmount(Match match, int index)
+            => Amount = int.Parse(match.Groups[index].Value);
+
+        protected void SetDamageType(Match match, int index)
+            => DamageType = DamageTypeHelpers.GetDamageType(match.Groups[index].Value);
+
+
+
+
+
+
+
+
+
+
 
         private void SetAttributes()
         {
