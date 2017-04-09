@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AODamageMeter.FightEvents;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace AODamageMeter
     public class Fight
     {
         private readonly DamageMeter _damageMeter;
+        private readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
         private readonly List<FightEvent> _fightEvents = new List<FightEvent>();
         private readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
         private Stopwatch _stopwatch;
@@ -17,6 +19,7 @@ namespace AODamageMeter
         public DateTime? LatestTime => _fightEvents.LastOrDefault()?.Timestamp;
         public TimeSpan? Duration => _stopwatch?.Elapsed;
         public IReadOnlyList<FightEvent> FightEvents => _fightEvents;
+        public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
         public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
         public IReadOnlyCollection<Character> Characters => _fightCharacters.Keys;
 

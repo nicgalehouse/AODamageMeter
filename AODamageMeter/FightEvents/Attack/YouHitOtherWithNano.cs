@@ -2,15 +2,15 @@
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AODamageMeter.FightEvents
+namespace AODamageMeter.FightEvents.Attack
 {
-    public class YouHitOtherWithNano : FightEvent
+    public class YouHitOtherWithNano : AttackEvent
     {
         public const string EventKey = "05";
         public const string EventName = "You hit other with nano";
 
         public static readonly Regex
-            Normal = new Regex(@"^You hit (.+?) with nanobots for (\d+) points of (.+?) damage.$", RegexOptions.Compiled);
+            Normal = CreateRegex(@"You hit (.+?) with nanobots for (\d+) points of (.+?) damage.");
 
         protected YouHitOtherWithNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)
@@ -21,19 +21,19 @@ namespace AODamageMeter.FightEvents
 
         public static async Task<YouHitOtherWithNano> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
         {
-            var fightEvent = new YouHitOtherWithNano(damageMeter, fight, timestamp, description);
+            var attackEvent = new YouHitOtherWithNano(damageMeter, fight, timestamp, description);
+            attackEvent.SetSourceToOwner();
 
-            if (fightEvent.TryMatch(Normal, out Match match))
+            if (attackEvent.TryMatch(Normal, out Match match))
             {
-                fightEvent.SetSourceToOwner();
-                await fightEvent.SetTarget(match, 1);
-                fightEvent.ActionType = ActionType.Damage;
-                fightEvent.SetAmount(match, 2);
-                fightEvent.SetDamageType(match, 3);
+                await attackEvent.SetTarget(match, 1);
+                attackEvent.AttackResult = AttackResult.DirectHit;
+                attackEvent.SetAmount(match, 2);
+                attackEvent.SetDamageType(match, 3);
             }
             else throw new NotSupportedException($"{EventName}: {description}");
 
-            return fightEvent;
+            return attackEvent;
         }
     }
 }

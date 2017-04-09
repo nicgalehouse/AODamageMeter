@@ -1,6 +1,6 @@
 ﻿namespace AODamageMeter
 {
-    public enum Modifier
+    public enum AttackModifier
     {
         Crit,
         Glance

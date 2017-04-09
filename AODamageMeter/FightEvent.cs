@@ -1,7 +1,8 @@
-﻿using AODamageMeter.FightEvents;
+﻿using AODamageMeter.FightEvents.Attack;
+using AODamageMeter.FightEvents.Heal;
+using AODamageMeter.FightEvents.Nano;
 using AODamageMeter.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ namespace AODamageMeter
             DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 
+            if (eventName == MeCastNano.EventName) return MeCastNano.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeHitByMonster.EventName) return await MeHitByMonster.Create(damageMeter, fight, timestamp, description);
             if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(damageMeter, fight, timestamp, description);
@@ -45,11 +47,9 @@ namespace AODamageMeter
         public DateTime Timestamp { get; }
         public string Description { get; }
         public FightCharacter Source { get; protected set; }
-        public FightCharacter Target { get; protected set; }
-        public ActionType ActionType { get; protected set; }
-        public int Amount { get; protected set; }
-        public DamageType? DamageType { get; protected set; }
-        public Modifier? Modifier { get; protected set; }
+
+        protected static Regex CreateRegex(string body, bool rightToLeft = false)
+            => new Regex($"^{body}$", rightToLeft ? RegexOptions.Compiled | RegexOptions.RightToLeft : RegexOptions.Compiled);
 
         protected bool TryMatch(Regex regex, out Match match)
             => (match = regex.Match(Description)).Success;
@@ -61,33 +61,11 @@ namespace AODamageMeter
             return success;
         }
 
-        protected async Task SetSourceAndTarget(Match match, int sourceIndex, int targetIndex)
-        {
-            var fightCharacters = await _fight.GetOrCreateFightCharacters(match.Groups[sourceIndex].Value, match.Groups[targetIndex].Value);
-            Source = fightCharacters[0];
-            Target = fightCharacters[1];
-        }
-
         protected async Task SetSource(Match match, int index)
             => Source = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
 
-        protected async Task SetTarget(Match match, int index)
-            => Target = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
-
-        protected void SetSourceAndTargetToOwner()
-            => Source = Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
-
         protected void SetSourceToOwner()
             => Source = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
-
-        protected void SetTargetToOwner()
-            => Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
-
-        protected void SetAmount(Match match, int index)
-            => Amount = int.Parse(match.Groups[index].Value);
-
-        protected void SetDamageType(Match match, int index)
-            => DamageType = DamageTypeHelpers.GetDamageType(match.Groups[index].Value);
 
 
 
@@ -227,20 +205,6 @@ namespace AODamageMeter
                     /*
                     indexOfTimeStart = 37;
                     
-                    */
-                    break;
-
-                //Executing Nano Program: Composite Attribute Boost.
-                //Wait for current nano program execution to finish.
-                //Unable to execute nano program. You can't execute this nano on the target.
-                case "18":
-
-                    ActionType = "Utility";
-                    /*
-                    indexOfTimeStart = 40;
-                    indexOfMessageStart = indexOfTimeStart + timeLength + 1;
-
-                    eventTime = Convert.ToInt32(line.Substring(indexOfTimeStart, timeLength));
                     */
                     break;
             }

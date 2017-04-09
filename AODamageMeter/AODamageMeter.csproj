@@ -3,9 +3,6 @@
     <TargetFramework>net46</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="FightEvents\OtherHitByOther.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.3" />
   </ItemGroup>
   <ItemGroup>

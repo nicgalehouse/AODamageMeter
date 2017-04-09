@@ -13,7 +13,7 @@ namespace AODamageMeter
 
     public static class DamageTypeHelpers
     {
-        // For performance, use a dictionary rather than Enum.Parse's reflection.
+        // For performance(?), use a dictionary rather than Enum.Parse's reflection.
         private static IReadOnlyDictionary<string, DamageType> _damageTypes = new Dictionary<string, DamageType>(StringComparer.OrdinalIgnoreCase)
         {
             ["Melee"] = DamageType.Melee,
