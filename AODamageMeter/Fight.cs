@@ -56,9 +56,6 @@ namespace AODamageMeter
             UpdateCharacters();
         }
 
-        public Task<FightCharacter[]> GetOrCreateFightCharacters(IEnumerable<string> names)
-            => GetOrCreateFightCharacters(names.ToArray());
-
         public async Task<FightCharacter[]> GetOrCreateFightCharacters(params string[] names)
         {
             var characters = await Character.GetOrCreateCharacters(names);

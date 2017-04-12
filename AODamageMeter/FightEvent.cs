@@ -1,5 +1,6 @@
 ﻿using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
+using AODamageMeter.FightEvents.Level;
 using AODamageMeter.FightEvents.Nano;
 using AODamageMeter.Helpers;
 using System;
@@ -34,6 +35,7 @@ namespace AODamageMeter
 
             if (eventName == MeCastNano.EventName) return MeCastNano.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(damageMeter, fight, timestamp, description);
+            if (eventName == MeGotSK.EventName) return MeGotSK.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeHitByMonster.EventName) return await MeHitByMonster.Create(damageMeter, fight, timestamp, description);
             if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(damageMeter, fight, timestamp, description);
             if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
@@ -61,8 +63,11 @@ namespace AODamageMeter
             return success;
         }
 
-        protected async Task SetSource(Match match, int index)
-            => Source = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
+        protected async Task SetSource(Match match, int index, CharacterType? knownCharacterType = null)
+        {
+            Source = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
+            Source.Character.CharacterType = knownCharacterType ?? Source.Character.CharacterType;
+        }
 
         protected void SetSourceToOwner()
             => Source = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);

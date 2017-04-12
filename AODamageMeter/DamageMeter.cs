@@ -53,7 +53,7 @@ namespace AODamageMeter
                     .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length));
 
                 // Make the calls to people.anarchy-online.com concurrently.
-                var characters = await Character.GetOrCreateCharacters(potentialCharacterNames);
+                var characters = await Character.GetOrCreateCharacters(potentialCharacterNames, CharacterType.PlayerCharacter);
 
                 // If everything worked out, there'll be a character with a matching ID now.
                 Owner = characters.SingleOrDefault(c => ownersID == c.ID);
@@ -67,7 +67,7 @@ namespace AODamageMeter
                 }
             }
 
-            Owner = Owner ?? (await Character.GetOrCreateCharacter("You"));
+            Owner = Owner ?? (await Character.GetOrCreateCharacter("You", CharacterType.PlayerCharacter));
         }
 
         public async Task Update()

@@ -90,7 +90,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\ObservableCollectionExtensions.cs" />
-    <Compile Include="Helpers\BackgroundTask.cs" />
     <Compile Include="ViewModels\Rows\DpsRowViewModel.cs" />
     <Compile Include="ViewModels\RowViewModelBase.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />

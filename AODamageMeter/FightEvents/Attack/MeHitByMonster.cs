@@ -34,7 +34,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || attackEvent.TryMatch(Crit, out match, out crit)
                 || attackEvent.TryMatch(Glance, out match, out glance))
             {
-                await attackEvent.SetSource(match, 1);
+                await attackEvent.SetSource(match, 1, CharacterType.NonPlayerCharacter);
                 attackEvent.AttackResult = AttackResult.DirectHit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
