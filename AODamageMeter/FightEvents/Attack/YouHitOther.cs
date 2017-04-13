@@ -10,11 +10,11 @@ namespace AODamageMeter.FightEvents.Attack
         public const string EventName = "You hit other";
 
         public static readonly Regex
-            Normal =  CreateRegex(@"You hit (.+?) for (\d+) points of (.+?) damage."),
-            Crit =    CreateRegex(@"You hit (.+?) for (\d+) points of (.+?) damage. Critical hit!", rightToLeft: true),
-            Glance =  CreateRegex(@"You hit (.+?) for (\d+) points of (.+?) damage. Glancing hit.", rightToLeft: true),
-            Reflect = CreateRegex(@"Your reflect shield hit (.+?) for (\d+) points of damage."),
-            Shield =  CreateRegex(@"Your damage shield hit (.+?) for (\d+) points of damage.");
+            Normal =  CreateRegex($"You hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage."),
+            Crit =    CreateRegex($"You hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage. Critical hit!", rightToLeft: true),
+            Glance =  CreateRegex($"You hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage. Glancing hit.", rightToLeft: true),
+            Reflect = CreateRegex($"Your reflect shield hit {TARGET} for {AMOUNT} points of damage."),
+            Shield =  CreateRegex($"Your damage shield hit {TARGET} for {AMOUNT} points of damage.");
 
         protected YouHitOther(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)

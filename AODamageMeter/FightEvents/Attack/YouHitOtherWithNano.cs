@@ -10,7 +10,7 @@ namespace AODamageMeter.FightEvents.Attack
         public const string EventName = "You hit other with nano";
 
         public static readonly Regex
-            Normal = CreateRegex(@"You hit (.+?) with nanobots for (\d+) points of (.+?) damage.");
+            Normal = CreateRegex($"You hit {TARGET} with nanobots for {AMOUNT} points of {DAMAGETYPE} damage.");
 
         protected YouHitOtherWithNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)

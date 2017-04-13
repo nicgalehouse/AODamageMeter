@@ -10,12 +10,12 @@ namespace AODamageMeter.FightEvents.Attack
         public const string EventName = "Me hit by monster";
 
         public static readonly Regex
-            Normal =  CreateRegex(@"(.+?) hit you for (\d+) points of (.+?) damage.", rightToLeft: true),
-            Crit =    CreateRegex(@"(.+?) hit you for (\d+) points of (.+?) damage. Critical hit!", rightToLeft: true),
-            Glance =  CreateRegex(@"(.+?) hit you for (\d+) points of (.+?) damage. Glancing hit.", rightToLeft: true),
-            Reflect = CreateRegex(@"Someone's reflect shield hit you for (\d+) points of damage."),
-            Shield =  CreateRegex(@"Someone's damage shield hit you for (\d+) points of damage."),
-            Absorb =  CreateRegex(@"You absorbed (\d+) points of (.+?) damage.");
+            Normal =  CreateRegex($"{SOURCE} hit you for {AMOUNT} points of {DAMAGETYPE} damage.", rightToLeft: true),
+            Crit =    CreateRegex($"{SOURCE} hit you for {AMOUNT} points of {DAMAGETYPE} damage. Critical hit!", rightToLeft: true),
+            Glance =  CreateRegex($"{SOURCE} hit you for {AMOUNT} points of {DAMAGETYPE} damage. Glancing hit.", rightToLeft: true),
+            Reflect = CreateRegex($"Someone's reflect shield hit you for {AMOUNT} points of damage."),
+            Shield =  CreateRegex($"Someone's damage shield hit you for {AMOUNT} points of damage."),
+            Absorb =  CreateRegex($"You absorbed {AMOUNT} points of {DAMAGETYPE} damage.");
 
         protected MeHitByMonster(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)

@@ -10,8 +10,8 @@ namespace AODamageMeter.FightEvents.Attack
         public const string EventName = "Other hit by nano";
 
         public static readonly Regex
-            Sourced =   CreateRegex(@"(.+?) was attacked with nanobots from (.+?) for (\d+) points of (.+?) damage.", rightToLeft: true),
-            Unsourced = CreateRegex(@"(.+?) was attacked with nanobots for (\d+) points of (.+?) damage.", rightToLeft: true);
+            Sourced =   CreateRegex($"{TARGET} was attacked with nanobots from {SOURCE} for {AMOUNT} points of {DAMAGETYPE} damage.", rightToLeft: true),
+            Unsourced = CreateRegex($"{TARGET} was attacked with nanobots for {AMOUNT} points of {DAMAGETYPE} damage.", rightToLeft: true);
 
         protected OtherHitByNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)

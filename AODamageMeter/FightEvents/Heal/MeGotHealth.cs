@@ -10,8 +10,8 @@ namespace AODamageMeter.FightEvents.Heal
         public const string EventName = "Me got health";
 
         public static readonly Regex
-            Unsourced = CreateRegex(@"You were healed for (\d+) points."),
-            Sourced =   CreateRegex(@"You got healed by (.+?) for (\d+) points of health.");
+            Unsourced = CreateRegex($"You were healed for {AMOUNT} points."),
+            Sourced =   CreateRegex($"You got healed by {SOURCE} for {AMOUNT} points of health.");
 
         protected MeGotHealth(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)

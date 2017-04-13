@@ -13,7 +13,7 @@ namespace AODamageMeter.AmbiguityHelper
             string[] ambiguousNames = File.ReadAllLines("AmbiguousNames.txt")
                 .SelectMany(l => l.Split())
                 .Select(n => n.Trim())
-                .Where(n => !string.IsNullOrWhiteSpace(n))
+                .Where(n => n.Length > 3 && n.Length < 13 && (n.All(char.IsLetterOrDigit) || n.EndsWith("-1")))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .Select(n => $"{char.ToUpper(n[0])}{n.Substring(1).ToLower()}")
                 .OrderBy(n => n)

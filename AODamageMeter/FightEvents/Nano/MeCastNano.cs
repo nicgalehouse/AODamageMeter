@@ -9,11 +9,11 @@ namespace AODamageMeter.FightEvents.Nano
         public const string EventName = "Me Cast Nano";
 
         public static readonly Regex
-            Executing = CreateRegex(@"Executing Nano Program: (.+)."),
-            Success =   CreateRegex(@"Nano program executed successfully."),
-            Resisted =  CreateRegex(@"Target resisted."),
-            Countered = CreateRegex(@"Your target countered the nano program."),
-            Aborted =   CreateRegex(@"Nano program aborted.");
+            Executing = CreateRegex("Executing Nano Program: (.+)."),
+            Success =   CreateRegex("Nano program executed successfully."),
+            Resisted =  CreateRegex("Target resisted."),
+            Countered = CreateRegex("Your target countered the nano program."),
+            Aborted =   CreateRegex("Nano program aborted.");
 
         protected MeCastNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)

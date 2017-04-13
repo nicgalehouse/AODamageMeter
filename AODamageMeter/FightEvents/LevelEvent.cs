@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 
 namespace AODamageMeter.FightEvents
 {
@@ -9,10 +8,6 @@ namespace AODamageMeter.FightEvents
             : base(damageMeter, fight, timestamp, description)
         { }
 
-        public int? Amount { get; protected set; }
         public LevelType LevelType { get; protected set; }
-
-        protected void SetAmount(Match match, int index)
-            => Amount = int.Parse(match.Groups[index].Value);
     }
 }

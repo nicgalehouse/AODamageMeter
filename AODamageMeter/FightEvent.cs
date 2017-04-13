@@ -12,6 +12,7 @@ namespace AODamageMeter
 {
     public abstract class FightEvent
     {
+        protected const string SOURCE = "(.+?)", TARGET = "(.+?)", AMOUNT = @"(\d+)", DAMAGETYPE = "(.+?)";
         protected readonly DamageMeter _damageMeter;
         protected readonly Fight _fight;
 
@@ -35,7 +36,9 @@ namespace AODamageMeter
 
             if (eventName == MeCastNano.EventName) return MeCastNano.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(damageMeter, fight, timestamp, description);
+            if (eventName == MeGotNano.EventName) return await MeGotNano.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeGotSK.EventName) return MeGotSK.Create(damageMeter, fight, timestamp, description);
+            if (eventName == MeGotXP.EventName) return MeGotXP.Create(damageMeter, fight, timestamp, description);
             if (eventName == MeHitByMonster.EventName) return await MeHitByMonster.Create(damageMeter, fight, timestamp, description);
             if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(damageMeter, fight, timestamp, description);
             if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(damageMeter, fight, timestamp, description);
@@ -49,6 +52,8 @@ namespace AODamageMeter
         public DateTime Timestamp { get; }
         public string Description { get; }
         public FightCharacter Source { get; protected set; }
+        public FightCharacter Target { get; protected set; }
+        public int? Amount { get; protected set; }
 
         protected static Regex CreateRegex(string body, bool rightToLeft = false)
             => new Regex($"^{body}$", rightToLeft ? RegexOptions.Compiled | RegexOptions.RightToLeft : RegexOptions.Compiled);
@@ -69,8 +74,27 @@ namespace AODamageMeter
             Source.Character.CharacterType = knownCharacterType ?? Source.Character.CharacterType;
         }
 
+        protected async Task SetTarget(Match match, int index)
+            => Target = await _fight.GetOrCreateFightCharacter(match.Groups[index].Value);
+
+        protected async Task SetSourceAndTarget(Match match, int sourceIndex, int targetIndex)
+        {
+            var fightCharacters = await _fight.GetOrCreateFightCharacters(match.Groups[sourceIndex].Value, match.Groups[targetIndex].Value);
+            Source = fightCharacters[0];
+            Target = fightCharacters[1];
+        }
+
         protected void SetSourceToOwner()
             => Source = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
+
+        protected void SetTargetToOwner()
+            => Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
+
+        protected void SetSourceAndTargetToOwner()
+            => Source = Target = _fight.GetOrCreateFightCharacter(_damageMeter.Owner);
+
+        protected void SetAmount(Match match, int index)
+            => Amount = int.Parse(match.Groups[index].Value);
 
 
 
@@ -116,23 +140,6 @@ namespace AODamageMeter
                     ActionType = "Damage";
                     Source = Line.Substring(indexOfSource, lengthOfSource);
                     Target = owningCharacterName;
-
-                    break;
-
-                //You got nano from SOURCE for AMOUNT points.
-                case "16":
-
-                    indexOfSource = 18;
-                    lengthOfSource = Line.IndexOf(" for ") - indexOfSource;
-
-                    indexOfAmount = indexOfSource + lengthOfSource + 5;
-                    lengthOfAmount = Line.Length - 8 - indexOfAmount;
-
-                    ActionType = "Heal";
-                    Source = Line.Substring(indexOfSource, lengthOfSource);
-                    Target = owningCharacterName;
-                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    DamageType = "Nano";
 
                     break;
 
@@ -202,15 +209,6 @@ namespace AODamageMeter
                     DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
                     Source = Line.Substring(indexOfSource, lengthOfSource);
 
-                    break;
-
-
-                //You lost 1548140 xp.
-                case "0b":
-                    /*
-                    indexOfTimeStart = 37;
-                    
-                    */
                     break;
             }
         }

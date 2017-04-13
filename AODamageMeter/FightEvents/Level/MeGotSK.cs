@@ -9,8 +9,8 @@ namespace AODamageMeter.FightEvents.Level
         public const string EventName = "Me got SK";
 
         public static readonly Regex
-            Gained = CreateRegex(@"You gained (\d+) points of Shadowknowledge."),
-            Lost =   CreateRegex(@"You lost (\d+) points of Shadowknowledge.");
+            Gained = CreateRegex($"You gained {AMOUNT} points of Shadowknowledge."),
+            Lost =   CreateRegex($"You lost {AMOUNT} points of Shadowknowledge.");
 
         public MeGotSK(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)

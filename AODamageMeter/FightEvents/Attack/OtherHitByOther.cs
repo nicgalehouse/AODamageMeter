@@ -10,14 +10,14 @@ namespace AODamageMeter.FightEvents.Attack
         public const string EventName = "Other hit by other";
 
         public static readonly Regex
-            Normal =       CreateRegex(@"(.+?) hit (.+?) for (\d+) points of (.+?) damage.", rightToLeft: true),
-            Crit =         CreateRegex(@"(.+?) hit (.+?) for (\d+) points of (.+?) damage. Critical hit!", rightToLeft: true),
-            Glance =       CreateRegex(@"(.+?) hit (.+?) for (\d+) points of (.+?) damage. Glancing hit.", rightToLeft: true),
-            Reflect =      CreateRegex(@"(.+?)'s reflect shield hit (.+?) for (\d+) points of damage.", rightToLeft: true),
-            Shield =       CreateRegex(@"(.+?)'s damage shield hit (.+?) for (\d+) points of damage.", rightToLeft: true),
-            WeirdReflect = CreateRegex(@"Something hit (.+?) for (\d+) points of damage by reflect shield.", rightToLeft: true),
-            WeirdShield =  CreateRegex(@"Something hit (.+?) for (\d+) points of damage by damage shield.", rightToLeft: true),
-            Absorb =       CreateRegex(@"Someone absorbed (\d+) points of (.+?) damage.");
+            Normal =       CreateRegex($"{SOURCE} hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage.", rightToLeft: true),
+            Crit =         CreateRegex($"{SOURCE} hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage. Critical hit!", rightToLeft: true),
+            Glance =       CreateRegex($"{SOURCE} hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage. Glancing hit.", rightToLeft: true),
+            Reflect =      CreateRegex($"{SOURCE}'s reflect shield hit {TARGET} for {AMOUNT} points of damage.", rightToLeft: true),
+            Shield =       CreateRegex($"{SOURCE}'s damage shield hit {TARGET} for {AMOUNT} points of damage.", rightToLeft: true),
+            WeirdReflect = CreateRegex($"Something hit {TARGET} for {AMOUNT} points of damage by reflect shield.", rightToLeft: true),
+            WeirdShield =  CreateRegex($"Something hit {TARGET} for {AMOUNT} points of damage by damage shield.", rightToLeft: true),
+            Absorb =       CreateRegex($"Someone absorbed {AMOUNT} points of {DAMAGETYPE} damage.");
 
         protected OtherHitByOther(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
             : base(damageMeter, fight, timestamp, description)
