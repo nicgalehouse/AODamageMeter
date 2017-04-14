@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace AODamageMeter.FightEvents
+namespace AODamageMeter.FightEvents.Nano
 {
-    public class MeCastNano : FightEvent
+    public class MeCastNano : NanoEvent
     {
-        public const string EventKey = "18";
         public const string EventName = "Me Cast Nano";
 
         public static readonly Regex
@@ -19,12 +18,7 @@ namespace AODamageMeter.FightEvents
             : base(fight, timestamp, description)
         { }
 
-        public override string Key => EventKey;
         public override string Name => EventName;
-        public string NanoProgram { get; protected set; }
-        public bool IsStartOfCast { get; protected set; }
-        public CastResult? CastResult { get; protected set; }
-        public MeCastNano EndEvent { get; protected set; }
 
         public static MeCastNano Create(Fight fight, DateTime timestamp, string description)
         {
@@ -64,8 +58,7 @@ namespace AODamageMeter.FightEvents
                     nanoEvent.CastResult = startEvent.CastResult;
                 }
             }
-            // There's a lot more that we could deal with, but do we care enough?
-            // else throw new NotSupportedException($"{EventName}: {description}");
+            else nanoEvent.Unmatched = true;
 
             return nanoEvent;
         }

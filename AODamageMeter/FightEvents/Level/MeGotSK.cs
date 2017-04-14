@@ -5,7 +5,6 @@ namespace AODamageMeter.FightEvents.Level
 {
     public class MeGotSK : LevelEvent
     {
-        public const string EventKey = "0c";
         public const string EventName = "Me got SK";
 
         public static readonly Regex
@@ -16,7 +15,6 @@ namespace AODamageMeter.FightEvents.Level
             : base(fight, timestamp, description)
         { }
 
-        public override string Key => EventKey;
         public override string Name => EventName;
 
         public static MeGotSK Create(Fight fight, DateTime timestamp, string description)
@@ -33,7 +31,7 @@ namespace AODamageMeter.FightEvents.Level
                 levelEvent.SetAmount(match, 1);
                 levelEvent.Amount = -levelEvent.Amount;
             }
-            else throw new NotSupportedException($"{EventName}: {description}");
+            else levelEvent.Unmatched = true;
 
             return levelEvent;
         }

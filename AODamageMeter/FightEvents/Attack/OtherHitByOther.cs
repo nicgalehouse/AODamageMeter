@@ -6,7 +6,6 @@ namespace AODamageMeter.FightEvents.Attack
 {
     public class OtherHitByOther : AttackEvent
     {
-        public const string EventKey = "0a";
         public const string EventName = "Other hit by other";
 
         public static readonly Regex
@@ -23,7 +22,6 @@ namespace AODamageMeter.FightEvents.Attack
             : base(fight, timestamp, description)
         { }
 
-        public override string Key => EventKey;
         public override string Name => EventName;
 
         public static async Task<OtherHitByOther> Create(Fight fight, DateTime timestamp, string description)
@@ -65,7 +63,7 @@ namespace AODamageMeter.FightEvents.Attack
                 attackEvent.SetAmount(match, 1);
                 attackEvent.SetDamageType(match, 2);
             }
-            else throw new NotSupportedException($"{EventName}: {description}");
+            else attackEvent.Unmatched = true;
 
             return attackEvent;
         }

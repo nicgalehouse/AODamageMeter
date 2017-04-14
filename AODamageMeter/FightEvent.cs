@@ -2,6 +2,7 @@
 using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.FightEvents.Level;
+using AODamageMeter.FightEvents.Nano;
 using AODamageMeter.Helpers;
 using System;
 using System.Linq;
@@ -43,8 +44,8 @@ namespace AODamageMeter
             if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(fight, timestamp, description);
             if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(fight, timestamp, description);
             if (eventName == OtherMisses.EventName) return await OtherMisses.Create(fight, timestamp, description);
-            if (eventName == Research.EventName) return await Research.Create(fight, timestamp, description);
-            if (eventName == System.EventName) return await System.Create(fight, timestamp, description);
+            if (eventName == Research.EventName) return Research.Create(fight, timestamp, description);
+            if (eventName == SystemEvent.EventName) return SystemEvent.Create(fight, timestamp, description);
             if (eventName == YouGaveHealth.EventName) return await YouGaveHealth.Create(fight, timestamp, description);
             if (eventName == YouGaveNano.EventName) return await YouGaveNano.Create(fight, timestamp, description);
             if (eventName == YouHitOther.EventName) return await YouHitOther.Create(fight, timestamp, description);
@@ -58,10 +59,10 @@ namespace AODamageMeter
 
         public DamageMeter DamageMeter => Fight.DamageMeter;
         public Fight Fight { get; }
-        public abstract string Key { get; }
         public abstract string Name { get; }
         public DateTime Timestamp { get; }
         public string Description { get; }
+        public bool Unmatched { get; protected set; }
         public FightCharacter Source { get; protected set; }
         public FightCharacter Target { get; protected set; }
         public int? Amount { get; protected set; }
@@ -126,34 +127,6 @@ namespace AODamageMeter
 
             switch (Key)
             {
-                //SOURCE tried to hit you, but missed!
-                //SOURCE tries to attack you with Brawl, but misses!
-                //SOURCE tries to attack you with FastAttack, but misses!
-                //SOURCE tries to attack you with FlingShot, but misses!
-                case "13":
-
-                    indexOfSource = 0;
-
-                    if (Line.LastIndexOf("you,") == -1)
-                    {
-
-                        lengthOfSource = Line.IndexOf(" tries ") - indexOfSource;
-                        //should be changed in future
-                        DamageType = "SpecialAttack";
-
-                    }
-                    else
-                    {
-                        lengthOfSource = Line.IndexOf(" tried ") - indexOfSource;
-                        DamageType = "Auto Attack";
-                    }
-
-                    ActionType = "Damage";
-                    Source = Line.Substring(indexOfSource, lengthOfSource);
-                    Target = owningCharacterName;
-
-                    break;
-
                 //You tried to hit TARGET, but missed!
                 case "12":
 
@@ -184,43 +157,6 @@ namespace AODamageMeter
 
                     break;
 
-                //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                //SOURCE hit TARGET for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                case "09":
-
-                    indexOfSource = 0;
-                    lengthOfSource = Line.IndexOf(" hit ") - indexOfSource;
-                    // + 5 to skip the " hit " indices
-                    indexOfTarget = lengthOfSource + 5;
-                    lengthOfTarget = Line.IndexOf(" for ") - indexOfTarget;
-                    // + 5 to skip the " for " indices
-                    indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                    lengthOfAmount = Line.LastIndexOf(" points ") - indexOfAmount;
-                    // + 8 to skip the " points " indices, + 3 to skip the "of " indices
-                    indexOfAmountType = indexOfAmount + lengthOfAmount + 11;
-                    lengthOfAmountType = Line.Length - 8 - indexOfAmountType;
-
-                    //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Critical hit!
-                    if (Line[Line.Length - 1] == '!')
-                    {
-                        lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
-                        Modifier = "Crit";
-                    }
-                    //SOURCE hit you for AMOUNT points of AMOUNTTYPE damage. Glancing hit.
-                    else if (Line[Line.Length - 2] == 't')
-                    {
-                        lengthOfAmountType = Line.Length - 22 - indexOfAmountType;
-                        Modifier = "Glance";
-                    }
-                    
-                    ActionType = "Damage"; //PetDamage
-                    Source = Line.Substring(indexOfSource, lengthOfSource);
-                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
-                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    DamageType = Line.Substring(indexOfAmountType, lengthOfAmountType);
-                    Source = Line.Substring(indexOfSource, lengthOfSource);
-
-                    break;
             }
         }
     }

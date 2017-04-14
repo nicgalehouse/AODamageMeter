@@ -6,7 +6,6 @@ namespace AODamageMeter.FightEvents.Attack
 {
     public class YouHitOtherWithNano : AttackEvent
     {
-        public const string EventKey = "05";
         public const string EventName = "You hit other with nano";
 
         public static readonly Regex
@@ -16,7 +15,6 @@ namespace AODamageMeter.FightEvents.Attack
             : base(fight, timestamp, description)
         { }
 
-        public override string Key => EventKey;
         public override string Name => EventName;
 
         public static async Task<YouHitOtherWithNano> Create(Fight fight, DateTime timestamp, string description)
@@ -31,7 +29,7 @@ namespace AODamageMeter.FightEvents.Attack
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
             }
-            else throw new NotSupportedException($"{EventName}: {description}");
+            else attackEvent.Unmatched = true;
 
             return attackEvent;
         }

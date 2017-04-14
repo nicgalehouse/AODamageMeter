@@ -9,7 +9,6 @@ namespace AODamageMeter
 {
     public class Fight
     {
-        private readonly List<MeCastNano> _nanoEvents = new List<MeCastNano>();
         private readonly List<FightEvent> _fightEvents = new List<FightEvent>();
         private readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
         private Stopwatch _stopwatch;
@@ -19,9 +18,7 @@ namespace AODamageMeter
         public DateTime? LatestTime => _fightEvents.LastOrDefault()?.Timestamp;
         public TimeSpan? Duration => _stopwatch?.Elapsed;
         public IReadOnlyList<FightEvent> FightEvents => _fightEvents;
-        public IReadOnlyList<MeCastNano> NanoEvents => _nanoEvents;
-        public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
-        public IReadOnlyCollection<Character> Characters => _fightCharacters.Keys;
+        public IReadOnlyDictionary<Character, FightCharacter> FightCharacters => _fightCharacters;
 
         public Fight(DamageMeter damageMeter)
             => DamageMeter = damageMeter;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AODamageMeter
+namespace AODamageMeter.FightEvents
 {
     public abstract class HealEvent : FightEvent
     {

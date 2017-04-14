@@ -6,7 +6,6 @@ namespace AODamageMeter.FightEvents.Heal
 {
     public class MeGotNano : HealEvent
     {
-        public const string EventKey = "16";
         public const string EventName = "Me got nano";
 
         public static readonly Regex
@@ -16,7 +15,6 @@ namespace AODamageMeter.FightEvents.Heal
             : base(fight, timestamp, description)
         { }
 
-        public override string Key => EventKey;
         public override string Name => EventName;
 
         public static async Task<MeGotNano> Create(Fight fight, DateTime timestamp, string description)
@@ -30,7 +28,7 @@ namespace AODamageMeter.FightEvents.Heal
                 await healEvent.SetSource(match, 1); // TODO: is it always a player character?
                 healEvent.SetAmount(match, 2);
             }
-            else throw new NotSupportedException($"{EventName}: {description}");
+            else healEvent.Unmatched = true;
 
             return healEvent;
         }

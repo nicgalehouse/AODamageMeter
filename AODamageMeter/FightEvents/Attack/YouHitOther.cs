@@ -6,7 +6,6 @@ namespace AODamageMeter.FightEvents.Attack
 {
     public class YouHitOther : AttackEvent
     {
-        public const string EventKey = "08";
         public const string EventName = "You hit other";
 
         public static readonly Regex
@@ -20,7 +19,6 @@ namespace AODamageMeter.FightEvents.Attack
             : base(fight, timestamp, description)
         { }
 
-        public override string Key => EventKey;
         public override string Name => EventName;
 
         public static async Task<YouHitOther> Create(Fight fight, DateTime timestamp, string description)
@@ -49,7 +47,7 @@ namespace AODamageMeter.FightEvents.Attack
                 attackEvent.SetAmount(match, 2);
                 attackEvent.DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
             }
-            else throw new NotSupportedException($"{EventName}: {description}");
+            else attackEvent.Unmatched = true;
 
             return attackEvent;
         }
