@@ -19,16 +19,16 @@ namespace AODamageMeter.FightEvents.Attack
             WeirdShield =  CreateRegex($"Something hit {TARGET} for {AMOUNT} points of damage by damage shield.", rightToLeft: true),
             Absorb =       CreateRegex($"Someone absorbed {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        protected OtherHitByOther(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected OtherHitByOther(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
 
-        public static async Task<OtherHitByOther> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static async Task<OtherHitByOther> Create(Fight fight, DateTime timestamp, string description)
         {
-            var attackEvent = new OtherHitByOther(damageMeter, fight, timestamp, description);
+            var attackEvent = new OtherHitByOther(fight, timestamp, description);
 
             bool crit = false, glance = false, reflect = false, shield = false, weirdReflect = false, weirdShield = false;
             if (attackEvent.TryMatch(Normal, out Match match, out bool normal)

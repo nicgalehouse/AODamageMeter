@@ -9,28 +9,28 @@ namespace AODamageMeter
 {
     public class Fight
     {
-        private readonly DamageMeter _damageMeter;
-        private readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
+        private readonly List<MeCastNano> _nanoEvents = new List<MeCastNano>();
         private readonly List<FightEvent> _fightEvents = new List<FightEvent>();
         private readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
         private Stopwatch _stopwatch;
 
+        public DamageMeter DamageMeter { get; }
         public DateTime? StartTime => _fightEvents.FirstOrDefault()?.Timestamp;
         public DateTime? LatestTime => _fightEvents.LastOrDefault()?.Timestamp;
         public TimeSpan? Duration => _stopwatch?.Elapsed;
         public IReadOnlyList<FightEvent> FightEvents => _fightEvents;
-        public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
+        public IReadOnlyList<MeCastNano> NanoEvents => _nanoEvents;
         public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
         public IReadOnlyCollection<Character> Characters => _fightCharacters.Keys;
 
         public Fight(DamageMeter damageMeter)
-            => _damageMeter = damageMeter;
+            => DamageMeter = damageMeter;
 
         public async Task AddFightEvent(string line)
         {
             _stopwatch = _stopwatch ?? Stopwatch.StartNew();
 
-            _fightEvents.Add(new FightEvent(_damageMeter, this, line));
+            _fightEvents.Add(new FightEvent(this, line));
 
             int sourceIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Source);
             int targestIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Target);

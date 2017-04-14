@@ -12,16 +12,16 @@ namespace AODamageMeter.FightEvents.Attack
         public static readonly Regex
             Normal = CreateRegex($"You hit {TARGET} with nanobots for {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        protected YouHitOtherWithNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected YouHitOtherWithNano(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
 
-        public static async Task<YouHitOtherWithNano> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static async Task<YouHitOtherWithNano> Create(Fight fight, DateTime timestamp, string description)
         {
-            var attackEvent = new YouHitOtherWithNano(damageMeter, fight, timestamp, description);
+            var attackEvent = new YouHitOtherWithNano(fight, timestamp, description);
             attackEvent.SetSourceToOwner();
 
             if (attackEvent.TryMatch(Normal, out Match match))

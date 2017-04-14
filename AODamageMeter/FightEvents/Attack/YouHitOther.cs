@@ -16,16 +16,16 @@ namespace AODamageMeter.FightEvents.Attack
             Reflect = CreateRegex($"Your reflect shield hit {TARGET} for {AMOUNT} points of damage."),
             Shield =  CreateRegex($"Your damage shield hit {TARGET} for {AMOUNT} points of damage.");
 
-        protected YouHitOther(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected YouHitOther(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
 
-        public static async Task<YouHitOther> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static async Task<YouHitOther> Create(Fight fight, DateTime timestamp, string description)
         {
-            var attackEvent = new YouHitOther(damageMeter, fight, timestamp, description);
+            var attackEvent = new YouHitOther(fight, timestamp, description);
             attackEvent.SetSourceToOwner();
 
             bool crit = false, glance = false, reflect = false, shield = false;

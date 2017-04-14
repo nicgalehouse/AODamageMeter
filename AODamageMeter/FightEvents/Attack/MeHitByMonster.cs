@@ -17,16 +17,16 @@ namespace AODamageMeter.FightEvents.Attack
             Shield =  CreateRegex($"Someone's damage shield hit you for {AMOUNT} points of damage."),
             Absorb =  CreateRegex($"You absorbed {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        protected MeHitByMonster(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected MeHitByMonster(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
 
-        public static async Task<MeHitByMonster> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static async Task<MeHitByMonster> Create(Fight fight, DateTime timestamp, string description)
         {
-            var attackEvent = new MeHitByMonster(damageMeter, fight, timestamp, description);
+            var attackEvent = new MeHitByMonster(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
 
             bool crit = false, glance = false, reflect = false, shield = false;

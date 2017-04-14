@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace AODamageMeter.FightEvents.Nano
+namespace AODamageMeter.FightEvents
 {
-    public class MeCastNano : NanoEvent
+    public class MeCastNano : FightEvent
     {
         public const string EventKey = "18";
         public const string EventName = "Me Cast Nano";
@@ -15,16 +15,20 @@ namespace AODamageMeter.FightEvents.Nano
             Countered = CreateRegex("Your target countered the nano program."),
             Aborted =   CreateRegex("Nano program aborted.");
 
-        protected MeCastNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected MeCastNano(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
+        public string NanoProgram { get; protected set; }
+        public bool IsStartOfCast { get; protected set; }
+        public CastResult? CastResult { get; protected set; }
+        public MeCastNano EndEvent { get; protected set; }
 
-        public static MeCastNano Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static MeCastNano Create(Fight fight, DateTime timestamp, string description)
         {
-            var nanoEvent = new MeCastNano(damageMeter, fight, timestamp, description);
+            var nanoEvent = new MeCastNano(fight, timestamp, description);
             nanoEvent.SetSourceToOwner();
 
             bool resisted = false, countered = false, aborted = false;

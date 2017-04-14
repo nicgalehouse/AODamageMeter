@@ -5,8 +5,10 @@ namespace AODamageMeter.FightEvents
 {
     public abstract class AttackEvent : FightEvent
     {
-        protected AttackEvent(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected const string DAMAGETYPE = "(.+?)";
+
+        protected AttackEvent(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public AttackResult AttackResult { get; protected set; }

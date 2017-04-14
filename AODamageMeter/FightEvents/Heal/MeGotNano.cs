@@ -12,16 +12,16 @@ namespace AODamageMeter.FightEvents.Heal
         public static readonly Regex
             Normal = CreateRegex($"You got nano from {SOURCE} for {AMOUNT} points.");
 
-        protected MeGotNano(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected MeGotNano(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
 
-        public static async Task<MeGotNano> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static async Task<MeGotNano> Create(Fight fight, DateTime timestamp, string description)
         {
-            var healEvent = new MeGotNano(damageMeter, fight, timestamp, description);
+            var healEvent = new MeGotNano(fight, timestamp, description);
             healEvent.SetTargetToOwner();
             healEvent.HealType = HealType.Nano;
 

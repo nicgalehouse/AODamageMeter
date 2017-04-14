@@ -13,16 +13,16 @@ namespace AODamageMeter.FightEvents.Heal
             Unsourced = CreateRegex($"You were healed for {AMOUNT} points."),
             Sourced =   CreateRegex($"You got healed by {SOURCE} for {AMOUNT} points of health.");
 
-        protected MeGotHealth(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        protected MeGotHealth(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
 
-        public static async Task<MeGotHealth> Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static async Task<MeGotHealth> Create(Fight fight, DateTime timestamp, string description)
         {
-            var healEvent = new MeGotHealth(damageMeter, fight, timestamp, description);
+            var healEvent = new MeGotHealth(fight, timestamp, description);
             healEvent.SetTargetToOwner();
             healEvent.HealType = HealType.Health;
 

@@ -11,20 +11,20 @@ namespace AODamageMeter.FightEvents.Level
         public static readonly Regex
             Received = CreateRegex($"You received {AMOUNT} xp."),
             Lost =     CreateRegex($"You lost {AMOUNT} xp."),
-            Alien =    CreateRegex($"You gained {AMOUNT} new Alien Experience Points."),
-            PvpSolo =  CreateRegex($"You gained {AMOUNT} PVP Solo Score."),
-            PvpTeam =  CreateRegex($"You gained {AMOUNT} PVP Team Score.");
+            Alien =    CreateRegex($"You gained {AMOUNT} new Alien Experience Points.", rightToLeft: true),
+            PvpSolo =  CreateRegex($"You gained {AMOUNT} PVP Solo Score.", rightToLeft: true),
+            PvpTeam =  CreateRegex($"You gained {AMOUNT} PVP Team Score.", rightToLeft: true);
 
-        public MeGotXP(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
-            : base(damageMeter, fight, timestamp, description)
+        public MeGotXP(Fight fight, DateTime timestamp, string description)
+            : base(fight, timestamp, description)
         { }
 
         public override string Key => EventKey;
         public override string Name => EventName;
 
-        public static MeGotXP Create(DamageMeter damageMeter, Fight fight, DateTime timestamp, string description)
+        public static MeGotXP Create(Fight fight, DateTime timestamp, string description)
         {
-            var levelEvent = new MeGotXP(damageMeter, fight, timestamp, description);
+            var levelEvent = new MeGotXP(fight, timestamp, description);
 
             if (levelEvent.TryMatch(Received, out Match match))
             {
