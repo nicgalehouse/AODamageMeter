@@ -22,6 +22,7 @@ namespace AODamageMeter.FightEvents.Attack
         {
             var attackEvent = new MeHitByNano(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
+            attackEvent.AttackResult = AttackResult.DirectHit;
 
             if (attackEvent.TryMatch(Sourced, out Match match))
             {

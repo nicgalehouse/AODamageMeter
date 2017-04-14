@@ -21,11 +21,11 @@ namespace AODamageMeter.FightEvents.Attack
         {
             var attackEvent = new YouHitOtherWithNano(fight, timestamp, description);
             attackEvent.SetSourceToOwner();
+            attackEvent.AttackResult = AttackResult.DirectHit;
 
             if (attackEvent.TryMatch(Normal, out Match match))
             {
                 await attackEvent.SetTarget(match, 1);
-                attackEvent.AttackResult = AttackResult.DirectHit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
             }
