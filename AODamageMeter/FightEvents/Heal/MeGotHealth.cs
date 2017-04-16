@@ -4,6 +4,13 @@ using System.Threading.Tasks;
 
 namespace AODamageMeter.FightEvents.Heal
 {
+    // When someone heals you (via a nano, HoT, first aid, treatment kit, etc), an unsourced event gets created
+    // with the amount you were actually healed for, a sourced event gets created with the amount that you
+    // could've been healed for, if you were hurt enough (if you weren't hurt at all, no events). When you
+    // heal yourself, there's a single unsourced event. We could try to to connect these events together
+    // so we know which unsourced events are from you and which are from other source's, but we're not. So
+    // right now, all the unsourced tell you how much you've been healed in total, and all the sourced give
+    // you an approximation of how much you've been healed from any specific source source.
     public class MeGotHealth : HealEvent
     {
         public const string EventName = "Me got health";
@@ -26,7 +33,6 @@ namespace AODamageMeter.FightEvents.Heal
 
             if (healEvent.TryMatch(Unsourced, out Match match))
             {
-                // Usually this is from you healing yourself, which is a useful metric, so assume it's the case.
                 healEvent.SetSourceToOwner();
                 healEvent.SetAmount(match, 1);
             }

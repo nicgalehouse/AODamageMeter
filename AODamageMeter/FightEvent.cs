@@ -107,57 +107,5 @@ namespace AODamageMeter
 
         protected void SetAmount(Match match, int index)
             => Amount = int.Parse(match.Groups[index].Value);
-
-
-
-
-
-
-
-
-
-
-
-        private void SetAttributes()
-        {
-            int indexOfSource, lengthOfSource,
-                indexOfTarget, lengthOfTarget,
-                indexOfAmount, lengthOfAmount,
-                indexOfAmountType, lengthOfAmountType;
-
-            switch (Key)
-            {
-                //You tried to hit TARGET, but missed!
-                case "12":
-
-
-                    indexOfTarget = 17;
-                    lengthOfTarget = Line.Length - 13 - indexOfTarget;
-
-                    ActionType = "Miss";
-                    Source = owningCharacterName;
-                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
-
-                    break;
-
-                //You increased nano on TARGET for AMOUNT points.
-                case "17":
-
-                    indexOfTarget = 22;
-                    lengthOfTarget = Line.LastIndexOf(" for ") - indexOfTarget;
-
-                    indexOfAmount = indexOfTarget + lengthOfTarget + 5;
-                    lengthOfAmount = Line.Length - 8 - indexOfAmount;
-
-                    ActionType = "Heal";
-                    Source = owningCharacterName;
-                    Target = Line.Substring(indexOfTarget, lengthOfTarget);
-                    Amount = Convert.ToInt32(Line.Substring(indexOfAmount, lengthOfAmount));
-                    DamageType = "Nano";
-
-                    break;
-
-            }
-        }
     }
 }

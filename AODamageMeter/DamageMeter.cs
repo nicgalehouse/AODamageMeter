@@ -44,17 +44,15 @@ namespace AODamageMeter
             string ownersID = _logPath.Split('\\', '/')
                 .LastOrDefault(d => d.StartsWith("Char"))
                 ?.Substring("Char".Length);
+            // ...And the character names that ID might correspond to from the currently opened instances of AO.
+            var potentialCharacterNames = Process.GetProcessesByName("AnarchyOnline")
+                .Where(p => p.MainWindowTitle.StartsWith("Anarchy Online - "))
+                .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length));
+            // Make the calls to people.anarchy-online.com concurrently.
+            var characters = await Character.GetOrCreateCharacters(potentialCharacterNames, CharacterType.PlayerCharacter);
 
             if (ownersID != null)
             {
-                // ...And the character names that ID might correspond to from the currently opened instances of AO.
-                var potentialCharacterNames = Process.GetProcessesByName("AnarchyOnline")
-                    .Where(p => p.MainWindowTitle.StartsWith("Anarchy Online - "))
-                    .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length));
-
-                // Make the calls to people.anarchy-online.com concurrently.
-                var characters = await Character.GetOrCreateCharacters(potentialCharacterNames, CharacterType.PlayerCharacter);
-
                 // If everything worked out, there'll be a character with a matching ID now.
                 Owner = characters.SingleOrDefault(c => ownersID == c.ID);
 
@@ -65,6 +63,11 @@ namespace AODamageMeter
                     Owner = characters.Single(c => c.ID == null);
                     Owner.ID = ownersID;
                 }
+            }
+            // If for some reason the ownersID wasn't found but there's only one instance open, assume it's the owner.
+            else if (characters.Length == 1)
+            {
+                Owner = characters[0];
             }
 
             Owner = Owner ?? (await Character.GetOrCreateCharacter("You", CharacterType.PlayerCharacter));

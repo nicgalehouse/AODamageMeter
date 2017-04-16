@@ -3,6 +3,7 @@
     public enum CharacterType
     {
         NonPlayerCharacter,
-        PlayerCharacter
+        PlayerCharacter,
+        Pet
     }
 }

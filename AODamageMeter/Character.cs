@@ -48,7 +48,7 @@ namespace AODamageMeter
 
         // Ignoring pets, it's very unlikely that a PC and an NPC of the same name will be participating in the same fight. In the case
         // of pets, we don't really have a way to distinguish them from a PC unless they're the meter owner's pets. And even then without
-        // some ad hoc, approximate work, we can only correlate the pet back to the owner if it has the same name. The case where the
+        // some ad hoc, approximate work, we can only correlate the pet back to the owner if it has a similar name. The case where the
         // meter owner has pets named after himself can be handled higher up, by creating a character w/ a name like "Owner's pet". The
         // case where anyone else has pets isn't worried about--if they name the pet the same as themselves, they'll get their pet's DPS,
         // but we won't be able to break down the DPS into individual buckets for the owner and the pet. But back to the original point,
@@ -63,8 +63,8 @@ namespace AODamageMeter
         // playing with the character Bloodcreeper, we'll wait for definitive proof that he's a PC, which only comes through 'me hit by player'.
         // We could use 'other hit by other' where the other is definitely an NPC and assume Bloodcreeper is a PC because NPC v NPC is
         // rare, but that leaves people who rename their pets or bureaucrats in trouble. Most people who've taken the cool NPC names
-        // don't play anymore took them years ago and don't play anymore, and the uncool NPC names probably aren't taken anyway. That
-        // being said, all the properties are settable to allow human interaction for setting more accurate values than we/PoRK have.
+        // took them years ago and don't play anymore, and the uncool NPC names probably won't be taken. That being said, all the properties
+        // are settable to allow human interaction for setting more accurate values than we/PoRK have.
         public static async Task<Character> GetOrCreateCharacter(string name, CharacterType? knownCharacterType = null)
         {
             if (_characters.TryGetValue(name, out Character character))
