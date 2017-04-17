@@ -9,10 +9,10 @@ namespace AODamageMeter
 {
     public class Fight
     {
-        private readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
-        private readonly List<FightEvent> _fightEvents = new List<FightEvent>();
-        private readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
-        private Stopwatch _stopwatch;
+        protected readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
+        protected readonly List<FightEvent> _fightEvents = new List<FightEvent>();
+        protected readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
+        protected Stopwatch _stopwatch;
 
         public DamageMeter DamageMeter { get; }
         public DateTime? StartTime => _fightEvents.FirstOrDefault()?.Timestamp;
@@ -20,7 +20,7 @@ namespace AODamageMeter
         public TimeSpan? Duration => _stopwatch?.Elapsed;
         public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
         public IReadOnlyList<FightEvent> FightEvents => _fightEvents;
-        public IReadOnlyDictionary<Character, FightCharacter> FightCharacters => _fightCharacters;
+        public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
 
         public Fight(DamageMeter damageMeter)
             => DamageMeter = damageMeter;
@@ -55,20 +55,11 @@ namespace AODamageMeter
             UpdateCharacters();
         }
 
-        public async Task<FightCharacter[]> GetOrCreateFightCharacters(params string[] names)
-        {
-            var characters = await Character.GetOrCreateCharacters(names);
-            var fightCharacters = new FightCharacter[characters.Length];
-            for (int i = 0; i < characters.Length; ++i)
-            {
-                fightCharacters[i] = GetOrCreateFightCharacter(characters[i]);
-            }
-
-            return fightCharacters;
-        }
-
         public async Task<FightCharacter> GetOrCreateFightCharacter(string name)
             => GetOrCreateFightCharacter(await Character.GetOrCreateCharacter(name));
+
+        public Task<FightCharacter[]> GetOrCreateFightCharacters(params string[] names)
+            => Task.WhenAll(names.Select(GetOrCreateFightCharacter).ToArray());
 
         public FightCharacter GetOrCreateFightCharacter(Character character)
         {

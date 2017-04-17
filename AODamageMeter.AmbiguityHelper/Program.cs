@@ -13,7 +13,7 @@ namespace AODamageMeter.AmbiguityHelper
             string[] ambiguousNames = File.ReadAllLines("AmbiguousNames.txt")
                 .SelectMany(l => l.Split())
                 .Select(n => n.Trim())
-                .Where(n => n.Length > 3 && n.Length < 13 && (n.All(char.IsLetterOrDigit) || n.EndsWith("-1")))
+                .Where(FitsPlayerNamingRequirements)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .Select(n => $"{char.ToUpper(n[0])}{n.Substring(1).ToLower()}")
                 .OrderBy(n => n)
@@ -28,5 +28,10 @@ namespace AODamageMeter.AmbiguityHelper
 
             Console.WriteLine($"        protected static readonly HashSet<string> _ambiguousNames = new HashSet<string> {{ {string.Join(", ", ambiguousNames.Select(n => $"\"{n}\""))} }};");
         }
+
+        public static bool FitsPlayerNamingRequirements(string name)
+            => name.Length > 3 && name.Length < 13
+            && (name.All(char.IsLetterOrDigit)
+                || name.Substring(0, name.Length - 2).All(char.IsLetterOrDigit) && name.EndsWith("-1"));
     }
 }

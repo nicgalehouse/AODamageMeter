@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AODamageMeter.Helpers;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -44,17 +45,21 @@ namespace AODamageMeter
             string ownersID = _logPath.Split('\\', '/')
                 .LastOrDefault(d => d.StartsWith("Char"))
                 ?.Substring("Char".Length);
+
             // ...And the character names that ID might correspond to from the currently opened instances of AO.
             var potentialCharacterNames = Process.GetProcessesByName("AnarchyOnline")
                 .Where(p => p.MainWindowTitle.StartsWith("Anarchy Online - "))
-                .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length));
+                .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length))
+                .ToArray();
+
             // Make the calls to people.anarchy-online.com concurrently.
-            var characters = await Character.GetOrCreateCharacters(potentialCharacterNames, CharacterType.PlayerCharacter);
+            var characters = await Character.GetOrCreateCharacters(potentialCharacterNames);
+            characters.ForEach(c => c.CharacterType = CharacterType.PlayerCharacter);
 
             if (ownersID != null)
             {
                 // If everything worked out, there'll be a character with a matching ID now.
-                Owner = characters.SingleOrDefault(c => ownersID == c.ID);
+                Owner = characters.SingleOrDefault(c => c.ID == ownersID);
 
                 // Maybe they just created the character though, so people.anarchy-online.com hasn't indexed it yet
                 // and the ID comes back as null. If there's only one w/ a null ID, deduce it's the owner.
@@ -70,7 +75,12 @@ namespace AODamageMeter
                 Owner = characters[0];
             }
 
-            Owner = Owner ?? (await Character.GetOrCreateCharacter("You", CharacterType.PlayerCharacter));
+            // And if all that failed, use the special name "You".
+            if (Owner == null)
+            {
+                Owner = await Character.GetOrCreateCharacter("You");
+                Owner.CharacterType = CharacterType.PlayerCharacter;
+            }
         }
 
         public async Task Update()

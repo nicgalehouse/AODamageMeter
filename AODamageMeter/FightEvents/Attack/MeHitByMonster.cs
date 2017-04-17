@@ -32,7 +32,11 @@ namespace AODamageMeter.FightEvents.Attack
                 || attackEvent.TryMatch(Crit, out match, out crit)
                 || attackEvent.TryMatch(Glance, out match, out glance))
             {
-                await attackEvent.SetSource(match, 1, CharacterType.NonPlayerCharacter);
+                // Don't deduce anything about the character type here. Could be from a pet of a player with the same name,
+                // and in that case we want to count the pet's damage in with the player's. Could be a pet following the
+                // other naming convention for pets, and in that case we want to keep the type as pet. If neither of those, it's
+                // already an NPC, so there's nothing to do.
+                await attackEvent.SetSource(match, 1);
                 attackEvent.AttackResult = AttackResult.DirectHit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);

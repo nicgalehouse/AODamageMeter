@@ -5,7 +5,15 @@ namespace AODamageMeter
 {
     public class FightCharacter
     {
+        protected readonly HashSet<FightCharacter> _pets = new HashSet<FightCharacter>();
+
         public Character Character { get; }
+        public IReadOnlyCollection<FightCharacter> Pets => _pets;
+        public void RegisterPet(FightCharacter pet)
+        {
+            Character.RegisterPet(pet.Character);
+            _pets.Add(pet);
+        }
 
 
 
