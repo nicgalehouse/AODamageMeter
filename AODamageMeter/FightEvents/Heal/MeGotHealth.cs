@@ -10,7 +10,7 @@ namespace AODamageMeter.FightEvents.Heal
     // heal yourself, there's a single unsourced event. We could try to to connect these events together
     // so we know which unsourced events are from you and which are from other source's, but we're not. So
     // right now, all the unsourced tell you how much you've been healed in total, and all the sourced give
-    // you an approximation of how much you've been healed from any specific source source.
+    // you an approximation of how much you've been healed from any specific source.
     public class MeGotHealth : HealEvent
     {
         public const string EventName = "Me got health";

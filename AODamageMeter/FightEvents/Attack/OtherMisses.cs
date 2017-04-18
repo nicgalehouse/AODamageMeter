@@ -9,8 +9,8 @@ namespace AODamageMeter.FightEvents.Attack
         public const string EventName = "Other misses";
 
         public static readonly Regex
-            Normal =  CreateRegex($"{SOURCE} tried to hit you, but missed!"),
-            Special = CreateRegex($"{SOURCE} tries to attack you with {DAMAGETYPE}, but misses!");
+            Normal =  CreateRegex($"{SOURCE} tried to hit you, but missed!", rightToLeft: true),
+            Special = CreateRegex($"{SOURCE} tries to attack you with {DAMAGETYPE}, but misses!", rightToLeft: true);
 
         public OtherMisses(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)

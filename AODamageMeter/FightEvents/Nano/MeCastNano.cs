@@ -46,7 +46,7 @@ namespace AODamageMeter.FightEvents.Nano
                     }
                 }
 
-                // It's not obvious that these if checks are necessary, but I think they might be.
+                // It's not obvious that these two checks are necessary, but I think they might be.
                 if (startEvent != null && startEvent.EndEvent == null)
                 {
                     startEvent.CastResult = success ? AODamageMeter.CastResult.Success

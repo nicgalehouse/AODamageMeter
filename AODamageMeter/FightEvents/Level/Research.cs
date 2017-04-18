@@ -8,7 +8,7 @@ namespace AODamageMeter.FightEvents.Level
         public const string EventName = "Research";
 
         public static readonly Regex
-            Allocated = CreateRegex($"{AMOUNT} of your XP were allocated to your personal research."),
+            Allocated = CreateRegex($"{AMOUNT} of your XP were allocated to your personal research.", rightToLeft: true),
             Completed = CreateRegex($"You have completed your research on \"(.+)\"");
 
         public Research(Fight fight, DateTime timestamp, string description)

@@ -21,6 +21,7 @@ namespace AODamageMeter.FightEvents.Attack
             var attackEvent = new MeHitByEnvironment(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
             attackEvent.AttackResult = AttackResult.IndirectHit;
+            attackEvent.DamageType = AODamageMeter.DamageType.Environment;
 
             if (attackEvent.TryMatch(Normal, out Match match))
             {

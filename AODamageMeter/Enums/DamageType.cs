@@ -9,6 +9,7 @@ namespace AODamageMeter
         Projectile,
         Reflect,
         Shield,
+        Environment
     }
 
     public static class DamageTypeHelpers
@@ -19,7 +20,8 @@ namespace AODamageMeter
             ["Melee"] = DamageType.Melee,
             ["Projectile"] = DamageType.Projectile,
             ["Reflect"] = DamageType.Reflect,
-            ["Shield"] = DamageType.Shield
+            ["Shield"] = DamageType.Shield,
+            ["Environment"] = DamageType.Environment
         };
 
         public static DamageType GetDamageType(string value)
