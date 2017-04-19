@@ -37,7 +37,7 @@ namespace AODamageMeter.FightEvents.Attack
                 // other naming convention for pets, and in that case we want to keep the type as pet. If neither of those,
                 // it's already an NPC, so there's nothing to do.
                 await attackEvent.SetSource(match, 1);
-                attackEvent.AttackResult = AttackResult.DirectHit;
+                attackEvent.AttackResult = AttackResult.Hit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
                 attackEvent.AttackModifier = crit ? AODamageMeter.AttackModifier.Crit

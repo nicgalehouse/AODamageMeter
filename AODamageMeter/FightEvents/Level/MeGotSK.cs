@@ -20,6 +20,7 @@ namespace AODamageMeter.FightEvents.Level
         public static MeGotSK Create(Fight fight, DateTime timestamp, string description)
         {
             var levelEvent = new MeGotSK(fight, timestamp, description);
+            levelEvent.SetSourceToOwner();
             levelEvent.LevelType = LevelType.Shadow;
 
             if (levelEvent.TryMatch(Gained, out Match match))

@@ -23,6 +23,7 @@ namespace AODamageMeter.FightEvents.Level
         public static MeGotXP Create(Fight fight, DateTime timestamp, string description)
         {
             var levelEvent = new MeGotXP(fight, timestamp, description);
+            levelEvent.SetSourceToOwner();
 
             if (levelEvent.TryMatch(Received, out Match match))
             {

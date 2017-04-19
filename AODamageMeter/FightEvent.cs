@@ -32,29 +32,32 @@ namespace AODamageMeter
             DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 
-            if (eventName == MeCastNano.EventName) return MeCastNano.Create(fight, timestamp, description);
-            if (eventName == MeGotHealth.EventName) return await MeGotHealth.Create(fight, timestamp, description);
-            if (eventName == MeGotNano.EventName) return await MeGotNano.Create(fight, timestamp, description);
-            if (eventName == MeGotSK.EventName) return MeGotSK.Create(fight, timestamp, description);
-            if (eventName == MeGotXP.EventName) return MeGotXP.Create(fight, timestamp, description);
-            if (eventName == MeHitByEnvironment.EventName) return MeHitByEnvironment.Create(fight, timestamp, description);
-            if (eventName == MeHitByMonster.EventName) return await MeHitByMonster.Create(fight, timestamp, description);
-            if (eventName == MeHitByNano.EventName) return await MeHitByNano.Create(fight, timestamp, description);
-            if (eventName == MeHitByPlayer.EventName) return await MeHitByPlayer.Create(fight, timestamp, description);
-            if (eventName == OtherHitByNano.EventName) return await OtherHitByNano.Create(fight, timestamp, description);
-            if (eventName == OtherHitByOther.EventName) return await OtherHitByOther.Create(fight, timestamp, description);
-            if (eventName == OtherMisses.EventName) return await OtherMisses.Create(fight, timestamp, description);
-            if (eventName == Research.EventName) return Research.Create(fight, timestamp, description);
-            if (eventName == SystemEvent.EventName) return SystemEvent.Create(fight, timestamp, description);
-            if (eventName == YouGaveHealth.EventName) return await YouGaveHealth.Create(fight, timestamp, description);
-            if (eventName == YouGaveNano.EventName) return await YouGaveNano.Create(fight, timestamp, description);
-            if (eventName == YouHitOther.EventName) return await YouHitOther.Create(fight, timestamp, description);
-            if (eventName == YouHitOtherWithNano.EventName) return await YouHitOtherWithNano.Create(fight, timestamp, description);
-            if (eventName == YourMisses.EventName) return await YourMisses.Create(fight, timestamp, description);
-            if (eventName == YourPetHitByMonster.EventName) return await YourPetHitByMonster.Create(fight, timestamp, description);
-            if (eventName == YourPetHitByNano.EventName) return await YourPetHitByNano.Create(fight, timestamp, description);
-            if (eventName == YourPetHitByOther.EventName) return await YourPetHitByOther.Create(fight, timestamp, description);
-            throw new NotSupportedException($"{eventName}: {description}");
+            switch (eventName)
+            {
+                case MeCastNano.EventName: return MeCastNano.Create(fight, timestamp, description);
+                case MeGotHealth.EventName: return await MeGotHealth.Create(fight, timestamp, description);
+                case MeGotNano.EventName: return await MeGotNano.Create(fight, timestamp, description);
+                case MeGotSK.EventName: return MeGotSK.Create(fight, timestamp, description);
+                case MeGotXP.EventName: return MeGotXP.Create(fight, timestamp, description);
+                case MeHitByEnvironment.EventName: return MeHitByEnvironment.Create(fight, timestamp, description);
+                case MeHitByMonster.EventName: return await MeHitByMonster.Create(fight, timestamp, description);
+                case MeHitByNano.EventName: return await MeHitByNano.Create(fight, timestamp, description);
+                case MeHitByPlayer.EventName: return await MeHitByPlayer.Create(fight, timestamp, description);
+                case OtherHitByNano.EventName: return await OtherHitByNano.Create(fight, timestamp, description);
+                case OtherHitByOther.EventName: return await OtherHitByOther.Create(fight, timestamp, description);
+                case OtherMisses.EventName: return await OtherMisses.Create(fight, timestamp, description);
+                case Research.EventName: return Research.Create(fight, timestamp, description);
+                case SystemEvent.EventName: return SystemEvent.Create(fight, timestamp, description);
+                case YouGaveHealth.EventName: return await YouGaveHealth.Create(fight, timestamp, description);
+                case YouGaveNano.EventName: return await YouGaveNano.Create(fight, timestamp, description);
+                case YouHitOther.EventName: return await YouHitOther.Create(fight, timestamp, description);
+                case YouHitOtherWithNano.EventName: return await YouHitOtherWithNano.Create(fight, timestamp, description);
+                case YourMisses.EventName: return await YourMisses.Create(fight, timestamp, description);
+                case YourPetHitByMonster.EventName: return await YourPetHitByMonster.Create(fight, timestamp, description);
+                case YourPetHitByNano.EventName: return await YourPetHitByNano.Create(fight, timestamp, description);
+                case YourPetHitByOther.EventName: return await YourPetHitByOther.Create(fight, timestamp, description);
+                default: throw new NotSupportedException($"{eventName}: {description}");
+            }
         }
 
         public DamageMeter DamageMeter => Fight.DamageMeter;
@@ -108,9 +111,9 @@ namespace AODamageMeter
 
             if (name == DamageMeter.Owner.Name)
             {
-                Source = await Fight.GetOrCreateFightCharacter($"{name}'s pets");
+                Source = await Fight.GetOrCreateFightCharacter($"{name}'s pets", Timestamp);
                 Source.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner);
+                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
                 petOwner.RegisterPet(Source);
                 return;
             }
@@ -120,14 +123,14 @@ namespace AODamageMeter
                 && Character.TryGetCharacter(nameParts[0], out Character character)
                 && character.CharacterType == CharacterType.PlayerCharacter)
             {
-                Source = await Fight.GetOrCreateFightCharacter(name);
+                Source = await Fight.GetOrCreateFightCharacter(name, Timestamp);
                 Source.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(character);
+                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(character, Timestamp);
                 petOwner.RegisterPet(Source);
                 return;
             }
 
-            Source = await Fight.GetOrCreateFightCharacter(name);
+            Source = await Fight.GetOrCreateFightCharacter(name, Timestamp);
         }
 
         protected async Task SetTarget(Match match, int index)
@@ -136,9 +139,9 @@ namespace AODamageMeter
 
             if (name == DamageMeter.Owner.Name)
             {
-                Target = await Fight.GetOrCreateFightCharacter($"{name}'s pets");
+                Target = await Fight.GetOrCreateFightCharacter($"{name}'s pets", Timestamp);
                 Target.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner);
+                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
                 petOwner.RegisterPet(Target);
                 return;
             }
@@ -148,27 +151,27 @@ namespace AODamageMeter
                 && Character.TryGetCharacter(nameParts[0], out Character character)
                 && character.CharacterType == CharacterType.PlayerCharacter)
             {
-                Target = await Fight.GetOrCreateFightCharacter(name);
+                Target = await Fight.GetOrCreateFightCharacter(name, Timestamp);
                 Target.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(character);
+                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(character, Timestamp);
                 petOwner.RegisterPet(Target);
                 return;
             }
 
-            Target = await Fight.GetOrCreateFightCharacter(name);
+            Target = await Fight.GetOrCreateFightCharacter(name, Timestamp);
         }
 
         protected Task SetSourceAndTarget(Match match, int sourceIndex, int targetIndex)
             => Task.WhenAll(SetSource(match, sourceIndex), SetTarget(match, targetIndex));
 
         protected void SetSourceToOwner()
-            => Source = Fight.GetOrCreateFightCharacter(DamageMeter.Owner);
+            => Source = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
 
         protected void SetTargetToOwner()
-            => Target = Fight.GetOrCreateFightCharacter(DamageMeter.Owner);
+            => Target = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
 
         protected void SetSourceAndTargetToOwner()
-            => Source = Target = Fight.GetOrCreateFightCharacter(DamageMeter.Owner);
+            => Source = Target = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
 
         protected void SetAmount(Match match, int index)
             => Amount = int.Parse(match.Groups[index].Value);

@@ -2,9 +2,9 @@
 {
     public enum AttackResult
     {
-        DirectHit,
-        IndirectHit,
+        Hit,
         Missed,
+        IndirectHit,
         Absorbed
     }
 }

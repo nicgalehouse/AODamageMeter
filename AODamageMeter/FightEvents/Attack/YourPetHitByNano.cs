@@ -25,7 +25,7 @@ namespace AODamageMeter.FightEvents.Attack
         public static async Task<YourPetHitByNano> Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new YourPetHitByNano(fight, timestamp, description);
-            attackEvent.AttackResult = AttackResult.DirectHit;
+            attackEvent.AttackResult = AttackResult.Hit;
 
             if (attackEvent.TryMatch(Sourced, out Match match))
             {

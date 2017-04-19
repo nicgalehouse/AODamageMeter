@@ -21,7 +21,7 @@ namespace AODamageMeter.FightEvents.Attack
         {
             var attackEvent = new YouHitOtherWithNano(fight, timestamp, description);
             attackEvent.SetSourceToOwner();
-            attackEvent.AttackResult = AttackResult.DirectHit;
+            attackEvent.AttackResult = AttackResult.Hit;
 
             if (attackEvent.TryMatch(Normal, out Match match))
             {

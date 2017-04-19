@@ -23,7 +23,7 @@ namespace AODamageMeter.FightEvents.Attack
         {
             var attackEvent = new MeHitByPlayer(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
-            attackEvent.AttackResult = AttackResult.DirectHit;
+            attackEvent.AttackResult = AttackResult.Hit;
 
             bool crit = false, glance = false;
             if (attackEvent.TryMatch(Normal, out Match match, out bool normal)

@@ -21,7 +21,7 @@ namespace AODamageMeter.FightEvents.Attack
         public static async Task<OtherHitByNano> Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new OtherHitByNano(fight, timestamp, description);
-            attackEvent.AttackResult = AttackResult.DirectHit;
+            attackEvent.AttackResult = AttackResult.Hit;
 
             if (attackEvent.TryMatch(Sourced, out Match match))
             {
