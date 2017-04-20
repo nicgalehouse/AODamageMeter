@@ -47,7 +47,7 @@ namespace AODamageMeter.FightEvents.Attack
                 attackEvent.SetAmount(match, 2);
                 attackEvent.DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
             }
-            else attackEvent.Unmatched = true;
+            else attackEvent.IsUnmatched = true;
 
             return attackEvent;
         }

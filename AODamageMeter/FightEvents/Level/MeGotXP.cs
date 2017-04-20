@@ -51,7 +51,7 @@ namespace AODamageMeter.FightEvents.Level
                 levelEvent.SetAmount(match, 1);
                 levelEvent.LevelType = LevelType.PvpTeam;
             }
-            else levelEvent.Unmatched = true;
+            else levelEvent.IsUnmatched = true;
 
             return levelEvent;
         }

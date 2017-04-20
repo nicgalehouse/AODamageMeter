@@ -38,7 +38,7 @@ namespace AODamageMeter.FightEvents.Attack
                     : glance ? AODamageMeter.AttackModifier.Glance
                     : (AttackModifier?)null;
             }
-            else attackEvent.Unmatched = true;
+            else attackEvent.IsUnmatched = true;
 
             return attackEvent;
         }

@@ -33,7 +33,7 @@ namespace AODamageMeter.FightEvents.Attack
             {
                 await attackEvent.SetTarget(match, 1);
             }
-            else attackEvent.Unmatched = true;
+            else attackEvent.IsUnmatched = true;
 
             return attackEvent;
         }

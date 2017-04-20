@@ -28,7 +28,7 @@ namespace AODamageMeter.FightEvents.Heal
                 await healEvent.SetTarget(match, 1);
                 healEvent.SetAmount(match, 2);
             }
-            else healEvent.Unmatched = true;
+            else healEvent.IsUnmatched = true;
 
             return healEvent;
         }

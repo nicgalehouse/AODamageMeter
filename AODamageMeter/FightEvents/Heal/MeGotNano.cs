@@ -29,7 +29,7 @@ namespace AODamageMeter.FightEvents.Heal
                 await healEvent.SetSource(match, 1);
                 healEvent.SetAmount(match, 2);
             }
-            else healEvent.Unmatched = true;
+            else healEvent.IsUnmatched = true;
 
             return healEvent;
         }

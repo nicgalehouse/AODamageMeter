@@ -16,7 +16,7 @@ namespace AODamageMeter.FightEvents
         public static SystemEvent Create(Fight fight, DateTime timestamp, string description)
         {
             var systemEvent = new SystemEvent(fight, timestamp, description);
-            systemEvent.Unmatched = true;
+            systemEvent.IsUnmatched = true;
 
             return systemEvent;
         }

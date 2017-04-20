@@ -21,16 +21,92 @@ namespace AODamageMeter
         protected readonly List<LevelEvent> _levelEvents = new List<LevelEvent>();
         protected readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
         protected readonly List<SystemEvent> _systemEvents = new List<SystemEvent>();
+        protected readonly List<FightEvent> _unmatchedEvents = new List<FightEvent>();
         public IReadOnlyList<AttackEvent> AttackEvents => _attackEvents;
         public IReadOnlyList<HealEvent> HealEvents => _healEvents;
         public IReadOnlyList<LevelEvent> LevelEvents => _levelEvents;
         public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
         public IReadOnlyList<SystemEvent> SystemEvents => _systemEvents;
+        public IReadOnlyList<FightEvent> UnmatchedEvents => _unmatchedEvents;
 
         public DateTime? StartTime { get; protected set; }
         public DateTime? LatestTime { get; protected set; }
         public TimeSpan? Duration => LatestTime - StartTime;
         public bool HasStarted => StartTime.HasValue;
+
+        protected bool _isTotalDamageDoneCurrent;
+        protected int _totalDamageDone;
+        public int TotalDamageDone
+        {
+            get
+            {
+                if (!_isTotalDamageDoneCurrent)
+                {
+                    _totalDamageDone = FightCharacters.Sum(c => c.DamageDone);
+                    _isTotalDamageDoneCurrent = true;
+                }
+
+                return _totalDamageDone;
+            }
+        }
+
+        protected bool _isMaxDamageDoneCurrent;
+        protected int _maxDamageDone;
+        public int MaxDamageDone
+        {
+            get
+            {
+                if (!_isMaxDamageDoneCurrent)
+                {
+                    _maxDamageDone = FightCharacters.Max(c => c.DamageDone);
+                    _isMaxDamageDoneCurrent = true;
+                }
+
+                return _maxDamageDone;
+            }
+        }
+
+        public async Task AddFightEvent(string line)
+        {
+            FightEvent fightEvent = await FightEvent.Create(this, line);
+            StartTime = StartTime ?? fightEvent.Timestamp;
+            LatestTime = fightEvent.Timestamp;
+
+            if (fightEvent.IsUnmatched)
+            {
+                _unmatchedEvents.Add(fightEvent);
+                return;
+            }
+
+            switch (fightEvent)
+            {
+                case AttackEvent attackEvent:
+                    _attackEvents.Add(attackEvent);
+                    attackEvent.Source?.AddSourceAttackEvent(attackEvent);
+                    attackEvent.Target?.AddTargetAttackEvent(attackEvent);
+                    break;
+                case HealEvent healEvent:
+                    _healEvents.Add(healEvent);
+                    healEvent.Source?.AddSourceHealEvent(healEvent);
+                    healEvent.Target?.AddTargetHealEvent(healEvent);
+                    break;
+                case LevelEvent levelEvent:
+                    _levelEvents.Add(levelEvent);
+                    levelEvent.Source?.AddLevelEvent(levelEvent);
+                    break;
+                case NanoEvent nanoEvent:
+                    _nanoEvents.Add(nanoEvent);
+                    nanoEvent.Source?.AddNanoEvent(nanoEvent);
+                    break;
+                case SystemEvent systemEvent:
+                    _systemEvents.Add(systemEvent);
+                    break;
+                default: throw new NotImplementedException();
+            }
+
+            _isTotalDamageDoneCurrent = false;
+            _isMaxDamageDoneCurrent = false;
+        }
 
         public async Task<FightCharacter> GetOrCreateFightCharacter(string name, DateTime enteredTime)
             => GetOrCreateFightCharacter(await Character.GetOrCreateCharacter(name), enteredTime);
@@ -43,74 +119,6 @@ namespace AODamageMeter
             fightCharacter = new FightCharacter(this, character, enteredTime);
             _fightCharacters[character] = fightCharacter;
             return fightCharacter;
-        }
-
-        public async Task AddFightEvent(string line)
-        {
-            FightEvent fightEvent = await FightEvent.Create(this, line);
-            StartTime = StartTime ?? fightEvent.Timestamp;
-            LatestTime = fightEvent.Timestamp;
-
-            switch (fightEvent)
-            {
-                case AttackEvent attackEvent:
-                    _attackEvents.Add(attackEvent);
-                    attackEvent.Source?.AddSourceAttackEvent(attackEvent);
-                    attackEvent.Target?.AddTargetAttackEvent(attackEvent);
-                    break;
-            }
-
-            else if (fightEvent is HealEvent) _healEvents.Add((HealEvent)fightEvent);
-            else if (fightEvent is LevelEvent) _levelEvents.Add((LevelEvent)fightEvent);
-            else if (fightEvent is NanoEvent) _nanoEvents.Add((NanoEvent)fightEvent);
-            else if (fightEvent is SystemEvent) _systemEvents.Add((SystemEvent)fightEvent);
-            else throw new NotImplementedException();
-
-
-            int sourceIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Source);
-            int targestIndex = CharactersList.FindIndex(Character => Character.Name == loggedEvent.Target);
-
-            if (sourceIndex != -1)
-            {
-                CharactersList[sourceIndex].AddEvent(loggedEvent, true);
-            }
-            else
-            {
-                CharactersList.Add(new FightCharacter(loggedEvent, true, Duration.ElapsedMilliseconds));
-            }
-
-            if (targestIndex != -1)
-            {
-                CharactersList[targestIndex].AddEvent(loggedEvent, false);
-            }
-            else
-            {
-                CharactersList.Add(new FightCharacter(loggedEvent, false, Duration.ElapsedMilliseconds));
-            }
-
-            UpdateCharacters();
-        }
-
-
-
-        public void UpdateCharactersTime()
-        {
-            foreach (FightCharacter character in CharactersList)
-            {
-                character.Update(Duration.ElapsedMilliseconds);
-            }
-        }
-
-        public void UpdateCharacters()
-        {
-            int maxDamage = CharactersList.Max(x => x.DamageDone);
-            int totalDamage = CharactersList.Sum(x => x.DamageDone);
-
-            foreach (FightCharacter character in CharactersList)
-            {
-                character.SetPercentOfMaxDamage(maxDamage);
-                character.SetPercentOfDamageDone(totalDamage);
-            }
         }
     }
 }

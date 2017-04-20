@@ -90,7 +90,6 @@ namespace AODamageMeter
             {
                 await CurrentFight.AddFightEvent(line);
             }
-            CurrentFight.UpdateCharactersTime();
         }
 
         public void Dispose()

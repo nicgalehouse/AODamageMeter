@@ -32,7 +32,7 @@ namespace AODamageMeter.FightEvents.Level
                 levelEvent.SetAmount(match, 1);
                 levelEvent.Amount = -levelEvent.Amount;
             }
-            else levelEvent.Unmatched = true;
+            else levelEvent.IsUnmatched = true;
 
             return levelEvent;
         }

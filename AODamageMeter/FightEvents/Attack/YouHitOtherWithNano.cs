@@ -29,7 +29,7 @@ namespace AODamageMeter.FightEvents.Attack
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
             }
-            else attackEvent.Unmatched = true;
+            else attackEvent.IsUnmatched = true;
 
             return attackEvent;
         }

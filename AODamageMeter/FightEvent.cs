@@ -56,7 +56,7 @@ namespace AODamageMeter
                 case YourPetHitByMonster.EventName: return await YourPetHitByMonster.Create(fight, timestamp, description);
                 case YourPetHitByNano.EventName: return await YourPetHitByNano.Create(fight, timestamp, description);
                 case YourPetHitByOther.EventName: return await YourPetHitByOther.Create(fight, timestamp, description);
-                default: throw new NotSupportedException($"{eventName}: {description}");
+                default: throw new NotImplementedException($"{eventName}: {description}");
             }
         }
 
@@ -65,7 +65,7 @@ namespace AODamageMeter
         public abstract string Name { get; }
         public DateTime Timestamp { get; }
         public string Description { get; }
-        public bool Unmatched { get; protected set; }
+        public bool IsUnmatched { get; protected set; }
         public FightCharacter Source { get; protected set; }
         public FightCharacter Target { get; protected set; }
         public int? Amount { get; protected set; }

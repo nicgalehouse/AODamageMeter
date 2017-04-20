@@ -33,8 +33,8 @@ namespace AODamageMeter.FightEvents.Nano
             }
             else if (nanoEvent.TryMatch(Success, out match, out bool success)
                 || nanoEvent.TryMatch(Resisted, out match, out resisted)
-                || nanoEvent.TryMatch(Resisted, out match, out countered)
-                || nanoEvent.TryMatch(Resisted, out match, out aborted))
+                || nanoEvent.TryMatch(Countered, out match, out countered)
+                || nanoEvent.TryMatch(Aborted, out match, out aborted))
             {
                 MeCastNano startEvent = null;
                 for (int i = fight.NanoEvents.Count - 1; i >= 0; --i)
@@ -58,7 +58,7 @@ namespace AODamageMeter.FightEvents.Nano
                     nanoEvent.CastResult = startEvent.CastResult;
                 }
             }
-            else nanoEvent.Unmatched = true;
+            else nanoEvent.IsUnmatched = true;
 
             return nanoEvent;
         }

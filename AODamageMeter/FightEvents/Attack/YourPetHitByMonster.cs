@@ -32,7 +32,7 @@ namespace AODamageMeter.FightEvents.Attack
                 attackEvent.AttackResult = AttackResult.IndirectHit;
                 attackEvent.DamageType = AODamageMeter.DamageType.Environment;
             }
-            else attackEvent.Unmatched = true;
+            else attackEvent.IsUnmatched = true;
 
             return attackEvent;
         }
