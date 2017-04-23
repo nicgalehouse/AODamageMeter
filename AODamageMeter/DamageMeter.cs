@@ -1,5 +1,6 @@
 ﻿using AODamageMeter.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,16 +10,11 @@ namespace AODamageMeter
 {
     public class DamageMeter : IDisposable
     {
-        public static readonly DamageMeter Empty = new DamageMeter();
+        protected readonly string _logPath;
+        protected readonly FileStream _logFileStream;
+        protected readonly StreamReader _logStreamReader;
 
-        private readonly string _logPath;
-        private readonly FileStream _logFileStream;
-        private readonly StreamReader _logStreamReader;
-
-        private DamageMeter()
-        { }
-
-        private DamageMeter(string logPath)
+        protected DamageMeter(string logPath)
         {
             _logPath = logPath;
             _logFileStream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
@@ -28,18 +24,40 @@ namespace AODamageMeter
         public static async Task<DamageMeter> Create(string logPath)
         {
             var damageMeter = new DamageMeter(logPath);
-            await damageMeter._logStreamReader.ReadToEndAsync();
-            await damageMeter.SetOwner();
-            damageMeter.CurrentFight = new Fight(damageMeter);
-
+            await damageMeter.SetOwner().ConfigureAwait(false);
             return damageMeter;
         }
 
-        public Character Owner { get; private set; }
-        public Fight CurrentFight { get; private set; }
-        public bool IsPaused { get; set; }
+        public Character Owner { get; protected set; }
 
-        private async Task SetOwner()
+        protected readonly List<Fight> _previousFights = new List<Fight>();
+        public IReadOnlyList<Fight> PreviousFights { get; protected set; }
+        public Fight CurrentFight { get; protected set; }
+
+        public async Task StartNewFight(bool savePreviousFight = false)
+        {
+            if (savePreviousFight && (CurrentFight?.HasStarted ?? false))
+            {
+                _previousFights.Add(CurrentFight);
+            }
+
+            await SkipToEnd();
+            CurrentFight = new Fight(this);
+        }
+
+        public async Task Update()
+        {
+            string line;
+            while ((line = _logStreamReader.ReadLine()) != null)
+            {
+                await CurrentFight.AddFightEvent(line).ConfigureAwait(false);
+            }
+        }
+
+        public Task SkipToEnd()
+            => _logStreamReader.ReadToEndAsync();
+
+        protected async Task SetOwner()
         {
             // We can (probably?) find the owner's ID from the specified log path...
             string ownersID = _logPath.Split('\\', '/')
@@ -53,7 +71,7 @@ namespace AODamageMeter
                 .ToArray();
 
             // Make the calls to people.anarchy-online.com concurrently.
-            var characters = await Character.GetOrCreateCharacters(potentialCharacterNames);
+            var characters = await Character.GetOrCreateCharacters(potentialCharacterNames).ConfigureAwait(false);
             characters.ForEach(c => c.CharacterType = CharacterType.PlayerCharacter);
 
             if (ownersID != null)
@@ -78,17 +96,8 @@ namespace AODamageMeter
             // And if all that failed, use the special name "You".
             if (Owner == null)
             {
-                Owner = await Character.GetOrCreateCharacter("You");
+                Owner = await Character.GetOrCreateCharacter("You").ConfigureAwait(false);
                 Owner.CharacterType = CharacterType.PlayerCharacter;
-            }
-        }
-
-        public async Task Update()
-        {
-            string line;
-            while ((line = _logStreamReader.ReadLine()) != null)
-            {
-                await CurrentFight.AddFightEvent(line);
             }
         }
 

@@ -1,44 +1,45 @@
-﻿using System.Drawing;
-
-namespace AODamageMeter.UI.ViewModels
+﻿namespace AODamageMeter.UI.ViewModels
 {
     public abstract class RowViewModelBase : ViewModelBase
     {
-        protected string _leftText;
-        public virtual string LeftText
+        protected FightCharacter _fightCharacter;
+
+        protected RowViewModelBase(FightCharacter fightCharacter)
         {
-            get => _leftText;
-            set => Set(ref _leftText, value);
+            _fightCharacter = fightCharacter;
+            Update();
         }
 
-        protected Bitmap _icon;
-        public virtual Bitmap Icon
+        public string Name => _fightCharacter.Name;
+
+        protected string _iconPath;
+        public string IconPath
         {
-            get => _icon;
-            set => Set(ref _icon, value);
+            get => _iconPath;
+            protected set => Set(ref _iconPath, value);
         }
 
-        protected string _color;
-        public virtual string Color
+        protected string _colorHexCode;
+        public string ColorHexCode
         {
-            get => _color;
-            set => Set(ref _color, value);
+            get => _colorHexCode;
+            protected set => Set(ref _colorHexCode, value);
         }
 
         protected double _width;
-        public virtual double Width
+        public double Width
         {
             get => _width;
-            set => Set(ref _width, value);
+            protected set => Set(ref _width, value);
         }
 
         protected string _rightText;
-        public virtual string RightText
+        public string RightText
         {
             get => _rightText;
-            set => Set(ref _rightText, value);
+            protected set => Set(ref _rightText, value);
         }
 
-        public abstract void Update(FightCharacter character);
+        public abstract void Update();
     }
 }

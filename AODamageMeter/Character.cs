@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AODamageMeter.Helpers;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -24,7 +26,7 @@ namespace AODamageMeter
         protected string _id;
         public string ID
         {
-            get => CharacterType == CharacterType.PlayerCharacter ? ID : null;
+            get => CharacterType == CharacterType.PlayerCharacter ? _id : null;
             set => _id = value;
         }
 
@@ -54,6 +56,33 @@ namespace AODamageMeter
             _pets.Add(pet);
         }
 
+        public static async Task<Character> GetOrCreateCharacter(string name)
+        {
+            if (_characters.TryGetValue(name, out Character character))
+                return character;
+
+            character = await GetOrCreateCharacterWorker(name).ConfigureAwait(false);
+            _characters.Add(name, character);
+            return character;
+        }
+
+        public static async Task<Character[]> GetOrCreateCharacters(params string[] names)
+        {
+            // GetOrCreateCharacterWorker is stateless so it's safe to run them in parallel like this. All of the tasks will hit the await,
+            // the HTTP requests will be made concurrently, and then as they return they may finish up in parallel on different thread
+            // pool threads. Even if we weren't using configure await false, we couldn't rely on them not running in parallel, because whatever
+            // app is using our library might not have a synchronization context that requires a sync back to a main thread (like WPF does).
+            // So if we just fired off Task.WhenAll(names.Select(GetOrCreateCharacter).ToArray()), there'd be a chance of adding to the dictionary
+            // simultaneously from multiple threads, but dictionary adds aren't thread-safe.
+            var newCharacters = await Task.WhenAll(names
+                .Where(n => !_characters.ContainsKey(n))
+                .Select(GetOrCreateCharacterWorker)
+                .ToArray()).ConfigureAwait(false);
+            newCharacters.ForEach(c => _characters.Add(c.Name, c));
+
+            return names.Select(n => _characters[n]).ToArray();
+        }
+
         // Ignoring pets, it's very unlikely that a PC and an NPC of the same name will be participating in the same fight. For more
         // details about pets, see the comment in FightEvent.cs. To summarize, we're able to see when a pet is named the same as the
         // meter owner, and put it under a character named "<Owner>'s pets", so the structure I'm about to describe is flexible enough.
@@ -68,41 +97,38 @@ namespace AODamageMeter
         // playing with the character Bloodcreeper, we'll wait for definitive proof that he's a PC, which only comes through 'me hit by player'.
         // We could use 'other hit by other' where the other is definitely an NPC and assume Bloodcreeper is a PC because NPC v NPC is
         // rare, but that leaves people who rename their pets or bureaucrats in trouble. Could allow setting character type through the UI.
-        public static async Task<Character> GetOrCreateCharacter(string name)
+        // -----------------------------------------------------------------------------------------------------------------------------
+        // This method encapsulates the stateless part of the GetOrCreateCharacter process that can be run in parallel for multiple characters.
+        protected static async Task<Character> GetOrCreateCharacterWorker(string name)
         {
-            if (_characters.TryGetValue(name, out Character character))
-                return character;
+            Character character = null;
 
             // Even if we know it won't end up being a PC, we still want to get the PC info, in case the type is changed in the future.
             if (FitsPlayerNamingRequirements(name))
             {
-                var response = await _httpClient.GetAsync($"http://people.anarchy-online.com/character/bio/d/5/name/{name}/bio.xml?data_type=json");
+                var response = await _httpClient
+                    .GetAsync($"http://people.anarchy-online.com/character/bio/d/5/name/{name}/bio.xml?data_type=json").ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
-                    var characterBio = await response.Content.ReadAsAsync<dynamic>();
+                    var characterBio = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
                     if (characterBio != null) // If the character doesn't exist/hasn't been indexed yet, the JSON returned is null.
                     {
                         var characterInfo = characterBio[0];
                         var organizationInfo = characterBio[1];
-                        var profession = Profession.All.Single(p => p.Name == characterInfo.PROF);
+                        var profession = Profession.All.Single(p => p.Name == (string)characterInfo.PROF);
                         bool isNameAmbiguous = _ambiguousNames.Contains(name);
                         character = new Character(name, isNameAmbiguous ? CharacterType.NonPlayerCharacter : CharacterType.PlayerCharacter)
                         {
                             ID = characterInfo.CHAR_INSTANCE,
                             Profession = profession,
-                            Organization = organizationInfo?.NAME
+                            Organization = organizationInfo as JObject == null ? null : organizationInfo.NAME
                         };
                     }
                 }
             }
 
-            character = character ?? new Character(name, CharacterType.NonPlayerCharacter);
-            _characters.Add(name, character);
-            return character;
+            return character ?? new Character(name, CharacterType.NonPlayerCharacter);
         }
-
-        public static Task<Character[]> GetOrCreateCharacters(params string[] names)
-            => Task.WhenAll(names.Select(GetOrCreateCharacter).ToArray());
 
         public static bool TryGetCharacter(string name, out Character character)
             => _characters.TryGetValue(name, out character);

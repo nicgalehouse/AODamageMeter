@@ -35,7 +35,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || attackEvent.TryMatch(Crit, out match, out crit)
                 || attackEvent.TryMatch(Glance, out match, out glance))
             {
-                await attackEvent.SetSourceAndTarget(match, 1, 2);
+                await attackEvent.SetSourceAndTarget(match, 1, 2).ConfigureAwait(false);
                 attackEvent.AttackResult = AttackResult.Hit;
                 attackEvent.SetAmount(match, 3);
                 attackEvent.SetDamageType(match, 4);
@@ -46,7 +46,7 @@ namespace AODamageMeter.FightEvents.Attack
             else if (attackEvent.TryMatch(Reflect, out match, out reflect)
                 || attackEvent.TryMatch(Shield, out match, out shield))
             {
-                await attackEvent.SetSourceAndTarget(match, 1, 2);
+                await attackEvent.SetSourceAndTarget(match, 1, 2).ConfigureAwait(false);
                 attackEvent.AttackResult = AttackResult.IndirectHit;
                 attackEvent.SetAmount(match, 3);
                 attackEvent.DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;

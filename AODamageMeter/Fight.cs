@@ -68,7 +68,7 @@ namespace AODamageMeter
 
         public async Task AddFightEvent(string line)
         {
-            FightEvent fightEvent = await FightEvent.Create(this, line);
+            FightEvent fightEvent = await FightEvent.Create(this, line).ConfigureAwait(false);
             StartTime = StartTime ?? fightEvent.Timestamp;
             LatestTime = fightEvent.Timestamp;
 
@@ -109,7 +109,7 @@ namespace AODamageMeter
         }
 
         public async Task<FightCharacter> GetOrCreateFightCharacter(string name, DateTime enteredTime)
-            => GetOrCreateFightCharacter(await Character.GetOrCreateCharacter(name), enteredTime);
+            => GetOrCreateFightCharacter(await Character.GetOrCreateCharacter(name).ConfigureAwait(false), enteredTime);
 
         public FightCharacter GetOrCreateFightCharacter(Character character, DateTime enteredTime)
         {

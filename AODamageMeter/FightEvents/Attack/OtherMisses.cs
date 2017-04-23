@@ -26,11 +26,11 @@ namespace AODamageMeter.FightEvents.Attack
 
             if (attackEvent.TryMatch(Normal, out Match match))
             {
-                await attackEvent.SetSource(match, 1);
+                await attackEvent.SetSource(match, 1).ConfigureAwait(false);
             }
             else if (attackEvent.TryMatch(Special, out match))
             {
-                await attackEvent.SetSource(match, 1);
+                await attackEvent.SetSource(match, 1).ConfigureAwait(false);
                 attackEvent.SetDamageType(match, 2);
             }
             else attackEvent.IsUnmatched = true;

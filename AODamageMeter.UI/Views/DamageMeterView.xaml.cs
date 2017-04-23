@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace AODamageMeter.UI.Views
 {
@@ -16,8 +15,10 @@ namespace AODamageMeter.UI.Views
             DataContext = _damageMeterViewModel = new DamageMeterViewModel();
         }
 
-        private void FileButton_Click_SetLogFile(object sender, RoutedEventArgs e)
+        private async void FileButton_Click_SetLogFile(object sender, RoutedEventArgs e)
         {
+            FileButton.IsEnabled = false;
+
             var dialog = new OpenFileDialog()
             {
                 FileName = "Log.txt",
@@ -27,8 +28,18 @@ namespace AODamageMeter.UI.Views
 
             if (dialog.ShowDialog() == true)
             {
-                _damageMeterViewModel.SetLogFile(dialog.FileName);
+                await _damageMeterViewModel.SetLogFile(dialog.FileName);
             }
+
+            FileButton.IsEnabled = true;
+        }
+
+        private async void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
+        {
+            CloseButton.IsEnabled = false;
+
+            await _damageMeterViewModel.DisposeDamageMeter();
+            Close();
         }
 
         private void Draggable(object sender, MouseButtonEventArgs e)

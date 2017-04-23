@@ -25,7 +25,7 @@ namespace AODamageMeter.FightEvents.Attack
 
             if (attackEvent.TryMatch(Normal, out Match match))
             {
-                await attackEvent.SetTarget(match, 1);
+                await attackEvent.SetTarget(match, 1).ConfigureAwait(false);
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
             }

@@ -29,13 +29,13 @@ namespace AODamageMeter.FightEvents.Attack
 
             if (attackEvent.TryMatch(Sourced, out Match match))
             {
-                await attackEvent.SetSourceAndTarget(match, 2, 1);
+                await attackEvent.SetSourceAndTarget(match, 2, 1).ConfigureAwait(false);
                 attackEvent.SetAmount(match, 3);
                 attackEvent.SetDamageType(match, 4);
             }
             else if (attackEvent.TryMatch(Unsourced, out match))
             {
-                await attackEvent.SetTarget(match, 1);
+                await attackEvent.SetTarget(match, 1).ConfigureAwait(false);
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
             }

@@ -26,7 +26,7 @@ namespace AODamageMeter.FightEvents.Heal
             if (healEvent.TryMatch(Normal, out Match match))
             {
                 // TODO: is the source always a player character?
-                await healEvent.SetSource(match, 1);
+                await healEvent.SetSource(match, 1).ConfigureAwait(false);
                 healEvent.SetAmount(match, 2);
             }
             else healEvent.IsUnmatched = true;

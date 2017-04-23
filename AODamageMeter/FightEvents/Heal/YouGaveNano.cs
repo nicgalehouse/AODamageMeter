@@ -25,7 +25,7 @@ namespace AODamageMeter.FightEvents.Heal
 
             if (healEvent.TryMatch(Normal, out Match match))
             {
-                await healEvent.SetTarget(match, 1);
+                await healEvent.SetTarget(match, 1).ConfigureAwait(false);
                 healEvent.SetAmount(match, 2);
             }
             else healEvent.IsUnmatched = true;
