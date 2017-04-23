@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AODamageMeter.UI"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
-        xmlns:converters="clr-namespace:AODamageMeter.UI.Views.Helpers"
+        xmlns:converters="clr-namespace:AODamageMeter.UI.Converters"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
 xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:clr="clr-namespace:System;assembly=mscorlib"
@@ -115,7 +115,7 @@ xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                                     <Rectangle Canvas.Left="0" Height="24" Fill="{Binding ColorHexCode}">
                                         <Rectangle.Width>
                                             <MultiBinding Converter="{StaticResource RowWidthConverter}">
-                                                <Binding Path="Width"/>
+                                                <Binding Path="PercentWidth"/>
                                                 <Binding Path="ActualWidth" ElementName="DamageMeter"/>
                                             </MultiBinding>
                                         </Rectangle.Width>

@@ -97,15 +97,11 @@
     <Compile Include="ViewModels\RowViewModelBase.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Compile Include="Views\Helpers\RowWidthConverter.cs" />
+    <Compile Include="Converters\RowWidthConverter.cs" />
     <Compile Include="Views\DamageMeterView.xaml.cs">
       <DependentUpon>DamageMeterView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Styles\Button.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

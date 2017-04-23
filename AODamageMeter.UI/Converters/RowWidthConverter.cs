@@ -2,18 +2,19 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace AODamageMeter.UI.Views.Helpers
+namespace AODamageMeter.UI.Converters
 {
     public class RowWidthConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((double)values[0] * (double)values[1]);
+            double percentWidth = (double)values[0];
+            double actualWidth = (double)values[1];
+
+            return percentWidth * actualWidth;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+            => throw new NotImplementedException();
     }
 }

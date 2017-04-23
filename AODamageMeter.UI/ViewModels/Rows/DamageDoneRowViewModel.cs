@@ -12,7 +12,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             IconPath = _fightCharacter.Profession.GetIconPath();
             ColorHexCode = _fightCharacter.Profession.GetColorHexCode();
-            Width = _fightCharacter.PercentOfMaxDamageDone;
+            PercentWidth = _fightCharacter.PercentOfMaxDamageDone;
             RightText = $"{_fightCharacter.DamageDone.Format()} ({_fightCharacter.ActiveDPM.Format()}, {_fightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
         }
     }

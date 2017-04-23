@@ -26,11 +26,11 @@
             protected set => Set(ref _colorHexCode, value);
         }
 
-        protected double _width;
-        public double Width
+        protected double _percentWidth;
+        public double PercentWidth
         {
-            get => _width;
-            protected set => Set(ref _width, value);
+            get => _percentWidth;
+            protected set => Set(ref _percentWidth, value);
         }
 
         protected string _rightText;
