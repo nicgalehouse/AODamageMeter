@@ -137,5 +137,9 @@ namespace AODamageMeter
             => name.Length > 3 && name.Length < 13
             && (name.All(char.IsLetterOrDigit)
                 || name.Substring(0, name.Length - 2).All(char.IsLetterOrDigit) && name.EndsWith("-1"));
+
+        // Colored pet names have markup characters and show up like "[DLE][FF]MyPet" ("MyPet") in the log file.
+        public static string RemoveMarkupCharacters(string name)
+            => new string(name.Where(c => c >= ' ' && c <= '~').ToArray());
     }
 }

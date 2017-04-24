@@ -44,14 +44,14 @@ namespace AODamageMeter.UI.ViewModels
         private Dictionary<FightCharacter, DamageDoneRowViewModel> _damageDoneRowsMap = new Dictionary<FightCharacter, DamageDoneRowViewModel>();
         public ObservableCollection<DamageDoneRowViewModel> DamageDoneRows { get; } = new ObservableCollection<DamageDoneRowViewModel>();
 
-        public async Task SetLogFile(string logFile)
+        public async Task SetLogFile(string logFilePath)
         {
             await DisposeDamageMeter();
             _damageDoneRowsMap.Clear();
             DamageDoneRows.Clear();
 
-            _damageMeter = await DamageMeter.Create(logFile);
-            await _damageMeter.StartNewFight();
+            _damageMeter = new DamageMeter(logFilePath);
+            await _damageMeter.InitializeNewFight();
             StartDamageMeterUpdater();
         }
 
@@ -64,7 +64,7 @@ namespace AODamageMeter.UI.ViewModels
             _damageDoneRowsMap.Clear();
             DamageDoneRows.Clear();
 
-            await _damageMeter.StartNewFight();
+            await _damageMeter.InitializeNewFight();
             StartDamageMeterUpdater();
         }
 

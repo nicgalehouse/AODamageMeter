@@ -29,7 +29,8 @@ namespace AODamageMeter
                 .Select(p => p.Trim('"'))
                 .ToArray();
             string eventName = arrayPart[1];
-            DateTime timestamp = DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
+            DateTime timestamp = fight.DamageMeter.Mode == DamageMeterMode.RealTime ? DateTime.Now
+                : DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 
             switch (eventName)
@@ -107,7 +108,7 @@ namespace AODamageMeter
 
         protected async Task SetSource(Match match, int index)
         {
-            string name = match.Groups[index].Value;
+            string name = Character.RemoveMarkupCharacters(match.Groups[index].Value);
 
             if (name == DamageMeter.Owner.Name)
             {
@@ -135,7 +136,7 @@ namespace AODamageMeter
 
         protected async Task SetTarget(Match match, int index)
         {
-            string name = match.Groups[index].Value;
+            string name = Character.RemoveMarkupCharacters(match.Groups[index].Value);
 
             if (name == DamageMeter.Owner.Name)
             {

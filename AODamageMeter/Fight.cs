@@ -30,7 +30,13 @@ namespace AODamageMeter
         public IReadOnlyList<FightEvent> UnmatchedEvents => _unmatchedEvents;
 
         public DateTime? StartTime { get; protected set; }
-        public DateTime? LatestTime { get; protected set; }
+
+        protected DateTime? _latestTime;
+        public DateTime? LatestTime
+        {
+            get => DamageMeter.Mode == DamageMeterMode.RealTime ? DateTime.Now : _latestTime;
+            protected set => _latestTime = value;
+        }
         public TimeSpan? Duration => LatestTime - StartTime;
         public bool HasStarted => StartTime.HasValue;
 
@@ -69,8 +75,15 @@ namespace AODamageMeter
         public async Task AddFightEvent(string line)
         {
             FightEvent fightEvent = await FightEvent.Create(this, line).ConfigureAwait(false);
-            StartTime = StartTime ?? fightEvent.Timestamp;
-            LatestTime = fightEvent.Timestamp;
+            if (DamageMeter.Mode == DamageMeterMode.RealTime)
+            {
+                StartTime = StartTime ?? DateTime.Now;
+            }
+            else
+            {
+                StartTime = StartTime ?? fightEvent.Timestamp;
+                LatestTime = fightEvent.Timestamp;
+            }
 
             if (fightEvent.IsUnmatched)
             {

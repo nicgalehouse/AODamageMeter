@@ -10,38 +10,37 @@ namespace AODamageMeter
 {
     public class DamageMeter : IDisposable
     {
-        protected readonly string _logPath;
+        protected readonly string _logFilePath;
         protected readonly FileStream _logFileStream;
         protected readonly StreamReader _logStreamReader;
 
-        protected DamageMeter(string logPath)
+        public DamageMeter(string logFilePath, DamageMeterMode mode = DamageMeterMode.RealTime)
         {
-            _logPath = logPath;
-            _logFileStream = new FileStream(logPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            _logFilePath = logFilePath;
+            _logFileStream = new FileStream(logFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             _logStreamReader = new StreamReader(_logFileStream);
+            Mode = mode;
         }
 
-        public static async Task<DamageMeter> Create(string logPath)
-        {
-            var damageMeter = new DamageMeter(logPath);
-            await damageMeter.SetOwner().ConfigureAwait(false);
-            return damageMeter;
-        }
-
+        public DamageMeterMode Mode { get; }
         public Character Owner { get; protected set; }
 
         protected readonly List<Fight> _previousFights = new List<Fight>();
         public IReadOnlyList<Fight> PreviousFights { get; protected set; }
         public Fight CurrentFight { get; protected set; }
 
-        public async Task StartNewFight(bool savePreviousFight = false)
+        public async Task InitializeNewFight(bool savePreviousFight = false, bool skipToEndOfLog = true)
         {
             if (savePreviousFight && (CurrentFight?.HasStarted ?? false))
             {
                 _previousFights.Add(CurrentFight);
             }
 
-            await SkipToEnd();
+            if (skipToEndOfLog)
+            {
+                await _logStreamReader.ReadToEndAsync();
+            }
+
             CurrentFight = new Fight(this);
         }
 
@@ -50,17 +49,20 @@ namespace AODamageMeter
             string line;
             while ((line = _logStreamReader.ReadLine()) != null)
             {
+                // Set the owner as late as possible because it relies on AO being open, but some may open the damage meter before AO.
+                if (Owner == null)
+                {
+                    await SetOwner();
+                }
+
                 await CurrentFight.AddFightEvent(line).ConfigureAwait(false);
             }
         }
 
-        public Task SkipToEnd()
-            => _logStreamReader.ReadToEndAsync();
-
         protected async Task SetOwner()
         {
             // We can (probably?) find the owner's ID from the specified log path...
-            string ownersID = _logPath.Split('\\', '/')
+            string ownersID = _logFilePath.Split('\\', '/')
                 .LastOrDefault(d => d.StartsWith("Char"))
                 ?.Substring("Char".Length);
 
