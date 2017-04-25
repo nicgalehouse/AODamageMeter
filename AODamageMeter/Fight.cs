@@ -88,6 +88,12 @@ namespace AODamageMeter
             if (fightEvent.IsUnmatched)
             {
                 _unmatchedEvents.Add(fightEvent);
+#if DEBUG
+                if (!(fightEvent is SystemEvent))
+                {
+                    Console.WriteLine($"{fightEvent.Name}: {fightEvent.Description}");
+                }
+#endif
                 return;
             }
 

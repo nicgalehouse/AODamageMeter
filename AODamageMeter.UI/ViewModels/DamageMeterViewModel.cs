@@ -51,7 +51,12 @@ namespace AODamageMeter.UI.ViewModels
             DamageDoneRows.Clear();
 
             _damageMeter = new DamageMeter(logFilePath);
+#if DEBUG
+            await _damageMeter.InitializeNewFight(skipToEndOfLog: false);
+#else
             await _damageMeter.InitializeNewFight();
+#endif
+
             StartDamageMeterUpdater();
         }
 
