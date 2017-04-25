@@ -4,17 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:AODamageMeter.UI.Converters"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
+        xmlns:rowViews="clr-namespace:AODamageMeter.UI.Views.Rows"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:clr="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DamageMeterViewModel}"
         Title="Anarchy Online Damage Meter"
-        Height="200" Width="300"
         ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
-        AllowsTransparency="True" Background="Transparent">
-
+        AllowsTransparency="True" Background="Transparent"
+        Height="200" Width="300">
   <Window.Resources>
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <Style TargetType="fa:ImageAwesome">
+      <Setter Property="Foreground" Value="#73CBD3"/>
+      <Setter Property="Margin" Value="3.5"/>
+    </Style>
+
+    <Style TargetType="DataGridCell">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
     <CollectionViewSource x:Key="DamageDoneRowsViewSource" Source="{Binding DamageDoneRows}" IsLiveSortingRequested="True">
       <CollectionViewSource.LiveSortingProperties>
         <clr:String>PercentWidth</clr:String>
@@ -26,122 +40,62 @@
   </Window.Resources>
 
   <Grid Background="Transparent">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="25"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Grid Grid.Row="0"
+          MouseDown="HeaderRow_MouseDown_Drag"
+          Background="#0C1E2F">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="27"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="27"/>
+        <ColumnDefinition Width="27"/>
+        <ColumnDefinition Width="27"/>
+      </Grid.ColumnDefinitions>
 
-        <Rectangle MouseDown="Draggable"
-            Grid.Row="0"
-            Grid.ColumnSpan="2"
-            Fill="#0C1E2F">
-        </Rectangle>
+      <Button Grid.Column="0" x:Name="FileButton"
+              Click="FileButton_Click_SetLogFile">
+        <fa:ImageAwesome Icon="FileTextOutline"/>
+      </Button>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="27"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="27"/>
-                <ColumnDefinition Width="27"/>
-                <ColumnDefinition Width="27"/>
-            </Grid.ColumnDefinitions>
+      <!--<Button Grid.Column="2"
+              Command="{Binding Options}">
+        <fa:ImageAwesome Icon="Gear"/>
+      </Button>-->
 
-            <Button Grid.Column="0" x:Name="FileButton" Click="FileButton_Click_SetLogFile" Background="Transparent" BorderBrush="Transparent">
-                <fa:ImageAwesome Icon="FileTextOutline" Margin="3.5" Foreground="#73CBD3" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </Button>
-            <Button Grid.Column="3" Command="{Binding ResetDamageMeterCommand}" Background="Transparent" BorderBrush="Transparent">
-                <fa:ImageAwesome Icon="Refresh" Margin="3.5" Foreground="#73CBD3" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </Button>
-            <!--<Button Grid.Column="3" Command="{Binding Options}" Background="Transparent" BorderBrush="Transparent">
-                <fa:ImageAwesome Icon="Gear" Margin="3.5" Foreground="#80E9F3" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </Button>-->
-            <Button Grid.Column="4" x:Name="CloseButton" Click="CloseButton_Click_CloseApplication" Background="Transparent" BorderBrush="Transparent">
-                <fa:ImageAwesome Icon="Close" Margin="3.5" Foreground="#73CBD3" VerticalAlignment="Center" HorizontalAlignment="Center" />
-            </Button>
-        </Grid>
+      <Button Grid.Column="3"
+              Command="{Binding ResetDamageMeterCommand}">
+        <fa:ImageAwesome Icon="Refresh"/>
+      </Button>
 
-        <DataGrid
-            Name="DamageMeter"
-            ItemsSource="{Binding Source={StaticResource DamageDoneRowsViewSource}}"
-            Grid.Row="1"
-            AutoGenerateColumns="False"
-            CanUserSortColumns="False"
-            HeadersVisibility="None"
-            GridLinesVisibility="None"
-            VerticalScrollBarVisibility="Disabled"
-            HorizontalScrollBarVisibility="Disabled"
-            CanUserAddRows="false"
-            RowBackground="Transparent">
-            
-            <DataGrid.Background>
-                <SolidColorBrush Color="Black" Opacity="0.4" />
-            </DataGrid.Background>
-
-            <DataGrid.Resources>
-                <converters:RowWidthConverter x:Key="RowWidthConverter"/>
-                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
-                   Color="Transparent"/>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="BorderThickness" Value="0" />
-                </Style>
-            </DataGrid.Resources>
-
-            <DataGrid.Columns>
-                <DataGridTemplateColumn SortMemberPath="Width" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="24"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Image 
-                                    Source="{Binding IconPath}"
-                                    Grid.Column="0"/>
-                                <Canvas HorizontalAlignment="Stretch" Height="24" Margin="0" Grid.Column="1">
-                                    <Canvas.Background>
-                                        <SolidColorBrush Opacity=".25" Color="Black"/>
-                                    </Canvas.Background>
-                                    <Rectangle Canvas.Left="0" Height="24" Fill="{Binding ColorHexCode}">
-                                        <Rectangle.Width>
-                                            <MultiBinding Converter="{StaticResource RowWidthConverter}">
-                                                <Binding Path="PercentWidth"/>
-                                                <Binding Path="ActualWidth" ElementName="DamageMeter"/>
-                                            </MultiBinding>
-                                        </Rectangle.Width>
-                                    </Rectangle>
-                                    <Canvas/>
-
-                                    <Border Height="24" Canvas.Left="3">
-                                        <Border.Background>
-                                            <SolidColorBrush Opacity="0"/>
-                                        </Border.Background>
-                                        <TextBlock Text="{Binding Name}"
-                                                   Foreground="White"
-                                                   VerticalAlignment="Center"/>
-                                    </Border>
-
-                                    <Border Height="24" Canvas.Right="3">
-                                        <Border.Background>
-                                            <SolidColorBrush Opacity="0"/>
-                                        </Border.Background>
-                                        <TextBlock
-                                            Text="{Binding RightText}"
-                                            Foreground="White"
-                                            VerticalAlignment="Center"/>
-                                    </Border>
-
-
-
-                                </Canvas>
-                            </Grid>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+      <Button Grid.Column="4" x:Name="CloseButton"
+              Click="CloseButton_Click_CloseApplication">
+        <fa:ImageAwesome Icon="Close"/>
+      </Button>
     </Grid>
+
+    <!-- Tried briefly to use something simpler like a ListBox, but had difficulty getting the styling to be as tight. -->
+    <DataGrid Grid.Row="1" x:Name="DamageMeter"
+              ItemsSource="{Binding Source={StaticResource DamageDoneRowsViewSource}}"
+              IsReadOnly="True" AutoGenerateColumns="False"
+              VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+              HeadersVisibility="None" GridLinesVisibility="None" RowBackground="Transparent">
+      <DataGrid.Background>
+        <SolidColorBrush Color="Black" Opacity="0.4"/>
+      </DataGrid.Background>
+
+      <DataGrid.Columns>
+        <DataGridTemplateColumn Width="*">
+          <DataGridTemplateColumn.CellTemplate>
+            <DataTemplate>
+              <rowViews:DamageDoneRowView/>
+            </DataTemplate>
+          </DataGridTemplateColumn.CellTemplate>
+        </DataGridTemplateColumn>
+      </DataGrid.Columns>
+    </DataGrid>
+  </Grid>
 </Window>
-    

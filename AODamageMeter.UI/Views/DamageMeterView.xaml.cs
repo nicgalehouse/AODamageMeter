@@ -42,7 +42,7 @@ namespace AODamageMeter.UI.Views
             Close();
         }
 
-        private void Draggable(object sender, MouseButtonEventArgs e)
+        private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
