@@ -15,10 +15,8 @@ namespace AODamageMeter.UI.Views
             DataContext = _damageMeterViewModel = new DamageMeterViewModel();
         }
 
-        private async void FileButton_Click_SetLogFile(object sender, RoutedEventArgs e)
+        private void FileButton_Click_SetLogFile(object sender, RoutedEventArgs e)
         {
-            FileButton.IsEnabled = false;
-
             var dialog = new OpenFileDialog()
             {
                 FileName = "Log.txt",
@@ -28,17 +26,13 @@ namespace AODamageMeter.UI.Views
 
             if (dialog.ShowDialog() == true)
             {
-                await _damageMeterViewModel.SetLogFile(dialog.FileName);
+                _damageMeterViewModel.SetLogFile(dialog.FileName);
             }
-
-            FileButton.IsEnabled = true;
         }
 
-        private async void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
+        private void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
         {
-            CloseButton.IsEnabled = false;
-
-            await _damageMeterViewModel.DisposeDamageMeter();
+            _damageMeterViewModel.DisposeDamageMeter();
             Close();
         }
 

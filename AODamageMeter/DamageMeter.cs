@@ -11,14 +11,12 @@ namespace AODamageMeter
     public class DamageMeter : IDisposable
     {
         protected readonly string _logFilePath;
-        protected readonly FileStream _logFileStream;
         protected readonly StreamReader _logStreamReader;
 
         public DamageMeter(string logFilePath, DamageMeterMode mode = DamageMeterMode.RealTime)
         {
             _logFilePath = logFilePath;
-            _logFileStream = new FileStream(logFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            _logStreamReader = new StreamReader(_logFileStream);
+            _logStreamReader = new StreamReader(File.Open(logFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             Mode = mode;
         }
 
@@ -29,7 +27,7 @@ namespace AODamageMeter
         public IReadOnlyList<Fight> PreviousFights { get; protected set; }
         public Fight CurrentFight { get; protected set; }
 
-        public async Task InitializeNewFight(bool savePreviousFight = false, bool skipToEndOfLog = true)
+        public void InitializeNewFight(bool savePreviousFight = false, bool skipToEndOfLog = true)
         {
             if (savePreviousFight && (CurrentFight?.HasStarted ?? false))
             {
@@ -38,7 +36,7 @@ namespace AODamageMeter
 
             if (skipToEndOfLog)
             {
-                await _logStreamReader.ReadToEndAsync();
+                _logStreamReader.BaseStream.Seek(0, SeekOrigin.End);
             }
 
             CurrentFight = new Fight(this);
@@ -104,9 +102,6 @@ namespace AODamageMeter
         }
 
         public void Dispose()
-        {
-            _logFileStream.Dispose();
-            _logStreamReader.Dispose();
-        }
+            => _logStreamReader.Dispose();
     }
 }

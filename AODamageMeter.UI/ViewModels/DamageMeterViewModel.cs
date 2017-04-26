@@ -44,32 +44,32 @@ namespace AODamageMeter.UI.ViewModels
         private Dictionary<FightCharacter, DamageDoneRowViewModel> _damageDoneRowsMap = new Dictionary<FightCharacter, DamageDoneRowViewModel>();
         public ObservableCollection<DamageDoneRowViewModel> DamageDoneRows { get; } = new ObservableCollection<DamageDoneRowViewModel>();
 
-        public async Task SetLogFile(string logFilePath)
+        public void SetLogFile(string logFilePath)
         {
-            await DisposeDamageMeter();
+            DisposeDamageMeter();
             _damageDoneRowsMap.Clear();
             DamageDoneRows.Clear();
 
             _damageMeter = new DamageMeter(logFilePath);
 #if DEBUG
-            await _damageMeter.InitializeNewFight(skipToEndOfLog: false);
+            _damageMeter.InitializeNewFight(skipToEndOfLog: false);
 #else
-            await _damageMeter.InitializeNewFight();
+            _damageMeter.InitializeNewFight();
 #endif
 
             StartDamageMeterUpdater();
         }
 
         public ICommand ResetDamageMeterCommand { get; }
-        public async void ExecuteResetDamageMeterCommand()
+        public void ExecuteResetDamageMeterCommand()
         {
             if (_damageMeter == null) return;
 
-            await StopDamageMeterUpdater();
+            StopDamageMeterUpdater();
             _damageDoneRowsMap.Clear();
             DamageDoneRows.Clear();
 
-            await _damageMeter.InitializeNewFight();
+            _damageMeter.InitializeNewFight();
             StartDamageMeterUpdater();
         }
 
@@ -92,19 +92,19 @@ namespace AODamageMeter.UI.ViewModels
             _isDamageMeterUpdaterStarted = true;
         }
 
-        protected async Task StopDamageMeterUpdater()
+        protected void StopDamageMeterUpdater()
         {
             if (!_isDamageMeterUpdaterStarted) return;
 
             _isDamageMeterUpdaterStarted = false;
             _damageMeterUpdaterCTS.Cancel();
-            await _damageMeterUpdater;
+            _damageMeterUpdater.Wait();
             _damageMeterUpdaterCTS.Dispose();
         }
 
-        public async Task DisposeDamageMeter()
+        public void DisposeDamageMeter()
         {
-            await StopDamageMeterUpdater();
+            StopDamageMeterUpdater();
             _damageMeter?.Dispose();
         }
     }
