@@ -5,6 +5,6 @@ namespace AODamageMeter.Professions
     public class Keeper : Profession
     {
         public override string Name => "Keeper";
-        public override Color Color => Color.FromArgb(70, 99, 135); // #466387
+        public override Color Color => Color.FromArgb(15, 154, 4);
     }
 }
