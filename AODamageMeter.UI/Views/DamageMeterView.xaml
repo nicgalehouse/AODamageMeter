@@ -9,7 +9,7 @@
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:clr="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DamageMeterViewModel}"
-        Title="Anarchy Online Damage Meter"
+        Title="AO Damage Meter" FontFamily="Verdana"
         ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
         AllowsTransparency="True" Background="Transparent"
         Height="200" Width="300">
@@ -82,9 +82,13 @@
               ItemsSource="{Binding Source={StaticResource DamageDoneRowsViewSource}}"
               IsReadOnly="True" AutoGenerateColumns="False"
               VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
-              HeadersVisibility="None" GridLinesVisibility="None" RowBackground="Transparent">
+              HeadersVisibility="None" GridLinesVisibility="Horizontal" RowBackground="Transparent">
+      <DataGrid.HorizontalGridLinesBrush>
+        <SolidColorBrush Opacity="0"/>
+      </DataGrid.HorizontalGridLinesBrush>
+
       <DataGrid.Background>
-        <SolidColorBrush Color="Black" Opacity="0.4"/>
+        <SolidColorBrush Color="Black" Opacity="0.2"/>
       </DataGrid.Background>
 
       <DataGrid.Columns>

@@ -11,7 +11,7 @@
     <converters:RowWidthConverter x:Key="RowWidthConverter"/>
   </UserControl.Resources>
 
-  <Grid>
+  <Grid UseLayoutRounding="True">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="24"/>
       <ColumnDefinition Width="*"/>
@@ -20,11 +20,10 @@
     <Image Grid.Column="0"
            Source="{Binding IconPath}"/>
 
-    <Canvas Grid.Column="1"
-            Height="24" Margin="0"
-            HorizontalAlignment="Stretch">
+    <Canvas Grid.Column="1" Height="24"
+            Margin="0" HorizontalAlignment="Stretch">
       <Canvas.Background>
-        <SolidColorBrush Color="Black" Opacity=".25"/>
+        <SolidColorBrush Color="Black" Opacity="0.25"/>
       </Canvas.Background>
 
       <Rectangle Canvas.Left="0" Height="24"
@@ -38,23 +37,23 @@
       </Rectangle>
 
       <Border Canvas.Left="3" Height="24">
-        <Border.Background>
-          <SolidColorBrush Opacity="0"/>
-        </Border.Background>
-
         <TextBlock Text="{Binding Name}"
                    Foreground="White"
-                   VerticalAlignment="Center"/>
+                   VerticalAlignment="Center">
+          <TextBlock.Effect>
+            <DropShadowEffect BlurRadius="2" ShadowDepth="1"/>
+          </TextBlock.Effect>
+        </TextBlock>
       </Border>
 
       <Border Canvas.Right="3" Height="24">
-        <Border.Background>
-          <SolidColorBrush Opacity="0"/>
-        </Border.Background>
-
         <TextBlock Text="{Binding RightText}"
                    Foreground="White"
-                   VerticalAlignment="Center"/>
+                   VerticalAlignment="Center">
+          <TextBlock.Effect>
+            <DropShadowEffect BlurRadius="2" ShadowDepth="1"/>
+          </TextBlock.Effect>
+        </TextBlock>
       </Border>
     </Canvas>
   </Grid>
