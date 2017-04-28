@@ -11,7 +11,7 @@
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DamageMeterViewModel}"
         Title="AO Damage Meter" ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
         AllowsTransparency="True" Background="Transparent"
-        FontWeight="Bold" FontSize="14"
+        FontFamily="Verdana" FontWeight="Bold"
         TextOptions.TextFormattingMode="Display"
         TextOptions.TextRenderingMode="ClearType"
         Height="200" Width="300">

@@ -26,8 +26,15 @@
         <SolidColorBrush Color="Black" Opacity="0.15"/>
       </Canvas.Background>
 
-      <Rectangle Canvas.Left="0" Height="24"
-              Fill="{Binding ColorHexCode}">
+      <Rectangle Canvas.Left="0" Height="24">
+        <Rectangle.Fill>
+          <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+            <GradientStop Color="Black" Offset="-2"/>
+            <GradientStop Color="{Binding ColorHexCode}" Offset=".5"/>
+            <GradientStop Color="Black" Offset="2"/>
+          </LinearGradientBrush>
+        </Rectangle.Fill>
+
         <Rectangle.Width>
           <MultiBinding Converter="{StaticResource RowWidthConverter}">
             <Binding Path="PercentWidth"/>
