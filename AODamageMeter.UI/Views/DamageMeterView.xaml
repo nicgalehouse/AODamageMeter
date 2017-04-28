@@ -83,12 +83,17 @@
               IsReadOnly="True" AutoGenerateColumns="False"
               VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
               HeadersVisibility="None" GridLinesVisibility="Horizontal" RowBackground="Transparent">
+      <DataGrid.Resources>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Black" Opacity=".1"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Black" Opacity=".1"/>
+      </DataGrid.Resources>
+
       <DataGrid.HorizontalGridLinesBrush>
         <SolidColorBrush Opacity="0"/>
       </DataGrid.HorizontalGridLinesBrush>
 
       <DataGrid.Background>
-        <SolidColorBrush Color="Black" Opacity="0.2"/>
+        <SolidColorBrush Color="Black" Opacity="0.3"/>
       </DataGrid.Background>
 
       <DataGrid.Columns>

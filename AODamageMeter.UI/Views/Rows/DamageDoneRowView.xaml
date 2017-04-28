@@ -26,22 +26,27 @@
         <SolidColorBrush Color="Black" Opacity="0.25"/>
       </Canvas.Background>
 
-      <Rectangle Canvas.Left="0" Height="24"
-                 Fill="{Binding ColorHexCode}">
-        <Rectangle.Width>
+      <Border Canvas.Left="0" Height="24"
+              Background="{Binding ColorHexCode}"
+              BorderThickness="0 0 1 0">
+        <!--BorderThickness/BorderBrush improves visibility for rows when in front of same-colored background, like NPCs on black. -->
+        <Border.BorderBrush>
+          <SolidColorBrush Color="White" Opacity="0.5"/>
+        </Border.BorderBrush>
+        <Border.Width>
           <MultiBinding Converter="{StaticResource RowWidthConverter}">
             <Binding Path="PercentWidth"/>
             <Binding Path="ActualWidth" ElementName="DamageMeter"/>
           </MultiBinding>
-        </Rectangle.Width>
-      </Rectangle>
+        </Border.Width>
+      </Border>
 
       <Border Canvas.Left="3" Height="24">
         <TextBlock Text="{Binding Name}"
                    Foreground="White"
                    VerticalAlignment="Center">
           <TextBlock.Effect>
-            <DropShadowEffect BlurRadius="2" ShadowDepth="1"/>
+            <DropShadowEffect BlurRadius="2" ShadowDepth="2"/>
           </TextBlock.Effect>
         </TextBlock>
       </Border>
@@ -51,7 +56,7 @@
                    Foreground="White"
                    VerticalAlignment="Center">
           <TextBlock.Effect>
-            <DropShadowEffect BlurRadius="2" ShadowDepth="1"/>
+            <DropShadowEffect BlurRadius="2" ShadowDepth="2"/>
           </TextBlock.Effect>
         </TextBlock>
       </Border>
