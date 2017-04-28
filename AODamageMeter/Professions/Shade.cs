@@ -5,6 +5,6 @@ namespace AODamageMeter.Professions
     public class Shade : Profession
     {
         public override string Name => "Shade";
-        public override Color Color => Color.FromArgb(73, 172, 185);
+        public override Color Color => Color.FromArgb(61, 153, 165);
     }
 }

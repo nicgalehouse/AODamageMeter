@@ -5,6 +5,6 @@ namespace AODamageMeter.Professions
     public class Bureaucrat : Profession
     {
         public override string Name => "Bureaucrat";
-        public override Color Color => Color.FromArgb(57, 55, 68);
+        public override Color Color => Color.FromArgb(57, 80, 68);
     }
 }

@@ -9,9 +9,11 @@
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:clr="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DamageMeterViewModel}"
-        Title="AO Damage Meter" FontFamily="Verdana"
-        ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
+        Title="AO Damage Meter" ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
         AllowsTransparency="True" Background="Transparent"
+        FontWeight="Bold" FontSize="14"
+        TextOptions.TextFormattingMode="Display"
+        TextOptions.TextRenderingMode="ClearType"
         Height="200" Width="300">
   <Window.Resources>
     <Style TargetType="Button">
@@ -93,7 +95,7 @@
       </DataGrid.HorizontalGridLinesBrush>
 
       <DataGrid.Background>
-        <SolidColorBrush Color="Black" Opacity="0.3"/>
+        <SolidColorBrush Color="Black" Opacity="0.2"/>
       </DataGrid.Background>
 
       <DataGrid.Columns>
