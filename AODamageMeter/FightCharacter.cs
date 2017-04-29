@@ -65,17 +65,17 @@ namespace AODamageMeter
         public double FullDPM => 60 * FullDPS;
 
         public int DamageTaken { get; protected set; }
-        public int HitOnCount { get; protected set; }
-        public int CritOnCount { get; protected set; }
-        public int GlanceOnCount { get; protected set; }
-        public int IndirectHitOnCount { get; protected set; }
+        public int HitCountTaken { get; protected set; }
+        public int CritCountTaken { get; protected set; }
+        public int GlanceCountTaken { get; protected set; }
+        public int IndirectHitCountTaken { get; protected set; }
         // We only know about misses where the owner is a source or target.
-        public int MissOnCount { get; protected set; } 
-        public int HitOnAttempts => HitOnCount + MissOnCount;
-        public double HitOnChance => HitOnAttempts == 0 ? 0 : HitOnCount / (double)HitOnAttempts;
-        public double CritOnChance => HitOnAttempts == 0 ? 0 : CritOnCount / (double)HitOnAttempts;
-        public double GlanceOnChance => HitOnAttempts == 0 ? 0 : GlanceOnCount / (double)HitOnAttempts;
-        public double MissOnChance => HitOnAttempts == 0 ? 0 : MissOnCount / (double)HitOnAttempts;
+        public int MissCountTaken { get; protected set; } 
+        public int HitAttemptsTaken => HitCountTaken + MissCountTaken;
+        public double HitChanceTaken => HitAttemptsTaken == 0 ? 0 : HitCountTaken / (double)HitAttemptsTaken;
+        public double CritChanceTaken => HitAttemptsTaken == 0 ? 0 : CritCountTaken / (double)HitAttemptsTaken;
+        public double GlanceChanceTaken => HitAttemptsTaken == 0 ? 0 : GlanceCountTaken / (double)HitAttemptsTaken;
+        public double MissChanceTaken => HitAttemptsTaken == 0 ? 0 : MissCountTaken / (double)HitAttemptsTaken;
         public int DamageAbsorbed { get; protected set; }
 
         // We only know about healing where the owner is a source or target.
@@ -83,10 +83,10 @@ namespace AODamageMeter
         public int NanoHealingDone { get; protected set; }
 
         // We only know about healing where the owner is a source or target.
-        // See the comment in MeGotHealth.cs. HealthHealingReceived is an approximation for how much others have healed you.
+        // See the comment in MeGotHealth.cs. HealthHealingTaken is an approximation for how much others have healed you.
         // HealthHealingRealized is how much you've actually been healed, by yourself, by others, by whatever.
-        public int HealthHealingReceived { get; protected set; }
-        public int NanoHealingReceived { get; protected set; }
+        public int HealthHealingTaken { get; protected set; }
+        public int NanoHealingTaken { get; protected set; }
         public int HealthHealingRealized { get; protected set; }
 
         // We only know about level events where the source is the owner (there's no target).
@@ -146,24 +146,24 @@ namespace AODamageMeter
             if (attackEvent.AttackResult == AttackResult.Hit)
             {
                 DamageTaken += attackEvent.Amount ?? 0;
-                ++HitOnCount;
+                ++HitCountTaken;
                 if (attackEvent.AttackModifier == AttackModifier.Crit)
                 {
-                    ++CritOnCount;
+                    ++CritCountTaken;
                 }
                 else if (attackEvent.AttackModifier == AttackModifier.Glance)
                 {
-                    ++GlanceOnCount;
+                    ++GlanceCountTaken;
                 }
             }
             else if (attackEvent.AttackResult == AttackResult.Missed)
             {
-                ++MissOnCount;
+                ++MissCountTaken;
             }
             else if (attackEvent.AttackResult == AttackResult.IndirectHit)
             {
                 DamageTaken += attackEvent.Amount ?? 0;
-                ++IndirectHitOnCount;
+                ++IndirectHitCountTaken;
             }
             else if (attackEvent.AttackResult == AttackResult.Absorbed)
             {
@@ -195,7 +195,7 @@ namespace AODamageMeter
             {
                 if (healEvent.Source != null)
                 {
-                    HealthHealingReceived += healEvent.Amount ?? 0;
+                    HealthHealingTaken += healEvent.Amount ?? 0;
                 }
                 else
                 {
@@ -204,7 +204,7 @@ namespace AODamageMeter
             }
             else if (healEvent.HealType == HealType.Nano)
             {
-                NanoHealingReceived += healEvent.Amount ?? 0;
+                NanoHealingTaken += healEvent.Amount ?? 0;
             }
             else throw new NotImplementedException();
         }
