@@ -74,7 +74,7 @@ namespace AODamageMeter
 
         public async Task AddFightEvent(string line)
         {
-            FightEvent fightEvent = await FightEvent.Create(this, line).ConfigureAwait(false);
+            var fightEvent = await FightEvent.Create(this, line).ConfigureAwait(false);
             if (DamageMeter.Mode == DamageMeterMode.RealTime)
             {
                 StartTime = StartTime ?? DateTime.Now;
@@ -100,31 +100,37 @@ namespace AODamageMeter
             switch (fightEvent)
             {
                 case AttackEvent attackEvent:
-                    _attackEvents.Add(attackEvent);
                     attackEvent.Source?.AddSourceAttackEvent(attackEvent);
                     attackEvent.Target?.AddTargetAttackEvent(attackEvent);
+                    _attackEvents.Add(attackEvent);
+                    _isTotalDamageDoneCurrent = false;
+                    _isMaxDamageDoneCurrent = false;
                     break;
                 case HealEvent healEvent:
+                    if (healEvent.Source == healEvent.Target)
+                    {
+                        healEvent.Source.AddSelfHealEvent(healEvent);
+                    }
+                    else
+                    {
+                        healEvent.Source.AddSourceHealEvent(healEvent);
+                        healEvent.Target.AddTargetHealEvent(healEvent);
+                    }
                     _healEvents.Add(healEvent);
-                    healEvent.Source?.AddSourceHealEvent(healEvent);
-                    healEvent.Target?.AddTargetHealEvent(healEvent);
                     break;
                 case LevelEvent levelEvent:
+                    levelEvent.Source.AddLevelEvent(levelEvent);
                     _levelEvents.Add(levelEvent);
-                    levelEvent.Source?.AddLevelEvent(levelEvent);
                     break;
                 case NanoEvent nanoEvent:
+                    nanoEvent.Source.AddNanoEvent(nanoEvent);
                     _nanoEvents.Add(nanoEvent);
-                    nanoEvent.Source?.AddNanoEvent(nanoEvent);
                     break;
                 case SystemEvent systemEvent:
                     _systemEvents.Add(systemEvent);
                     break;
                 default: throw new NotImplementedException();
             }
-
-            _isTotalDamageDoneCurrent = false;
-            _isMaxDamageDoneCurrent = false;
         }
 
         public async Task<FightCharacter> GetOrCreateFightCharacter(string name, DateTime enteredTime)

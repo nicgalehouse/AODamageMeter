@@ -24,7 +24,7 @@ namespace AODamageMeter
         public Character Owner { get; protected set; }
 
         protected readonly List<Fight> _previousFights = new List<Fight>();
-        public IReadOnlyList<Fight> PreviousFights { get; protected set; }
+        public IReadOnlyList<Fight> PreviousFights => _previousFights;
         public Fight CurrentFight { get; protected set; }
 
         public void InitializeNewFight(bool savePreviousFight = false, bool skipToEndOfLog = true)
@@ -103,5 +103,8 @@ namespace AODamageMeter
 
         public void Dispose()
             => _logStreamReader.Dispose();
+
+        public override string ToString()
+            => $"{Mode} damage meter owned by {Owner}, with {PreviousFights.Count + 1} fights.";
     }
 }

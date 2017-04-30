@@ -29,10 +29,14 @@
       <Rectangle Canvas.Left="0" Height="24">
         <Rectangle.Fill>
           <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
-            <GradientStop Color="Black" Offset="-1"/>
+            <GradientStop Color="Black" Offset="-1.25"/>
             <GradientStop Color="{Binding ColorHexCode}" Offset=".5"/>
-            <GradientStop Color="Black" Offset="2"/>
+            <GradientStop Color="Black" Offset="2.25"/>
           </LinearGradientBrush>
+          <!--<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="{Binding ColorHexCode}" Offset="0"/>
+            <GradientStop Color="Black" Offset="4"/>
+          </LinearGradientBrush>-->
         </Rectangle.Fill>
 
         <Rectangle.Width>

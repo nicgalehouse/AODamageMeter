@@ -180,5 +180,8 @@ namespace AODamageMeter
 
         protected void SetAmount(Match match, int index)
             => Amount = int.Parse(match.Groups[index].Value);
+
+        public override string ToString()
+            => $"{Name}: {Description}";
     }
 }

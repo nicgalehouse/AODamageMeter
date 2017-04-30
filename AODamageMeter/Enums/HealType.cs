@@ -2,7 +2,8 @@
 {
     public enum HealType
     {
-        Health,
+        PotentialHealth,
+        RealizedHealth,
         Nano
     }
 }

@@ -141,5 +141,8 @@ namespace AODamageMeter
         // Colored pet names have markup characters and show up like "[DLE][FF]MyPet" ("MyPet") in the log file.
         public static string RemoveMarkupCharacters(string name)
             => new string(name.Where(c => c >= ' ' && c <= '~').ToArray());
+
+        public override string ToString()
+            => Name;
     }
 }

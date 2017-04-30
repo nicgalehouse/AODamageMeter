@@ -34,12 +34,14 @@ namespace AODamageMeter
 
         protected readonly List<AttackEvent> _sourceAttackEvents = new List<AttackEvent>();
         protected readonly List<AttackEvent> _targetAttackEvents = new List<AttackEvent>();
+        protected readonly List<HealEvent> _selfHealEvents = new List<HealEvent>();
         protected readonly List<HealEvent> _sourceHealEvents = new List<HealEvent>();
         protected readonly List<HealEvent> _targetHealEvents = new List<HealEvent>();
         protected readonly List<LevelEvent> _levelEvents = new List<LevelEvent>();
         protected readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
         public IReadOnlyList<AttackEvent> SourceAttackEvents => _sourceAttackEvents;
         public IReadOnlyList<AttackEvent> TargetAttackEvents => _targetAttackEvents;
+        public IReadOnlyList<HealEvent> SelfHealEvents => _selfHealEvents;
         public IReadOnlyList<HealEvent> SourceHealEvents => _sourceHealEvents;
         public IReadOnlyList<HealEvent> TargetHealEvents => _targetHealEvents;
         public IReadOnlyList<LevelEvent> LevelEvents => _levelEvents;
@@ -70,7 +72,7 @@ namespace AODamageMeter
         public int GlanceCountTaken { get; protected set; }
         public int IndirectHitCountTaken { get; protected set; }
         // We only know about misses where the owner is a source or target.
-        public int MissCountTaken { get; protected set; } 
+        public int MissCountTaken { get; protected set; }
         public int HitAttemptsTaken => HitCountTaken + MissCountTaken;
         public double HitChanceTaken => HitAttemptsTaken == 0 ? 0 : HitCountTaken / (double)HitAttemptsTaken;
         public double CritChanceTaken => HitAttemptsTaken == 0 ? 0 : CritCountTaken / (double)HitAttemptsTaken;
@@ -78,28 +80,31 @@ namespace AODamageMeter
         public double MissChanceTaken => HitAttemptsTaken == 0 ? 0 : MissCountTaken / (double)HitAttemptsTaken;
         public int DamageAbsorbed { get; protected set; }
 
-        // We only know about healing where the owner is a source or target.
-        public int HealthHealingDone { get; protected set; }
+        // We only know about healing where the owner is a source or target. When the owner is the source, we don't know
+        // about realized healing. So overhealing stats only when non-owner source and owner target--non-owner source has
+        // OverhealingDone (to owner) stats, owner target has OverhealingTaken (from non-owners) stats. Since owner must
+        // be source or target, it follows we only have SelfHealingDone for the owner.
+        public int SelfHealingDone { get; protected set; }
+        public int PotentialHealingDone { get; protected set; }
+        public int RealizedHealingDone { get; protected set; }
+        public int OverhealingDone { get; protected set; }
         public int NanoHealingDone { get; protected set; }
-
-        // We only know about healing where the owner is a source or target.
-        // See the comment in MeGotHealth.cs. HealthHealingTaken is an approximation for how much others have healed you.
-        // HealthHealingRealized is how much you've actually been healed, by yourself, by others, by whatever.
-        public int HealthHealingTaken { get; protected set; }
+        public int PotentialHealingTaken { get; protected set; }
+        public int RealizedHealingTaken { get; protected set; }
+        public int OverhealingTaken { get; protected set; }
         public int NanoHealingTaken { get; protected set; }
-        public int HealthHealingRealized { get; protected set; }
 
         // We only know about level events where the source is the owner (there's no target).
         public int NormalXPGained { get; protected set; }
         public int ShadowXPGained { get; protected set; }
         public int AlienXPGained { get; protected set; }
         public int ResearchXPGained { get; protected set; }
+        public int PvpDuelXPGained { get; protected set; }
         public int PvpSoloXPGained { get; protected set; }
         public int PvpTeamXPGained { get; protected set; }
 
         // We only know about nano events where the source is the owner (there's no target).
-        // CastAttempts isn't calculated by summing because we don't yet track all the ways a cast can complete.
-        public int CastAttempts { get; protected set; }
+        public int CastAttempts => CastSuccessCount + CastResistedCount + CastCounteredCount + CastAbortedCount;
         public int CastSuccessCount { get; protected set; }
         public int CastResistedCount { get; protected set; }
         public int CastCounteredCount { get; protected set; }
@@ -108,14 +113,13 @@ namespace AODamageMeter
         public double CastResistedChance => CastAttempts == 0 ? 0 : CastResistedCount / (double)CastAttempts;
         public double CastCounteredChance => CastAttempts == 0 ? 0 : CastCounteredCount / (double)CastAttempts;
         public double CastAbortedChance => CastAttempts == 0 ? 0 : CastAbortedCount / (double)CastAttempts;
+        public int CastUnavailableCount { get; protected set; }
 
         public void AddSourceAttackEvent(AttackEvent attackEvent)
         {
-            _sourceAttackEvents.Add(attackEvent);
-
             if (attackEvent.AttackResult == AttackResult.Hit)
             {
-                DamageDone += attackEvent.Amount ?? 0;
+                DamageDone += attackEvent.Amount.Value;
                 ++HitCount;
                 if (attackEvent.AttackModifier == AttackModifier.Crit)
                 {
@@ -132,20 +136,20 @@ namespace AODamageMeter
             }
             else if (attackEvent.AttackResult == AttackResult.IndirectHit)
             {
-                DamageDone += attackEvent.Amount ?? 0;
+                DamageDone += attackEvent.Amount.Value;
                 ++IndirectHitCount;
             }
             // No sources for events where the attack results in an absorb.
             else throw new NotImplementedException();
+
+            _sourceAttackEvents.Add(attackEvent);
         }
 
         public void AddTargetAttackEvent(AttackEvent attackEvent)
         {
-            _targetAttackEvents.Add(attackEvent);
-
             if (attackEvent.AttackResult == AttackResult.Hit)
             {
-                DamageTaken += attackEvent.Amount ?? 0;
+                DamageTaken += attackEvent.Amount.Value;
                 ++HitCountTaken;
                 if (attackEvent.AttackModifier == AttackModifier.Crit)
                 {
@@ -162,76 +166,104 @@ namespace AODamageMeter
             }
             else if (attackEvent.AttackResult == AttackResult.IndirectHit)
             {
-                DamageTaken += attackEvent.Amount ?? 0;
+                DamageTaken += attackEvent.Amount.Value;
                 ++IndirectHitCountTaken;
             }
             else if (attackEvent.AttackResult == AttackResult.Absorbed)
             {
-                DamageAbsorbed += attackEvent.Amount ?? 0;
+                DamageAbsorbed += attackEvent.Amount.Value;
             }
             else throw new NotImplementedException();
+
+            _targetAttackEvents.Add(attackEvent);
+        }
+
+        public void AddSelfHealEvent(HealEvent healEvent)
+        {
+            if (healEvent.Source != healEvent.Target)
+                throw new InvalidOperationException("Use AddSourceHealEvent and AddTargetHealEvent when the source and target differ.");
+
+            if (healEvent.HealType == HealType.RealizedHealth)
+            {
+                SelfHealingDone += healEvent.Amount.Value;
+            }
+            else throw new NotImplementedException();
+
+            _selfHealEvents.Add(healEvent);
         }
 
         public void AddSourceHealEvent(HealEvent healEvent)
         {
-            _sourceHealEvents.Add(healEvent);
+            if (healEvent.Source == healEvent.Target)
+                throw new InvalidOperationException("Use AddSelfHealEvent for heal events where the source equals the target.");
 
-            if (healEvent.HealType == HealType.Health)
+            if (healEvent.HealType == HealType.PotentialHealth)
             {
-                HealthHealingDone += healEvent.Amount ?? 0;
+                PotentialHealingDone += healEvent.Amount.Value;
+            }
+            else if (healEvent.HealType == HealType.RealizedHealth)
+            {
+                RealizedHealingDone += healEvent.Amount.Value;
+
+                // Right now, realized healing where the source (!= owner) is healing the owner is the only way to
+                // get here. In that case we know that the heal event must be an end event w/ a corresponding start event.
+                OverhealingDone += healEvent.StartEvent.Amount.Value - healEvent.Amount.Value;
             }
             else if (healEvent.HealType == HealType.Nano)
             {
-                NanoHealingDone += healEvent.Amount ?? 0;
+                NanoHealingDone += healEvent.Amount.Value;
             }
             else throw new NotImplementedException();
+
+            _sourceHealEvents.Add(healEvent);
         }
 
         public void AddTargetHealEvent(HealEvent healEvent)
         {
-            _targetHealEvents.Add(healEvent);
+            if (healEvent.Source == healEvent.Target)
+                throw new InvalidOperationException("Use AddSelfHealEvent for heal events where the source equals the target.");
 
-            if (healEvent.HealType == HealType.Health)
+            if (healEvent.HealType == HealType.PotentialHealth)
             {
-                if (healEvent.Source != null)
-                {
-                    HealthHealingTaken += healEvent.Amount ?? 0;
-                }
-                else
-                {
-                    HealthHealingRealized += healEvent.Amount ?? 0;
-                }
+                PotentialHealingTaken += healEvent.Amount.Value;
+            }
+            else if (healEvent.HealType == HealType.RealizedHealth)
+            {
+                RealizedHealingTaken += healEvent.Amount.Value;
+
+                // Right now, realized healing where the source (!= owner) is healing the owner is the only way to
+                // get here. In that case we know that the heal event must be an end event w/ a corresponding start event.
+                OverhealingTaken += healEvent.StartEvent.Amount.Value - healEvent.Amount.Value;
             }
             else if (healEvent.HealType == HealType.Nano)
             {
-                NanoHealingTaken += healEvent.Amount ?? 0;
+                NanoHealingTaken += healEvent.Amount.Value;
             }
             else throw new NotImplementedException();
+
+            _targetHealEvents.Add(healEvent);
         }
 
         public void AddLevelEvent(LevelEvent levelEvent)
         {
-            _levelEvents.Add(levelEvent);
-
             switch (levelEvent.LevelType)
             {
-                case LevelType.Normal: NormalXPGained += levelEvent.Amount ?? 0; break;
-                case LevelType.Shadow: ShadowXPGained += levelEvent.Amount ?? 0; break;
-                case LevelType.Alien: AlienXPGained += levelEvent.Amount ?? 0; break;
-                case LevelType.Research: ResearchXPGained += levelEvent.Amount ?? 0; break;
-                case LevelType.PvpSolo: PvpSoloXPGained += levelEvent.Amount ?? 0; break;
-                case LevelType.PvpTeam: PvpTeamXPGained += levelEvent.Amount ?? 0; break;
+                case LevelType.Normal: NormalXPGained += levelEvent.Amount.Value; break;
+                case LevelType.Shadow: ShadowXPGained += levelEvent.Amount.Value; break;
+                case LevelType.Alien: AlienXPGained += levelEvent.Amount.Value; break;
+                case LevelType.Research: ResearchXPGained += levelEvent.Amount.Value; break;
+                case LevelType.PvpDuel: PvpDuelXPGained += levelEvent.Amount.Value; break;
+                case LevelType.PvpSolo: PvpSoloXPGained += levelEvent.Amount.Value; break;
+                case LevelType.PvpTeam: PvpTeamXPGained += levelEvent.Amount.Value; break;
                 default: throw new NotImplementedException();
             }
+
+            _levelEvents.Add(levelEvent);
         }
 
         public void AddNanoEvent(NanoEvent nanoEvent)
         {
-            if (nanoEvent.IsStartOfCast)
-            {
-                ++CastAttempts;
-            }
-            else if (nanoEvent.CastResult.HasValue)
+            if (nanoEvent.IsEndOfCast)
             {
                 switch (nanoEvent.CastResult.Value)
                 {
@@ -242,6 +274,20 @@ namespace AODamageMeter
                     default: throw new NotImplementedException();
                 }
             }
+            else if (nanoEvent.IsCastUnavailable)
+            {
+                ++CastUnavailableCount;
+            }
+            else if (!nanoEvent.IsStartOfCast && !nanoEvent.IsEndOfCast)
+            {
+                // Nothing to do here, this is how events that may eventually become start events comes in.
+            }
+            else throw new NotImplementedException();
+
+            _nanoEvents.Add(nanoEvent);
         }
+
+        public override string ToString()
+            => $"{Character}: {PercentOfTotalDamageDone:P1} of total damage.";
     }
 }

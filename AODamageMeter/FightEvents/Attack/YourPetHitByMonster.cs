@@ -28,8 +28,8 @@ namespace AODamageMeter.FightEvents.Attack
             if (attackEvent.TryMatch(Environment, out Match match))
             {
                 await attackEvent.SetTarget(match, 1).ConfigureAwait(false);
-                attackEvent.SetAmount(match, 2);
                 attackEvent.AttackResult = AttackResult.IndirectHit;
+                attackEvent.SetAmount(match, 2);
                 attackEvent.DamageType = AODamageMeter.DamageType.Environment;
             }
             else attackEvent.IsUnmatched = true;

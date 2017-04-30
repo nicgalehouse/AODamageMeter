@@ -6,6 +6,7 @@
         Shadow,
         Alien,
         Research,
+        PvpDuel,
         PvpSolo,
         PvpTeam
     }

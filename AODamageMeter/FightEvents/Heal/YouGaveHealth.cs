@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 namespace AODamageMeter.FightEvents.Heal
 {
+    // To tie back to the conversation in MeGotHealth, this tells us the potential amount you healed someone.
+    // It sucks that we can't get the realized amount too, or just get only the realized amount.
     public class YouGaveHealth : HealEvent
     {
         public const string EventName = "You gave health";
@@ -21,7 +23,7 @@ namespace AODamageMeter.FightEvents.Heal
         {
             var healEvent = new YouGaveHealth(fight, timestamp, description);
             healEvent.SetSourceToOwner();
-            healEvent.HealType = HealType.Health;
+            healEvent.HealType = HealType.PotentialHealth;
 
             if (healEvent.TryMatch(Normal, out Match match))
             {
