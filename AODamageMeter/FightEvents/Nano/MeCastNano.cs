@@ -46,6 +46,7 @@ namespace AODamageMeter.FightEvents.Nano
             Wait =        CreateRegex("Wait for current nano program execution to finish."),
             Already =     CreateRegex("Nano program failed. Already executing nanoprogram."),
             Unable =      CreateRegex("Unable to execute nano program. You can't execute this nano on the target."),
+            Nano =        CreateRegex($"You need at least {AMOUNT} remaining nano energy to execute this program."),
             Better =      CreateRegex("NCU error: Better nano program already running."),
             Stand =       CreateRegex("Unable to execute nano program. You must stand still."),
             NotFound =    CreateRegex("Unable to execute nano program. Target not found."),
@@ -101,6 +102,7 @@ namespace AODamageMeter.FightEvents.Nano
                 || nanoEvent.TryMatch(Wait, out match)
                 || nanoEvent.TryMatch(Already, out match)
                 || nanoEvent.TryMatch(Unable, out match)
+                || nanoEvent.TryMatch(Nano, out match)
                 || nanoEvent.TryMatch(Better, out match)
                 || nanoEvent.TryMatch(Stand, out match)
                 || nanoEvent.TryMatch(NotFound, out match)
