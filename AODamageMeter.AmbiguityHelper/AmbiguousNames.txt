@@ -33,6 +33,7 @@ Belamorte
 Benacen
 Black
 Bloodcreeper
+Bodyguard
 Caal
 Cacodemon
 Cancer
@@ -86,6 +87,7 @@ Grecko
 Grimwolf
 Guard
 Guardbot
+Gunbeetle
 Hatskiri
 Hawilli
 Hawqana
@@ -151,6 +153,7 @@ Naxos
 Nebamun
 Neferu
 Nesbaneb
+Neutralizer
 Nightcrawler
 Nighthowler
 Numiel
@@ -212,6 +215,7 @@ Squasher
 Stalker
 Stark
 Stumpy
+Suppressor
 Sursunabu
 Swiftwind
 Sylvabane
@@ -223,6 +227,7 @@ Taurus
 Tcheser
 Tchu
 Tdecin
+Technician
 Thapt
 Tinos
 Tiny

@@ -29,7 +29,7 @@
       <Setter Property="BorderThickness" Value="0"/>
     </Style>
 
-    <Style TargetType="{x:Type TextBlock}">
+    <Style TargetType="TextBlock">
       <Setter Property="Foreground" Value="White"/>
       <Setter Property="Effect">
         <Setter.Value>
@@ -38,7 +38,7 @@
       </Setter>
     </Style>
 
-    <Style TargetType="{x:Type ToolTip}">
+    <Style TargetType="ToolTip">
       <Setter Property="Background" Value="{StaticResource DarkBlueBrush}"/>
       <Setter Property="BorderBrush" Value="Transparent"/>
       <Setter Property="FontFamily" Value="Verdana"/>

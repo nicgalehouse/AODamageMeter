@@ -7,7 +7,7 @@ namespace AODamageMeter
         Unknown,
         Female,
         Male,
-        Neuter
+        Uni
     }
 
     public static class GenderHelpers
@@ -18,7 +18,8 @@ namespace AODamageMeter
             {
                 case "Female": return Gender.Female;
                 case "Male": return Gender.Male;
-                case "Neuter": return Gender.Neuter;
+                case "Neuter": return Gender.Uni;
+                case "Uni": return Gender.Uni;
                 default: throw new ArgumentException(value);
             }
         }
