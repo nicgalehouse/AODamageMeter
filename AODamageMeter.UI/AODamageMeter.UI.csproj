@@ -84,9 +84,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\StringToVisibilityConverter.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+    <Compile Include="Views\CharacterTooltip.xaml.cs">
+      <DependentUpon>CharacterTooltip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Rows\DamageDoneRowView.xaml.cs">
       <DependentUpon>DamageDoneRowView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\CharacterTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DamageMeterView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="AODamageMeter.UI.Views.CharacterTooltip"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:RowViewModelBase}">
+  <StackPanel>
+    <TextBlock Text="{Binding FightCharacter.Name}"/>
+
+    <TextBlock Visibility="{Binding FightCharacter.HasPlayerInfo, Converter={StaticResource BoolToVisibilityConverter}}">
+      <TextBlock.Text>
+        <MultiBinding StringFormat="{}{0}/{1} {2} {3}">
+          <Binding Path="FightCharacter.Level"/>
+          <Binding Path="FightCharacter.AlienLevel"/>
+          <Binding Path="FightCharacter.Faction"/>
+          <Binding Path="FightCharacter.Profession"/>
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
+
+    <TextBlock Visibility="{Binding FightCharacter.HasPlayerInfo, Converter={StaticResource BoolToVisibilityConverter}}">
+      <TextBlock.Text>
+        <MultiBinding StringFormat="{}{0} {1}">
+          <Binding Path="FightCharacter.Breed"/>
+          <Binding Path="FightCharacter.Gender"/>
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
+
+    <TextBlock Visibility="{Binding FightCharacter.HasOrganizationInfo, Converter={StaticResource BoolToVisibilityConverter}}">
+      <TextBlock.Text>
+        <MultiBinding StringFormat="{}{0} ({1})">
+          <Binding Path="FightCharacter.Organization"/>
+          <Binding Path="FightCharacter.OrganizationRank"/>
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
+  </StackPanel>
+</UserControl>

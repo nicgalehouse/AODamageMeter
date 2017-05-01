@@ -1,16 +1,16 @@
-﻿namespace AODamageMeter.UI.ViewModels
+﻿using AODamageMeter.UI.Helpers;
+
+namespace AODamageMeter.UI.ViewModels
 {
     public abstract class RowViewModelBase : ViewModelBase
     {
-        protected FightCharacter _fightCharacter;
-
         protected RowViewModelBase(FightCharacter fightCharacter)
         {
-            _fightCharacter = fightCharacter;
+            FightCharacter = fightCharacter;
             Update();
         }
 
-        public string Name => _fightCharacter.Name;
+        public FightCharacter FightCharacter { get; }
 
         protected string _iconPath;
         public string IconPath
@@ -40,6 +40,10 @@
             protected set => Set(ref _rightText, value);
         }
 
-        public abstract void Update();
+        public virtual void Update()
+        {
+            IconPath = FightCharacter.Profession.GetIconPath();
+            ColorHexCode = FightCharacter.Profession.GetColorHexCode();
+        }
     }
 }

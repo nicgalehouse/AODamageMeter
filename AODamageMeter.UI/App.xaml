@@ -1,5 +1,48 @@
 <Application x:Class="AODamageMeter.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:AODamageMeter.UI.Converters"
              StartupUri="Views/DamageMeterView.xaml">
+  <Application.Resources>
+    <converters:RowWidthConverter x:Key="RowWidthConverter"/>
+    <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+    <Color x:Key="DarkBlueColor">#0C1E2F</Color>
+    <SolidColorBrush x:Key="DarkBlueBrush" Color="{StaticResource DarkBlueColor}" Opacity=".8"/>
+    <Color x:Key="LightBlueColor">#73CBD3</Color>
+    <SolidColorBrush x:Key="LightBlueBrush" Color="{StaticResource LightBlueColor}"/>
+
+    <Style TargetType="Button">
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+    </Style>
+
+    <Style TargetType="fa:ImageAwesome">
+      <Setter Property="Foreground" Value="{StaticResource LightBlueBrush}"/>
+      <Setter Property="Margin" Value="3.5"/>
+    </Style>
+
+    <Style TargetType="DataGridCell">
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <Style TargetType="{x:Type TextBlock}">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="Effect">
+        <Setter.Value>
+          <DropShadowEffect BlurRadius="1" ShadowDepth="1"/>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ToolTip}">
+      <Setter Property="Background" Value="{StaticResource DarkBlueBrush}"/>
+      <Setter Property="BorderBrush" Value="Transparent"/>
+      <Setter Property="FontFamily" Value="Verdana"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+  </Application.Resources>
 </Application>

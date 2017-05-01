@@ -12,25 +12,8 @@
         Title="AO Damage Meter" ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
         AllowsTransparency="True" Background="Transparent"
         FontFamily="Verdana" FontWeight="Bold"
-        TextOptions.TextFormattingMode="Display"
-        TextOptions.TextRenderingMode="ClearType"
         Height="200" Width="300">
   <Window.Resources>
-    <Style TargetType="Button">
-      <Setter Property="Background" Value="Transparent"/>
-      <Setter Property="BorderBrush" Value="Transparent"/>
-    </Style>
-
-    <Style TargetType="fa:ImageAwesome">
-      <Setter Property="Foreground" Value="#73CBD3"/>
-      <Setter Property="Margin" Value="3.5"/>
-    </Style>
-
-    <Style TargetType="DataGridCell">
-      <Setter Property="Padding" Value="0"/>
-      <Setter Property="BorderThickness" Value="0"/>
-    </Style>
-
     <CollectionViewSource x:Key="DamageDoneRowsViewSource" Source="{Binding DamageDoneRows}" IsLiveSortingRequested="True">
       <CollectionViewSource.LiveSortingProperties>
         <clr:String>PercentWidth</clr:String>
@@ -49,7 +32,7 @@
 
     <Grid Grid.Row="0"
           MouseDown="HeaderRow_MouseDown_Drag"
-          Background="#0C1E2F">
+          Background="{StaticResource DarkBlueBrush}">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="27"/>
         <ColumnDefinition Width="*"/>
@@ -83,19 +66,19 @@
     <DataGrid Grid.Row="1" x:Name="DamageMeter"
               ItemsSource="{Binding Source={StaticResource DamageDoneRowsViewSource}}"
               IsReadOnly="True" AutoGenerateColumns="False"
-              VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled"
+              VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" BorderBrush="Transparent"
               HeadersVisibility="None" GridLinesVisibility="Horizontal" RowBackground="Transparent">
       <DataGrid.Resources>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Black" Opacity=".1"/>
-        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Black" Opacity=".1"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
       </DataGrid.Resources>
 
       <DataGrid.HorizontalGridLinesBrush>
-        <SolidColorBrush Opacity="0"/>
+        <SolidColorBrush Color="{StaticResource LightBlueColor}" Opacity=".05"/>
       </DataGrid.HorizontalGridLinesBrush>
 
       <DataGrid.Background>
-        <SolidColorBrush Color="Black" Opacity="0.2"/>
+        <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
       </DataGrid.Background>
 
       <DataGrid.Columns>

@@ -10,10 +10,10 @@ namespace AODamageMeter.UI.ViewModels.Rows
 
         public override void Update()
         {
-            IconPath = _fightCharacter.Profession.GetIconPath();
-            ColorHexCode = _fightCharacter.Profession.GetColorHexCode();
-            PercentWidth = _fightCharacter.PercentOfMaxDamageDone;
-            RightText = $"{_fightCharacter.DamageDone.Format()} ({_fightCharacter.ActiveDPM.Format()}, {_fightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
+            base.Update();
+
+            PercentWidth = FightCharacter.PercentOfMaxDamageDone;
+            RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {FightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
         }
     }
 }

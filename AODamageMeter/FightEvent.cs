@@ -122,7 +122,7 @@ namespace AODamageMeter
             var nameParts = name.Split();
             if (nameParts.Length > 1
                 && Character.TryGetCharacter(nameParts[0], out Character character)
-                && character.CharacterType == CharacterType.PlayerCharacter)
+                && character.IsPlayer)
             {
                 Source = await Fight.GetOrCreateFightCharacter(name, Timestamp).ConfigureAwait(false);
                 Source.Character.CharacterType = CharacterType.Pet;
@@ -150,7 +150,7 @@ namespace AODamageMeter
             var nameParts = name.Split();
             if (nameParts.Length > 1
                 && Character.TryGetCharacter(nameParts[0], out Character character)
-                && character.CharacterType == CharacterType.PlayerCharacter)
+                && character.IsPlayer)
             {
                 Target = await Fight.GetOrCreateFightCharacter(name, Timestamp).ConfigureAwait(false);
                 Target.Character.CharacterType = CharacterType.Pet;

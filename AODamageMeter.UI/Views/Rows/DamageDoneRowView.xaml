@@ -3,14 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:converters="clr-namespace:AODamageMeter.UI.Converters"
              xmlns:rowViewModels="clr-namespace:AODamageMeter.UI.ViewModels.Rows"
+             xmlns:views="clr-namespace:AODamageMeter.UI.Views"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance rowViewModels:DamageDoneRowViewModel}"
              d:DesignHeight="27" d:DesignWidth="300">
-  <UserControl.Resources>
-    <converters:RowWidthConverter x:Key="RowWidthConverter"/>
-  </UserControl.Resources>
-
   <Grid UseLayoutRounding="True">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="24"/>
@@ -18,12 +14,18 @@
     </Grid.ColumnDefinitions>
 
     <Image Grid.Column="0"
-           Source="{Binding IconPath}"/>
+           Source="{Binding IconPath}"
+           ToolTipService.Placement="Left"
+           ToolTipService.HorizontalOffset="-3">
+      <Image.ToolTip>
+        <views:CharacterTooltip/>
+      </Image.ToolTip>
+    </Image>
 
     <Canvas Grid.Column="1" Height="24"
             Margin="0" HorizontalAlignment="Stretch">
       <Canvas.Background>
-        <SolidColorBrush Color="Black" Opacity="0.15"/>
+        <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".15"/>
       </Canvas.Background>
 
       <Rectangle Canvas.Left="0" Height="24">
@@ -33,10 +35,6 @@
             <GradientStop Color="{Binding ColorHexCode}" Offset=".5"/>
             <GradientStop Color="Black" Offset="2.25"/>
           </LinearGradientBrush>
-          <!--<LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-            <GradientStop Color="{Binding ColorHexCode}" Offset="0"/>
-            <GradientStop Color="Black" Offset="4"/>
-          </LinearGradientBrush>-->
         </Rectangle.Fill>
 
         <Rectangle.Width>
@@ -48,23 +46,11 @@
       </Rectangle>
 
       <Border Canvas.Left="3" Height="24">
-        <TextBlock Text="{Binding Name}"
-                   Foreground="White"
-                   VerticalAlignment="Center">
-          <TextBlock.Effect>
-            <DropShadowEffect BlurRadius="1" ShadowDepth="1"/>
-          </TextBlock.Effect>
-        </TextBlock>
+        <TextBlock Text="{Binding FightCharacter.Name}" VerticalAlignment="Center"/>
       </Border>
 
       <Border Canvas.Right="3" Height="24">
-        <TextBlock Text="{Binding RightText}"
-                   Foreground="White"
-                   VerticalAlignment="Center">
-          <TextBlock.Effect>
-            <DropShadowEffect BlurRadius="1" ShadowDepth="1"/>
-          </TextBlock.Effect>
-        </TextBlock>
+        <TextBlock Text="{Binding RightText}" VerticalAlignment="Center"/>
       </Border>
     </Canvas>
   </Grid>

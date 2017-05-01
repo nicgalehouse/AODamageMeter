@@ -18,9 +18,20 @@ namespace AODamageMeter
         public Character Character { get; }
         public string Name => Character.Name;
         public CharacterType CharacterType => Character.CharacterType;
+        public bool IsPlayer => Character.IsPlayer;
+        public bool IsNPC => Character.IsNPC;
+        public bool IsPet => Character.IsPet;
         public string ID => Character.ID;
         public Profession Profession => Character.Profession;
+        public Breed? Breed => Character.Breed;
+        public Gender? Gender => Character.Gender;
+        public Faction? Faction => Character.Faction;
+        public int? Level => Character.Level;
+        public int? AlienLevel => Character.AlienLevel;
+        public bool HasPlayerInfo => Character.HasPlayerInfo;
         public string Organization => Character.Organization;
+        public string OrganizationRank => Character.OrganizationRank;
+        public bool HasOrganizationInfo => Character.HasOrganizationInfo;
         public DateTime EnteredTime { get; }
         public TimeSpan ActiveDuration => Fight.LatestTime.Value - EnteredTime;
 

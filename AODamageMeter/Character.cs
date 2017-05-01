@@ -22,36 +22,92 @@ namespace AODamageMeter
 
         public string Name { get; }
         public CharacterType CharacterType { get; set; }
+        public bool IsPlayer => CharacterType == CharacterType.PlayerCharacter;
+        public bool IsNPC => CharacterType == CharacterType.NonPlayerCharacter;
+        public bool IsPet => CharacterType == CharacterType.Pet;
 
         protected string _id;
         public string ID
         {
-            get => CharacterType == CharacterType.PlayerCharacter ? _id : null;
+            get => IsPlayer ? _id : null;
             set => _id = value;
         }
 
         protected Profession _profession;
         public Profession Profession
         {
-            get => CharacterType == CharacterType.PlayerCharacter ? (_profession ?? Profession.Unknown) : null;
+            get => IsPlayer ? (_profession ?? Profession.Unknown) : null;
             set => _profession = value;
         }
+
+        protected Breed? _breed;
+        public Breed? Breed
+        {
+            get => IsPlayer ? (_breed ?? AODamageMeter.Breed.Unknown) : (Breed?)null;
+            set => _breed = value;
+        }
+
+        protected Gender? _gender;
+        public Gender? Gender
+        {
+            get => IsPlayer ? (_gender ?? AODamageMeter.Gender.Unknown) : (Gender?)null;
+            set => _gender = value;
+        }
+
+        protected Faction? _faction;
+        public Faction? Faction
+        {
+            get => IsPlayer ? (_faction ?? AODamageMeter.Faction.Unknown) : (Faction?)null;
+            set => _faction = value;
+        }
+
+        protected int? _level;
+        public int? Level
+        {
+            get => IsPlayer ? _level : null;
+            set => _level = value;
+        }
+
+        protected int? _alienLevel;
+        public int? AlienLevel
+        {
+            get => IsPlayer ? _alienLevel : null;
+            set => _alienLevel = value;
+        }
+
+        public bool HasPlayerInfo
+            => IsPlayer
+            && Profession != Profession.Unknown
+            && Breed != AODamageMeter.Breed.Unknown
+            && Gender != AODamageMeter.Gender.Unknown
+            && Faction != AODamageMeter.Faction.Unknown
+            && Level.HasValue && AlienLevel.HasValue;
 
         protected string _organization;
         public string Organization
         {
-            get => CharacterType == CharacterType.PlayerCharacter ? _organization : null;
+            get => IsPlayer ? _organization : null;
             set => _organization = value;
         }
+
+        protected string _organizationRank;
+        public string OrganizationRank
+        {
+            get => IsPlayer ? _organizationRank : null;
+            set => _organizationRank = value;
+        }
+
+        public bool HasOrganizationInfo
+            => IsPlayer
+            && Organization != null
+            && OrganizationRank != null;
 
         protected readonly HashSet<Character> _pets = new HashSet<Character>();
         public IReadOnlyCollection<Character> Pets => _pets;
         public void RegisterPet(Character pet)
         {
-            if (pet.CharacterType != CharacterType.Pet)
-                throw new ArgumentException("A character needs a CharacterType of Pet to be registered as a pet.");
-            if (CharacterType != CharacterType.PlayerCharacter)
-                throw new ArgumentException("A character needs a CharacterType of PlayerCharacter to own a pet.");
+            if (!pet.IsPet) throw new ArgumentException("A character needs a CharacterType of Pet to be registered as a pet.");
+            if (!IsPlayer) throw new ArgumentException("A character needs a CharacterType of PlayerCharacter to own a pet.");
 
             _pets.Add(pet);
         }
@@ -113,15 +169,19 @@ namespace AODamageMeter
                     var characterBio = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
                     if (characterBio != null) // If the character doesn't exist/hasn't been indexed yet, the JSON returned is null.
                     {
-                        var characterInfo = characterBio[0];
-                        var organizationInfo = characterBio[1];
-                        var profession = Profession.All.Single(p => p.Name == (string)characterInfo.PROF);
-                        bool isNameAmbiguous = _ambiguousNames.Contains(name);
-                        character = new Character(name, isNameAmbiguous ? CharacterType.NonPlayerCharacter : CharacterType.PlayerCharacter)
+                        var playerInfo = characterBio[0];
+                        var organizationInfo = characterBio[1] as JObject == null ? null : characterBio[1];
+                        character = new Character(name, _ambiguousNames.Contains(name) ? CharacterType.NonPlayerCharacter : CharacterType.PlayerCharacter)
                         {
-                            ID = characterInfo.CHAR_INSTANCE,
-                            Profession = profession,
-                            Organization = organizationInfo as JObject == null ? null : organizationInfo.NAME
+                            ID = playerInfo.CHAR_INSTANCE,
+                            Profession = Profession.All.Single(p => p.Name == (string)playerInfo.PROF),
+                            Breed = BreedHelpers.GetBreed((string)playerInfo.BREED),
+                            Gender = GenderHelpers.GetGender((string)playerInfo.SEX),
+                            Faction = FactionHelpers.GetFaction((string)playerInfo.SIDE),
+                            Level = int.Parse((string)playerInfo.LEVELX),
+                            AlienLevel = int.Parse((string)playerInfo.ALIENLEVEL),
+                            Organization = organizationInfo?.NAME,
+                            OrganizationRank = organizationInfo?.RANK_TITLE
                         };
                     }
                 }
