@@ -51,7 +51,8 @@ namespace AODamageMeter.FightEvents.Nano
             Stand =       CreateRegex("Unable to execute nano program. You must stand still."),
             NotFound =    CreateRegex("Unable to execute nano program. Target not found."),
             LoS =         CreateRegex("Target is not in line of sight!"),
-            Range =       CreateRegex("Target out of range for nano program."),
+            Range1 =      CreateRegex("Target out of range for nano program."),
+            Range2 =      CreateRegex("Target is outside range."),
             Structure =   CreateRegex("The molecular structure of this creature prohibits the use of this technology."),
             Falling =     CreateRegex("You can't execute nanoprograms while falling!"),
             Items =       CreateRegex("You can't execute nano programs on items."),
@@ -107,7 +108,8 @@ namespace AODamageMeter.FightEvents.Nano
                 || nanoEvent.TryMatch(Stand, out match)
                 || nanoEvent.TryMatch(NotFound, out match)
                 || nanoEvent.TryMatch(LoS, out match)
-                || nanoEvent.TryMatch(Range, out match)
+                || nanoEvent.TryMatch(Range1, out match)
+                || nanoEvent.TryMatch(Range2, out match)
                 || nanoEvent.TryMatch(Structure, out match)
                 || nanoEvent.TryMatch(Falling, out match)
                 || nanoEvent.TryMatch(Items, out match)
