@@ -1,6 +1,7 @@
 ﻿using AODamageMeter.FightEvents;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AODamageMeter
 {
@@ -34,13 +35,16 @@ namespace AODamageMeter
         public bool HasOrganizationInfo => Character.HasOrganizationInfo;
         public DateTime EnteredTime { get; }
         public TimeSpan ActiveDuration => Fight.LatestTime.Value - EnteredTime;
+        public TimeSpan ActiveDurationPlusPets => new[] { ActiveDuration }.Concat(FightPets.Select(p => p.ActiveDuration)).Max();
 
-        protected readonly HashSet<FightCharacter> _pets = new HashSet<FightCharacter>();
-        public IReadOnlyCollection<FightCharacter> Pets => _pets;
-        public void RegisterPet(FightCharacter pet)
+        public FightCharacter FightPetOwner { get; protected set; }
+        protected readonly HashSet<FightCharacter> _fightPets = new HashSet<FightCharacter>();
+        public IReadOnlyCollection<FightCharacter> FightPets => _fightPets;
+        public void RegisterFightPet(FightCharacter fightPet)
         {
-            Character.RegisterPet(pet.Character);
-            _pets.Add(pet);
+            Character.RegisterPet(fightPet.Character);
+            _fightPets.Add(fightPet);
+            fightPet.FightPetOwner = this;
         }
 
         protected readonly List<AttackEvent> _sourceAttackEvents = new List<AttackEvent>();
@@ -59,6 +63,7 @@ namespace AODamageMeter
         public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
 
         public int DamageDone { get; protected set; }
+        public int DamageDonePlusPets => DamageDone + FightPets.Sum(p => p.DamageDone);
         public int HitCount { get; protected set; }
         public int CritCount { get; protected set; }
         public int GlanceCount { get; protected set; }
@@ -71,10 +76,15 @@ namespace AODamageMeter
         public double GlanceChance => HitAttempts == 0 ? 0 : GlanceCount / (double)HitAttempts;
         public double MissChance => HitAttempts == 0 ? 0 : MissCount / (double)HitAttempts;
         public double PercentOfTotalDamageDone => Fight.TotalDamageDone == 0 ? 0 : DamageDone / (double)Fight.TotalDamageDone;
+        public double PercentPlusPetsOfTotalDamageDone => Fight.TotalDamageDone == 0 ? 0 : DamageDonePlusPets / (double)Fight.TotalDamageDone;
         public double PercentOfMaxDamageDone => Fight.MaxDamageDone == 0 ? 0 : DamageDone / (double)Fight.MaxDamageDone;
+        public double PercentOfMaxDamageDonePlusPets => Fight.MaxDamageDonePlusPets == 0 ? 0 : DamageDone / (double)Fight.MaxDamageDonePlusPets;
+        public double PercentPlusPetsOfMaxDamageDonePlusPets => Fight.MaxDamageDonePlusPets == 0 ? 0 : DamageDonePlusPets / (double)Fight.MaxDamageDonePlusPets;
         public double ActiveDPS => ActiveDuration.TotalSeconds <= 1 ? DamageDone : DamageDone / ActiveDuration.TotalSeconds;
+        public double ActiveDPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? DamageDonePlusPets : DamageDonePlusPets / ActiveDurationPlusPets.TotalSeconds;
         public double FullDPS => Fight.Duration.Value.TotalSeconds <= 1 ? DamageDone : DamageDone / Fight.Duration.Value.TotalSeconds;
         public double ActiveDPM => 60 * ActiveDPS;
+        public double ActiveDPMPlusPets => 60 * ActiveDPSPlusPets;
         public double FullDPM => 60 * FullDPS;
 
         public int DamageTaken { get; protected set; }

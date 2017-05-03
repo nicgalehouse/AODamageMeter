@@ -6,7 +6,14 @@
              xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:RowViewModelBase}">
   <StackPanel>
-    <TextBlock Text="{Binding FightCharacter.Name}"/>
+    <TextBlock >
+      <TextBlock.Text>
+        <MultiBinding StringFormat="{}{0}. {1}">
+          <Binding Path="DisplayIndex"/>
+          <Binding Path="FightCharacter.Name"/>
+        </MultiBinding>
+      </TextBlock.Text>
+    </TextBlock>
 
     <TextBlock Visibility="{Binding FightCharacter.HasPlayerInfo, Converter={StaticResource BoolToVisibilityConverter}}">
       <TextBlock.Text>

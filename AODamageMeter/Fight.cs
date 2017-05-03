@@ -72,6 +72,22 @@ namespace AODamageMeter
             }
         }
 
+        protected bool _isMaxDamageDonePlusPetsCurrent;
+        protected int _maxDamageDonePlusPets;
+        public int MaxDamageDonePlusPets
+        {
+            get
+            {
+                if (!_isMaxDamageDonePlusPetsCurrent)
+                {
+                    _maxDamageDonePlusPets = FightCharacters.Max(c => c.DamageDonePlusPets);
+                    _isMaxDamageDonePlusPetsCurrent = true;
+                }
+
+                return _maxDamageDonePlusPets;
+            }
+        }
+
         public async Task AddFightEvent(string line)
         {
             var fightEvent = await FightEvent.Create(this, line).ConfigureAwait(false);
@@ -105,6 +121,7 @@ namespace AODamageMeter
                     _attackEvents.Add(attackEvent);
                     _isTotalDamageDoneCurrent = false;
                     _isMaxDamageDoneCurrent = false;
+                    _isMaxDamageDonePlusPetsCurrent = false;
                     break;
                 case HealEvent healEvent:
                     if (healEvent.Source == healEvent.Target)

@@ -11,6 +11,7 @@
 
     <Color x:Key="DarkBlueColor">#0C1E2F</Color>
     <SolidColorBrush x:Key="DarkBlueBrush" Color="{StaticResource DarkBlueColor}" Opacity=".8"/>
+
     <Color x:Key="LightBlueColor">#73CBD3</Color>
     <SolidColorBrush x:Key="LightBlueBrush" Color="{StaticResource LightBlueColor}"/>
 
@@ -22,6 +23,28 @@
     <Style TargetType="fa:ImageAwesome">
       <Setter Property="Foreground" Value="{StaticResource LightBlueBrush}"/>
       <Setter Property="Margin" Value="3.5"/>
+    </Style>
+
+    <Style TargetType="DataGrid">
+      <Setter Property="IsReadOnly" Value="True"/>
+      <Setter Property="AutoGenerateColumns" Value="False"/>
+      <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="HeadersVisibility" Value="None"/>
+      <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+      <Setter Property="RowBackground" Value="Transparent"/>
+      <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"/>
+      <Setter Property="HorizontalGridLinesBrush">
+        <Setter.Value>
+          <SolidColorBrush Color="{StaticResource LightBlueColor}" Opacity=".05"/>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="Background">
+        <Setter.Value>
+          <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
+        </Setter.Value>
+      </Setter>
     </Style>
 
     <Style TargetType="DataGridCell">

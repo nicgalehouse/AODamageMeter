@@ -9,7 +9,7 @@ namespace AODamageMeter.UI.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             double percentWidth = (double)values[0];
-            double actualWidth = (double)values[1];
+            double actualWidth = Math.Abs((double)values[1] - 24);
 
             return percentWidth * actualWidth;
         }

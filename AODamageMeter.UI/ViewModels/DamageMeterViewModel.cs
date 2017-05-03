@@ -3,6 +3,7 @@ using AODamageMeter.UI.ViewModels.Rows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,16 +24,28 @@ namespace AODamageMeter.UI.ViewModels
             {
                 lock (_damageMeter)
                 {
-                    foreach (var fightCharacter in _damageMeter.CurrentFight.FightCharacters)
+                    int displayIndex = 1;
+                    foreach (var fightCharacter in _damageMeter.CurrentFight.FightCharacters
+                        .OrderByDescending(c => c.DamageDonePlusPets)
+                        .ThenBy(c => c.Name))
                     {
-                        if (_damageDoneRowsMap.TryGetValue(fightCharacter, out DamageDoneRowViewModel row))
+                         // A fight character may not be immediately recognized as a pet; remove it if it becomes one.
+                        if (fightCharacter.IsPet)
                         {
-                            row.Update();
+                            if (_damageDoneRowsMap.TryGetValue(fightCharacter, out DamageDoneMainRowViewModel damageDoneRow))
+                            {
+                                _damageDoneRowsMap.Remove(fightCharacter);
+                                DamageDoneRows.Remove(damageDoneRow);
+                            }
                         }
                         else
                         {
-                            _damageDoneRowsMap.Add(fightCharacter, row = new DamageDoneRowViewModel(fightCharacter));
-                            DamageDoneRows.Add(row);
+                            if (!_damageDoneRowsMap.TryGetValue(fightCharacter, out DamageDoneMainRowViewModel damageDoneRow))
+                            {
+                                _damageDoneRowsMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRowViewModel(fightCharacter));
+                                DamageDoneRows.Add(damageDoneRow);
+                            }
+                            damageDoneRow.Update(displayIndex++);
                         }
                     }
                 }
@@ -41,8 +54,8 @@ namespace AODamageMeter.UI.ViewModels
             ResetDamageMeterCommand = new RelayCommand(ExecuteResetDamageMeterCommand);
         }
 
-        private Dictionary<FightCharacter, DamageDoneRowViewModel> _damageDoneRowsMap = new Dictionary<FightCharacter, DamageDoneRowViewModel>();
-        public ObservableCollection<DamageDoneRowViewModel> DamageDoneRows { get; } = new ObservableCollection<DamageDoneRowViewModel>();
+        private Dictionary<FightCharacter, DamageDoneMainRowViewModel> _damageDoneRowsMap = new Dictionary<FightCharacter, DamageDoneMainRowViewModel>();
+        public ObservableCollection<DamageDoneMainRowViewModel> DamageDoneRows { get; } = new ObservableCollection<DamageDoneMainRowViewModel>();
 
         public void SetLogFile(string logFilePath)
         {

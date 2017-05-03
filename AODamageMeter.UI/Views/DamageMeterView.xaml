@@ -5,25 +5,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
-        xmlns:rowViews="clr-namespace:AODamageMeter.UI.Views.Rows"
-        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-        xmlns:clr="clr-namespace:System;assembly=mscorlib"
+        xmlns:views="clr-namespace:AODamageMeter.UI.Views"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DamageMeterViewModel}"
         Title="AO Damage Meter" ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
         AllowsTransparency="True" Background="Transparent"
         FontFamily="Verdana" FontWeight="Bold"
         Height="200" Width="300">
-  <Window.Resources>
-    <CollectionViewSource x:Key="DamageDoneRowsViewSource" Source="{Binding DamageDoneRows}" IsLiveSortingRequested="True">
-      <CollectionViewSource.LiveSortingProperties>
-        <clr:String>PercentWidth</clr:String>
-      </CollectionViewSource.LiveSortingProperties>
-      <CollectionViewSource.SortDescriptions>
-        <scm:SortDescription PropertyName="PercentWidth" Direction="Descending"/>
-      </CollectionViewSource.SortDescriptions>
-    </CollectionViewSource>
-  </Window.Resources>
-
   <Grid Background="Transparent">
     <Grid.RowDefinitions>
       <RowDefinition Height="25"/>
@@ -62,34 +49,6 @@
       </Button>
     </Grid>
 
-    <!-- Tried briefly to use something simpler like a ListBox, but had difficulty getting the styling to be as tight. -->
-    <DataGrid Grid.Row="1" x:Name="DamageMeter"
-              ItemsSource="{Binding Source={StaticResource DamageDoneRowsViewSource}}"
-              IsReadOnly="True" AutoGenerateColumns="False"
-              VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" BorderBrush="Transparent"
-              HeadersVisibility="None" GridLinesVisibility="Horizontal" RowBackground="Transparent">
-      <DataGrid.Resources>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-      </DataGrid.Resources>
-
-      <DataGrid.HorizontalGridLinesBrush>
-        <SolidColorBrush Color="{StaticResource LightBlueColor}" Opacity=".05"/>
-      </DataGrid.HorizontalGridLinesBrush>
-
-      <DataGrid.Background>
-        <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-      </DataGrid.Background>
-
-      <DataGrid.Columns>
-        <DataGridTemplateColumn Width="*">
-          <DataGridTemplateColumn.CellTemplate>
-            <DataTemplate>
-              <rowViews:DamageDoneRowView/>
-            </DataTemplate>
-          </DataGridTemplateColumn.CellTemplate>
-        </DataGridTemplateColumn>
-      </DataGrid.Columns>
-    </DataGrid>
+    <views:MainGridView Grid.Row="1" DataContext="{Binding DamageDoneRows}"/>
   </Grid>
 </Window>

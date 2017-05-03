@@ -102,6 +102,7 @@ namespace AODamageMeter
             && Organization != null
             && OrganizationRank != null;
 
+        public Character PetOwner { get; protected set; }
         protected readonly HashSet<Character> _pets = new HashSet<Character>();
         public IReadOnlyCollection<Character> Pets => _pets;
         public void RegisterPet(Character pet)
@@ -110,6 +111,7 @@ namespace AODamageMeter
             if (!IsPlayer) throw new ArgumentException("A character needs a CharacterType of PlayerCharacter to own a pet.");
 
             _pets.Add(pet);
+            pet.PetOwner = this;
         }
 
         public static async Task<Character> GetOrCreateCharacter(string name)

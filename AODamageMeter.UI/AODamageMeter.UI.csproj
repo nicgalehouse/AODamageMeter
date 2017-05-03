@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AODamageMeter.UI</RootNamespace>
     <AssemblyName>AODamageMeter.UI</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -87,13 +87,31 @@
     <Compile Include="Converters\StringToVisibilityConverter.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>
+    <Compile Include="ViewModels\Rows\DamageDoneDetailRowViewModel.cs" />
     <Compile Include="Views\CharacterTooltip.xaml.cs">
       <DependentUpon>CharacterTooltip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Rows\DamageDoneRowView.xaml.cs">
-      <DependentUpon>DamageDoneRowView.xaml</DependentUpon>
+    <Compile Include="Views\DetailRowView.xaml.cs">
+      <DependentUpon>DetailRowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainGridView.xaml.cs">
+      <DependentUpon>MainGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DetailGridView.xaml.cs">
+      <DependentUpon>DetailGridView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainRowView.xaml.cs">
+      <DependentUpon>MainRowView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CharacterTooltip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DetailRowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainGridView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -109,7 +127,7 @@
     <Compile Include="Helpers\ProfessionExtensions.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\RelayCommandParameterized.cs" />
-    <Compile Include="ViewModels\Rows\DamageDoneRowViewModel.cs" />
+    <Compile Include="ViewModels\Rows\DamageDoneMainRowViewModel.cs" />
     <Compile Include="ViewModels\RowViewModelBase.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -118,7 +136,11 @@
       <DependentUpon>DamageMeterView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Rows\DamageDoneRowView.xaml">
+    <Page Include="Views\DetailGridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainRowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -168,12 +190,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AODamageMeter\AODamageMeter.csproj">
-      <Project>{d55d5daf-e8cc-4f4e-a30f-d1358f89d934}</Project>
-      <Name>AODamageMeter</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\Adventurer.png" />
     <Resource Include="Icons\Agent.png" />
     <Resource Include="Icons\Bureaucrat.png" />
@@ -193,6 +209,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\EyeOfLight.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AODamageMeter\AODamageMeter.csproj">
+      <Project>{d55d5daf-e8cc-4f4e-a30f-d1358f89d934}</Project>
+      <Name>AODamageMeter</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
