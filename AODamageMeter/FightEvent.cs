@@ -94,17 +94,17 @@ namespace AODamageMeter
 
            If we see a source/target with exactly the same name as the owner, it gets attributed to a pet character named
            "<Owner>'s pets". This works because the owner's name never appears in the log for their own events--there's just
-           the contextual "You". If we see a source/target with a name prefixed by {an existent PC's name and a space}, it gets
+           the contextual "You". If we see a source/target with a name prefixed by {an existent PC's name and an apostrophe}, it gets
            created as a pet character. In both cases, the corresponding PC has the pet character added to their pets. For
            example, we support an aggregate pet breakdown if the owner is "Elitengi" and he names his pets "Elitengi", and
-           an individual pet breakdown if the PC is "Elitengi" and he names his pets "Elitengi Robo" and "Elitengi Doggo". The
+           an individual pet breakdown if the PC is "Elitengi" and he names his pets "Elitengi's Robo" and "Elitengi's Doggo". The
            aggregate pet breakdown only works for the owner. For non-owner PCs, all we can do is add the damage to the PC. The
            individual pet breakdown works for all PCs, owner and non-owner alike. Natural false positives--NPCs which {a PC's
-           name followed by a space} prefix--probably never happen. Ones caused by other characters naming their pets after a
+           name followed by an apostrophe} prefix--probably never happen. Ones caused by other characters naming their pets after a
            different character might happen. Maybe the biggest concern here is when someone renames their pets on one character
            to match their damage-dealing alt, and we'll never be able to solve that, so don't worry about this problem at all.
            We could see when someone has renamed their pets after the meter owner, and have special handling if we know the
-           meter owner can't have pets, but nah. So for now, everyone can have pets regardless of their profession. */
+           meter owner can't have pets, but nah. (So for now, everyone can have pets regardless of their profession.) */
 
         protected async Task SetSource(Match match, int index)
         {
@@ -114,20 +114,20 @@ namespace AODamageMeter
             {
                 Source = await Fight.GetOrCreateFightCharacter($"{name}'s pets", Timestamp).ConfigureAwait(false);
                 Source.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
-                petOwner.RegisterPet(Source);
+                FightCharacter fightPetOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
+                fightPetOwner.RegisterFightPet(Source);
                 return;
             }
 
-            var nameParts = name.Split();
+            var nameParts = name.Split('\'');
             if (nameParts.Length > 1
                 && Character.TryGetCharacter(nameParts[0], out Character character)
                 && character.IsPlayer)
             {
                 Source = await Fight.GetOrCreateFightCharacter(name, Timestamp).ConfigureAwait(false);
                 Source.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(character, Timestamp);
-                petOwner.RegisterPet(Source);
+                FightCharacter fightPetOwner = Fight.GetOrCreateFightCharacter(character, Timestamp);
+                fightPetOwner.RegisterFightPet(Source);
                 return;
             }
 
@@ -142,20 +142,20 @@ namespace AODamageMeter
             {
                 Target = await Fight.GetOrCreateFightCharacter($"{name}'s pets", Timestamp).ConfigureAwait(false);
                 Target.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
-                petOwner.RegisterPet(Target);
+                FightCharacter fightPetOwner = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
+                fightPetOwner.RegisterFightPet(Target);
                 return;
             }
 
-            var nameParts = name.Split();
+            var nameParts = name.Split('\'');
             if (nameParts.Length > 1
                 && Character.TryGetCharacter(nameParts[0], out Character character)
                 && character.IsPlayer)
             {
                 Target = await Fight.GetOrCreateFightCharacter(name, Timestamp).ConfigureAwait(false);
                 Target.Character.CharacterType = CharacterType.Pet;
-                FightCharacter petOwner = Fight.GetOrCreateFightCharacter(character, Timestamp);
-                petOwner.RegisterPet(Target);
+                FightCharacter fightPetOwner = Fight.GetOrCreateFightCharacter(character, Timestamp);
+                fightPetOwner.RegisterFightPet(Target);
                 return;
             }
 
