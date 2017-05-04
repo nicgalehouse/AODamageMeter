@@ -18,11 +18,6 @@
   </UserControl.Resources>
 
   <DataGrid ItemsSource="{Binding Source={StaticResource DetailRowsViewSource}}">
-    <DataGrid.Resources>
-      <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-      <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-    </DataGrid.Resources>
-
     <DataGrid.Columns>
       <DataGridTemplateColumn Width="*">
         <DataGridTemplateColumn.CellTemplate>

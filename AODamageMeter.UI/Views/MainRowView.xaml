@@ -7,14 +7,11 @@
              xmlns:views="clr-namespace:AODamageMeter.UI.Views"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:RowViewModelBase}"
              d:DesignHeight="27" d:DesignWidth="300">
-  <Grid UseLayoutRounding="True">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="24"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
+  <Canvas Height="24"
+          Background="{StaticResource DarkBlueBrushFaded}">
 
-    <Image Grid.Column="0"
-           Source="{Binding IconPath}"
+    <Image Width="24"
+           Source="{Binding IconPath, Converter={StaticResource IconPathToBitmapImageConverter}}"
            ToolTipService.Placement="Left"
            ToolTipService.HorizontalOffset="-3"
            MouseDown="Icon_MouseDown_RaiseDetailGridNeedsToggling">
@@ -23,36 +20,20 @@
       </Image.ToolTip>
     </Image>
 
-    <Canvas Grid.Column="1" Height="24"
-            Margin="0" HorizontalAlignment="Stretch">
-      <Canvas.Background>
-        <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".15"/>
-      </Canvas.Background>
+    <Rectangle Height="24" Canvas.Left="24"
+               Fill="{Binding Color, Converter={StaticResource ColorToRowBrushConverter}}">
+      <Rectangle.Width>
+        <MultiBinding Converter="{StaticResource RowWidthConverter}">
+          <Binding Path="PercentWidth"/>
+          <Binding Path="ActualWidth" ElementName="MainGrid"/>
+        </MultiBinding>
+      </Rectangle.Width>
+    </Rectangle>
 
-      <Rectangle Canvas.Left="0" Height="24">
-        <Rectangle.Fill>
-          <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
-            <GradientStop Color="Black" Offset="-1.25"/>
-            <GradientStop Color="{Binding ColorHexCode}" Offset=".5"/>
-            <GradientStop Color="Black" Offset="2.25"/>
-          </LinearGradientBrush>
-        </Rectangle.Fill>
+    <TextBlock Height="24" Canvas.Top="5" Canvas.Left="27"
+               Text="{Binding FightCharacterName, Mode=OneTime}" />
 
-        <Rectangle.Width>
-          <MultiBinding Converter="{StaticResource RowWidthConverter}">
-            <Binding Path="PercentWidth"/>
-            <Binding Path="ActualWidth" ElementName="MainGrid"/>
-          </MultiBinding>
-        </Rectangle.Width>
-      </Rectangle>
-
-      <Border Canvas.Left="3" Height="24">
-        <TextBlock Text="{Binding FightCharacter.Name}" VerticalAlignment="Center"/>
-      </Border>
-
-      <Border Canvas.Right="3" Height="24">
-        <TextBlock Text="{Binding RightText}" VerticalAlignment="Center"/>
-      </Border>
-    </Canvas>
-  </Grid>
+    <TextBlock Height="24" Canvas.Top="5" Canvas.Right="3"
+               Text="{Binding RightText}"/>
+  </Canvas>
 </UserControl>

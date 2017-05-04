@@ -1,6 +1,7 @@
 ﻿using AODamageMeter.UI.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels
 {
@@ -26,11 +27,11 @@ namespace AODamageMeter.UI.ViewModels
             protected set => Set(ref _iconPath, value);
         }
 
-        protected string _colorHexCode;
-        public string ColorHexCode
+        protected Color _color;
+        public Color Color
         {
-            get => _colorHexCode;
-            protected set => Set(ref _colorHexCode, value);
+            get => _color;
+            protected set => Set(ref _color, value);
         }
 
         protected double _percentWidth;
@@ -54,7 +55,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             DisplayIndex = displayIndex;
             IconPath = FightCharacter.Profession.GetIconPath();
-            ColorHexCode = FightCharacter.Profession.GetColorHexCode();
+            Color = FightCharacter.Profession.GetColor();
         }
     }
 }

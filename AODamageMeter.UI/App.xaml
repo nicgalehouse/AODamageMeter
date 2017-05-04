@@ -3,17 +3,21 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:AODamageMeter.UI.Converters"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              StartupUri="Views/DamageMeterView.xaml">
   <Application.Resources>
     <converters:RowWidthConverter x:Key="RowWidthConverter"/>
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+    <converters:ColorToRowBrushConverter x:Key="ColorToRowBrushConverter"/>
+    <converters:IconPathToBitmapImageConverter x:Key="IconPathToBitmapImageConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <Color x:Key="DarkBlueColor">#0C1E2F</Color>
-    <SolidColorBrush x:Key="DarkBlueBrush" Color="{StaticResource DarkBlueColor}" Opacity=".8"/>
+    <SolidColorBrush x:Key="DarkBlueBrush" Color="{StaticResource DarkBlueColor}" Opacity=".8" po:Freeze="True"/>
+    <SolidColorBrush x:Key="DarkBlueBrushFaded" Color="{StaticResource DarkBlueColor}" Opacity=".15" po:Freeze="True"/>
 
     <Color x:Key="LightBlueColor">#73CBD3</Color>
-    <SolidColorBrush x:Key="LightBlueBrush" Color="{StaticResource LightBlueColor}"/>
+    <SolidColorBrush x:Key="LightBlueBrush" Color="{StaticResource LightBlueColor}" po:Freeze="True"/>
 
     <Style TargetType="Button">
       <Setter Property="Background" Value="Transparent"/>
@@ -26,6 +30,11 @@
     </Style>
 
     <Style TargetType="DataGrid">
+      <Style.Resources>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
+      </Style.Resources>
+
       <Setter Property="IsReadOnly" Value="True"/>
       <Setter Property="AutoGenerateColumns" Value="False"/>
       <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
@@ -35,11 +44,13 @@
       <Setter Property="GridLinesVisibility" Value="Horizontal"/>
       <Setter Property="RowBackground" Value="Transparent"/>
       <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"/>
+
       <Setter Property="HorizontalGridLinesBrush">
         <Setter.Value>
           <SolidColorBrush Color="{StaticResource LightBlueColor}" Opacity=".05"/>
         </Setter.Value>
       </Setter>
+
       <Setter Property="Background">
         <Setter.Value>
           <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".2"/>

@@ -10,8 +10,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
 
         public override void Update(int? displayIndex = null)
         {
-            ColorHexCode = FightCharacter.IsPet ? FightCharacter.FightPetOwner.Profession.GetColorHexCode()
-                : FightCharacter.Profession.GetColorHexCode();
+            Color = FightCharacter.IsPet ? FightCharacter.FightPetOwner.Profession.GetColor()
+                : FightCharacter.Profession.GetColor();
             PercentWidth = FightCharacter.PercentOfMaxDamageDonePlusPets;
             RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {FightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
         }
