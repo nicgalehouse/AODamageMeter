@@ -21,7 +21,7 @@ namespace AODamageMeter.FightEvents.Attack
 
         public override string Name => EventName;
 
-        public static async Task<YouHitOther> Create(Fight fight, DateTime timestamp, string description)
+        public static YouHitOther Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new YouHitOther(fight, timestamp, description);
             attackEvent.SetSourceToOwner();
@@ -31,7 +31,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || attackEvent.TryMatch(Crit, out match, out crit)
                 || attackEvent.TryMatch(Glance, out match, out glance))
             {
-                await attackEvent.SetTarget(match, 1).ConfigureAwait(false);
+                attackEvent.SetTarget(match, 1);
                 attackEvent.AttackResult = AttackResult.Hit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
@@ -42,7 +42,7 @@ namespace AODamageMeter.FightEvents.Attack
             else if (attackEvent.TryMatch(Reflect, out match, out reflect)
                 || attackEvent.TryMatch(Shield, out match, out shield))
             {
-                await attackEvent.SetTarget(match, 1).ConfigureAwait(false);
+                attackEvent.SetTarget(match, 1);
                 attackEvent.AttackResult = AttackResult.IndirectHit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;

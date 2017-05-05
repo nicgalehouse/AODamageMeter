@@ -18,7 +18,7 @@ namespace AODamageMeter.FightEvents.Attack
 
         public override string Name => EventName;
 
-        public static async Task<MeHitByNano> Create(Fight fight, DateTime timestamp, string description)
+        public static MeHitByNano Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new MeHitByNano(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
@@ -26,7 +26,7 @@ namespace AODamageMeter.FightEvents.Attack
 
             if (attackEvent.TryMatch(Sourced, out Match match))
             {
-                await attackEvent.SetSource(match, 1).ConfigureAwait(false);
+                attackEvent.SetSource(match, 1);
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
             }

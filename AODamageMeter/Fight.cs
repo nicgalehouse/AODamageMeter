@@ -88,9 +88,9 @@ namespace AODamageMeter
             }
         }
 
-        public async Task AddFightEvent(string line)
+        public void AddFightEvent(string line)
         {
-            var fightEvent = await FightEvent.Create(this, line).ConfigureAwait(false);
+            var fightEvent = FightEvent.Create(this, line);
             if (DamageMeter.Mode == DamageMeterMode.RealTime)
             {
                 StartTime = StartTime ?? DateTime.Now;
@@ -150,8 +150,8 @@ namespace AODamageMeter
             }
         }
 
-        public async Task<FightCharacter> GetOrCreateFightCharacter(string name, DateTime enteredTime)
-            => GetOrCreateFightCharacter(await Character.GetOrCreateCharacter(name).ConfigureAwait(false), enteredTime);
+        public FightCharacter GetOrCreateFightCharacter(string name, DateTime enteredTime)
+            => GetOrCreateFightCharacter(Character.GetOrCreateCharacter(name), enteredTime);
 
         public FightCharacter GetOrCreateFightCharacter(Character character, DateTime enteredTime)
         {

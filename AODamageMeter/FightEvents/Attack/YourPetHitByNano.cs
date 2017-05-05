@@ -22,20 +22,20 @@ namespace AODamageMeter.FightEvents.Attack
         // name collisions, I think. For example, your pet has the default name, we pick it up here, then the chance
         // is pretty high there are going to be other default-named pets that aren't yours, but will be attributed to
         // you. Only using the naming conventions is a way to guide users down a less error-prone path.
-        public static async Task<YourPetHitByNano> Create(Fight fight, DateTime timestamp, string description)
+        public static YourPetHitByNano Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new YourPetHitByNano(fight, timestamp, description);
             attackEvent.AttackResult = AttackResult.Hit;
 
             if (attackEvent.TryMatch(Sourced, out Match match))
             {
-                await attackEvent.SetSourceAndTarget(match, 2, 1).ConfigureAwait(false);
+                attackEvent.SetSourceAndTarget(match, 2, 1);
                 attackEvent.SetAmount(match, 3);
                 attackEvent.SetDamageType(match, 4);
             }
             else if (attackEvent.TryMatch(Unsourced, out match))
             {
-                await attackEvent.SetTarget(match, 1).ConfigureAwait(false);
+                attackEvent.SetTarget(match, 1);
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
             }

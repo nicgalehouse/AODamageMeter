@@ -22,7 +22,7 @@ namespace AODamageMeter.FightEvents.Attack
 
         public override string Name => EventName;
 
-        public static async Task<MeHitByMonster> Create(Fight fight, DateTime timestamp, string description)
+        public static MeHitByMonster Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new MeHitByMonster(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
@@ -36,7 +36,7 @@ namespace AODamageMeter.FightEvents.Attack
                 // and in that case we want to count the pet's damage in with the player's. Could be a pet following the
                 // other naming convention for pets, and in that case we want to keep the type as pet. If neither of those,
                 // it's already an NPC, so there's nothing to do.
-                await attackEvent.SetSource(match, 1).ConfigureAwait(false);
+                attackEvent.SetSource(match, 1);
                 attackEvent.AttackResult = AttackResult.Hit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);

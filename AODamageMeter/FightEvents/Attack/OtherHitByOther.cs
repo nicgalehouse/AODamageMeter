@@ -24,7 +24,7 @@ namespace AODamageMeter.FightEvents.Attack
 
         public override string Name => EventName;
 
-        public static async Task<OtherHitByOther> Create(Fight fight, DateTime timestamp, string description)
+        public static OtherHitByOther Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new OtherHitByOther(fight, timestamp, description);
 
@@ -33,7 +33,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || attackEvent.TryMatch(Crit, out match, out crit)
                 || attackEvent.TryMatch(Glance, out match, out glance))
             {
-                await attackEvent.SetSourceAndTarget(match, 1, 2).ConfigureAwait(false);
+                attackEvent.SetSourceAndTarget(match, 1, 2);
                 attackEvent.AttackResult = AttackResult.Hit;
                 attackEvent.SetAmount(match, 3);
                 attackEvent.SetDamageType(match, 4);
@@ -44,7 +44,7 @@ namespace AODamageMeter.FightEvents.Attack
             else if (attackEvent.TryMatch(Reflect, out match, out reflect)
                 || attackEvent.TryMatch(Shield, out match, out shield))
             {
-                await attackEvent.SetSourceAndTarget(match, 1, 2).ConfigureAwait(false);
+                attackEvent.SetSourceAndTarget(match, 1, 2);
                 attackEvent.AttackResult = AttackResult.IndirectHit;
                 attackEvent.SetAmount(match, 3);
                 attackEvent.DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
@@ -52,7 +52,7 @@ namespace AODamageMeter.FightEvents.Attack
             else if (attackEvent.TryMatch(WeirdReflect, out match, out weirdReflect)
                 || attackEvent.TryMatch(WeirdShield, out match, out weirdShield))
             {
-                await attackEvent.SetTarget(match, 1).ConfigureAwait(false);
+                attackEvent.SetTarget(match, 1);
                 attackEvent.AttackResult = AttackResult.IndirectHit;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.DamageType = weirdReflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;

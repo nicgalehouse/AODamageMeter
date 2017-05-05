@@ -53,7 +53,7 @@ namespace AODamageMeter
                     await SetOwner();
                 }
 
-                await CurrentFight.AddFightEvent(line).ConfigureAwait(false);
+                CurrentFight.AddFightEvent(line);
             }
         }
 
@@ -71,7 +71,9 @@ namespace AODamageMeter
                 .ToArray();
 
             // Make the calls to people.anarchy-online.com concurrently.
-            var characters = await Character.GetOrCreateCharacters(potentialCharacterNames).ConfigureAwait(false);
+            var charactersAndBioRetrievers = Character.GetOrCreateCharactersAndBioRetrievers(potentialCharacterNames);
+            await Task.WhenAll(charactersAndBioRetrievers.bioRetrievers).ConfigureAwait(false);
+            var characters = charactersAndBioRetrievers.characters;
             characters.ForEach(c => c.CharacterType = CharacterType.PlayerCharacter);
 
             if (ownersID != null)
@@ -96,7 +98,7 @@ namespace AODamageMeter
             // And if all that failed, use the special name "You".
             if (Owner == null)
             {
-                Owner = await Character.GetOrCreateCharacter("You").ConfigureAwait(false);
+                Owner = Character.GetOrCreateCharacter("You");
                 Owner.CharacterType = CharacterType.PlayerCharacter;
             }
         }

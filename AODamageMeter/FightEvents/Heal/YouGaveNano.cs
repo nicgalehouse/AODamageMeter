@@ -17,7 +17,7 @@ namespace AODamageMeter.FightEvents.Heal
 
         public override string Name => EventName;
 
-        public static async Task<YouGaveNano> Create(Fight fight, DateTime timestamp, string description)
+        public static YouGaveNano Create(Fight fight, DateTime timestamp, string description)
         {
             var healEvent = new YouGaveNano(fight, timestamp, description);
             healEvent.SetSourceToOwner();
@@ -25,7 +25,7 @@ namespace AODamageMeter.FightEvents.Heal
 
             if (healEvent.TryMatch(Normal, out Match match))
             {
-                await healEvent.SetTarget(match, 1).ConfigureAwait(false);
+                healEvent.SetTarget(match, 1);
                 healEvent.SetAmount(match, 2);
             }
             else healEvent.IsUnmatched = true;

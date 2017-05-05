@@ -18,7 +18,7 @@ namespace AODamageMeter.FightEvents.Attack
 
         public override string Name => EventName;
 
-        public static async Task<OtherMisses> Create(Fight fight, DateTime timestamp, string description)
+        public static OtherMisses Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new OtherMisses(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
@@ -26,11 +26,11 @@ namespace AODamageMeter.FightEvents.Attack
 
             if (attackEvent.TryMatch(Normal, out Match match))
             {
-                await attackEvent.SetSource(match, 1).ConfigureAwait(false);
+                attackEvent.SetSource(match, 1);
             }
             else if (attackEvent.TryMatch(Special, out match))
             {
-                await attackEvent.SetSource(match, 1).ConfigureAwait(false);
+                attackEvent.SetSource(match, 1);
                 attackEvent.SetDamageType(match, 2);
             }
             else attackEvent.IsUnmatched = true;

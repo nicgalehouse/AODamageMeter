@@ -25,14 +25,14 @@ namespace AODamageMeter.FightEvents.Heal
 
         public override string Name => EventName;
 
-        public static async Task<MeGotHealth> Create(Fight fight, DateTime timestamp, string description)
+        public static MeGotHealth Create(Fight fight, DateTime timestamp, string description)
         {
             var healEvent = new MeGotHealth(fight, timestamp, description);
             healEvent.SetTargetToOwner();
 
             if (healEvent.TryMatch(Sourced, out Match match))
             {
-                await healEvent.SetSource(match, 1).ConfigureAwait(false);
+                healEvent.SetSource(match, 1);
                 healEvent.HealType = HealType.PotentialHealth;
                 healEvent.SetAmount(match, 2);
                 _latestStartEvent = healEvent;

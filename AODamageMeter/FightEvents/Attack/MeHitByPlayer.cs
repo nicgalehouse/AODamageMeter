@@ -19,7 +19,7 @@ namespace AODamageMeter.FightEvents.Attack
 
         public override string Name => EventName;
 
-        public static async Task<MeHitByPlayer> Create(Fight fight, DateTime timestamp, string description)
+        public static MeHitByPlayer Create(Fight fight, DateTime timestamp, string description)
         {
             var attackEvent = new MeHitByPlayer(fight, timestamp, description);
             attackEvent.SetTargetToOwner();
@@ -30,7 +30,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || attackEvent.TryMatch(Crit, out match, out crit)
                 || attackEvent.TryMatch(Glance, out match, out glance))
             {
-                await attackEvent.SetSource(match, 1).ConfigureAwait(false);
+                attackEvent.SetSource(match, 1);
                 attackEvent.Source.Character.CharacterType = CharacterType.PlayerCharacter;
                 attackEvent.SetAmount(match, 2);
                 attackEvent.SetDamageType(match, 3);
