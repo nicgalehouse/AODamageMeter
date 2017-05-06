@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -112,11 +111,9 @@ namespace AODamageMeter
         public IReadOnlyCollection<Character> Pets => _pets;
         public void RegisterPet(Character pet)
         {
-            if (!pet.IsPet) throw new ArgumentException("A character needs a CharacterType of Pet to be registered as a pet.");
-            if (!IsPlayer) throw new ArgumentException("A character needs a CharacterType of PlayerCharacter to own a pet.");
-
-            _pets.Add(pet);
+            pet.CharacterType = CharacterType.Pet;
             pet.PetOwner = this;
+            _pets.Add(pet);
         }
 
         // The idea with these two methods is that sometimes you need to wait for the bio to come, sometimes you don't. Provide

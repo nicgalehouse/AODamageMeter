@@ -51,5 +51,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AODamageMeter\AODamageMeter.csproj">
+      <Project>{d55d5daf-e8cc-4f4e-a30f-d1358f89d934}</Project>
+      <Name>AODamageMeter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

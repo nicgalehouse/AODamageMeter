@@ -43,8 +43,8 @@ namespace AODamageMeter
         public void RegisterFightPet(FightCharacter fightPet)
         {
             Character.RegisterPet(fightPet.Character);
-            _fightPets.Add(fightPet);
             fightPet.FightPetOwner = this;
+            _fightPets.Add(fightPet);
         }
 
         protected readonly List<AttackEvent> _sourceAttackEvents = new List<AttackEvent>();
