@@ -23,13 +23,13 @@ namespace AODamageMeter
 
         public static FightEvent Create(Fight fight, string line)
         {
-            // Events come in like this: ["#000000004200000a#","Other hit by other","",1492309026]Rawstarpower hit Punching Bag for 6 points of radiation damage.
+            // Example: ["#000000004200000a#","Other hit by other","",1492309026]Rawstarpower hit Punching Bag for 6 points of radiation damage.
             int lastIndexOfArrayPart = line.IndexOf(']');
             string[] arrayPart = line.Substring(1, lastIndexOfArrayPart - 1).Split(',')
                 .Select(p => p.Trim('"'))
                 .ToArray();
             string eventName = arrayPart[1];
-            DateTime timestamp = fight.DamageMeter.Mode == DamageMeterMode.RealTime ? DateTime.Now
+            DateTime timestamp = fight.DamageMeter.IsRealTimeMode ? DateTime.Now
                 : DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(startIndex: lastIndexOfArrayPart + 1);
 

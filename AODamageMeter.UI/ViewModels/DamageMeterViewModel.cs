@@ -52,6 +52,7 @@ namespace AODamageMeter.UI.ViewModels
             });
 
             ResetDamageMeterCommand = new RelayCommand(ExecuteResetDamageMeterCommand);
+            ToggleIsPausedCommand = new RelayCommand(ExecuteToggleIsPausedCommand);
         }
 
         private Dictionary<FightCharacter, DamageDoneMainRowViewModel> _damageDoneRowsMap = new Dictionary<FightCharacter, DamageDoneMainRowViewModel>();
@@ -64,6 +65,8 @@ namespace AODamageMeter.UI.ViewModels
             DamageDoneRows.Clear();
 
             _damageMeter = new DamageMeter(logFilePath);
+            _damageMeter.IsPaused = IsPaused;
+
 #if DEBUG
             _damageMeter.InitializeNewFight(skipToEndOfLog: false);
 #else
@@ -74,7 +77,7 @@ namespace AODamageMeter.UI.ViewModels
         }
 
         public ICommand ResetDamageMeterCommand { get; }
-        public void ExecuteResetDamageMeterCommand()
+        private void ExecuteResetDamageMeterCommand()
         {
             if (_damageMeter == null) return;
 
@@ -86,7 +89,7 @@ namespace AODamageMeter.UI.ViewModels
             StartDamageMeterUpdater();
         }
 
-        protected void StartDamageMeterUpdater()
+        private void StartDamageMeterUpdater()
         {
             if (_isDamageMeterUpdaterStarted) return;
 
@@ -105,7 +108,7 @@ namespace AODamageMeter.UI.ViewModels
             _isDamageMeterUpdaterStarted = true;
         }
 
-        protected void StopDamageMeterUpdater()
+        private void StopDamageMeterUpdater()
         {
             if (!_isDamageMeterUpdaterStarted) return;
 
@@ -113,6 +116,28 @@ namespace AODamageMeter.UI.ViewModels
             _damageMeterUpdaterCTS.Cancel();
             _damageMeterUpdater.Wait();
             _damageMeterUpdaterCTS.Dispose();
+        }
+
+        public ICommand ToggleIsPausedCommand { get; }
+        private void ExecuteToggleIsPausedCommand()
+            => IsPaused = !IsPaused;
+
+        private bool _isPaused;
+        public bool IsPaused
+        {
+            get => _isPaused;
+            set
+            {
+                Set(ref _isPaused, value);
+
+                if (_damageMeter != null)
+                {
+                    lock (_damageMeter)
+                    {
+                        _damageMeter.IsPaused = IsPaused;
+                    }
+                }
+            }
         }
 
         public void DisposeDamageMeter()

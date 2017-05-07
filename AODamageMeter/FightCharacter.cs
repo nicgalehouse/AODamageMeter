@@ -1,6 +1,7 @@
 ﻿using AODamageMeter.FightEvents;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AODamageMeter
@@ -12,6 +13,7 @@ namespace AODamageMeter
             Fight = fight;
             Character = character;
             EnteredTime = enteredTime;
+            _stopwatch = DamageMeter.IsRealTimeMode ? Stopwatch.StartNew() : null;
         }
 
         public DamageMeter DamageMeter => Fight.DamageMeter;
@@ -33,9 +35,29 @@ namespace AODamageMeter
         public string Organization => Character.Organization;
         public string OrganizationRank => Character.OrganizationRank;
         public bool HasOrganizationInfo => Character.HasOrganizationInfo;
+
         public DateTime EnteredTime { get; }
-        public TimeSpan ActiveDuration => Fight.LatestTime.Value - EnteredTime;
+
+        protected Stopwatch _stopwatch;
+        public TimeSpan ActiveDuration => DamageMeter.IsRealTimeMode ? _stopwatch.Elapsed : Fight.LatestEventTime.Value - EnteredTime;
         public TimeSpan ActiveDurationPlusPets => new[] { ActiveDuration }.Concat(FightPets.Select(p => p.ActiveDuration)).Max();
+
+        protected bool _isPaused;
+        public bool IsPaused
+        {
+            get => _isPaused;
+            set
+            {
+                if (DamageMeter.IsParsedTimeMode && !value) return;
+                if (DamageMeter.IsParsedTimeMode) throw new NotSupportedException("Pausing for parsed-time meters isn't supported yet.");
+                if (!Fight.IsPaused && value) throw new NotSupportedException("Pausing a character while the fight is unpaused isn't supported yet.");
+                if (Fight.IsPaused && !value) throw new InvalidOperationException("Unpausing a character while the fight is paused doesn't make sense.");
+
+                _isPaused = value;
+                if (IsPaused) _stopwatch.Stop();
+                else _stopwatch.Start();
+            }
+        }
 
         public FightCharacter FightPetOwner { get; protected set; }
         protected readonly HashSet<FightCharacter> _fightPets = new HashSet<FightCharacter>();

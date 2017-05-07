@@ -1,6 +1,7 @@
 ﻿using AODamageMeter.FightEvents;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace AODamageMeter
@@ -29,15 +30,32 @@ namespace AODamageMeter
         public IReadOnlyList<FightEvent> UnmatchedEvents => _unmatchedEvents;
 
         public DateTime? StartTime { get; protected set; }
-
-        protected DateTime? _latestTime;
-        public DateTime? LatestTime
-        {
-            get => DamageMeter.Mode == DamageMeterMode.RealTime ? DateTime.Now : _latestTime;
-            protected set => _latestTime = value;
-        }
-        public TimeSpan? Duration => LatestTime - StartTime;
+        public DateTime? LatestEventTime { get; protected set; }
         public bool HasStarted => StartTime.HasValue;
+
+        protected Stopwatch _stopwatch;
+        public TimeSpan? Duration => DamageMeter.IsRealTimeMode ? _stopwatch.Elapsed : LatestEventTime - StartTime;
+
+        protected bool _isPaused;
+        public bool IsPaused
+        {
+            get => _isPaused;
+            set
+            {
+                if (DamageMeter.IsParsedTimeMode && !value) return;
+                if (DamageMeter.IsParsedTimeMode) throw new NotSupportedException("Pausing for parsed-time meters isn't supported yet.");
+
+                _isPaused = value;
+                if (!HasStarted) return;
+                if (IsPaused) _stopwatch.Stop();
+                else _stopwatch.Start();
+
+                foreach (var fightCharacter in FightCharacters)
+                {
+                    fightCharacter.IsPaused = IsPaused;
+                }
+            }
+        }
 
         protected bool _isTotalDamageDoneCurrent;
         protected int _totalDamageDone;
@@ -89,16 +107,15 @@ namespace AODamageMeter
 
         public void AddFightEvent(string line)
         {
+            if (IsPaused) return;
+
             var fightEvent = FightEvent.Create(this, line);
-            if (DamageMeter.Mode == DamageMeterMode.RealTime)
+            if (!HasStarted)
             {
-                StartTime = StartTime ?? DateTime.Now;
+                StartTime = fightEvent.Timestamp;
+                _stopwatch = DamageMeter.IsRealTimeMode ? Stopwatch.StartNew() : null;
             }
-            else
-            {
-                StartTime = StartTime ?? fightEvent.Timestamp;
-                LatestTime = fightEvent.Timestamp;
-            }
+            LatestEventTime = fightEvent.Timestamp;
 
             if (fightEvent.IsUnmatched)
             {

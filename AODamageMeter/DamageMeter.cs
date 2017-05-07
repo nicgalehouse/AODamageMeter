@@ -21,6 +21,8 @@ namespace AODamageMeter
         }
 
         public DamageMeterMode Mode { get; }
+        public bool IsRealTimeMode => Mode == DamageMeterMode.RealTime;
+        public bool IsParsedTimeMode => Mode == DamageMeterMode.ParsedTime;
         public Character Owner { get; protected set; }
 
         protected readonly List<Fight> _previousFights = new List<Fight>();
@@ -31,6 +33,7 @@ namespace AODamageMeter
         {
             if (savePreviousFight && (CurrentFight?.HasStarted ?? false))
             {
+                CurrentFight.IsPaused = IsRealTimeMode;
                 _previousFights.Add(CurrentFight);
             }
 
@@ -40,6 +43,25 @@ namespace AODamageMeter
             }
 
             CurrentFight = new Fight(this);
+            CurrentFight.IsPaused = IsPaused;
+        }
+
+        protected bool _isPaused;
+        public bool IsPaused
+        {
+            get => _isPaused;
+            set
+            {
+                if (IsParsedTimeMode && !value) return;
+                if (IsParsedTimeMode) throw new NotSupportedException("Pausing for parsed-time meters isn't supported yet.");
+
+                _isPaused = value;
+
+                if (CurrentFight != null)
+                {
+                    CurrentFight.IsPaused = IsPaused;
+                }
+            }
         }
 
         public async Task Update()
