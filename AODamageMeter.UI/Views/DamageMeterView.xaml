@@ -4,13 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
         xmlns:views="clr-namespace:AODamageMeter.UI.Views"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DamageMeterViewModel}"
         Title="AO Damage Meter" ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
         AllowsTransparency="True" Background="Transparent"
         FontFamily="Verdana" FontWeight="Bold"
-        Height="200" Width="300">
+        Height="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewWidth, Mode=TwoWay}"
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewTop, Mode=TwoWay}"
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewLeft, Mode=TwoWay}">
   <Grid Background="Transparent">
     <Grid.RowDefinitions>
       <RowDefinition Height="25"/>
@@ -26,6 +30,7 @@
         <ColumnDefinition Width="27"/>
         <ColumnDefinition Width="27"/>
         <ColumnDefinition Width="27"/>
+        <ColumnDefinition Width="27"/>
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" x:Name="FileButton"
@@ -33,13 +38,13 @@
         <fa:ImageAwesome Icon="FileTextOutline"/>
       </Button>
 
-      <!--<Button Grid.Column="2"
+      <Button Grid.Column="2"
               Command="{Binding Options}">
         <fa:ImageAwesome Icon="Gear"/>
-      </Button>-->
+      </Button>
 
       <!-- Not using a ToggleButton because the highlight when toggled seemed too distracting. -->
-      <Button Grid.Column="2" Command="{Binding ToggleIsPausedCommand}">
+      <Button Grid.Column="3" Command="{Binding ToggleIsPausedCommand}">
         <fa:ImageAwesome>
           <fa:ImageAwesome.Style>
             <Style TargetType="{x:Type fa:ImageAwesome}" BasedOn="{StaticResource {x:Type fa:ImageAwesome}}">
@@ -54,12 +59,12 @@
         </fa:ImageAwesome>
       </Button>
 
-      <Button Grid.Column="3"
+      <Button Grid.Column="4"
               Command="{Binding ResetDamageMeterCommand}">
         <fa:ImageAwesome Icon="Refresh"/>
       </Button>
 
-      <Button Grid.Column="4" x:Name="CloseButton"
+      <Button Grid.Column="5" x:Name="CloseButton"
               Click="CloseButton_Click_CloseApplication">
         <fa:ImageAwesome Icon="Close"/>
       </Button>

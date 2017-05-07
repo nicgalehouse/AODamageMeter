@@ -22,5 +22,53 @@ namespace AODamageMeter.UI.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public double DamageMeterViewHeight {
+            get {
+                return ((double)(this["DamageMeterViewHeight"]));
+            }
+            set {
+                this["DamageMeterViewHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public double DamageMeterViewWidth {
+            get {
+                return ((double)(this["DamageMeterViewWidth"]));
+            }
+            set {
+                this["DamageMeterViewWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double DamageMeterViewTop {
+            get {
+                return ((double)(this["DamageMeterViewTop"]));
+            }
+            set {
+                this["DamageMeterViewTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double DamageMeterViewLeft {
+            get {
+                return ((double)(this["DamageMeterViewLeft"]));
+            }
+            set {
+                this["DamageMeterViewLeft"] = value;
+            }
+        }
     }
 }

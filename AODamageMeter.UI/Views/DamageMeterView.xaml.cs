@@ -1,5 +1,7 @@
-﻿using AODamageMeter.UI.ViewModels;
+﻿using AODamageMeter.UI.Properties;
+using AODamageMeter.UI.ViewModels;
 using Microsoft.Win32;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -30,18 +32,21 @@ namespace AODamageMeter.UI.Views
             }
         }
 
-        private void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
-        {
-            _damageMeterViewModel.DisposeDamageMeter();
-            Close();
-        }
-
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
                 DragMove();
             }
+        }
+
+        private void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
+            => Close();
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Settings.Default.Save();
+            _damageMeterViewModel.DisposeDamageMeter();
         }
     }
 }
