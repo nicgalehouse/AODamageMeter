@@ -86,6 +86,7 @@ namespace AODamageMeter
 
         public int DamageDone { get; protected set; }
         public int DamageDonePlusPets => DamageDone + FightPets.Sum(p => p.DamageDone);
+        public int OwnOrOwnersDamageDonePlusPets => FightPetOwner?.DamageDonePlusPets ?? DamageDonePlusPets;
         public int HitCount { get; protected set; }
         public int CritCount { get; protected set; }
         public int GlanceCount { get; protected set; }
@@ -102,6 +103,7 @@ namespace AODamageMeter
         public double PercentOfMaxDamageDone => Fight.MaxDamageDone == 0 ? 0 : DamageDone / (double)Fight.MaxDamageDone;
         public double PercentOfMaxDamageDonePlusPets => Fight.MaxDamageDonePlusPets == 0 ? 0 : DamageDone / (double)Fight.MaxDamageDonePlusPets;
         public double PercentPlusPetsOfMaxDamageDonePlusPets => Fight.MaxDamageDonePlusPets == 0 ? 0 : DamageDonePlusPets / (double)Fight.MaxDamageDonePlusPets;
+        public double PercentOfOwnOrOwnersDamageDonePlusPets => OwnOrOwnersDamageDonePlusPets == 0 ? 0 : DamageDone / (double)OwnOrOwnersDamageDonePlusPets;
         public double ActiveDPS => ActiveDuration.TotalSeconds <= 1 ? DamageDone : DamageDone / ActiveDuration.TotalSeconds;
         public double ActiveDPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? DamageDonePlusPets : DamageDonePlusPets / ActiveDurationPlusPets.TotalSeconds;
         public double FullDPS => Fight.Duration.Value.TotalSeconds <= 1 ? DamageDone : DamageDone / Fight.Duration.Value.TotalSeconds;

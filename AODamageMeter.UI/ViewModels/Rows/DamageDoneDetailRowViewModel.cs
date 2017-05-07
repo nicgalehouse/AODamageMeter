@@ -13,7 +13,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
             Color = FightCharacter.IsPet ? FightCharacter.FightPetOwner.Profession.GetColor()
                 : FightCharacter.Profession.GetColor();
             PercentWidth = FightCharacter.PercentOfMaxDamageDonePlusPets;
-            RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {FightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
+            RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {FightCharacter.PercentOfOwnOrOwnersDamageDonePlusPets.FormatPercent()}, {FightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
         }
     }
 }
