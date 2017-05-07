@@ -6,6 +6,7 @@ namespace AODamageMeter.FightEvents.Level
     public class MeGotXP : LevelEvent
     {
         public const string EventName = "Me got XP";
+        public override string Name => EventName;
 
         public static readonly Regex
             Received = CreateRegex($"You received {AMOUNT} xp."),
@@ -17,49 +18,41 @@ namespace AODamageMeter.FightEvents.Level
 
         public MeGotXP(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
-        { }
-
-        public override string Name => EventName;
-
-        public static MeGotXP Create(Fight fight, DateTime timestamp, string description)
         {
-            var levelEvent = new MeGotXP(fight, timestamp, description);
-            levelEvent.SetSourceToOwner();
+            SetSourceToOwner();
 
-            if (levelEvent.TryMatch(Received, out Match match))
+            if (TryMatch(Received, out Match match))
             {
-                levelEvent.LevelType = LevelType.Normal;
-                levelEvent.SetAmount(match, 1);
+                LevelType = LevelType.Normal;
+                SetAmount(match, 1);
             }
-            else if (levelEvent.TryMatch(Alien, out match))
+            else if (TryMatch(Alien, out match))
             {
-                levelEvent.LevelType = LevelType.Alien;
-                levelEvent.SetAmount(match, 1);
+                LevelType = LevelType.Alien;
+                SetAmount(match, 1);
             }
-            else if (levelEvent.TryMatch(PvpDuel, out match))
+            else if (TryMatch(PvpDuel, out match))
             {
-                levelEvent.LevelType = LevelType.PvpDuel;
-                levelEvent.SetAmount(match, 1);
+                LevelType = LevelType.PvpDuel;
+                SetAmount(match, 1);
             }
-            else if (levelEvent.TryMatch(PvpSolo, out match))
+            else if (TryMatch(PvpSolo, out match))
             {
-                levelEvent.LevelType = LevelType.PvpSolo;
-                levelEvent.SetAmount(match, 1);
+                LevelType = LevelType.PvpSolo;
+                SetAmount(match, 1);
             }
-            else if (levelEvent.TryMatch(PvpTeam, out match))
+            else if (TryMatch(PvpTeam, out match))
             {
-                levelEvent.LevelType = LevelType.PvpTeam;
-                levelEvent.SetAmount(match, 1);
+                LevelType = LevelType.PvpTeam;
+                SetAmount(match, 1);
             }
-            else if (levelEvent.TryMatch(Lost, out match))
+            else if (TryMatch(Lost, out match))
             {
-                levelEvent.LevelType = LevelType.Normal;
-                levelEvent.SetAmount(match, 1);
-                levelEvent.Amount = -levelEvent.Amount;
+                LevelType = LevelType.Normal;
+                SetAmount(match, 1);
+                Amount *= -1;
             }
-            else levelEvent.IsUnmatched = true;
-
-            return levelEvent;
+            else IsUnmatched = true;
         }
     }
 }

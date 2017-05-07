@@ -12,51 +12,45 @@ namespace AODamageMeter.FightEvents.Heal
     public class MeGotHealth : HealEvent
     {
         public const string EventName = "Me got health";
+        public override string Name => EventName;
+
         protected static MeGotHealth _latestStartEvent;
 
         public static readonly Regex
             Sourced =   CreateRegex($"You got healed by {SOURCE} for {AMOUNT} points of health."),
             Unsourced = CreateRegex($"You were healed for {AMOUNT} points.");
 
-        protected MeGotHealth(Fight fight, DateTime timestamp, string description)
+        public MeGotHealth(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
-        { }
-
-        public override string Name => EventName;
-
-        public static MeGotHealth Create(Fight fight, DateTime timestamp, string description)
         {
-            var healEvent = new MeGotHealth(fight, timestamp, description);
-            healEvent.SetTargetToOwner();
+            SetTargetToOwner();
 
-            if (healEvent.TryMatch(Sourced, out Match match))
+            if (TryMatch(Sourced, out Match match))
             {
-                healEvent.SetSource(match, 1);
-                healEvent.HealType = HealType.PotentialHealth;
-                healEvent.SetAmount(match, 2);
-                _latestStartEvent = healEvent;
+                SetSource(match, 1);
+                HealType = HealType.PotentialHealth;
+                SetAmount(match, 2);
+                _latestStartEvent = this;
             }
-            else if (healEvent.TryMatch(Unsourced, out match))
+            else if (TryMatch(Unsourced, out match))
             {
-                healEvent.HealType = HealType.RealizedHealth;
-                healEvent.SetAmount(match, 1);
+                HealType = HealType.RealizedHealth;
+                SetAmount(match, 1);
 
                 if (_latestStartEvent != null)
                 {
-                    healEvent.Source = _latestStartEvent.Source;
+                    Source = _latestStartEvent.Source;
 
-                    healEvent.StartEvent = _latestStartEvent;
-                    _latestStartEvent.EndEvent = healEvent;
+                    StartEvent = _latestStartEvent;
+                    _latestStartEvent.EndEvent = this;
                     _latestStartEvent = null;
                 }
                 else
                 {
-                    healEvent.SetSourceToOwner();
+                    SetSourceToOwner();
                 }
             }
-            else healEvent.IsUnmatched = true;
-
-            return healEvent;
+            else IsUnmatched = true;
         }
     }
 }

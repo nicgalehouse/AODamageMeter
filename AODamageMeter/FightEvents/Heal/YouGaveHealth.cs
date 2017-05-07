@@ -8,30 +8,23 @@ namespace AODamageMeter.FightEvents.Heal
     public class YouGaveHealth : HealEvent
     {
         public const string EventName = "You gave health";
+        public override string Name => EventName;
 
         public static readonly Regex
             Normal = CreateRegex($"You healed {TARGET} for {AMOUNT} points of health.");
 
         public YouGaveHealth(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
-        { }
-
-        public override string Name => EventName;
-
-        public static YouGaveHealth Create(Fight fight, DateTime timestamp, string description)
         {
-            var healEvent = new YouGaveHealth(fight, timestamp, description);
-            healEvent.SetSourceToOwner();
-            healEvent.HealType = HealType.PotentialHealth;
+            SetSourceToOwner();
+            HealType = HealType.PotentialHealth;
 
-            if (healEvent.TryMatch(Normal, out Match match))
+            if (TryMatch(Normal, out Match match))
             {
-                healEvent.SetTarget(match, 1);
-                healEvent.SetAmount(match, 2);
+                SetTarget(match, 1);
+                SetAmount(match, 2);
             }
-            else healEvent.IsUnmatched = true;
-
-            return healEvent;
+            else IsUnmatched = true;
         }
     }
 }

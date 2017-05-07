@@ -6,6 +6,7 @@ namespace AODamageMeter.FightEvents.Attack
     public class OtherHitByOther : AttackEvent
     {
         public const string EventName = "Other hit by other";
+        public override string Name => EventName;
 
         public static readonly Regex
             Normal =       CreateRegex($"{SOURCE} hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage.", rightToLeft: true),
@@ -17,54 +18,45 @@ namespace AODamageMeter.FightEvents.Attack
             WeirdShield =  CreateRegex($"Something hit {TARGET} for {AMOUNT} points of damage by damage shield.", rightToLeft: true),
             Absorb =       CreateRegex($"Someone absorbed {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        protected OtherHitByOther(Fight fight, DateTime timestamp, string description)
+        public OtherHitByOther(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
-        { }
-
-        public override string Name => EventName;
-
-        public static OtherHitByOther Create(Fight fight, DateTime timestamp, string description)
         {
-            var attackEvent = new OtherHitByOther(fight, timestamp, description);
-
             bool crit = false, glance = false, reflect = false, shield = false, weirdReflect = false, weirdShield = false;
-            if (attackEvent.TryMatch(Normal, out Match match, out bool normal)
-                || attackEvent.TryMatch(Crit, out match, out crit)
-                || attackEvent.TryMatch(Glance, out match, out glance))
+            if (TryMatch(Normal, out Match match, out bool normal)
+                || TryMatch(Crit, out match, out crit)
+                || TryMatch(Glance, out match, out glance))
             {
-                attackEvent.SetSourceAndTarget(match, 1, 2);
-                attackEvent.AttackResult = AttackResult.Hit;
-                attackEvent.SetAmount(match, 3);
-                attackEvent.SetDamageType(match, 4);
-                attackEvent.AttackModifier = crit ? AODamageMeter.AttackModifier.Crit
+                SetSourceAndTarget(match, 1, 2);
+                AttackResult = AttackResult.Hit;
+                SetAmount(match, 3);
+                SetDamageType(match, 4);
+                AttackModifier = crit ? AODamageMeter.AttackModifier.Crit
                     : glance ? AODamageMeter.AttackModifier.Glance
                     : (AttackModifier?)null;
             }
-            else if (attackEvent.TryMatch(Reflect, out match, out reflect)
-                || attackEvent.TryMatch(Shield, out match, out shield))
+            else if (TryMatch(Reflect, out match, out reflect)
+                || TryMatch(Shield, out match, out shield))
             {
-                attackEvent.SetSourceAndTarget(match, 1, 2);
-                attackEvent.AttackResult = AttackResult.IndirectHit;
-                attackEvent.SetAmount(match, 3);
-                attackEvent.DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
+                SetSourceAndTarget(match, 1, 2);
+                AttackResult = AttackResult.IndirectHit;
+                SetAmount(match, 3);
+                DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
             }
-            else if (attackEvent.TryMatch(WeirdReflect, out match, out weirdReflect)
-                || attackEvent.TryMatch(WeirdShield, out match, out weirdShield))
+            else if (TryMatch(WeirdReflect, out match, out weirdReflect)
+                || TryMatch(WeirdShield, out match, out weirdShield))
             {
-                attackEvent.SetTarget(match, 1);
-                attackEvent.AttackResult = AttackResult.IndirectHit;
-                attackEvent.SetAmount(match, 2);
-                attackEvent.DamageType = weirdReflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
+                SetTarget(match, 1);
+                AttackResult = AttackResult.IndirectHit;
+                SetAmount(match, 2);
+                DamageType = weirdReflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
             }
-            else if (attackEvent.TryMatch(Absorb, out match))
+            else if (TryMatch(Absorb, out match))
             {
-                attackEvent.AttackResult = AttackResult.Absorbed;
-                attackEvent.SetAmount(match, 1);
-                attackEvent.SetDamageType(match, 2);
+                AttackResult = AttackResult.Absorbed;
+                SetAmount(match, 1);
+                SetDamageType(match, 2);
             }
-            else attackEvent.IsUnmatched = true;
-
-            return attackEvent;
+            else IsUnmatched = true;
         }
     }
 }

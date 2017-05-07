@@ -23,7 +23,8 @@ namespace AODamageMeter
 
         public static FightEvent Create(Fight fight, string line)
         {
-            // Example: ["#000000004200000a#","Other hit by other","",1492309026]Rawstarpower hit Punching Bag for 6 points of radiation damage.
+            // Lines look like this for example, the array part always having four elements:
+            // ["#000000004200000a#","Other hit by other","",1492309026]Elitengi hit Leet for 6 points of cold damage.
             int lastIndexOfArrayPart = line.IndexOf(']');
             string[] arrayPart = line.Substring(1, lastIndexOfArrayPart - 1).Split(',')
                 .Select(p => p.Trim('"'))
@@ -35,28 +36,28 @@ namespace AODamageMeter
 
             switch (eventName)
             {
-                case MeCastNano.EventName: return MeCastNano.Create(fight, timestamp, description);
-                case MeGotHealth.EventName: return MeGotHealth.Create(fight, timestamp, description);
-                case MeGotNano.EventName: return MeGotNano.Create(fight, timestamp, description);
-                case MeGotSK.EventName: return MeGotSK.Create(fight, timestamp, description);
-                case MeGotXP.EventName: return MeGotXP.Create(fight, timestamp, description);
-                case MeHitByEnvironment.EventName: return MeHitByEnvironment.Create(fight, timestamp, description);
-                case MeHitByMonster.EventName: return MeHitByMonster.Create(fight, timestamp, description);
-                case MeHitByNano.EventName: return MeHitByNano.Create(fight, timestamp, description);
-                case MeHitByPlayer.EventName: return MeHitByPlayer.Create(fight, timestamp, description);
-                case OtherHitByNano.EventName: return OtherHitByNano.Create(fight, timestamp, description);
-                case OtherHitByOther.EventName: return OtherHitByOther.Create(fight, timestamp, description);
-                case OtherMisses.EventName: return OtherMisses.Create(fight, timestamp, description);
-                case Research.EventName: return Research.Create(fight, timestamp, description);
-                case SystemEvent.EventName: return SystemEvent.Create(fight, timestamp, description);
-                case YouGaveHealth.EventName: return YouGaveHealth.Create(fight, timestamp, description);
-                case YouGaveNano.EventName: return YouGaveNano.Create(fight, timestamp, description);
-                case YouHitOther.EventName: return YouHitOther.Create(fight, timestamp, description);
-                case YouHitOtherWithNano.EventName: return YouHitOtherWithNano.Create(fight, timestamp, description);
-                case YourMisses.EventName: return YourMisses.Create(fight, timestamp, description);
-                case YourPetHitByMonster.EventName: return YourPetHitByMonster.Create(fight, timestamp, description);
-                case YourPetHitByNano.EventName: return YourPetHitByNano.Create(fight, timestamp, description);
-                case YourPetHitByOther.EventName: return YourPetHitByOther.Create(fight, timestamp, description);
+                case MeCastNano.EventName: return new MeCastNano(fight, timestamp, description);
+                case MeGotHealth.EventName: return new MeGotHealth(fight, timestamp, description);
+                case MeGotNano.EventName: return new MeGotNano(fight, timestamp, description);
+                case MeGotSK.EventName: return new MeGotSK(fight, timestamp, description);
+                case MeGotXP.EventName: return new MeGotXP(fight, timestamp, description);
+                case MeHitByEnvironment.EventName: return new MeHitByEnvironment(fight, timestamp, description);
+                case MeHitByMonster.EventName: return new MeHitByMonster(fight, timestamp, description);
+                case MeHitByNano.EventName: return new MeHitByNano(fight, timestamp, description);
+                case MeHitByPlayer.EventName: return new MeHitByPlayer(fight, timestamp, description);
+                case OtherHitByNano.EventName: return new OtherHitByNano(fight, timestamp, description);
+                case OtherHitByOther.EventName: return new OtherHitByOther(fight, timestamp, description);
+                case OtherMisses.EventName: return new OtherMisses(fight, timestamp, description);
+                case Research.EventName: return new Research(fight, timestamp, description);
+                case SystemEvent.EventName: return new SystemEvent(fight, timestamp, description);
+                case YouGaveHealth.EventName: return new YouGaveHealth(fight, timestamp, description);
+                case YouGaveNano.EventName: return new YouGaveNano(fight, timestamp, description);
+                case YouHitOther.EventName: return new YouHitOther(fight, timestamp, description);
+                case YouHitOtherWithNano.EventName: return new YouHitOtherWithNano(fight, timestamp, description);
+                case YourMisses.EventName: return new YourMisses(fight, timestamp, description);
+                case YourPetHitByMonster.EventName: return new YourPetHitByMonster(fight, timestamp, description);
+                case YourPetHitByNano.EventName: return new YourPetHitByNano(fight, timestamp, description);
+                case YourPetHitByOther.EventName: return new YourPetHitByOther(fight, timestamp, description);
                 default: throw new NotImplementedException($"{eventName}: {description}");
             }
         }
@@ -78,11 +79,7 @@ namespace AODamageMeter
             => (match = regex.Match(Description)).Success;
 
         protected bool TryMatch(Regex regex, out Match match, out bool success)
-        {
-            match = regex.Match(Description);
-            success = match.Success;
-            return success;
-        }
+            => success = (match = regex.Match(Description)).Success;
 
         /* The three pet events aren't super useful. "Your pet hit by monster" almost never happens, everything you'd expect
            in there actually happens in "Your pet hit by other". "Your pet hit by nano" also doesn't happen much. Neither of

@@ -6,6 +6,7 @@ namespace AODamageMeter.FightEvents.Attack
     public class MeHitByNano : AttackEvent
     {
         public const string EventName = "Me hit by nano";
+        public override string Name => EventName;
 
         public static readonly Regex
             Sourced =   CreateRegex($"You were attacked with nanobots from {SOURCE} for {AMOUNT} points of {DAMAGETYPE} damage."),
@@ -13,30 +14,22 @@ namespace AODamageMeter.FightEvents.Attack
 
         public MeHitByNano(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
-        { }
-
-        public override string Name => EventName;
-
-        public static MeHitByNano Create(Fight fight, DateTime timestamp, string description)
         {
-            var attackEvent = new MeHitByNano(fight, timestamp, description);
-            attackEvent.SetTargetToOwner();
-            attackEvent.AttackResult = AttackResult.Hit;
+            SetTargetToOwner();
+            AttackResult = AttackResult.Hit;
 
-            if (attackEvent.TryMatch(Sourced, out Match match))
+            if (TryMatch(Sourced, out Match match))
             {
-                attackEvent.SetSource(match, 1);
-                attackEvent.SetAmount(match, 2);
-                attackEvent.SetDamageType(match, 3);
+                SetSource(match, 1);
+                SetAmount(match, 2);
+                SetDamageType(match, 3);
             }
-            else if (attackEvent.TryMatch(Unsourced, out match))
+            else if (TryMatch(Unsourced, out match))
             {
-                attackEvent.SetAmount(match, 1);
-                attackEvent.SetDamageType(match, 2);
+                SetAmount(match, 1);
+                SetDamageType(match, 2);
             }
-            else attackEvent.IsUnmatched = true;
-
-            return attackEvent;
+            else IsUnmatched = true;
         }
     }
 }

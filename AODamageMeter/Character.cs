@@ -119,7 +119,7 @@ namespace AODamageMeter
         // The idea with these two methods is that sometimes you need to wait for the bio to come, sometimes you don't. Provide
         // an overload that exposes the task so it can be awaited if need be. But often it's OK to fire off the bio retriever
         // without awaiting it. Note that we're just using dictionaries, so this method isn't thread-safe. It's the filling
-        // in of the bio, after the await of the HTTP request, that can happen in parallel. When it does happen in parallel we
+        // in of the bio, after the HTTP request comes in, that can happen in parallel. When it does happen in parallel we
         // have to worry about locking and volatility and so on, which is why we use locks above. See:
         // http://stackoverflow.com/q/33528408, http://stackoverflow.com/q/434890, http://jonskeet.uk/csharp/threads/volatility.shtml.
         public static Character GetOrCreateCharacter(string name) => GetOrCreateCharacterAndBioRetriever(name).character;
@@ -160,7 +160,7 @@ namespace AODamageMeter
         // rare, but that leaves people who rename their pets or bureaucrats in trouble. Could allow setting character type through the UI...
         // Even if we know it won't end up being a PC (ambiguous), we still want to get the PC info, in case the type is changed in the future.
         // -----------------------------------------------------------------------------------------------------------------------------
-        // This method encapsulates the stateless part of the GetOrCreateCharacter process that can be run in parallel for multiple characters.
+        // This is the stateless part of the GetOrCreateCharacter process that can be run in parallel and as meter consumers update their UI.
         protected static async Task RetrieveCharacterBio(Character character)
         {
             string name = character.Name;

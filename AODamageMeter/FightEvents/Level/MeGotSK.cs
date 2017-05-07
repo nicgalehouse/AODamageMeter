@@ -6,6 +6,7 @@ namespace AODamageMeter.FightEvents.Level
     public class MeGotSK : LevelEvent
     {
         public const string EventName = "Me got SK";
+        public override string Name => EventName;
 
         public static readonly Regex
             Gained = CreateRegex($"You gained {AMOUNT} points of Shadowknowledge."),
@@ -13,28 +14,20 @@ namespace AODamageMeter.FightEvents.Level
 
         public MeGotSK(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
-        { }
-
-        public override string Name => EventName;
-
-        public static MeGotSK Create(Fight fight, DateTime timestamp, string description)
         {
-            var levelEvent = new MeGotSK(fight, timestamp, description);
-            levelEvent.SetSourceToOwner();
-            levelEvent.LevelType = LevelType.Shadow;
+            SetSourceToOwner();
+            LevelType = LevelType.Shadow;
 
-            if (levelEvent.TryMatch(Gained, out Match match))
+            if (TryMatch(Gained, out Match match))
             {
-                levelEvent.SetAmount(match, 1);
+                SetAmount(match, 1);
             }
-            else if (levelEvent.TryMatch(Lost, out match))
+            else if (TryMatch(Lost, out match))
             {
-                levelEvent.SetAmount(match, 1);
-                levelEvent.Amount = -levelEvent.Amount;
+                SetAmount(match, 1);
+                Amount *= -1;
             }
-            else levelEvent.IsUnmatched = true;
-
-            return levelEvent;
+            else IsUnmatched = true;
         }
     }
 }

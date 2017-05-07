@@ -6,6 +6,7 @@ namespace AODamageMeter.FightEvents.Level
     public class Research : LevelEvent
     {
         public const string EventName = "Research";
+        public override string Name => EventName;
 
         public static readonly Regex
             Allocated = CreateRegex($"{AMOUNT} of your XP were allocated to your personal research.", rightToLeft: true),
@@ -13,28 +14,21 @@ namespace AODamageMeter.FightEvents.Level
 
         public Research(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
-        { }
-
-        public override string Name => EventName;
-        public string Line { get; protected set; }
-
-        public static Research Create(Fight fight, DateTime timestamp, string description)
         {
-            var levelEvent = new Research(fight, timestamp, description);
-            levelEvent.SetSourceToOwner();
-            levelEvent.LevelType = LevelType.Research;
+            SetSourceToOwner();
+            LevelType = LevelType.Research;
 
-            if (levelEvent.TryMatch(Allocated, out Match match))
+            if (TryMatch(Allocated, out Match match))
             {
-                levelEvent.SetAmount(match, 1);
+                SetAmount(match, 1);
             }
-            else if (levelEvent.TryMatch(Completed, out match))
+            else if (TryMatch(Completed, out match))
             {
-                levelEvent.Line = match.Groups[1].Value;
+                Line = match.Groups[1].Value;
             }
-            else levelEvent.IsUnmatched = true;
-
-            return levelEvent;
+            else IsUnmatched = true;
         }
+
+        public string Line { get; protected set; }
     }
 }
