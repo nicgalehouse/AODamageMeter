@@ -19,10 +19,16 @@
   <DataGrid x:Name="MainGrid"
             ItemsSource="{Binding Source={StaticResource MainRowsViewSource}}">
     <DataGrid.Resources>
+      <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
+      <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
       <Style TargetType="views:MainRowView">
         <EventSetter Event="DetailGridNeedsToggling" Handler="MainRowView_DetailGridNeedsToggling_ToggleDetailGrid"/>
       </Style>
     </DataGrid.Resources>
+
+    <DataGrid.Background>
+      <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
+    </DataGrid.Background>
 
     <DataGrid.RowDetailsTemplate>
       <DataTemplate>

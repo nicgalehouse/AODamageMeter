@@ -30,11 +30,6 @@
     </Style>
 
     <Style TargetType="DataGrid">
-      <Style.Resources>
-        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-      </Style.Resources>
-
       <Setter Property="IsReadOnly" Value="True"/>
       <Setter Property="AutoGenerateColumns" Value="False"/>
       <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
@@ -48,12 +43,6 @@
       <Setter Property="HorizontalGridLinesBrush">
         <Setter.Value>
           <SolidColorBrush Color="{StaticResource LightBlueColor}" Opacity=".05"/>
-        </Setter.Value>
-      </Setter>
-
-      <Setter Property="Background">
-        <Setter.Value>
-          <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
         </Setter.Value>
       </Setter>
     </Style>
