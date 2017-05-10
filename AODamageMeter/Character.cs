@@ -196,7 +196,7 @@ namespace AODamageMeter
             => _characters.TryGetValue(name, out character);
 
         public static bool FitsPlayerNamingRequirements(string name)
-            => name.Length > 3 && name.Length < 13
+            => name != null && name.Length > 3 && name.Length < 13
             && (name.All(char.IsLetterOrDigit)
                 || name.Substring(0, name.Length - 2).All(char.IsLetterOrDigit) && name.EndsWith("-1"));
 

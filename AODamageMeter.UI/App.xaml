@@ -13,23 +13,47 @@
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <Color x:Key="DarkBlueColor">#0C1E2F</Color>
-    <SolidColorBrush x:Key="DarkBlueBrush" Color="{StaticResource DarkBlueColor}" Opacity=".8" po:Freeze="True"/>
-    <SolidColorBrush x:Key="DarkBlueBrushFaded" Color="{StaticResource DarkBlueColor}" Opacity=".15" po:Freeze="True"/>
+    <SolidColorBrush x:Key="DarkBlueBrush85" Color="{StaticResource DarkBlueColor}" Opacity=".85" po:Freeze="True"/>
+    <SolidColorBrush x:Key="DarkBlueBrush20" Color="{StaticResource DarkBlueColor}" Opacity=".20" po:Freeze="True"/>
+    <SolidColorBrush x:Key="DarkBlueBrush15" Color="{StaticResource DarkBlueColor}" Opacity=".15" po:Freeze="True"/>
 
     <Color x:Key="LightBlueColor">#73CBD3</Color>
     <SolidColorBrush x:Key="LightBlueBrush" Color="{StaticResource LightBlueColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="LightBlueBrush50" Color="{StaticResource LightBlueColor}" Opacity=".50" po:Freeze="True"/>
+
+    <Color x:Key="MiddleBlueColor">#297085</Color>
+    <SolidColorBrush x:Key="MiddleBlueBrush" Color="{StaticResource MiddleBlueColor}" po:Freeze="True"/>
+
+    <SolidColorBrush x:Key="Black40" Color="Black" Opacity=".40" po:Freeze="True"/>
+
+    <!-- Setting this implicitly doesn't seem to work. -->
+    <Style TargetType="Window" x:Key="WindowStyle">
+      <Setter Property="WindowStyle" Value="None"/>
+      <Setter Property="AllowsTransparency" Value="True"/>
+      <Setter Property="Topmost" Value="True"/>
+      <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+      <Setter Property="FontFamily" Value="Verdana"/>
+    </Style>
 
     <Style TargetType="Button">
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="BorderBrush" Value="Transparent"/>
     </Style>
 
-    <Style TargetType="fa:ImageAwesome">
-      <Setter Property="Foreground" Value="{StaticResource LightBlueBrush}"/>
-      <Setter Property="Margin" Value="3.5"/>
+    <!--Would be nice to make this look better, but I think we'd have to retemplate the entire button. Try w/ Blend? -->
+    <Style TargetType="Button" x:Key="TextButtonStyle">
+      <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
+      <Setter Property="BorderBrush" Value="Gray"/>
+      <Setter Property="Width" Value="100"/>
+      <Setter Property="Height" Value="20"/>
     </Style>
 
-    <Style TargetType="DataGrid">
+    <Style TargetType="fa:ImageAwesome">
+      <Setter Property="Foreground" Value="{StaticResource LightBlueBrush}"/>
+      <Setter Property="Margin" Value="3"/>
+    </Style>
+
+    <Style TargetType="DataGrid" x:Key="DamageMeterGridStyle">
       <Setter Property="IsReadOnly" Value="True"/>
       <Setter Property="AutoGenerateColumns" Value="False"/>
       <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
@@ -39,7 +63,6 @@
       <Setter Property="GridLinesVisibility" Value="Horizontal"/>
       <Setter Property="RowBackground" Value="Transparent"/>
       <Setter Property="RowDetailsVisibilityMode" Value="Collapsed"/>
-
       <Setter Property="HorizontalGridLinesBrush">
         <Setter.Value>
           <SolidColorBrush Color="{StaticResource LightBlueColor}" Opacity=".05"/>
@@ -59,10 +82,16 @@
           <DropShadowEffect BlurRadius="1" ShadowDepth="1"/>
         </Setter.Value>
       </Setter>
+      <Style.Triggers>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter Property="Foreground" Value="Gray"/>
+          <Setter Property="Effect" Value="{x:Null}"/>
+        </Trigger>
+      </Style.Triggers>
     </Style>
 
     <Style TargetType="ToolTip">
-      <Setter Property="Background" Value="{StaticResource DarkBlueBrush}"/>
+      <Setter Property="Background" Value="{StaticResource DarkBlueBrush85}"/>
       <Setter Property="BorderBrush" Value="Transparent"/>
       <Setter Property="FontFamily" Value="Verdana"/>
       <Setter Property="FontWeight" Value="Bold"/>

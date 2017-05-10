@@ -10,6 +10,7 @@
       <CollectionViewSource.LiveSortingProperties>
         <clr:String>PercentWidth</clr:String>
       </CollectionViewSource.LiveSortingProperties>
+
       <CollectionViewSource.SortDescriptions>
         <scm:SortDescription PropertyName="PercentWidth" Direction="Descending"/>
         <scm:SortDescription PropertyName="FightCharacterName" Direction="Ascending"/>
@@ -17,17 +18,14 @@
     </CollectionViewSource>
   </UserControl.Resources>
 
-  <DataGrid ItemsSource="{Binding Source={StaticResource DetailRowsViewSource}}">
+  <!-- Transparent because already getting a darker blue from somewhere else, from a main row I guess? -->
+  <DataGrid ItemsSource="{Binding Source={StaticResource DetailRowsViewSource}}"
+            Style="{StaticResource DamageMeterGridStyle}" Background="Transparent">
     <DataGrid.Resources>
       <!-- A bit distracting here, because the first row always gets selected when expanding, so just hide. -->
       <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Opacity="0"/>
       <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Opacity="0"/>
     </DataGrid.Resources>
-
-    <!-- Already getting a darker blue from somewhere else, inheriting it from a main row I guess. -->
-    <DataGrid.Background>
-      <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity="0"/>
-    </DataGrid.Background>
 
     <DataGrid.Columns>
       <DataGridTemplateColumn Width="*">

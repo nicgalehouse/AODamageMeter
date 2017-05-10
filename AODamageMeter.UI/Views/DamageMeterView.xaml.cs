@@ -1,6 +1,5 @@
 ﻿using AODamageMeter.UI.Properties;
 using AODamageMeter.UI.ViewModels;
-using Microsoft.Win32;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
@@ -17,19 +16,25 @@ namespace AODamageMeter.UI.Views
             DataContext = _damageMeterViewModel = new DamageMeterViewModel();
         }
 
-        private void FileButton_Click_SetLogFile(object sender, RoutedEventArgs e)
+        private void FileButton_Click_ShowCharacterSelection(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog()
+            var characterSelectionView = new CharacterSelectionView();
+            if (characterSelectionView.ShowDialog() == true)
             {
-                FileName = "Log.txt",
-                DefaultExt = ".txt",
-                Filter = "Log File(*.txt)|*.txt"
-            };
 
-            if (dialog.ShowDialog() == true)
-            {
-                _damageMeterViewModel.SetLogFile(dialog.FileName);
             }
+
+            //var dialog = new OpenFileDialog()
+            //{
+            //    FileName = "Log.txt",
+            //    DefaultExt = ".txt",
+            //    Filter = "Log File(*.txt)|*.txt"
+            //};
+
+            //if (dialog.ShowDialog() == true)
+            //{
+            //    _damageMeterViewModel.SetLogFile(dialog.FileName);
+            //}
         }
 
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)

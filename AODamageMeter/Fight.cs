@@ -20,13 +20,11 @@ namespace AODamageMeter
         protected readonly List<HealEvent> _healEvents = new List<HealEvent>();
         protected readonly List<LevelEvent> _levelEvents = new List<LevelEvent>();
         protected readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
-        protected readonly List<SystemEvent> _systemEvents = new List<SystemEvent>();
         protected readonly List<FightEvent> _unmatchedEvents = new List<FightEvent>();
         public IReadOnlyList<AttackEvent> AttackEvents => _attackEvents;
         public IReadOnlyList<HealEvent> HealEvents => _healEvents;
         public IReadOnlyList<LevelEvent> LevelEvents => _levelEvents;
         public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
-        public IReadOnlyList<SystemEvent> SystemEvents => _systemEvents;
         public IReadOnlyList<FightEvent> UnmatchedEvents => _unmatchedEvents;
 
         public DateTime? StartTime { get; protected set; }
@@ -110,6 +108,12 @@ namespace AODamageMeter
             if (IsPaused) return;
 
             var fightEvent = FightEvent.Create(this, line);
+            if (fightEvent is SystemEvent || fightEvent is UnrecognizedEvent)
+            {
+                _unmatchedEvents.Add(fightEvent);
+                return;
+            }
+
             if (!HasStarted)
             {
                 StartTime = fightEvent.Timestamp;
@@ -121,10 +125,7 @@ namespace AODamageMeter
             {
                 _unmatchedEvents.Add(fightEvent);
 #if DEBUG
-                if (!(fightEvent is SystemEvent))
-                {
-                    Debug.WriteLine($"{fightEvent.Name}: {fightEvent.Description}");
-                }
+                Debug.WriteLine($"{fightEvent.Name}: {fightEvent.Description}");
 #endif
                 return;
             }
@@ -158,9 +159,6 @@ namespace AODamageMeter
                 case NanoEvent nanoEvent:
                     nanoEvent.Source.AddNanoEvent(nanoEvent);
                     _nanoEvents.Add(nanoEvent);
-                    break;
-                case SystemEvent systemEvent:
-                    _systemEvents.Add(systemEvent);
                     break;
                 default: throw new NotImplementedException();
             }

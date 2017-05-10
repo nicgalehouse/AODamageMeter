@@ -58,7 +58,7 @@ namespace AODamageMeter
                 case YourPetHitByMonster.EventName: return new YourPetHitByMonster(fight, timestamp, description);
                 case YourPetHitByNano.EventName: return new YourPetHitByNano(fight, timestamp, description);
                 case YourPetHitByOther.EventName: return new YourPetHitByOther(fight, timestamp, description);
-                default: throw new NotImplementedException($"{eventName}: {description}");
+                default: return new UnrecognizedEvent(fight, timestamp, description);
             }
         }
 

@@ -7,9 +7,7 @@
              xmlns:views="clr-namespace:AODamageMeter.UI.Views"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:RowViewModelBase}"
              d:DesignHeight="27" d:DesignWidth="300">
-  <Canvas Height="24"
-          Background="{StaticResource DarkBlueBrushFaded}">
-
+  <Canvas Height="24" Background="{StaticResource DarkBlueBrush15}">
     <Image Width="24"
            Source="{Binding IconPath, Converter={StaticResource IconPathToBitmapImageConverter}}"
            ToolTipService.Placement="Left"
@@ -31,8 +29,7 @@
     </Rectangle>
 
     <TextBlock Height="24" Canvas.Top="5" Canvas.Left="27"
-               Text="{Binding FightCharacterName, Mode=OneTime}" />
-
+               Text="{Binding FightCharacterName, Mode=OneTime}"/>
     <TextBlock Height="24" Canvas.Top="5" Canvas.Right="3"
                Text="{Binding RightText}"/>
   </Canvas>

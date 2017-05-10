@@ -6,9 +6,7 @@
              xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:RowViewModelBase}"
              d:DesignHeight="27" d:DesignWidth="300">
-  <Canvas Height="18"
-          Background="{StaticResource DarkBlueBrushFaded}">
-
+  <Canvas Height="18" Background="{StaticResource DarkBlueBrush15}">
     <Rectangle Height="18" Canvas.Left="24"
                Fill="{Binding Color, Converter={StaticResource ColorToRowBrushConverter}}">
       <Rectangle.Width>
@@ -20,8 +18,7 @@
     </Rectangle>
 
     <TextBlock Height="18" Canvas.Top="2" Canvas.Left="27"
-               Text="{Binding FightCharacterName, Mode=OneTime}" />
-
+               Text="{Binding FightCharacterName, Mode=OneTime}"/>
     <TextBlock Height="18" Canvas.Top="2" Canvas.Right="3"
                Text="{Binding RightText}"/>
   </Canvas>

@@ -3,12 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:views="clr-namespace:AODamageMeter.UI.Views"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:clr="clr-namespace:System;assembly=mscorlib">
+             xmlns:clr="clr-namespace:System;assembly=mscorlib"
+             FontWeight="Bold">
   <UserControl.Resources>
     <CollectionViewSource x:Key="MainRowsViewSource" Source="{Binding}" IsLiveSortingRequested="True">
       <CollectionViewSource.LiveSortingProperties>
         <clr:String>PercentWidth</clr:String>
       </CollectionViewSource.LiveSortingProperties>
+
       <CollectionViewSource.SortDescriptions>
         <scm:SortDescription PropertyName="PercentWidth" Direction="Descending"/>
         <scm:SortDescription PropertyName="FightCharacterName" Direction="Ascending"/>
@@ -16,8 +18,8 @@
     </CollectionViewSource>
   </UserControl.Resources>
 
-  <DataGrid x:Name="MainGrid"
-            ItemsSource="{Binding Source={StaticResource MainRowsViewSource}}">
+  <DataGrid x:Name="MainGrid" ItemsSource="{Binding Source={StaticResource MainRowsViewSource}}"
+            Style="{StaticResource DamageMeterGridStyle}" Background="{StaticResource DarkBlueBrush20}">
     <DataGrid.Resources>
       <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
       <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
@@ -25,10 +27,6 @@
         <EventSetter Event="DetailGridNeedsToggling" Handler="MainRowView_DetailGridNeedsToggling_ToggleDetailGrid"/>
       </Style>
     </DataGrid.Resources>
-
-    <DataGrid.Background>
-      <SolidColorBrush Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
-    </DataGrid.Background>
 
     <DataGrid.RowDetailsTemplate>
       <DataTemplate>

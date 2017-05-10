@@ -8,34 +8,33 @@
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
         xmlns:views="clr-namespace:AODamageMeter.UI.Views"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DamageMeterViewModel}"
-        Title="AO Damage Meter" ResizeMode="CanResizeWithGrip" WindowStyle="None" Topmost="True"
-        AllowsTransparency="True" Background="Transparent"
-        FontFamily="Verdana" FontWeight="Bold"
+        Title="AO Damage Meter"
+        Style="{StaticResource WindowStyle}" Background="Transparent"
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewHeight, Mode=TwoWay}"
         Width="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewWidth, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewTop, Mode=TwoWay}"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=DamageMeterViewLeft, Mode=TwoWay}">
-  <Grid Background="Transparent">
+  <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="25"/>
+      <RowDefinition Height="24"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
     <Grid Grid.Row="0"
           MouseDown="HeaderRow_MouseDown_Drag"
-          Background="{StaticResource DarkBlueBrush}">
+          Background="{StaticResource DarkBlueBrush85}">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="27"/>
+        <ColumnDefinition Width="26"/>
         <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="27"/>
-        <ColumnDefinition Width="27"/>
-        <ColumnDefinition Width="27"/>
-        <ColumnDefinition Width="27"/>
+        <ColumnDefinition Width="26"/>
+        <ColumnDefinition Width="26"/>
+        <ColumnDefinition Width="26"/>
+        <ColumnDefinition Width="26"/>
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" x:Name="FileButton"
-              Click="FileButton_Click_SetLogFile">
-        <fa:ImageAwesome Icon="FileTextOutline"/>
+              Click="FileButton_Click_ShowCharacterSelection">
+        <fa:ImageAwesome Icon="Users"/>
       </Button>
 
       <Button Grid.Column="2"
@@ -47,7 +46,7 @@
       <Button Grid.Column="3" Command="{Binding ToggleIsPausedCommand}">
         <fa:ImageAwesome>
           <fa:ImageAwesome.Style>
-            <Style TargetType="{x:Type fa:ImageAwesome}" BasedOn="{StaticResource {x:Type fa:ImageAwesome}}">
+            <Style TargetType="fa:ImageAwesome" BasedOn="{StaticResource {x:Type fa:ImageAwesome}}">
               <Setter Property="Icon" Value="Pause"/>
               <Style.Triggers>
                 <DataTrigger Binding="{Binding IsPaused}" Value="True">
@@ -64,7 +63,7 @@
         <fa:ImageAwesome Icon="Refresh"/>
       </Button>
 
-      <Button Grid.Column="5" x:Name="CloseButton"
+      <Button Grid.Column="5"
               Click="CloseButton_Click_CloseApplication">
         <fa:ImageAwesome Icon="Close"/>
       </Button>
