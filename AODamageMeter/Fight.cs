@@ -108,6 +108,8 @@ namespace AODamageMeter
             if (IsPaused) return;
 
             var fightEvent = FightEvent.Create(this, line);
+
+            // We know these events can't cause any fight characters to enter (from FightEvent.Create), so don't let the fight start.
             if (fightEvent is SystemEvent || fightEvent is UnrecognizedEvent)
             {
                 _unmatchedEvents.Add(fightEvent);
