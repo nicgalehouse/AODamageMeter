@@ -48,8 +48,8 @@ namespace AODamageMeter.UI.ViewModels
             protected set => Set(ref _rightText, value);
         }
 
-        protected Dictionary<FightCharacter, RowViewModelBase> _detailRowsMap = new Dictionary<FightCharacter, RowViewModelBase>();
-        public ObservableCollection<RowViewModelBase> DetailRows { get; } = new ObservableCollection<RowViewModelBase>();
+        protected Dictionary<FightCharacter, RowViewModelBase> _detailRowViewModelsMap = new Dictionary<FightCharacter, RowViewModelBase>();
+        public ObservableCollection<RowViewModelBase> DetailRowViewModels { get; } = new ObservableCollection<RowViewModelBase>();
 
         public virtual void Update(int? displayIndex = null)
         {

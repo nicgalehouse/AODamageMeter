@@ -24,12 +24,12 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 RightText = $"{FightCharacter.DamageDonePlusPets.Format()} ({FightCharacter.ActiveDPMPlusPets.Format()}, {FightCharacter.PercentPlusPetsOfTotalDamageDone.FormatPercent()})";
                 foreach (var fightCharacter in new[] { FightCharacter }.Concat(FightCharacter.FightPets))
                 {
-                    if (!_detailRowsMap.TryGetValue(fightCharacter, out RowViewModelBase detailRow))
+                    if (!_detailRowViewModelsMap.TryGetValue(fightCharacter, out RowViewModelBase detailRowViewModel))
                     {
-                        _detailRowsMap.Add(fightCharacter, detailRow = new DamageDoneDetailRowViewModel(fightCharacter));
-                        DetailRows.Add(detailRow);
+                        _detailRowViewModelsMap.Add(fightCharacter, detailRowViewModel = new DamageDoneDetailRowViewModel(fightCharacter));
+                        DetailRowViewModels.Add(detailRowViewModel);
                     }
-                    detailRow.Update();
+                    detailRowViewModel.Update();
                 }
             }
         }

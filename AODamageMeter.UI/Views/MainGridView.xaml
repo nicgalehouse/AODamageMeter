@@ -30,7 +30,7 @@
 
     <DataGrid.RowDetailsTemplate>
       <DataTemplate>
-        <views:DetailGridView DataContext="{Binding DetailRows}"/>
+        <views:DetailGridView DataContext="{Binding DetailRowViewModels}"/>
       </DataTemplate>
     </DataGrid.RowDetailsTemplate>
 

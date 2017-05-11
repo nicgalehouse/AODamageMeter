@@ -12,7 +12,7 @@ namespace AODamageMeter.UI.Views
         private void MainRowView_DetailGridNeedsToggling_ToggleDetailGrid(object sender, RoutedEventArgs e)
         {
             var mainRowViewModel = (e.Source as MainRowView).DataContext as RowViewModelBase;
-            if (mainRowViewModel.DetailRows.Count == 0) return;
+            if (mainRowViewModel.DetailRowViewModels.Count == 0) return;
 
             var dataGridRow = (DataGridRow)MainGrid.ItemContainerGenerator.ContainerFromItem(mainRowViewModel);
             dataGridRow.DetailsVisibility = dataGridRow.DetailsVisibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;

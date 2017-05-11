@@ -6,23 +6,28 @@ namespace AODamageMeter.UI.Views
 {
     public partial class CharacterSelectionView : Window
     {
+        private readonly CharacterSelectionViewModel _characterSelectionViewModel;
+
         public CharacterSelectionView()
         {
             InitializeComponent();
-            DataContext = new CharacterSelectionViewModel();
+            DataContext = _characterSelectionViewModel = new CharacterSelectionViewModel();
         }
 
         private void AddButton_Click_ShowCharacterInfo(object sender, RoutedEventArgs e)
         {
-            var xx = new CharacterInfoView();
-            if (xx.ShowDialog() == true)
+            var characterInfoView = new CharacterInfoView();
+            if (characterInfoView.ShowDialog() == true)
             {
-
+                _characterSelectionViewModel.Add(characterInfoView.CharacterInfoViewModel);
             }
         }
 
-        private void CloseButton_Click_CloseDialog(object sender, RoutedEventArgs e)
-            => Close();
+        private void EditButton_Click_ShowCharacterInfo(object sender, RoutedEventArgs e)
+        {
+            var characterInfoView = new CharacterInfoView(_characterSelectionViewModel.SelectedCharacterInfoViewModel);
+            characterInfoView.ShowDialog();
+        }
 
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)
         {

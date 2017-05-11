@@ -2,19 +2,27 @@
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Input;
+using System.ComponentModel;
 
 namespace AODamageMeter.UI.Views
 {
     public partial class CharacterInfoView : Window
     {
-        private readonly CharacterInfoViewModel _characterInfoViewModel;
+        private bool _isEditMode;
+        private string _previousCharacterName;
+        private string _previousLogFilePath;
 
         public CharacterInfoView(CharacterInfoViewModel characterInfoViewModel = null)
         {
             InitializeComponent();
-            Title = characterInfoViewModel == null ? "Add Character" : "Edit Character";
-            DataContext = _characterInfoViewModel = characterInfoViewModel ?? new CharacterInfoViewModel();
+            _isEditMode = characterInfoViewModel != null;
+            Title = _isEditMode ? "Edit Character" : "Add Character";
+            DataContext = CharacterInfoViewModel = characterInfoViewModel ?? new CharacterInfoViewModel();
+            _previousCharacterName = CharacterInfoViewModel.CharacterName;
+            _previousLogFilePath = CharacterInfoViewModel.LogFilePath;
         }
+
+        public CharacterInfoViewModel CharacterInfoViewModel { get; }
 
         private void ChooseButton_Click_ShowFileDialog(object sender, RoutedEventArgs e)
         {
@@ -27,18 +35,27 @@ namespace AODamageMeter.UI.Views
 
             if (dialog.ShowDialog() == true)
             {
-                _characterInfoViewModel.LogFilePath = dialog.FileName;
+                CharacterInfoViewModel.LogFilePath = dialog.FileName;
             }
         }
 
-        private void CloseButton_Click_CloseDialog(object sender, RoutedEventArgs e)
-            => Close();
+        private void OKButton_Click_CloseDialog(object sender, RoutedEventArgs e)
+            => DialogResult = true;
 
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
                 DragMove();
+            }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            if (_isEditMode && DialogResult != true)
+            {
+                CharacterInfoViewModel.CharacterName = _previousCharacterName;
+                CharacterInfoViewModel.LogFilePath = _previousLogFilePath;
             }
         }
     }

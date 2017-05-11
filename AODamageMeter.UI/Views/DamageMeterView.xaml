@@ -69,6 +69,6 @@
       </Button>
     </Grid>
 
-    <views:MainGridView Grid.Row="1" DataContext="{Binding DamageDoneRows}"/>
+    <views:MainGridView Grid.Row="1" DataContext="{Binding DamageDoneRowViewModels}"/>
   </Grid>
 </Window>

@@ -25,8 +25,7 @@
 
       <TextBlock Grid.Column="0" Margin="5 0 0 0" VerticalAlignment="Center"
                  Text="Add Character"/>
-      <Button Grid.Column="1"
-              Click="CloseButton_Click_CloseDialog">
+      <Button Grid.Column="1" IsCancel="True">
         <fa:ImageAwesome Icon="Close"/>
       </Button>
     </Grid>
@@ -44,7 +43,7 @@
                  Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Text="Log file:"/>
         <TextBox Margin="0 2 0 5"
-                 Text="{Binding LogFilePath}"/>
+                 Text="{Binding LogFilePath, UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Orientation="Horizontal">
           <Button Style="{StaticResource TextButtonStyle}"
                   Click="ChooseButton_Click_ShowFileDialog"
@@ -68,9 +67,15 @@
                    Text="{Binding AutoConfigureResult}"/>
       </StackPanel>
 
-      <Button Grid.Row="1" Margin="10 0 10 10" Style="{StaticResource TextButtonStyle}"
-              HorizontalAlignment="Right" VerticalAlignment="Bottom"
+      <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom">
+      <Button Style="{StaticResource TextButtonStyle}"
+              Click="OKButton_Click_CloseDialog"
               Content="OK"/>
+      <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
+              IsCancel="True"
+              Content="Cancel"/>
+      </StackPanel>
     </Grid>
 
     <Border Grid.Row="1" Margin="0"

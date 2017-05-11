@@ -40,11 +40,9 @@ namespace AODamageMeter.UI.ViewModels
         }
 
         public ICommand AutoConfigureCommand { get; }
-
         private bool _isExecutingAutoConfigureCommand;
         private bool CanExecuteAutoConfigureCommand()
             => !_isExecutingAutoConfigureCommand && Character.FitsPlayerNamingRequirements(CharacterName);
-
         private async void ExecuteAutoConfigureCommand()
         {
             _isExecutingAutoConfigureCommand = true;

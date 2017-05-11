@@ -32,20 +32,20 @@ namespace AODamageMeter.UI.ViewModels
                          // A fight character may not be immediately recognized as a pet; remove it if it becomes one.
                         if (fightCharacter.IsPet)
                         {
-                            if (_damageDoneRowsMap.TryGetValue(fightCharacter, out DamageDoneMainRowViewModel damageDoneRow))
+                            if (_damageDoneRowViewModelsMap.TryGetValue(fightCharacter, out DamageDoneMainRowViewModel damageDoneRow))
                             {
-                                _damageDoneRowsMap.Remove(fightCharacter);
-                                DamageDoneRows.Remove(damageDoneRow);
+                                _damageDoneRowViewModelsMap.Remove(fightCharacter);
+                                DamageDoneRowViewModels.Remove(damageDoneRow);
                             }
                         }
                         else
                         {
-                            if (!_damageDoneRowsMap.TryGetValue(fightCharacter, out DamageDoneMainRowViewModel damageDoneRow))
+                            if (!_damageDoneRowViewModelsMap.TryGetValue(fightCharacter, out DamageDoneMainRowViewModel damageDoneRowViewModel))
                             {
-                                _damageDoneRowsMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRowViewModel(fightCharacter));
-                                DamageDoneRows.Add(damageDoneRow);
+                                _damageDoneRowViewModelsMap.Add(fightCharacter, damageDoneRowViewModel = new DamageDoneMainRowViewModel(fightCharacter));
+                                DamageDoneRowViewModels.Add(damageDoneRowViewModel);
                             }
-                            damageDoneRow.Update(displayIndex++);
+                            damageDoneRowViewModel.Update(displayIndex++);
                         }
                     }
                 }
@@ -55,14 +55,14 @@ namespace AODamageMeter.UI.ViewModels
             ToggleIsPausedCommand = new RelayCommand(ExecuteToggleIsPausedCommand);
         }
 
-        private Dictionary<FightCharacter, DamageDoneMainRowViewModel> _damageDoneRowsMap = new Dictionary<FightCharacter, DamageDoneMainRowViewModel>();
-        public ObservableCollection<DamageDoneMainRowViewModel> DamageDoneRows { get; } = new ObservableCollection<DamageDoneMainRowViewModel>();
+        private Dictionary<FightCharacter, DamageDoneMainRowViewModel> _damageDoneRowViewModelsMap = new Dictionary<FightCharacter, DamageDoneMainRowViewModel>();
+        public ObservableCollection<DamageDoneMainRowViewModel> DamageDoneRowViewModels { get; } = new ObservableCollection<DamageDoneMainRowViewModel>();
 
         public void SetLogFile(string logFilePath)
         {
             DisposeDamageMeter();
-            _damageDoneRowsMap.Clear();
-            DamageDoneRows.Clear();
+            _damageDoneRowViewModelsMap.Clear();
+            DamageDoneRowViewModels.Clear();
 
             _damageMeter = new DamageMeter(logFilePath);
             _damageMeter.IsPaused = IsPaused;
@@ -82,8 +82,8 @@ namespace AODamageMeter.UI.ViewModels
             if (_damageMeter == null) return;
 
             StopDamageMeterUpdater();
-            _damageDoneRowsMap.Clear();
-            DamageDoneRows.Clear();
+            _damageDoneRowViewModelsMap.Clear();
+            DamageDoneRowViewModels.Clear();
 
             _damageMeter.InitializeNewFight();
             StartDamageMeterUpdater();
