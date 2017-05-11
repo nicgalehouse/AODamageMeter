@@ -60,13 +60,14 @@ namespace AODamageMeter.UI.ViewModels
             }
             else
             {
-                // C:\Users\davgh\AppData\Local\Funcom\Anarchy Online
+                // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online
                 string basePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Funcom\Anarchy Online";
-                // C:\Users\davgh\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########
+                // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########
                 string prefsPath = Directory.EnumerateDirectories(basePath, $"Char{character.ID}", SearchOption.AllDirectories)
+                     // Could be multiple matching pref folders from across installations; choose the one w/ the most recent activity.
                     .OrderByDescending(p => File.GetLastWriteTime($@"{p}\Prefs.xml"))
                     .FirstOrDefault();
-                // C:\Users\davgh\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows
+                // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows
                 string chatWindowsPath = $@"{prefsPath}\Chat\Windows";
                 if (prefsPath == null)
                 {
@@ -78,7 +79,7 @@ namespace AODamageMeter.UI.ViewModels
                 }
                 else
                 {
-                    // C:\Users\davgh\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows\Window#
+                    // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows\Window#
                     foreach (string path in Directory.EnumerateDirectories(chatWindowsPath, "Window*")
                         .Where(p => File.Exists($@"{p}\Config.xml")))
                     {
