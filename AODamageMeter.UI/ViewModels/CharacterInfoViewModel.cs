@@ -3,6 +3,7 @@ using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.UI.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -39,22 +40,29 @@ namespace AODamageMeter.UI.ViewModels
             set => Set(ref _logFilePath, value);
         }
 
-        public ICommand AutoConfigureCommand { get; }
-        private bool _isExecutingAutoConfigureCommand;
-        private bool CanExecuteAutoConfigureCommand()
-            => !_isExecutingAutoConfigureCommand && Character.FitsPlayerNamingRequirements(CharacterName);
-        private async void ExecuteAutoConfigureCommand()
-        {
-            _isExecutingAutoConfigureCommand = true;
+        public bool IsEmpty
+            => string.IsNullOrWhiteSpace(CharacterName)
+            && string.IsNullOrWhiteSpace(LogFilePath);
 
+        private string _autoConfigureResult;
+        public string AutoConfigureResult
+        {
+            get => _autoConfigureResult;
+            set => Set(ref _autoConfigureResult, value);
+        }
+
+        public ICommand AutoConfigureCommand { get; }
+        private bool CanExecuteAutoConfigureCommand() => Character.FitsPlayerNamingRequirements(CharacterName);
+        private void ExecuteAutoConfigureCommand()
+        {
             var characterAndBioRetriever = Character.GetOrCreateCharacterAndBioRetriever(CharacterName);
             var character = characterAndBioRetriever.character;
-            await characterAndBioRetriever.bioRetriever;
+            characterAndBioRetriever.bioRetriever.Wait(); // Not worth using await and binding IsEnableds.
 
-            string logFilePath = null;
+            string autoConfiguredLogFilePath = null;
             if (character.ID == null)
             {
-                AutoConfigureResult = $"Auto-configure failed. Could not find character ID of {CharacterName} from http://people.anarchy-online.com/.";
+                AutoConfigureResult = $"Auto-configure failed. Could not find character ID of {CharacterName} on http://people.anarchy-online.com/.";
             }
             else
             {
@@ -85,28 +93,28 @@ namespace AODamageMeter.UI.ViewModels
                         if (RequiredConfigGroupNames.All(n => configText.Contains(n))
                             && configText.Contains("name=\"is_logged\" value=\"true\""))
                         {
-                            logFilePath = $@"{path}\Log.txt";
-                            if (!File.Exists(logFilePath))
+                            autoConfiguredLogFilePath = $@"{path}\Log.txt";
+                            if (!File.Exists(autoConfiguredLogFilePath))
                             {
-                                File.Create(logFilePath);
+                                File.Create(autoConfiguredLogFilePath);
                             }
-                            AutoConfigureResult = "Auto-configure succeeded. Existing log file found.";
+                            AutoConfigureResult = "Auto-configure succeeded. An existing log file was found.";
                             break;
                         }
                         else if (configText.Contains("Damage Meter Window"))
                         {
                             File.WriteAllText($@"{path}\Config.xml", GetAutoConfigureConfigXml(path.Split('\\').Last()));
-                            logFilePath = $@"{path}\Log.txt";
-                            if (!File.Exists(logFilePath))
+                            autoConfiguredLogFilePath = $@"{path}\Log.txt";
+                            if (!File.Exists(autoConfiguredLogFilePath))
                             {
-                                File.Create(logFilePath);
+                                File.Create(autoConfiguredLogFilePath);
                             }
-                            AutoConfigureResult = "Auto-configure succeeded. Existing log file found and reconfigured.";
+                            AutoConfigureResult = "Auto-configure succeeded. An existing log file was found and reconfigured.";
                             break;
                         }
                     }
 
-                    if (logFilePath == null)
+                    if (autoConfiguredLogFilePath == null)
                     {
                         int nextAvailableWindowNumber = 1;
                         while (Directory.Exists($@"{chatWindowsPath}\Window{nextAvailableWindowNumber}"))
@@ -116,25 +124,21 @@ namespace AODamageMeter.UI.ViewModels
                         string newWindowName = $@"Window{nextAvailableWindowNumber}";
                         Directory.CreateDirectory($@"{chatWindowsPath}\{newWindowName}");
                         File.WriteAllText($@"{chatWindowsPath}\{newWindowName}\Config.xml", GetAutoConfigureConfigXml(newWindowName));
-                        logFilePath = $@"{chatWindowsPath}\{newWindowName}\Log.txt";
-                        File.Create(logFilePath);
-                        AutoConfigureResult = "Auto-configure succeeded. New log file created.";
+                        autoConfiguredLogFilePath = $@"{chatWindowsPath}\{newWindowName}\Log.txt";
+                        File.Create(autoConfiguredLogFilePath);
+                        bool isAlreadyLoggedIn = Process.GetProcessesByName("AnarchyOnline")
+                            .Where(p => p.MainWindowTitle?.StartsWith("Anarchy Online - ") ?? false)
+                            .Any(p => p.MainWindowTitle.Contains(CharacterName));
+                        AutoConfigureResult = isAlreadyLoggedIn ? "Auto-configure succeeded. A new log file was created, but you'll need to relog."
+                            : "Auto-configure succeeded. A new log file was created.";
                     }
                 }
             }
 
-            if (logFilePath != null)
+            if (autoConfiguredLogFilePath != null)
             {
-                LogFilePath = logFilePath;
+                LogFilePath = autoConfiguredLogFilePath;
             }
-            _isExecutingAutoConfigureCommand = false;
-        }
-
-        private string _autoConfigureResult;
-        public string AutoConfigureResult
-        {
-            get => _autoConfigureResult;
-            set => Set(ref _autoConfigureResult, value);
         }
 
         // Doesn't include all the events that AODamageMeter logs, just the ones that seem important enough right now.

@@ -85,8 +85,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BoolToNegationConverter.cs" />
     <Compile Include="Converters\ColorToRowBrushConverter.cs" />
     <Compile Include="Converters\IconPathToBitmapImageConverter.cs" />
+    <Compile Include="Converters\ObjectToBoolConverter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>

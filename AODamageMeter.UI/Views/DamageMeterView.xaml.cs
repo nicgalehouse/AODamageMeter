@@ -18,23 +18,15 @@ namespace AODamageMeter.UI.Views
 
         private void FileButton_Click_ShowCharacterSelection(object sender, RoutedEventArgs e)
         {
+            string previousSelectedCharacterName = Settings.Default.SelectedCharacterName;
+            string previousSelectedLogFilePath = Settings.Default.SelectedLogFilePath;
+
             var characterSelectionView = new CharacterSelectionView();
             if (characterSelectionView.ShowDialog() == true)
             {
-
+                _damageMeterViewModel.TryInitializeDamageMeter(
+                    Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
             }
-
-            //var dialog = new OpenFileDialog()
-            //{
-            //    FileName = "Log.txt",
-            //    DefaultExt = ".txt",
-            //    Filter = "Log File(*.txt)|*.txt"
-            //};
-
-            //if (dialog.ShowDialog() == true)
-            //{
-            //    _damageMeterViewModel.SetLogFile(dialog.FileName);
-            //}
         }
 
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)

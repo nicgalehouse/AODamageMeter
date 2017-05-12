@@ -43,7 +43,8 @@
       </Button>
 
       <!-- Not using a ToggleButton because the highlight when toggled seemed too distracting. -->
-      <Button Grid.Column="3" Command="{Binding ToggleIsPausedCommand}">
+      <Button Grid.Column="3"
+              Command="{Binding ToggleIsPausedCommand}">
         <fa:ImageAwesome>
           <fa:ImageAwesome.Style>
             <Style TargetType="fa:ImageAwesome" BasedOn="{StaticResource {x:Type fa:ImageAwesome}}">

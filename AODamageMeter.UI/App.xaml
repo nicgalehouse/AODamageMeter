@@ -10,6 +10,8 @@
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
     <converters:ColorToRowBrushConverter x:Key="ColorToRowBrushConverter"/>
     <converters:IconPathToBitmapImageConverter x:Key="IconPathToBitmapImageConverter"/>
+    <converters:BoolToNegationConverter x:Key="BoolToNegationConverter"/>
+    <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <Color x:Key="DarkBlueColor">#0C1E2F</Color>
@@ -40,7 +42,7 @@
       <Setter Property="BorderBrush" Value="Transparent"/>
     </Style>
 
-    <!--Would be nice to make this look better, but I think we'd have to retemplate the entire button. Try w/ Blend? -->
+    <!-- Would be nice to make this look better, but I think we'd have to retemplate the entire button. Try w/ Blend? -->
     <Style TargetType="Button" x:Key="TextButtonStyle">
       <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
       <Setter Property="BorderBrush" Value="Gray"/>

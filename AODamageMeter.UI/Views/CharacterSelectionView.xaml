@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:CharacterSelectionViewModel}"
-        Title="Select a Character"
+        Title="Select Character"
         Style="{StaticResource WindowStyle}" Background="Transparent"
         BorderBrush="{StaticResource LightBlueBrush50}" BorderThickness="1"
-        Height="350" Width="400">
+        Height="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterSelectionViewHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterSelectionViewWidth, Mode=TwoWay}"
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterSelectionViewTop, Mode=TwoWay}"
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterSelectionViewLeft, Mode=TwoWay}">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="24"/>
@@ -45,14 +49,16 @@
         <ListView.View>
           <GridView>
             <GridView.ColumnHeaderContainerStyle>
-              <Style TargetType="{x:Type GridViewColumnHeader}">
+              <Style TargetType="GridViewColumnHeader">
                 <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
                 <Setter Property="BorderBrush" Value="{StaticResource MiddleBlueBrush}"/>
               </Style>
             </GridView.ColumnHeaderContainerStyle>
 
-            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding CharacterName}" Width="100"/>
-            <GridViewColumn Header="Log File" DisplayMemberBinding="{Binding LogFilePath}" Width="200"/>
+            <GridViewColumn Header="Name" DisplayMemberBinding="{Binding CharacterName}"
+                            Width="{Binding Source={x:Static properties:Settings.Default}, Path=NameColumnWidth, Mode=TwoWay}"/>
+            <GridViewColumn Header="Log File" DisplayMemberBinding="{Binding LogFilePath}"
+                            Width="{Binding Source={x:Static properties:Settings.Default}, Path=LogFileColumnWidth, Mode=TwoWay}"/>
           </GridView>
         </ListView.View>
       </ListView>
@@ -67,19 +73,33 @@
           <Button Margin="10 0 5 5" Style="{StaticResource TextButtonStyle}"
                   Content="Add" Click="AddButton_Click_ShowCharacterInfo"/>
           <Button Margin="5 0 5 5" Style="{StaticResource TextButtonStyle}"
-                  IsEnabled="{Binding IsACharacterInfoViewModelSelected}"
+                  IsEnabled="{Binding SelectedCharacterInfoViewModel, Converter={StaticResource ObjectToBoolConverter}}"
                   Content="Edit" Click="EditButton_Click_ShowCharacterInfo"/>
           <Button Margin="5 0 10 5" Style="{StaticResource TextButtonStyle}"
-                  Command="{Binding DeleteCommand}"
-                  Content="Delete"/>
+                  Content="Delete" Command="{Binding DeleteCommand}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-          <TextBlock Margin="10 10 10 5" HorizontalAlignment="Right"
-                     Text="No character selected"/>
-          <Button Margin="10 0 10 10" Style="{StaticResource TextButtonStyle}"
-                  HorizontalAlignment="Right" 
-                  Content="OK"/>
+          <TextBlock Margin="10 10 10 5" HorizontalAlignment="Right">
+            <!-- Just trying to do this: "{SelectedCharacterInfoViewModel?.CharacterName ?? No character} selected."... yay WPF? -->
+            <TextBlock.Style>
+              <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="Text" Value="{Binding SelectedCharacterInfoViewModel.CharacterName, StringFormat={}{0} selected.}"/>
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding SelectedCharacterInfoViewModel.CharacterName}" Value="{x:Null}">
+                    <Setter Property="Text" Value="No character selected."/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+
+          <StackPanel Margin="10 0 10 10" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Style="{StaticResource TextButtonStyle}"
+                    Content="OK" Click="OKButton_Click_CloseDialog"/>
+            <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
+                    Content="Cancel" IsCancel="True"/>
+          </StackPanel>
         </StackPanel>
       </Grid>
     </Grid>

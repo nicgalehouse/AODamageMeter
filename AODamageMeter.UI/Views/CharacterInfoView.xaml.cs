@@ -1,8 +1,8 @@
 ﻿using AODamageMeter.UI.ViewModels;
 using Microsoft.Win32;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using System.ComponentModel;
 
 namespace AODamageMeter.UI.Views
 {

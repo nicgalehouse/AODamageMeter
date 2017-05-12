@@ -96,5 +96,149 @@ namespace AODamageMeter.UI.Properties {
                 this["LogFilePaths"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedCharacterName {
+            get {
+                return ((string)(this["SelectedCharacterName"]));
+            }
+            set {
+                this["SelectedCharacterName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SelectedLogFilePath {
+            get {
+                return ((string)(this["SelectedLogFilePath"]));
+            }
+            set {
+                this["SelectedLogFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("350")]
+        public double CharacterSelectionViewHeight {
+            get {
+                return ((double)(this["CharacterSelectionViewHeight"]));
+            }
+            set {
+                this["CharacterSelectionViewHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        public double CharacterSelectionViewWidth {
+            get {
+                return ((double)(this["CharacterSelectionViewWidth"]));
+            }
+            set {
+                this["CharacterSelectionViewWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double CharacterSelectionViewTop {
+            get {
+                return ((double)(this["CharacterSelectionViewTop"]));
+            }
+            set {
+                this["CharacterSelectionViewTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double CharacterSelectionViewLeft {
+            get {
+                return ((double)(this["CharacterSelectionViewLeft"]));
+            }
+            set {
+                this["CharacterSelectionViewLeft"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("110")]
+        public double NameColumnWidth {
+            get {
+                return ((double)(this["NameColumnWidth"]));
+            }
+            set {
+                this["NameColumnWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        public double LogFileColumnWidth {
+            get {
+                return ((double)(this["LogFileColumnWidth"]));
+            }
+            set {
+                this["LogFileColumnWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public double CharacterInfoViewHeight {
+            get {
+                return ((double)(this["CharacterInfoViewHeight"]));
+            }
+            set {
+                this["CharacterInfoViewHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public double CharacterInfoViewWidth {
+            get {
+                return ((double)(this["CharacterInfoViewWidth"]));
+            }
+            set {
+                this["CharacterInfoViewWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double CharacterInfoViewTop {
+            get {
+                return ((double)(this["CharacterInfoViewTop"]));
+            }
+            set {
+                this["CharacterInfoViewTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double CharacterInfoViewLeft {
+            get {
+                return ((double)(this["CharacterInfoViewLeft"]));
+            }
+            set {
+                this["CharacterInfoViewLeft"] = value;
+            }
+        }
     }
 }

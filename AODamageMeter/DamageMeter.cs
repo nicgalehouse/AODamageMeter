@@ -20,6 +20,13 @@ namespace AODamageMeter
             Mode = mode;
         }
 
+        public DamageMeter(string characterName, string logFilePath, DamageMeterMode mode = DamageMeterMode.RealTime)
+            : this(logFilePath, mode)
+        {
+            Owner = Character.GetOrCreateCharacter(characterName);
+            Owner.CharacterType = CharacterType.PlayerCharacter;
+        }
+
         public DamageMeterMode Mode { get; }
         public bool IsRealTimeMode => Mode == DamageMeterMode.RealTime;
         public bool IsParsedTimeMode => Mode == DamageMeterMode.ParsedTime;

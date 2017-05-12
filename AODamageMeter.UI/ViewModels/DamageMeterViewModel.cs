@@ -1,8 +1,10 @@
+using AODamageMeter.UI.Properties;
 using AODamageMeter.UI.Utilities;
 using AODamageMeter.UI.ViewModels.Rows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +14,8 @@ namespace AODamageMeter.UI.ViewModels
 {
     public class DamageMeterViewModel : ViewModelBase
     {
+        private string _characterName;
+        private string _logFilePath;
         private DamageMeter _damageMeter;
         private IProgress<object> _damageMeterProgressReporter;
         private CancellationTokenSource _damageMeterUpdaterCTS;
@@ -22,6 +26,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             _damageMeterProgressReporter = new Progress<object>(_ =>
             {
+                if (_damageMeter == null) return; // Edge case where reporter lags behind cancellation/disposal.
                 lock (_damageMeter)
                 {
                     int displayIndex = 1;
@@ -53,40 +58,44 @@ namespace AODamageMeter.UI.ViewModels
 
             ResetDamageMeterCommand = new RelayCommand(ExecuteResetDamageMeterCommand);
             ToggleIsPausedCommand = new RelayCommand(ExecuteToggleIsPausedCommand);
+            TryInitializeDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
         }
 
         private Dictionary<FightCharacter, DamageDoneMainRowViewModel> _damageDoneRowViewModelsMap = new Dictionary<FightCharacter, DamageDoneMainRowViewModel>();
         public ObservableCollection<DamageDoneMainRowViewModel> DamageDoneRowViewModels { get; } = new ObservableCollection<DamageDoneMainRowViewModel>();
 
-        public void SetLogFile(string logFilePath)
+        public bool TryInitializeDamageMeter(string characterName, string logFilePath)
         {
+            // No reason to reinitialize if same name/path AND we succeeded before (AKA _damageMeter not null).
+            if (_characterName == characterName && _logFilePath == logFilePath && _damageMeter != null)
+                return true;
+
+            _characterName = characterName;
+            _logFilePath = logFilePath;
+
             DisposeDamageMeter();
             _damageDoneRowViewModelsMap.Clear();
             DamageDoneRowViewModels.Clear();
 
-            _damageMeter = new DamageMeter(logFilePath);
-            _damageMeter.IsPaused = IsPaused;
+            if (string.IsNullOrWhiteSpace(logFilePath)) return false;
+            if (!File.Exists(logFilePath))
+            {
+                try { File.Create(logFilePath); }
+                catch { return false; }
+            }
 
+            _damageMeter = Character.FitsPlayerNamingRequirements(characterName)
+                ? new DamageMeter(characterName, logFilePath)
+                : new DamageMeter(logFilePath);
+            _damageMeter.IsPaused = IsPaused;
 #if DEBUG
             _damageMeter.InitializeNewFight(skipToEndOfLog: false);
 #else
             _damageMeter.InitializeNewFight();
 #endif
-
             StartDamageMeterUpdater();
-        }
 
-        public ICommand ResetDamageMeterCommand { get; }
-        private void ExecuteResetDamageMeterCommand()
-        {
-            if (_damageMeter == null) return;
-
-            StopDamageMeterUpdater();
-            _damageDoneRowViewModelsMap.Clear();
-            DamageDoneRowViewModels.Clear();
-
-            _damageMeter.InitializeNewFight();
-            StartDamageMeterUpdater();
+            return true;
         }
 
         private void StartDamageMeterUpdater()
@@ -102,6 +111,7 @@ namespace AODamageMeter.UI.ViewModels
                     {
                         _damageMeter.Update().Wait();
                     }
+                    if (_damageMeterUpdaterCTS.IsCancellationRequested) return;
                     _damageMeterProgressReporter.Report(null);
                 } while (!_damageMeterUpdaterCTS.Token.WaitHandle.WaitOne(300));
             }, _damageMeterUpdaterCTS.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -118,6 +128,19 @@ namespace AODamageMeter.UI.ViewModels
             _damageMeterUpdaterCTS.Dispose();
         }
 
+        public ICommand ResetDamageMeterCommand { get; }
+        private void ExecuteResetDamageMeterCommand()
+        {
+            if (_damageMeter == null) return;
+
+            StopDamageMeterUpdater();
+            _damageDoneRowViewModelsMap.Clear();
+            DamageDoneRowViewModels.Clear();
+
+            _damageMeter.InitializeNewFight();
+            StartDamageMeterUpdater();
+        }
+
         public ICommand ToggleIsPausedCommand { get; }
         private void ExecuteToggleIsPausedCommand()
             => IsPaused = !IsPaused;
@@ -130,12 +153,10 @@ namespace AODamageMeter.UI.ViewModels
             {
                 Set(ref _isPaused, value);
 
-                if (_damageMeter != null)
+                if (_damageMeter == null) return;
+                lock (_damageMeter)
                 {
-                    lock (_damageMeter)
-                    {
-                        _damageMeter.IsPaused = IsPaused;
-                    }
+                    _damageMeter.IsPaused = IsPaused;
                 }
             }
         }
@@ -144,6 +165,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             StopDamageMeterUpdater();
             _damageMeter?.Dispose();
+            _damageMeter = null;
         }
     }
 }

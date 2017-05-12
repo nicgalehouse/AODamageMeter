@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:CharacterInfoViewModel}"
         Style="{StaticResource WindowStyle}" Background="Transparent"
         BorderBrush="{StaticResource LightBlueBrush50}" BorderThickness="1"
-        Height="300" Width="300">
+        Height="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewWidth, Mode=TwoWay}"
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewTop, Mode=TwoWay}"
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewLeft, Mode=TwoWay}">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="24"/>
@@ -24,7 +28,7 @@
       </Grid.ColumnDefinitions>
 
       <TextBlock Grid.Column="0" Margin="5 0 0 0" VerticalAlignment="Center"
-                 Text="Add Character"/>
+                 Text="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=Title}"/>
       <Button Grid.Column="1" IsCancel="True">
         <fa:ImageAwesome Icon="Close"/>
       </Button>
@@ -46,13 +50,11 @@
                  Text="{Binding LogFilePath, UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Orientation="Horizontal">
           <Button Style="{StaticResource TextButtonStyle}"
-                  Click="ChooseButton_Click_ShowFileDialog"
-                  Content="Choose..."/>
+                  Content="Choose..." Click="ChooseButton_Click_ShowFileDialog"/>
           <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
-                  Command="{Binding AutoConfigureCommand}"
                   IsEnabled="{Binding CanTryAutoConfiguring}"
-                  ToolTipService.ShowOnDisabled="True"
-                  Content="Auto-configure">
+                  Content="Auto-configure" Command="{Binding AutoConfigureCommand}"
+                  ToolTipService.ShowOnDisabled="True">
             <Button.ToolTip>
               <TextBlock>
                 Auto-configuring tries to find a properly configured chat window/log file for the character, and creates one if it can't.
@@ -62,19 +64,16 @@
             </Button.ToolTip>
           </Button>
         </StackPanel>
-        <TextBlock Margin="5 2 0 0"
-        TextWrapping="Wrap"
+        <TextBlock Margin="5 2 0 0" TextWrapping="Wrap"
                    Text="{Binding AutoConfigureResult}"/>
       </StackPanel>
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"
               HorizontalAlignment="Right" VerticalAlignment="Bottom">
       <Button Style="{StaticResource TextButtonStyle}"
-              Click="OKButton_Click_CloseDialog"
-              Content="OK"/>
+              Content="OK" Click="OKButton_Click_CloseDialog"/>
       <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
-              IsCancel="True"
-              Content="Cancel"/>
+              Content="Cancel" IsCancel="True"/>
       </StackPanel>
     </Grid>
 
