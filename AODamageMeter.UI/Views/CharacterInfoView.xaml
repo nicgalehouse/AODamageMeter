@@ -46,13 +46,14 @@
         <TextBlock Text="Name:"/>
         <TextBox Margin="0 2 0 10"
                  Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
+
         <TextBlock Text="Log file:"/>
         <TextBox Margin="0 2 0 5"
                  Text="{Binding LogFilePath, UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Orientation="Horizontal">
           <Button Style="{StaticResource TextButtonStyle}"
                   Content="Choose..." Click="ChooseButton_Click_ShowFileDialog"/>
-          <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}" Width="120"
+          <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}" MinWidth="120"
                   IsEnabled="{Binding CanTryAutoConfiguring}"
                   Content="Auto-configure" Command="{Binding AutoConfigureCommand}"
                   ToolTipService.ShowOnDisabled="True">

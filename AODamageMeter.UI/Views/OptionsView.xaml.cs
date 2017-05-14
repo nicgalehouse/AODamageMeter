@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using AODamageMeter.UI.Properties;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -6,9 +7,14 @@ namespace AODamageMeter.UI.Views
 {
     public partial class OptionsView : Window
     {
+        private string _previousFontFamily;
+        private double _previousFontSize;
+
         public OptionsView()
         {
             InitializeComponent();
+            _previousFontFamily = Settings.Default.FontFamily;
+            _previousFontSize = Settings.Default.FontSize;
         }
 
         private void OKButton_Click_CloseDialog(object sender, RoutedEventArgs e)
@@ -26,7 +32,8 @@ namespace AODamageMeter.UI.Views
         {
             if (DialogResult != true)
             {
-
+                Settings.Default.FontFamily = _previousFontFamily;
+                Settings.Default.FontSize = _previousFontSize;
             }
 
             base.OnClosing(e);

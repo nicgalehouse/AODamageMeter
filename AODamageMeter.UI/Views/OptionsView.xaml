@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:OptionsViewModel}"
         Title="Options"
         Style="{StaticResource WindowStyle}" Background="Transparent"
@@ -43,7 +44,50 @@
       </Grid.RowDefinitions>
 
       <StackPanel Grid.Row="0" Margin="10">
-        <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" Background="Black" />
+        <TextBlock Text="Font:"/>
+        <ComboBox x:Name="FontFamilyComboBox" Margin="0 2 0 10"
+                  ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
+                  SelectedValuePath="Source"
+                  SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=FontFamily}">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <DataTemplate.Resources>
+                <Style TargetType="TextBlock">
+                  <Setter Property="Foreground" Value="Black"/>
+                </Style>
+              </DataTemplate.Resources>
+              <TextBlock Text="{Binding}" FontFamily="{Binding}"/>
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <TextBlock Text="Font size:"/>
+        <ComboBox Margin="0 2 0 10"
+                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=FontSize}">
+          <ComboBox.ItemsSource>
+            <x:Array Type="{x:Type System:Double}">
+              <System:Double>6</System:Double>
+              <System:Double>7</System:Double>
+              <System:Double>8</System:Double>
+              <System:Double>9</System:Double>
+              <System:Double>10</System:Double>
+              <System:Double>11</System:Double>
+              <System:Double>12</System:Double>
+              <System:Double>13</System:Double>
+              <System:Double>14</System:Double>
+              <System:Double>15</System:Double>
+              <System:Double>16</System:Double>
+              <System:Double>17</System:Double>
+              <System:Double>18</System:Double>
+              <System:Double>19</System:Double>
+              <System:Double>20</System:Double>
+              <System:Double>21</System:Double>
+              <System:Double>22</System:Double>
+              <System:Double>23</System:Double>
+              <System:Double>24</System:Double>
+            </x:Array>
+          </ComboBox.ItemsSource>
+        </ComboBox>
       </StackPanel>
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"
