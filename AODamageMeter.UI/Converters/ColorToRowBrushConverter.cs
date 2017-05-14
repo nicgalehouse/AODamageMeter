@@ -21,8 +21,8 @@ namespace AODamageMeter.UI.Converters
 
             brush = new LinearGradientBrush
             {
-                StartPoint = new Point(1, 0),
-                EndPoint = new Point(1, 1)
+                StartPoint = new Point(0, 0),
+                EndPoint = new Point(0, 1)
             };
             brush.GradientStops.Add(new GradientStop(Colors.Black, -1.25));
             brush.GradientStops.Add(new GradientStop(color, .5));

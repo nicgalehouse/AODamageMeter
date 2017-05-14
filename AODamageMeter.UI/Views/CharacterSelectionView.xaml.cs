@@ -17,7 +17,7 @@ namespace AODamageMeter.UI.Views
 
         private void AddButton_Click_ShowCharacterInfo(object sender, RoutedEventArgs e)
         {
-            var characterInfoView = new CharacterInfoView();
+            var characterInfoView = new CharacterInfoView { Owner = this };
             if (characterInfoView.ShowDialog() == true
                 && !characterInfoView.CharacterInfoViewModel.IsEmpty)
             {
@@ -26,10 +26,7 @@ namespace AODamageMeter.UI.Views
         }
 
         private void EditButton_Click_ShowCharacterInfo(object sender, RoutedEventArgs e)
-        {
-            var characterInfoView = new CharacterInfoView(CharacterSelectionViewModel.SelectedCharacterInfoViewModel);
-            characterInfoView.ShowDialog();
-        }
+            => new CharacterInfoView(CharacterSelectionViewModel.SelectedCharacterInfoViewModel) { Owner = this }.ShowDialog();
 
         private void OKButton_Click_CloseDialog(object sender, RoutedEventArgs e)
             => DialogResult = true;
@@ -48,6 +45,8 @@ namespace AODamageMeter.UI.Views
             {
                 CharacterSelectionViewModel.Save();
             }
+
+            base.OnClosing(e);
         }
     }
 }

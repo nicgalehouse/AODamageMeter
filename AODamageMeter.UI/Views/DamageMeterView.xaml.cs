@@ -29,6 +29,9 @@ namespace AODamageMeter.UI.Views
             }
         }
 
+        private void OptionsButton_Click_ShowOptions(object sender, RoutedEventArgs e)
+            => new OptionsView { Owner = this }.ShowDialog();
+
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -44,6 +47,8 @@ namespace AODamageMeter.UI.Views
         {
             Settings.Default.Save();
             _damageMeterViewModel.DisposeDamageMeter();
+
+            base.OnClosing(e);
         }
     }
 }

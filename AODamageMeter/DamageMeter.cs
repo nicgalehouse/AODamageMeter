@@ -49,8 +49,10 @@ namespace AODamageMeter
                 _logStreamReader.BaseStream.Seek(0, SeekOrigin.End);
             }
 
-            CurrentFight = new Fight(this);
-            CurrentFight.IsPaused = IsPaused;
+            CurrentFight = new Fight(this)
+            {
+                IsPaused = IsPaused
+            };
         }
 
         protected bool _isPaused;

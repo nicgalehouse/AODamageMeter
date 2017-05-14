@@ -26,7 +26,7 @@ namespace AODamageMeter.UI.Views
 
         private void ChooseButton_Click_ShowFileDialog(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog()
+            var dialog = new OpenFileDialog
             {
                 FileName = "Log.txt",
                 DefaultExt = ".txt",
@@ -57,6 +57,8 @@ namespace AODamageMeter.UI.Views
                 CharacterInfoViewModel.CharacterName = _previousCharacterName;
                 CharacterInfoViewModel.LogFilePath = _previousLogFilePath;
             }
+
+            base.OnClosing(e);
         }
     }
 }

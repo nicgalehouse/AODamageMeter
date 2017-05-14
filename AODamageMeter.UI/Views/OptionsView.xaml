@@ -1,0 +1,63 @@
+﻿<Window x:Class="AODamageMeter.UI.Views.OptionsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
+        xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
+        mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:OptionsViewModel}"
+        Title="Options"
+        Style="{StaticResource WindowStyle}" Background="Transparent"
+        BorderBrush="{StaticResource LightBlueBrush50}" BorderThickness="1"
+        Height="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewWidth, Mode=TwoWay}"
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewTop, Mode=TwoWay}"
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewLeft, Mode=TwoWay}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="24"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0"
+          Background="{StaticResource Black40}"
+          MouseDown="HeaderRow_MouseDown_Drag">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="26"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Grid.Column="0" Margin="5 0 0 0" VerticalAlignment="Center"
+                 Text="Options"/>
+      <Button Grid.Column="1" IsCancel="True">
+        <fa:ImageAwesome Icon="Close"/>
+      </Button>
+    </Grid>
+
+    <Grid Grid.Row="1" Margin="1" UseLayoutRounding="True"
+          Background="{StaticResource DarkBlueBrush85}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="4*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <StackPanel Grid.Row="0" Margin="10">
+        <ComboBox ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}" Background="Black" />
+      </StackPanel>
+
+      <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"
+              HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <Button Style="{StaticResource TextButtonStyle}"
+                Content="OK" Click="OKButton_Click_CloseDialog"/>
+        <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
+                Content="Cancel" IsCancel="True"/>
+      </StackPanel>
+    </Grid>
+
+    <Border Grid.Row="1" Margin="0"
+            BorderBrush="{StaticResource Black40}" BorderThickness="1"/>
+    <Border Grid.Row="1" Margin="2 0 2 2"
+            BorderBrush="{StaticResource LightBlueBrush}" BorderThickness="1"/>
+  </Grid>
+</Window>

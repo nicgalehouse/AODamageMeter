@@ -240,5 +240,53 @@ namespace AODamageMeter.UI.Properties {
                 this["CharacterInfoViewLeft"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public double OptionsViewHeight {
+            get {
+                return ((double)(this["OptionsViewHeight"]));
+            }
+            set {
+                this["OptionsViewHeight"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        public double OptionsViewWidth {
+            get {
+                return ((double)(this["OptionsViewWidth"]));
+            }
+            set {
+                this["OptionsViewWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double OptionsViewTop {
+            get {
+                return ((double)(this["OptionsViewTop"]));
+            }
+            set {
+                this["OptionsViewTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double OptionsViewLeft {
+            get {
+                return ((double)(this["OptionsViewLeft"]));
+            }
+            set {
+                this["OptionsViewLeft"] = value;
+            }
+        }
     }
 }

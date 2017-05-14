@@ -27,7 +27,8 @@
         <ColumnDefinition Width="26"/>
       </Grid.ColumnDefinitions>
 
-      <TextBlock Grid.Column="0" Margin="5 0 0 0" VerticalAlignment="Center"
+      <TextBlock Grid.Column="0"
+                 Margin="5 0 0 0" VerticalAlignment="Center"
                  Text="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=Title}"/>
       <Button Grid.Column="1" IsCancel="True">
         <fa:ImageAwesome Icon="Close"/>
@@ -51,7 +52,7 @@
         <StackPanel Orientation="Horizontal">
           <Button Style="{StaticResource TextButtonStyle}"
                   Content="Choose..." Click="ChooseButton_Click_ShowFileDialog"/>
-          <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
+          <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}" Width="120"
                   IsEnabled="{Binding CanTryAutoConfiguring}"
                   Content="Auto-configure" Command="{Binding AutoConfigureCommand}"
                   ToolTipService.ShowOnDisabled="True">
@@ -70,10 +71,10 @@
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"
               HorizontalAlignment="Right" VerticalAlignment="Bottom">
-      <Button Style="{StaticResource TextButtonStyle}"
-              Content="OK" Click="OKButton_Click_CloseDialog"/>
-      <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
-              Content="Cancel" IsCancel="True"/>
+        <Button Style="{StaticResource TextButtonStyle}"
+                Content="OK" Click="OKButton_Click_CloseDialog"/>
+        <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
+                Content="Cancel" IsCancel="True"/>
       </StackPanel>
     </Grid>
 
