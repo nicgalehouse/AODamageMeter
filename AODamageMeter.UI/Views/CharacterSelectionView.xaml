@@ -44,8 +44,21 @@
 
       <ListView Grid.Row="0" ItemsSource="{Binding CharacterInfoViewModels}"
                 SelectedItem="{Binding SelectedCharacterInfoViewModel}"
-                Margin="10" Background="Transparent" BorderBrush="Gray"
+                Margin="10" Background="Transparent" BorderBrush="{StaticResource LightBlueBrush}"
                 SelectionMode="Single">
+        <ListView.ItemContainerStyle>
+          <Style TargetType="ListViewItem">
+            <Style.Triggers>
+              <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
+              </Trigger>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
+              </Trigger>
+            </Style.Triggers>
+          </Style>
+        </ListView.ItemContainerStyle>
+
         <ListView.View>
           <GridView>
             <GridView.ColumnHeaderContainerStyle>
