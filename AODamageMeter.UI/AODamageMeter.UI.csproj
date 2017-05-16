@@ -95,7 +95,6 @@
     </Compile>
     <Compile Include="ViewModels\CharacterInfoViewModel.cs" />
     <Compile Include="ViewModels\CharacterSelectionViewModel.cs" />
-    <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneDetailRowViewModel.cs" />
     <Compile Include="Views\CharacterInfoView.xaml.cs">
       <DependentUpon>CharacterInfoView.xaml</DependentUpon>
