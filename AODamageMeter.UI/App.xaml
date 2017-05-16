@@ -120,6 +120,7 @@
     </Style>
 
     <Style TargetType="DataGrid" x:Key="DamageMeterGridStyle">
+      <Setter Property="UseLayoutRounding" Value="True"/>
       <Setter Property="IsReadOnly" Value="True"/>
       <Setter Property="AutoGenerateColumns" Value="False"/>
       <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
