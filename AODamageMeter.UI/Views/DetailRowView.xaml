@@ -17,9 +17,9 @@
       </Rectangle.Width>
     </Rectangle>
 
-    <TextBlock Height="18" Canvas.Top="2" Canvas.Left="27"
+    <TextBlock x:Name="NameTextBlock" Canvas.Left="27"
                Text="{Binding FightCharacterName, Mode=OneTime}"/>
-    <TextBlock Height="18" Canvas.Top="2" Canvas.Right="3"
+    <TextBlock x:Name="RightTextBlock" Canvas.Right="3"
                Text="{Binding RightText}"/>
   </Canvas>
 </UserControl>
