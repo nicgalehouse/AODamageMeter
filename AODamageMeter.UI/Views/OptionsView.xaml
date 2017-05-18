@@ -67,7 +67,7 @@
         </ComboBox>
 
         <TextBlock Text="Font size:"/>
-        <ComboBox Margin="0 2 0 10"
+        <ComboBox Margin="0 2 0 20"
                   SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=FontSize}">
           <ComboBox.ItemsSource>
             <x:Array Type="{x:Type System:Double}">
@@ -93,6 +93,14 @@
             </x:Array>
           </ComboBox.ItemsSource>
         </ComboBox>
+
+        <!-- TODO: Use binding instead of code-behind (tried, but keep running into problems). -->
+        <RadioButton x:Name="ShowPercentOfTotalDamageDoneRadioButton" GroupName="ShowPercent"
+                     Checked="ShowPercentOfTotalDamageDoneRadioButton_Checked_Persist"
+                     Unchecked="ShowPercentOfTotalDamageDoneRadioButton_Unchecked_Persist"
+                     Content="Show percent of total damage done"/>
+        <RadioButton x:Name="ShowPercentOfMaxDamageDoneRadioButton" GroupName="ShowPercent" Margin="0 2 0 10"
+                     Content="Show percent of max damage done"/>
       </StackPanel>
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"

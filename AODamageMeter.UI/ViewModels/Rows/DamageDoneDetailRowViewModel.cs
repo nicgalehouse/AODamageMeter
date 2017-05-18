@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
@@ -10,10 +11,10 @@ namespace AODamageMeter.UI.ViewModels.Rows
 
         public override void Update(int? displayIndex = null)
         {
-            Color = FightCharacter.IsPet ? FightCharacter.FightPetOwner.Profession.GetColor()
-                : FightCharacter.Profession.GetColor();
+            Color = FightCharacter.IsPet ? FightCharacter.FightPetOwner.Profession.GetColor() : FightCharacter.Profession.GetColor();
             PercentWidth = FightCharacter.PercentOfMaxDamageDonePlusPets;
-            RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {FightCharacter.PercentOfOwnOrOwnersDamageDonePlusPets.FormatPercent()}, {FightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
+            double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentOfTotalDamageDone : PercentWidth;
+            RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {FightCharacter.PercentOfOwnOrOwnersDamageDonePlusPets.FormatPercent()}, {percentDone.FormatPercent()})";
         }
     }
 }

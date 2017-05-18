@@ -312,5 +312,17 @@ namespace AODamageMeter.UI.Properties {
                 this["FontSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowPercentOfTotalDamageDone {
+            get {
+                return ((bool)(this["ShowPercentOfTotalDamageDone"]));
+            }
+            set {
+                this["ShowPercentOfTotalDamageDone"] = value;
+            }
+        }
     }
 }

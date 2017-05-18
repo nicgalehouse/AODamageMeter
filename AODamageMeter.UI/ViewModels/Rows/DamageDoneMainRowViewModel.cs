@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
@@ -16,12 +17,15 @@ namespace AODamageMeter.UI.ViewModels.Rows
             if (FightCharacter.FightPets.Count == 0)
             {
                 PercentWidth = FightCharacter.PercentOfMaxDamageDonePlusPets;
-                RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {FightCharacter.PercentOfTotalDamageDone.FormatPercent()})";
+                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentOfTotalDamageDone : PercentWidth;
+                RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {percentDone.FormatPercent()})";
             }
             else
             {
                 PercentWidth = FightCharacter.PercentPlusPetsOfMaxDamageDonePlusPets;
-                RightText = $"{FightCharacter.DamageDonePlusPets.Format()} ({FightCharacter.ActiveDPMPlusPets.Format()}, {FightCharacter.PercentPlusPetsOfTotalDamageDone.FormatPercent()})";
+                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentPlusPetsOfTotalDamageDone : PercentWidth;
+                RightText = $"{FightCharacter.DamageDonePlusPets.Format()} ({FightCharacter.ActiveDPMPlusPets.Format()}, {percentDone.FormatPercent()})";
+
                 foreach (var fightCharacter in new[] { FightCharacter }.Concat(FightCharacter.FightPets))
                 {
                     if (!_detailRowViewModelsMap.TryGetValue(fightCharacter, out RowViewModelBase detailRowViewModel))
