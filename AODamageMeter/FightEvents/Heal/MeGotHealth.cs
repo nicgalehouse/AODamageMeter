@@ -37,7 +37,7 @@ namespace AODamageMeter.FightEvents.Heal
                 HealType = HealType.RealizedHealth;
                 SetAmount(match, 1);
 
-                if (_latestStartEvent != null)
+                if (_latestStartEvent != null && _latestStartEvent.Fight == fight)
                 {
                     Source = _latestStartEvent.Source;
 

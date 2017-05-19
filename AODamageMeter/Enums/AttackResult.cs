@@ -4,6 +4,7 @@
     {
         Hit,
         Missed,
+        NanoHit,
         IndirectHit,
         Absorbed
     }

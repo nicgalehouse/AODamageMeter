@@ -1,7 +1,4 @@
-﻿using AODamageMeter.UI.Helpers;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels
 {
@@ -48,14 +45,21 @@ namespace AODamageMeter.UI.ViewModels
             protected set => Set(ref _rightText, value);
         }
 
-        protected Dictionary<FightCharacter, RowViewModelBase> _detailRowViewModelsMap = new Dictionary<FightCharacter, RowViewModelBase>();
-        public ObservableCollection<RowViewModelBase> DetailRowViewModels { get; } = new ObservableCollection<RowViewModelBase>();
+        public string CharacterTooltip =>
+            FightCharacter.HasPlayerInfo ?
+$@"{DisplayIndex}. {FightCharacterName}
+{FightCharacter.Level}/{FightCharacter.AlienLevel} {FightCharacter.Faction} {FightCharacter.Profession}
+{FightCharacter.Breed} {FightCharacter.Gender}
+{FightCharacter.Organization} ({FightCharacter.OrganizationRank})" :
+$@"{DisplayIndex}. {FightCharacterName}";
 
-        public virtual void Update(int? displayIndex = null)
+        public abstract string RightTextToolTip { get; }
+
+        public virtual void Update(int displayIndex)
         {
             DisplayIndex = displayIndex;
-            IconPath = FightCharacter.Profession.GetIconPath();
-            Color = FightCharacter.Profession.GetColor();
+            RaisePropertyChanged(nameof(CharacterTooltip));
+            RaisePropertyChanged(nameof(RightTextToolTip));
         }
     }
 }

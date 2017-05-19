@@ -4,19 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
-             xmlns:views="clr-namespace:AODamageMeter.UI.Views"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:RowViewModelBase}"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MainRowViewModelBase}"
              d:DesignHeight="27" d:DesignWidth="300">
   <Canvas Height="24" Background="{StaticResource DarkBlueBrush15}">
     <Image Width="24"
            Source="{Binding IconPath, Converter={StaticResource IconPathToBitmapImageConverter}}"
-           ToolTipService.Placement="Left"
-           ToolTipService.HorizontalOffset="-3"
-           MouseDown="Icon_MouseDown_RaiseDetailGridNeedsToggling">
-      <Image.ToolTip>
-        <views:CharacterTooltip/>
-      </Image.ToolTip>
-    </Image>
+           MouseDown="Icon_MouseDown_RaiseDetailGridNeedsToggling"/>
 
     <Rectangle Height="24" Canvas.Left="24"
                Fill="{Binding Color, Converter={StaticResource ColorToRowBrushConverter}}">
@@ -29,8 +22,21 @@
     </Rectangle>
 
     <TextBlock x:Name="NameTextBlock" Canvas.Left="27"
-               Text="{Binding FightCharacterName, Mode=OneTime}"/>
+               Text="{Binding FightCharacterName, Mode=OneTime}"
+               ToolTipService.Placement="Left"
+               ToolTipService.HorizontalOffset="-2">
+      <TextBlock.ToolTip>
+        <TextBlock Text="{Binding CharacterTooltip}"/>
+      </TextBlock.ToolTip>
+    </TextBlock>
+
     <TextBlock x:Name="RightTextBlock" Canvas.Right="3"
-               Text="{Binding RightText}"/>
+               Text="{Binding RightText}"
+               ToolTipService.Placement="Right"
+               ToolTipService.HorizontalOffset="2">
+      <TextBlock.ToolTip>
+        <TextBlock Text="{Binding RightTextToolTip}"/>
+      </TextBlock.ToolTip>
+    </TextBlock>
   </Canvas>
 </UserControl>

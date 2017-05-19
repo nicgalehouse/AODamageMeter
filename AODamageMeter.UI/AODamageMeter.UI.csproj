@@ -95,15 +95,14 @@
     </Compile>
     <Compile Include="ViewModels\CharacterInfoViewModel.cs" />
     <Compile Include="ViewModels\CharacterSelectionViewModel.cs" />
+    <Compile Include="ViewModels\DetailRowViewModelBase.cs" />
+    <Compile Include="ViewModels\MainRowViewModelBase.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneDetailRowViewModel.cs" />
     <Compile Include="Views\CharacterInfoView.xaml.cs">
       <DependentUpon>CharacterInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CharacterSelectionView.xaml.cs">
       <DependentUpon>CharacterSelectionView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CharacterTooltip.xaml.cs">
-      <DependentUpon>CharacterTooltip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DetailRowView.xaml.cs">
       <DependentUpon>DetailRowView.xaml</DependentUpon>
@@ -125,10 +124,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CharacterSelectionView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CharacterTooltip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

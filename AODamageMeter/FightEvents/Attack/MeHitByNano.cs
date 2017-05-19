@@ -16,7 +16,7 @@ namespace AODamageMeter.FightEvents.Attack
             : base(fight, timestamp, description)
         {
             SetTargetToOwner();
-            AttackResult = AttackResult.Hit;
+            AttackResult = AttackResult.NanoHit;
 
             if (TryMatch(Sourced, out Match match))
             {

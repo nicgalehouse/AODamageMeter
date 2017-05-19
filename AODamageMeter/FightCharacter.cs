@@ -19,6 +19,7 @@ namespace AODamageMeter
         public DamageMeter DamageMeter => Fight.DamageMeter;
         public Fight Fight { get; }
         public Character Character { get; }
+        public bool IsDamageMeterOwner => Character == DamageMeter.Owner;
         public string Name => Character.Name;
         public CharacterType CharacterType => Character.CharacterType;
         public bool IsPlayer => Character.IsPlayer;
@@ -69,35 +70,72 @@ namespace AODamageMeter
             _fightPets.Add(fightPet);
         }
 
-        protected readonly List<AttackEvent> _sourceAttackEvents = new List<AttackEvent>();
-        protected readonly List<AttackEvent> _targetAttackEvents = new List<AttackEvent>();
-        protected readonly List<HealEvent> _selfHealEvents = new List<HealEvent>();
-        protected readonly List<HealEvent> _sourceHealEvents = new List<HealEvent>();
-        protected readonly List<HealEvent> _targetHealEvents = new List<HealEvent>();
-        protected readonly List<LevelEvent> _levelEvents = new List<LevelEvent>();
-        protected readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
-        public IReadOnlyList<AttackEvent> SourceAttackEvents => _sourceAttackEvents;
-        public IReadOnlyList<AttackEvent> TargetAttackEvents => _targetAttackEvents;
-        public IReadOnlyList<HealEvent> SelfHealEvents => _selfHealEvents;
-        public IReadOnlyList<HealEvent> SourceHealEvents => _sourceHealEvents;
-        public IReadOnlyList<HealEvent> TargetHealEvents => _targetHealEvents;
-        public IReadOnlyList<LevelEvent> LevelEvents => _levelEvents;
-        public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
-
         public int DamageDone { get; protected set; }
         public int DamageDonePlusPets => DamageDone + FightPets.Sum(p => p.DamageDone);
         public int OwnOrOwnersDamageDonePlusPets => FightPetOwner?.DamageDonePlusPets ?? DamageDonePlusPets;
+        public int HitDamageDone { get; protected set; }
+        public int HitDamageDonePlusPets => HitDamageDone + FightPets.Sum(p => p.HitDamageDone);
+        public int NanoHitDamageDone { get; protected set; }
+        public int NanoHitDamageDonePlusPets => NanoHitDamageDone + FightPets.Sum(p => p.NanoHitDamageDone);
+        public int IndirectHitDamageDone { get; protected set; }
+        public int IndirectHitDamageDonePlusPets => IndirectHitDamageDone + FightPets.Sum(p => p.IndirectHitDamageDone);
         public int HitCount { get; protected set; }
+        public int HitCountPlusPets => HitCount + FightPets.Sum(p => p.HitCount);
+        public double ActiveHPS => ActiveDuration.TotalSeconds <= 1 ? HitCount : HitCount / ActiveDuration.TotalSeconds;
+        public double ActiveHPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? HitCountPlusPets : HitCountPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveHPM => 60 * ActiveHPS;
+        public double ActiveHPMPlusPets => 60 * ActiveHPSPlusPets;
         public int CritCount { get; protected set; }
+        public int CritCountPlusPets => CritCount + FightPets.Sum(p => p.CritCount);
+        public double ActiveCPS => ActiveDuration.TotalSeconds <= 1 ? CritCount : CritCount / ActiveDuration.TotalSeconds;
+        public double ActiveCPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? CritCountPlusPets : CritCountPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveCPM => 60 * ActiveCPS;
+        public double ActiveCPMPlusPets => 60 * ActiveCPSPlusPets;
         public int GlanceCount { get; protected set; }
-        public int IndirectHitCount { get; protected set; }
+        public int GlanceCountPlusPets => GlanceCount + FightPets.Sum(p => p.GlanceCount);
+        public double ActiveGPS => ActiveDuration.TotalSeconds <= 1 ? GlanceCount : GlanceCount / ActiveDuration.TotalSeconds;
+        public double ActiveGPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? GlanceCountPlusPets : GlanceCountPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveGPM => 60 * ActiveGPS;
+        public double ActiveGPMPlusPets => 60 * ActiveGPSPlusPets;
         // We only know about misses where the owner is a source or target.
         public int MissCount { get; protected set; }
+        public int MissCountPlusPets => MissCount + FightPets.Sum(p => p.MissCount);
+        public double ActiveMPS => ActiveDuration.TotalSeconds <= 1 ? MissCount : MissCount / ActiveDuration.TotalSeconds;
+        public double ActiveMPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? MissCountPlusPets : MissCountPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveMPM => 60 * ActiveMPS;
+        public double ActiveMPMPlusPets => 60 * ActiveMPSPlusPets;
         public int HitAttempts => HitCount + MissCount;
+        public int HitAttemptsPlusPets => HitAttempts + FightPets.Sum(p => p.HitAttempts);
+        public double ActiveHAPS => ActiveDuration.TotalSeconds <= 1 ? HitAttempts : HitAttempts / ActiveDuration.TotalSeconds;
+        public double ActiveHAPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? HitAttemptsPlusPets : HitAttemptsPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveHAPM => 60 * ActiveHAPS;
+        public double ActiveHAPMPlusPets => 60 * ActiveHAPSPlusPets;
+        public int NanoHitCount { get; protected set; }
+        public int NanoHitCountPlusPets => NanoHitCount + FightPets.Sum(p => p.NanoHitCount); 
+        public double ActiveNHPS => ActiveDuration.TotalSeconds <= 1 ? NanoHitCount : NanoHitCount / ActiveDuration.TotalSeconds;
+        public double ActiveNHPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? NanoHitCountPlusPets : NanoHitCountPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveNHPM => 60 * ActiveNHPS;
+        public double ActiveNHPMPlusPets => 60 * ActiveNHPSPlusPets;
+        public int IndirectHitCount { get; protected set; }
+        public int IndirectHitCountPlusPets => IndirectHitCount + FightPets.Sum(p => p.IndirectHitCount);
+        public double ActiveIHPS => ActiveDuration.TotalSeconds <= 1 ? IndirectHitCount : IndirectHitCount / ActiveDuration.TotalSeconds;
+        public double ActiveIHPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? IndirectHitCountPlusPets : IndirectHitCountPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveIHPM => 60 * ActiveIHPS;
+        public double ActiveIHPMPlusPets => 60 * ActiveIHPSPlusPets;
+        public int TotalHitCount => HitCount + NanoHitCount + IndirectHitCount;
+        public int TotalHitCountPlusPets => HitCountPlusPets + NanoHitCountPlusPets + IndirectHitCountPlusPets;
+        public double ActiveTHPS => ActiveDuration.TotalSeconds <= 1 ? TotalHitCount : TotalHitCount / ActiveDuration.TotalSeconds;
+        public double ActiveTHPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? TotalHitCountPlusPets : TotalHitCountPlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveTHPM => 60 * ActiveTHPS;
+        public double ActiveTHPMPlusPets => 60 * ActiveTHPSPlusPets;
         public double HitChance => HitAttempts == 0 ? 0 : HitCount / (double)HitAttempts;
+        public double HitChancePlusPets => HitAttemptsPlusPets == 0 ? 0 : HitCountPlusPets / (double)HitAttemptsPlusPets;
         public double CritChance => HitAttempts == 0 ? 0 : CritCount / (double)HitAttempts;
+        public double CritChancePlusPets => HitAttemptsPlusPets == 0 ? 0 : CritCountPlusPets / (double)HitAttemptsPlusPets;
         public double GlanceChance => HitAttempts == 0 ? 0 : GlanceCount / (double)HitAttempts;
+        public double GlanceChancePlusPets => HitAttemptsPlusPets == 0 ? 0 : GlanceCountPlusPets / (double)HitAttemptsPlusPets;
         public double MissChance => HitAttempts == 0 ? 0 : MissCount / (double)HitAttempts;
+        public double MissChancePlusPets => HitAttemptsPlusPets == 0 ? 0 : MissCountPlusPets / (double)HitAttemptsPlusPets;
         public double PercentOfTotalDamageDone => Fight.TotalDamageDone == 0 ? 0 : DamageDone / (double)Fight.TotalDamageDone;
         public double PercentPlusPetsOfTotalDamageDone => Fight.TotalDamageDone == 0 ? 0 : DamageDonePlusPets / (double)Fight.TotalDamageDone;
         public double PercentOfMaxDamageDone => Fight.MaxDamageDone == 0 ? 0 : DamageDone / (double)Fight.MaxDamageDone;
@@ -106,19 +144,41 @@ namespace AODamageMeter
         public double PercentOfOwnOrOwnersDamageDonePlusPets => OwnOrOwnersDamageDonePlusPets == 0 ? 0 : DamageDone / (double)OwnOrOwnersDamageDonePlusPets;
         public double ActiveDPS => ActiveDuration.TotalSeconds <= 1 ? DamageDone : DamageDone / ActiveDuration.TotalSeconds;
         public double ActiveDPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? DamageDonePlusPets : DamageDonePlusPets / ActiveDurationPlusPets.TotalSeconds;
-        public double FullDPS => Fight.Duration.Value.TotalSeconds <= 1 ? DamageDone : DamageDone / Fight.Duration.Value.TotalSeconds;
         public double ActiveDPM => 60 * ActiveDPS;
         public double ActiveDPMPlusPets => 60 * ActiveDPSPlusPets;
+        public double FullDPS => Fight.Duration.Value.TotalSeconds <= 1 ? DamageDone : DamageDone / Fight.Duration.Value.TotalSeconds;
         public double FullDPM => 60 * FullDPS;
+        public double ActiveHDPS => ActiveDuration.TotalSeconds <= 1 ? HitDamageDone : HitDamageDone / ActiveDuration.TotalSeconds;
+        public double ActiveHDPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? HitDamageDonePlusPets : HitDamageDonePlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveHDPM => 60 * ActiveHDPS;
+        public double ActiveHDPMPlusPets => 60 * ActiveHDPSPlusPets;
+        public double ActiveNHDPS => ActiveDuration.TotalSeconds <= 1 ? NanoHitDamageDone : NanoHitDamageDone / ActiveDuration.TotalSeconds;
+        public double ActiveNHDPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? NanoHitDamageDonePlusPets : NanoHitDamageDonePlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveNHDPM => 60 * ActiveNHDPS;
+        public double ActiveNHDPMPlusPets => 60 * ActiveNHDPSPlusPets;
+        public double ActiveIHDPS => ActiveDuration.TotalSeconds <= 1 ? IndirectHitDamageDone : IndirectHitDamageDone / ActiveDuration.TotalSeconds;
+        public double ActiveIHDPSPlusPets => ActiveDurationPlusPets.TotalSeconds <= 1 ? IndirectHitDamageDonePlusPets : IndirectHitDamageDonePlusPets / ActiveDurationPlusPets.TotalSeconds;
+        public double ActiveIHDPM => 60 * ActiveIHDPS;
+        public double ActiveIHDPMPlusPets => 60 * ActiveIHDPSPlusPets;
+        public double PercentOfDamageDoneViaHits => DamageDone == 0 ? 0 : HitDamageDone / (double)DamageDone;
+        public double PercentOfDamageDoneViaNanoHits => DamageDone == 0 ? 0 : NanoHitDamageDone / (double)DamageDone;
+        public double PercentOfDamageDoneViaIndirectHits => DamageDone == 0 ? 0 : IndirectHitDamageDone / (double)DamageDone;
+        public double PercentOfDamageDonePlusPetsViaHits => DamageDonePlusPets == 0 ? 0 : HitDamageDonePlusPets / (double)DamageDonePlusPets;
+        public double PercentOfDamageDonePlusPetsViaNanoHits => DamageDonePlusPets == 0 ? 0 : NanoHitDamageDonePlusPets / (double)DamageDonePlusPets;
+        public double PercentOfDamageDonePlusPetsViaIndirectHits => DamageDonePlusPets == 0 ? 0 : IndirectHitDamageDonePlusPets / (double)DamageDonePlusPets;
 
         public int DamageTaken { get; protected set; }
+        public int HitDamageTaken { get; protected set; }
+        public int NanoHitDamageTaken { get; protected set; }
+        public int IndirectHitDamageTaken { get; protected set; }
         public int HitCountTaken { get; protected set; }
         public int CritCountTaken { get; protected set; }
         public int GlanceCountTaken { get; protected set; }
-        public int IndirectHitCountTaken { get; protected set; }
         // We only know about misses where the owner is a source or target.
         public int MissCountTaken { get; protected set; }
         public int HitAttemptsTaken => HitCountTaken + MissCountTaken;
+        public int NanoHitCountTaken { get; protected set; }
+        public int IndirectHitCountTaken { get; protected set; }
         public double HitChanceTaken => HitAttemptsTaken == 0 ? 0 : HitCountTaken / (double)HitAttemptsTaken;
         public double CritChanceTaken => HitAttemptsTaken == 0 ? 0 : CritCountTaken / (double)HitAttemptsTaken;
         public double GlanceChanceTaken => HitAttemptsTaken == 0 ? 0 : GlanceCountTaken / (double)HitAttemptsTaken;
@@ -162,65 +222,74 @@ namespace AODamageMeter
 
         public void AddSourceAttackEvent(AttackEvent attackEvent)
         {
-            if (attackEvent.AttackResult == AttackResult.Hit)
+            switch (attackEvent.AttackResult)
             {
-                DamageDone += attackEvent.Amount.Value;
-                ++HitCount;
-                if (attackEvent.AttackModifier == AttackModifier.Crit)
-                {
-                    ++CritCount;
-                }
-                else if (attackEvent.AttackModifier == AttackModifier.Glance)
-                {
-                    ++GlanceCount;
-                }
+                case AttackResult.Hit:
+                    DamageDone += attackEvent.Amount.Value;
+                    HitDamageDone += attackEvent.Amount.Value;
+                    ++HitCount;
+                    if (attackEvent.AttackModifier == AttackModifier.Crit)
+                    {
+                        ++CritCount;
+                    }
+                    else if (attackEvent.AttackModifier == AttackModifier.Glance)
+                    {
+                        ++GlanceCount;
+                    }
+                    break;
+                case AttackResult.Missed:
+                    ++MissCount;
+                    break;
+                case AttackResult.NanoHit:
+                    DamageDone += attackEvent.Amount.Value;
+                    NanoHitDamageDone += attackEvent.Amount.Value;
+                    ++NanoHitCount;
+                    break;
+                case AttackResult.IndirectHit:
+                    DamageDone += attackEvent.Amount.Value;
+                    IndirectHitDamageDone += attackEvent.Amount.Value;
+                    ++IndirectHitCount;
+                    break;
+                // No sources for events where the attack results in an absorb.
+                default: throw new NotImplementedException();
             }
-            else if (attackEvent.AttackResult == AttackResult.Missed)
-            {
-                ++MissCount;
-            }
-            else if (attackEvent.AttackResult == AttackResult.IndirectHit)
-            {
-                DamageDone += attackEvent.Amount.Value;
-                ++IndirectHitCount;
-            }
-            // No sources for events where the attack results in an absorb.
-            else throw new NotImplementedException();
-
-            _sourceAttackEvents.Add(attackEvent);
         }
 
         public void AddTargetAttackEvent(AttackEvent attackEvent)
         {
-            if (attackEvent.AttackResult == AttackResult.Hit)
+            switch (attackEvent.AttackResult)
             {
-                DamageTaken += attackEvent.Amount.Value;
-                ++HitCountTaken;
-                if (attackEvent.AttackModifier == AttackModifier.Crit)
-                {
-                    ++CritCountTaken;
-                }
-                else if (attackEvent.AttackModifier == AttackModifier.Glance)
-                {
-                    ++GlanceCountTaken;
-                }
+                case AttackResult.Hit:
+                    DamageTaken += attackEvent.Amount.Value;
+                    HitDamageTaken += attackEvent.Amount.Value;
+                    ++HitCountTaken;
+                    if (attackEvent.AttackModifier == AttackModifier.Crit)
+                    {
+                        ++CritCountTaken;
+                    }
+                    else if (attackEvent.AttackModifier == AttackModifier.Glance)
+                    {
+                        ++GlanceCountTaken;
+                    }
+                    break;
+                case AttackResult.Missed:
+                    ++MissCountTaken;
+                    break;
+                case AttackResult.NanoHit:
+                    DamageTaken += attackEvent.Amount.Value;
+                    NanoHitDamageTaken += attackEvent.Amount.Value;
+                    ++NanoHitCountTaken;
+                    break;
+                case AttackResult.IndirectHit:
+                    DamageTaken += attackEvent.Amount.Value;
+                    IndirectHitDamageTaken += attackEvent.Amount.Value;
+                    ++IndirectHitCountTaken;
+                    break;
+                case AttackResult.Absorbed:
+                    DamageAbsorbed += attackEvent.Amount.Value;
+                    break;
+                default: throw new NotImplementedException();
             }
-            else if (attackEvent.AttackResult == AttackResult.Missed)
-            {
-                ++MissCountTaken;
-            }
-            else if (attackEvent.AttackResult == AttackResult.IndirectHit)
-            {
-                DamageTaken += attackEvent.Amount.Value;
-                ++IndirectHitCountTaken;
-            }
-            else if (attackEvent.AttackResult == AttackResult.Absorbed)
-            {
-                DamageAbsorbed += attackEvent.Amount.Value;
-            }
-            else throw new NotImplementedException();
-
-            _targetAttackEvents.Add(attackEvent);
         }
 
         public void AddSelfHealEvent(HealEvent healEvent)
@@ -233,8 +302,6 @@ namespace AODamageMeter
                 SelfHealingDone += healEvent.Amount.Value;
             }
             else throw new NotImplementedException();
-
-            _selfHealEvents.Add(healEvent);
         }
 
         public void AddSourceHealEvent(HealEvent healEvent)
@@ -259,8 +326,6 @@ namespace AODamageMeter
                 NanoHealingDone += healEvent.Amount.Value;
             }
             else throw new NotImplementedException();
-
-            _sourceHealEvents.Add(healEvent);
         }
 
         public void AddTargetHealEvent(HealEvent healEvent)
@@ -285,8 +350,6 @@ namespace AODamageMeter
                 NanoHealingTaken += healEvent.Amount.Value;
             }
             else throw new NotImplementedException();
-
-            _targetHealEvents.Add(healEvent);
         }
 
         public void AddLevelEvent(LevelEvent levelEvent)
@@ -302,8 +365,6 @@ namespace AODamageMeter
                 case LevelType.PvpTeam: PvpTeamXPGained += levelEvent.Amount.Value; break;
                 default: throw new NotImplementedException();
             }
-
-            _levelEvents.Add(levelEvent);
         }
 
         public void AddNanoEvent(NanoEvent nanoEvent)
@@ -328,8 +389,6 @@ namespace AODamageMeter
                 // Nothing to do here, this is how events that may eventually become start events comes in.
             }
             else throw new NotImplementedException();
-
-            _nanoEvents.Add(nanoEvent);
         }
 
         public override string ToString()

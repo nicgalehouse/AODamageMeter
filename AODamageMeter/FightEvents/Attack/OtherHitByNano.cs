@@ -15,7 +15,7 @@ namespace AODamageMeter.FightEvents.Attack
         public OtherHitByNano(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
         {
-            AttackResult = AttackResult.Hit;
+            AttackResult = AttackResult.NanoHit;
 
             if (TryMatch(Sourced, out Match match))
             {

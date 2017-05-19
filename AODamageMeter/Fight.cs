@@ -16,17 +16,6 @@ namespace AODamageMeter
         protected readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
         public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
 
-        protected readonly List<AttackEvent> _attackEvents = new List<AttackEvent>();
-        protected readonly List<HealEvent> _healEvents = new List<HealEvent>();
-        protected readonly List<LevelEvent> _levelEvents = new List<LevelEvent>();
-        protected readonly List<NanoEvent> _nanoEvents = new List<NanoEvent>();
-        protected readonly List<FightEvent> _unmatchedEvents = new List<FightEvent>();
-        public IReadOnlyList<AttackEvent> AttackEvents => _attackEvents;
-        public IReadOnlyList<HealEvent> HealEvents => _healEvents;
-        public IReadOnlyList<LevelEvent> LevelEvents => _levelEvents;
-        public IReadOnlyList<NanoEvent> NanoEvents => _nanoEvents;
-        public IReadOnlyList<FightEvent> UnmatchedEvents => _unmatchedEvents;
-
         public DateTime? StartTime { get; protected set; }
         public DateTime? LatestEventTime { get; protected set; }
         public bool HasStarted => StartTime.HasValue;
@@ -111,10 +100,7 @@ namespace AODamageMeter
 
             // We know these events can't cause any fight characters to enter (from FightEvent.Create), so don't let the fight start.
             if (fightEvent is SystemEvent || fightEvent is UnrecognizedEvent)
-            {
-                _unmatchedEvents.Add(fightEvent);
                 return;
-            }
 
             if (!HasStarted)
             {
@@ -125,7 +111,6 @@ namespace AODamageMeter
 
             if (fightEvent.IsUnmatched)
             {
-                _unmatchedEvents.Add(fightEvent);
 #if DEBUG
                 Debug.WriteLine($"{fightEvent.Name}: {fightEvent.Description}");
 #endif
@@ -137,7 +122,6 @@ namespace AODamageMeter
                 case AttackEvent attackEvent:
                     attackEvent.Source?.AddSourceAttackEvent(attackEvent);
                     attackEvent.Target?.AddTargetAttackEvent(attackEvent);
-                    _attackEvents.Add(attackEvent);
                     _isTotalDamageDoneCurrent = false;
                     _isMaxDamageDoneCurrent = false;
                     _isMaxDamageDonePlusPetsCurrent = false;
@@ -152,15 +136,12 @@ namespace AODamageMeter
                         healEvent.Source.AddSourceHealEvent(healEvent);
                         healEvent.Target.AddTargetHealEvent(healEvent);
                     }
-                    _healEvents.Add(healEvent);
                     break;
                 case LevelEvent levelEvent:
                     levelEvent.Source.AddLevelEvent(levelEvent);
-                    _levelEvents.Add(levelEvent);
                     break;
                 case NanoEvent nanoEvent:
                     nanoEvent.Source.AddNanoEvent(nanoEvent);
-                    _nanoEvents.Add(nanoEvent);
                     break;
                 default: throw new NotImplementedException();
             }

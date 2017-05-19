@@ -84,7 +84,8 @@ namespace AODamageMeter.FightEvents.Nano
                 // of one another, but here's a case where they're not. There's another case over in MeGotHealth, but
                 // there the start event being null is a standard case. Here, it may only be null because of the filters
                 // the user has configured in their chat windows, i.e, excluding lines with "Executing Nano Program:".
-                if (_latestPotentialStartEvent != null)
+                // ... Or because of when the fight is restarted, so make sure it's for the same fight.
+                if (_latestPotentialStartEvent != null && _latestPotentialStartEvent.Fight == fight)
                 {
                     _latestPotentialStartEvent.CastResult = CastResult;
                     NanoProgram = _latestPotentialStartEvent.NanoProgram;

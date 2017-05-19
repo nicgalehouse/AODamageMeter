@@ -10,6 +10,8 @@
 
         public static string Format(this double n)
         {
+            if (n == 0) return "0";
+            if (n < 100) return n.ToString("F1");                          // 50.4
             if (n < 1000) return n.ToString("F0");                         // 836
             if (n < 10000) return $"{(n / 1000).ToString("F2")}K";         // 9.42K
             if (n < 1000000) return $"{(n / 1000).ToString("F1")}K";       // 12.3K, 432.4K
