@@ -47,8 +47,8 @@ $@"{DisplayIndex}. {FightCharacterName}
 
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { FightCharacter }.Concat(FightCharacter.FightPets)
-                        .OrderByDescending(c => c.DamageDonePlusPets)
-                        .ThenBy(c => c.Name))
+                    .OrderByDescending(c => c.DamageDonePlusPets)
+                    .ThenBy(c => c.Name))
                 {
                     if (!_detailRowViewModelsMap.TryGetValue(fightCharacter, out RowViewModelBase detailRowViewModel))
                     {
