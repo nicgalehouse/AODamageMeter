@@ -13,9 +13,10 @@ namespace AODamageMeter.AmbiguityHelper
             string[] ambiguousNames = File.ReadAllLines("AmbiguousNames.txt")
                 .SelectMany(l => l.Split())
                 .Select(n => n.Trim())
+                .Where(n => !string.IsNullOrEmpty(n))
+                .Select(n => $"{char.ToUpper(n[0])}{n.Substring(1).ToLower()}")
                 .Where(Character.FitsPlayerNamingRequirements)
                 .Distinct(StringComparer.OrdinalIgnoreCase)
-                .Select(n => $"{char.ToUpper(n[0])}{n.Substring(1).ToLower()}")
                 .OrderBy(n => n)
                 .ToArray();
 

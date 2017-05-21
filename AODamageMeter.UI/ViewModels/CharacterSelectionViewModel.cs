@@ -37,7 +37,7 @@ namespace AODamageMeter.UI.ViewModels
             var logFilePaths = Settings.Default.LogFilePaths.Cast<string>().ToArray();
             for (int i = 0; i < characterNames.Length; ++i)
             {
-                CharacterInfoViewModels.Add(new CharacterInfoViewModel(characterNames[i], logFilePaths[i]));
+                CharacterInfoViewModels.Add(new CharacterInfoViewModel(this, characterNames[i], logFilePaths[i]));
             }
 
             string selectedCharacterName = Settings.Default.SelectedCharacterName;

@@ -18,18 +18,18 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.GlanceChancePlusPets.FormatPercent()} glance chance
 {FightCharacter.MissChancePlusPets.FormatPercent()} miss chance
 
-{FightCharacter.ActiveHPMPlusPets.Format()} hits / min
-{FightCharacter.ActiveCPMPlusPets.Format()} crits / min
-{FightCharacter.ActiveGPMPlusPets.Format()} glances / min
-{FightCharacter.ActiveNHPMPlusPets.Format()} nano hits / min
-{FightCharacter.ActiveIHPMPlusPets.Format()} indirect hits / min
-{FightCharacter.ActiveTHPMPlusPets.Format()} total hits / min
-{FightCharacter.ActiveMPMPlusPets.Format()} misses / min
+{FightCharacter.ActiveHPMPlusPets.Format()} hits/min
+{FightCharacter.ActiveCPMPlusPets.Format()} crits/min
+{FightCharacter.ActiveGPMPlusPets.Format()} glances/min
+{FightCharacter.ActiveNHPMPlusPets.Format()} nano hits/min
+{FightCharacter.ActiveIHPMPlusPets.Format()} indirect hits/min
+{FightCharacter.ActiveTHPMPlusPets.Format()} total hits/min
+{FightCharacter.ActiveMPMPlusPets.Format()} misses/min
 
-{FightCharacter.ActiveHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaHits.FormatPercent()}) hit damage / min
-{FightCharacter.ActiveNHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaNanoHits.FormatPercent()}) nano hit damage / min
-{FightCharacter.ActiveIHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaIndirectHits.FormatPercent()}) indirect hit damage / min
-{FightCharacter.ActiveDPMPlusPets.Format()} total damage / min";
+{FightCharacter.ActiveHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaHits.FormatPercent()}) hit dmg/min
+{FightCharacter.ActiveNHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaNanoHits.FormatPercent()}) nano dmg/min
+{FightCharacter.ActiveIHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaIndirectHits.FormatPercent()}) indirect dmg/min
+{FightCharacter.ActiveDPMPlusPets.Format()} total dmg/min";
 
         public override void Update(int displayIndex)
         {

@@ -8,16 +8,14 @@ namespace AODamageMeter.UI.Views
 {
     public partial class CharacterInfoView : Window
     {
-        private bool _isEditMode;
         private string _previousCharacterName;
         private string _previousLogFilePath;
 
-        public CharacterInfoView(CharacterInfoViewModel characterInfoViewModel = null)
+        public CharacterInfoView(CharacterInfoViewModel characterInfoViewModel)
         {
             InitializeComponent();
-            _isEditMode = characterInfoViewModel != null;
-            Title = _isEditMode ? "Edit Character" : "Add Character";
-            DataContext = CharacterInfoViewModel = characterInfoViewModel ?? new CharacterInfoViewModel();
+            Title = characterInfoViewModel.IsEmpty ? "Add Character" : "Edit Character";
+            DataContext = CharacterInfoViewModel = characterInfoViewModel;
             _previousCharacterName = CharacterInfoViewModel.CharacterName;
             _previousLogFilePath = CharacterInfoViewModel.LogFilePath;
         }
@@ -52,7 +50,7 @@ namespace AODamageMeter.UI.Views
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (_isEditMode && DialogResult != true)
+            if (DialogResult != true)
             {
                 CharacterInfoViewModel.CharacterName = _previousCharacterName;
                 CharacterInfoViewModel.LogFilePath = _previousLogFilePath;

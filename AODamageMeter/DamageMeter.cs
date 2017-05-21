@@ -95,14 +95,14 @@ namespace AODamageMeter
                 .LastOrDefault(d => d.StartsWith("Char"))
                 ?.Substring("Char".Length);
 
-            // ...And the character names that ID might correspond to from the currently opened instances of AO.
-            var potentialCharacterNames = Process.GetProcessesByName("AnarchyOnline")
-                .Where(p => p.MainWindowTitle.StartsWith("Anarchy Online - "))
+            // ...And the character names that ID might correspond to from the currently running instances of AO.
+            var loggedInCharacterNames = Process.GetProcessesByName("AnarchyOnline")
+                .Where(p => p.MainWindowTitle?.StartsWith("Anarchy Online - ") ?? false)
                 .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length))
                 .ToArray();
 
             // Make the calls to people.anarchy-online.com concurrently.
-            var charactersAndBioRetrievers = Character.GetOrCreateCharactersAndBioRetrievers(potentialCharacterNames);
+            var charactersAndBioRetrievers = Character.GetOrCreateCharactersAndBioRetrievers(loggedInCharacterNames);
             await Task.WhenAll(charactersAndBioRetrievers.bioRetrievers).ConfigureAwait(false);
             var characters = charactersAndBioRetrievers.characters;
             characters.ForEach(c => c.CharacterType = CharacterType.PlayerCharacter);

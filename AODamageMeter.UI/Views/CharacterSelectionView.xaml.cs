@@ -17,7 +17,7 @@ namespace AODamageMeter.UI.Views
 
         private void AddButton_Click_ShowCharacterInfo(object sender, RoutedEventArgs e)
         {
-            var characterInfoView = new CharacterInfoView { Owner = this };
+            var characterInfoView = new CharacterInfoView(new CharacterInfoViewModel(CharacterSelectionViewModel)) { Owner = this };
             if (characterInfoView.ShowDialog() == true
                 && !characterInfoView.CharacterInfoViewModel.IsEmpty)
             {

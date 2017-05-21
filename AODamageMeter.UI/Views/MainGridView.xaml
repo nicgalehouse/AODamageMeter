@@ -18,8 +18,8 @@
     </CollectionViewSource>
   </UserControl.Resources>
 
-  <DataGrid x:Name="MainGrid" ItemsSource="{Binding Source={StaticResource MainRowsViewSource}}"
-            Style="{StaticResource DamageMeterGridStyle}" Background="{StaticResource DarkBlueBrush20}">
+  <DataGrid x:Name="MainGrid" Background="{StaticResource DarkBlueBrush20}"
+            ItemsSource="{Binding Source={StaticResource MainRowsViewSource}}">
     <DataGrid.Resources>
       <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
       <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>

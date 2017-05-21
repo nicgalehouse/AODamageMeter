@@ -46,29 +46,8 @@
                 SelectedItem="{Binding SelectedCharacterInfoViewModel}"
                 Margin="10" Background="Transparent" BorderBrush="{StaticResource LightBlueBrush}"
                 SelectionMode="Single">
-        <ListView.ItemContainerStyle>
-          <!-- Can't do the normal thing here... more details: goo.gl/h6zpsF -->
-          <Style TargetType="ListViewItem">
-            <Style.Triggers>
-              <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
-              </Trigger>
-              <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
-              </Trigger>
-            </Style.Triggers>
-          </Style>
-        </ListView.ItemContainerStyle>
-
         <ListView.View>
-          <GridView>
-            <GridView.ColumnHeaderContainerStyle>
-              <Style TargetType="GridViewColumnHeader">
-                <Setter Property="Background" Value="{StaticResource MiddleBlueBrush}"/>
-                <Setter Property="BorderBrush" Value="{StaticResource MiddleBlueBrush}"/>
-              </Style>
-            </GridView.ColumnHeaderContainerStyle>
-
+          <GridView AllowsColumnReorder="False">
             <GridViewColumn Header="Name" DisplayMemberBinding="{Binding CharacterName}"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=NameColumnWidth, Mode=TwoWay}"/>
             <GridViewColumn Header="Log File" DisplayMemberBinding="{Binding LogFilePath}"

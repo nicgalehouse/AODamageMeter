@@ -19,8 +19,8 @@
   </UserControl.Resources>
 
   <!-- Transparent because already getting a darker blue from somewhere else, from a main row I guess? -->
-  <DataGrid ItemsSource="{Binding Source={StaticResource DetailRowsViewSource}}"
-            Style="{StaticResource DamageMeterGridStyle}" Background="Transparent">
+  <DataGrid Background="Transparent"
+            ItemsSource="{Binding Source={StaticResource DetailRowsViewSource}}">
     <DataGrid.Resources>
       <!-- A bit distracting here, because the first row always gets selected when expanding, so just hide. -->
       <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Opacity="0"/>

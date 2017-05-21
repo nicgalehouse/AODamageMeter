@@ -56,11 +56,6 @@
                   SelectedValue="{Binding Source={x:Static properties:Settings.Default}, Path=FontFamily}">
           <ComboBox.ItemTemplate>
             <DataTemplate>
-              <DataTemplate.Resources>
-                <Style TargetType="TextBlock">
-                  <Setter Property="Foreground" Value="Black"/>
-                </Style>
-              </DataTemplate.Resources>
               <TextBlock Text="{Binding}" FontFamily="{Binding}"/>
             </DataTemplate>
           </ComboBox.ItemTemplate>

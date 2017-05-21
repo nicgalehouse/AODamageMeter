@@ -195,10 +195,13 @@ namespace AODamageMeter
         public static bool TryGetCharacter(string name, out Character character)
             => _characters.TryGetValue(name, out character);
 
+        private static bool IsUppercase(char c) => c >= 'A' && c <= 'Z';
+        private static bool IsLowercaseOrDigit(char c) => c >= 'a' && c <= 'z' || c >= '0' && c <= '9';
         public static bool FitsPlayerNamingRequirements(string name)
             => name != null && name.Length > 3 && name.Length < 13
-            && (name.All(char.IsLetterOrDigit)
-                || name.Substring(0, name.Length - 2).All(char.IsLetterOrDigit) && name.EndsWith("-1"));
+            && IsUppercase(name[0])
+            && (name.Skip(1).All(IsLowercaseOrDigit)
+                || name.EndsWith("-1") && name.Skip(1).Take(name.Length - 3).All(IsLowercaseOrDigit));
 
         // Colored pet names have markup characters and show up like "[DLE][FF]MyPet" ("MyPet") in the log file.
         public static string RemoveMarkupCharacters(string name)

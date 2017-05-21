@@ -17,18 +17,18 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.GlanceChance.FormatPercent()} glance chance
 {FightCharacter.MissChance.FormatPercent()} miss chance
 
-{FightCharacter.ActiveHPM.Format()} hits / min
-{FightCharacter.ActiveCPM.Format()} crits / min
-{FightCharacter.ActiveGPM.Format()} glances / min
-{FightCharacter.ActiveNHPM.Format()} nano hits / min
-{FightCharacter.ActiveIHPM.Format()} indirect hits / min
-{FightCharacter.ActiveTHPM.Format()} total hits / min
-{FightCharacter.ActiveMPM.Format()} misses / min
+{FightCharacter.ActiveHPM.Format()} hits/min
+{FightCharacter.ActiveCPM.Format()} crits/min
+{FightCharacter.ActiveGPM.Format()} glances/min
+{FightCharacter.ActiveNHPM.Format()} nano hits/min
+{FightCharacter.ActiveIHPM.Format()} indirect hits/min
+{FightCharacter.ActiveTHPM.Format()} total hits/min
+{FightCharacter.ActiveMPM.Format()} misses/min
 
-{FightCharacter.ActiveHDPM.Format()} ({FightCharacter.PercentOfDamageDoneViaHits.FormatPercent()}) hit damage / min
-{FightCharacter.ActiveNHDPM.Format()} ({FightCharacter.PercentOfDamageDoneViaNanoHits.FormatPercent()}) nano hit damage / min
-{FightCharacter.ActiveIHDPM.Format()} ({FightCharacter.PercentOfDamageDoneViaIndirectHits.FormatPercent()}) indirect hit damage / min
-{FightCharacter.ActiveDPM.Format()} total damage / min";
+{FightCharacter.ActiveHDPM.Format()} ({FightCharacter.PercentOfDamageDoneViaHits.FormatPercent()}) hit dmg/min
+{FightCharacter.ActiveNHDPM.Format()} ({FightCharacter.PercentOfDamageDoneViaNanoHits.FormatPercent()}) nano dmg/min
+{FightCharacter.ActiveIHDPM.Format()} ({FightCharacter.PercentOfDamageDoneViaIndirectHits.FormatPercent()}) indirect dmg/min
+{FightCharacter.ActiveDPM.Format()} total dmg/min";
 
         public override void Update(int displayIndex)
         {

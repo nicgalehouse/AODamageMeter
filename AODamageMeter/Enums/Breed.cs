@@ -17,7 +17,7 @@ namespace AODamageMeter
         {
             switch (value)
             {
-                case "Atrox": return Breed.Atrox;;
+                case "Atrox": return Breed.Atrox;
                 case "Nanomage": return Breed.Nanomage;
                 case "Nano": return Breed.Nanomage;
                 case "Opifex": return Breed.Opifex;
