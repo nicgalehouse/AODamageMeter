@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.FightEvents;
+using AODamageMeter.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -70,15 +71,15 @@ namespace AODamageMeter
             _fightPets.Add(fightPet);
         }
 
-        public int DamageDone { get; protected set; }
-        public int DamageDonePlusPets => DamageDone + FightPets.Sum(p => p.DamageDone);
-        public int OwnOrOwnersDamageDonePlusPets => FightPetOwner?.DamageDonePlusPets ?? DamageDonePlusPets;
-        public int HitDamageDone { get; protected set; }
-        public int HitDamageDonePlusPets => HitDamageDone + FightPets.Sum(p => p.HitDamageDone);
-        public int NanoHitDamageDone { get; protected set; }
-        public int NanoHitDamageDonePlusPets => NanoHitDamageDone + FightPets.Sum(p => p.NanoHitDamageDone);
-        public int IndirectHitDamageDone { get; protected set; }
-        public int IndirectHitDamageDonePlusPets => IndirectHitDamageDone + FightPets.Sum(p => p.IndirectHitDamageDone);
+        public long DamageDone { get; protected set; }
+        public long DamageDonePlusPets => DamageDone + FightPets.Sum(p => p.DamageDone);
+        public long OwnOrOwnersDamageDonePlusPets => FightPetOwner?.DamageDonePlusPets ?? DamageDonePlusPets;
+        public long HitDamageDone { get; protected set; }
+        public long HitDamageDonePlusPets => HitDamageDone + FightPets.Sum(p => p.HitDamageDone);
+        public long NanoHitDamageDone { get; protected set; }
+        public long NanoHitDamageDonePlusPets => NanoHitDamageDone + FightPets.Sum(p => p.NanoHitDamageDone);
+        public long IndirectHitDamageDone { get; protected set; }
+        public long IndirectHitDamageDonePlusPets => IndirectHitDamageDone + FightPets.Sum(p => p.IndirectHitDamageDone);
         public int HitCount { get; protected set; }
         public int HitCountPlusPets => HitCount + FightPets.Sum(p => p.HitCount);
         public double ActiveHPS => ActiveDuration.TotalSeconds <= 1 ? HitCount : HitCount / ActiveDuration.TotalSeconds;
@@ -167,10 +168,29 @@ namespace AODamageMeter
         public double PercentOfDamageDonePlusPetsViaNanoHits => DamageDonePlusPets == 0 ? 0 : NanoHitDamageDonePlusPets / (double)DamageDonePlusPets;
         public double PercentOfDamageDonePlusPetsViaIndirectHits => DamageDonePlusPets == 0 ? 0 : IndirectHitDamageDonePlusPets / (double)DamageDonePlusPets;
 
-        public int DamageTaken { get; protected set; }
-        public int HitDamageTaken { get; protected set; }
-        public int NanoHitDamageTaken { get; protected set; }
-        public int IndirectHitDamageTaken { get; protected set; }
+        protected Dictionary<DamageType, int> _damageTypeDamageDoneCounts = new Dictionary<DamageType, int>();
+        protected Dictionary<DamageType, long> _damageTypeDamageDones = new Dictionary<DamageType, long>();
+        public IReadOnlyDictionary<DamageType, int> DamageTypeDamageDoneCounts => _damageTypeDamageDoneCounts;
+        public IReadOnlyDictionary<DamageType, long> DamageTypeDamageDones => _damageTypeDamageDones;
+
+        public bool HasDamageTypeDamageDone(DamageType damageType)
+            => DamageTypeDamageDoneCounts.ContainsKey(damageType);
+
+        public bool HasSpecialsDone
+            => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamageDone);
+
+        public int? GetAverageDamageTypeDamageDone(DamageType damageType)
+            => DamageTypeDamageDoneCounts.TryGetValue(damageType, out int damageTypeDamageDoneCount)
+            ? (int?)(DamageTypeDamageDones[damageType] / damageTypeDamageDoneCount) : null;
+
+        public double? GetActiveSecondsPerDamageTypeDamageDone(DamageType damageType) // For special damage types this approximates the 'recharge'.
+            => DamageTypeDamageDoneCounts.TryGetValue(damageType, out int damageTypeDamageDoneCount)
+            ? ActiveDuration.TotalSeconds / damageTypeDamageDoneCount : (double?)null;
+
+        public long DamageTaken { get; protected set; }
+        public long HitDamageTaken { get; protected set; }
+        public long NanoHitDamageTaken { get; protected set; }
+        public long IndirectHitDamageTaken { get; protected set; }
         public int HitCountTaken { get; protected set; }
         public int CritCountTaken { get; protected set; }
         public int GlanceCountTaken { get; protected set; }
@@ -183,27 +203,27 @@ namespace AODamageMeter
         public double CritChanceTaken => HitAttemptsTaken == 0 ? 0 : CritCountTaken / (double)HitAttemptsTaken;
         public double GlanceChanceTaken => HitAttemptsTaken == 0 ? 0 : GlanceCountTaken / (double)HitAttemptsTaken;
         public double MissChanceTaken => HitAttemptsTaken == 0 ? 0 : MissCountTaken / (double)HitAttemptsTaken;
-        public int DamageAbsorbed { get; protected set; }
+        public long DamageAbsorbed { get; protected set; }
 
         // We only know about healing where the owner is a source or target. When the owner is the source, we don't know
         // about realized healing. So overhealing stats only when non-owner source and owner target--non-owner source has
         // OverhealingDone (to owner) stats, owner target has OverhealingTaken (from non-owners) stats. Since owner must
         // be source or target, it follows we only have SelfHealingDone for the owner.
-        public int SelfHealingDone { get; protected set; }
-        public int PotentialHealingDone { get; protected set; }
-        public int RealizedHealingDone { get; protected set; }
-        public int OverhealingDone { get; protected set; }
-        public int NanoHealingDone { get; protected set; }
-        public int PotentialHealingTaken { get; protected set; }
-        public int RealizedHealingTaken { get; protected set; }
-        public int OverhealingTaken { get; protected set; }
-        public int NanoHealingTaken { get; protected set; }
+        public long SelfHealingDone { get; protected set; }
+        public long PotentialHealingDone { get; protected set; }
+        public long RealizedHealingDone { get; protected set; }
+        public long OverhealingDone { get; protected set; }
+        public long NanoHealingDone { get; protected set; }
+        public long PotentialHealingTaken { get; protected set; }
+        public long RealizedHealingTaken { get; protected set; }
+        public long OverhealingTaken { get; protected set; }
+        public long NanoHealingTaken { get; protected set; }
 
         // We only know about level events where the source is the owner (there's no target).
-        public int NormalXPGained { get; protected set; }
+        public long NormalXPGained { get; protected set; }
         public int ShadowXPGained { get; protected set; }
         public int AlienXPGained { get; protected set; }
-        public int ResearchXPGained { get; protected set; }
+        public long ResearchXPGained { get; protected set; }
         public int PvpDuelXPGained { get; protected set; }
         public int PvpSoloXPGained { get; protected set; }
         public int PvpTeamXPGained { get; protected set; }
@@ -252,6 +272,12 @@ namespace AODamageMeter
                     break;
                 // No sources for events where the attack results in an absorb.
                 default: throw new NotImplementedException();
+            }
+
+            if (attackEvent.DamageType.HasValue)
+            {
+                _damageTypeDamageDoneCounts.Increment(attackEvent.DamageType.Value, 1);
+                _damageTypeDamageDones.Increment(attackEvent.DamageType.Value, attackEvent.Amount ?? 0);
             }
         }
 

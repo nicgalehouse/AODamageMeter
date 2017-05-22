@@ -45,13 +45,22 @@ namespace AODamageMeter.UI.ViewModels
             protected set => Set(ref _rightText, value);
         }
 
-        public string CharacterTooltip =>
-            FightCharacter.HasPlayerInfo ?
-$@"{DisplayIndex}. {FightCharacterName}
+        public string CharacterTooltip
+        {
+            get
+            {
+                string playerInfo = FightCharacter.HasPlayerInfo ?
+$@"
 {FightCharacter.Level}/{FightCharacter.AlienLevel} {FightCharacter.Faction} {FightCharacter.Profession}
-{FightCharacter.Breed} {FightCharacter.Gender}
-{FightCharacter.Organization} ({FightCharacter.OrganizationRank})" :
-$@"{DisplayIndex}. {FightCharacterName}";
+{FightCharacter.Breed} {FightCharacter.Gender}" : null;
+
+                string organizationInfo = FightCharacter.HasOrganizationInfo ?
+$@"
+{FightCharacter.Organization} ({FightCharacter.OrganizationRank})" : null;
+
+                return $"{DisplayIndex}. {FightCharacterName}{playerInfo}{organizationInfo}";
+            }
+        }
 
         public abstract string RightTextToolTip { get; }
 

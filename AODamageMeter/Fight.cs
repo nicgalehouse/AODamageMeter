@@ -45,8 +45,8 @@ namespace AODamageMeter
         }
 
         protected bool _isTotalDamageDoneCurrent;
-        protected int _totalDamageDone;
-        public int TotalDamageDone
+        protected long _totalDamageDone;
+        public long TotalDamageDone
         {
             get
             {
@@ -61,8 +61,8 @@ namespace AODamageMeter
         }
 
         protected bool _isMaxDamageDoneCurrent;
-        protected int _maxDamageDone;
-        public int MaxDamageDone
+        protected long _maxDamageDone;
+        public long MaxDamageDone
         {
             get
             {
@@ -77,8 +77,8 @@ namespace AODamageMeter
         }
 
         protected bool _isMaxDamageDonePlusPetsCurrent;
-        protected int _maxDamageDonePlusPets;
-        public int MaxDamageDonePlusPets
+        protected long _maxDamageDonePlusPets;
+        public long MaxDamageDonePlusPets
         {
             get
             {

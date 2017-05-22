@@ -93,6 +93,7 @@
     <Compile Include="Converters\StringToVisibilityConverter.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>
+    <Compile Include="Helpers\FightCharacterExtensions.cs" />
     <Compile Include="ViewModels\CharacterInfoViewModel.cs" />
     <Compile Include="ViewModels\CharacterSelectionViewModel.cs" />
     <Compile Include="ViewModels\DetailRowViewModelBase.cs" />

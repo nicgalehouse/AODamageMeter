@@ -57,7 +57,8 @@ namespace AODamageMeter.FightEvents.Nano
             Structure =   CreateRegex("The molecular structure of this creature prohibits the use of this technology."),
             Falling =     CreateRegex("You can't execute nanoprograms while falling!"),
             Items =       CreateRegex("You can't execute nano programs on items."),
-            PleaseWait =  CreateRegex("Please wait.");
+            PleaseWait =  CreateRegex("Please wait."),
+            NCU =         CreateRegex("Target does not have enough nano controlling units \\(NCU\\) left.");
 
         public MeCastNano(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
@@ -109,7 +110,8 @@ namespace AODamageMeter.FightEvents.Nano
                 || TryMatch(Structure, out match)
                 || TryMatch(Falling, out match)
                 || TryMatch(Items, out match)
-                || TryMatch(PleaseWait, out match))
+                || TryMatch(PleaseWait, out match)
+                || TryMatch(NCU, out match))
             {
                 IsCastUnavailable = true;
             }
