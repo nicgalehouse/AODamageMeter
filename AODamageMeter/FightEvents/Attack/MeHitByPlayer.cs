@@ -17,7 +17,7 @@ namespace AODamageMeter.FightEvents.Attack
             : base(fight, timestamp, description)
         {
             SetTargetToOwner();
-            AttackResult = AttackResult.Hit;
+            AttackResult = AttackResult.WeaponHit;
 
             bool crit = false, glance = false;
             if (TryMatch(Normal, out Match match, out bool normal)
@@ -25,7 +25,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || TryMatch(Glance, out match, out glance))
             {
                 SetSource(match, 1);
-                Source.Character.CharacterType = CharacterType.PlayerCharacter;
+                Source.Character.CharacterType = CharacterType.Player;
                 SetAmount(match, 2);
                 SetDamageType(match, 3);
                 AttackModifier = crit ? AODamageMeter.AttackModifier.Crit

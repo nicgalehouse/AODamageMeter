@@ -10,8 +10,8 @@ namespace AODamageMeter.UI.ViewModels
             : base(fightCharacter)
         { }
 
-        protected Dictionary<FightCharacter, RowViewModelBase> _detailRowViewModelsMap = new Dictionary<FightCharacter, RowViewModelBase>();
-        public ObservableCollection<RowViewModelBase> DetailRowViewModels { get; } = new ObservableCollection<RowViewModelBase>();
+        protected readonly Dictionary<FightCharacter, RowViewModelBase> _detailRowMap = new Dictionary<FightCharacter, RowViewModelBase>();
+        public ObservableCollection<RowViewModelBase> DetailRows { get; } = new ObservableCollection<RowViewModelBase>();
 
         public override void Update(int displayIndex)
         {

@@ -3,6 +3,7 @@
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+             xmlns:local="clr-namespace:AODamageMeter.UI"
              xmlns:converters="clr-namespace:AODamageMeter.UI.Converters"
              xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
              xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
@@ -14,6 +15,7 @@
     <converters:IconPathToBitmapImageConverter x:Key="IconPathToBitmapImageConverter"/>
     <converters:BoolToNegationConverter x:Key="BoolToNegationConverter"/>
     <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter"/>
+    <converters:ViewNameConverter x:Key="ViewNameConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <Color x:Key="LightBlueColor">#73CBD3</Color>
@@ -66,6 +68,7 @@
     <!-- Setting this implicitly doesn't seem to work. -->
     <Style TargetType="Window" x:Key="WindowStyle">
       <Setter Property="WindowStyle" Value="None"/>
+      <Setter Property="UseLayoutRounding" Value="True"/>
       <Setter Property="AllowsTransparency" Value="True"/>
       <Setter Property="Topmost" Value="True"/>
       <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
@@ -128,11 +131,10 @@
 
     <Style TargetType="fa:ImageAwesome">
       <Setter Property="Foreground" Value="{StaticResource LightBlueBrush}"/>
-      <Setter Property="Margin" Value="3"/>
+      <Setter Property="Margin" Value="2"/>
     </Style>
 
-    <Style TargetType="DataGrid">
-      <Setter Property="UseLayoutRounding" Value="True"/>
+    <Style TargetType="local:RowViewModelDataGrid">
       <Setter Property="IsReadOnly" Value="True"/>
       <Setter Property="AutoGenerateColumns" Value="False"/>
       <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>

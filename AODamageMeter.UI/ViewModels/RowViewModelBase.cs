@@ -8,7 +8,7 @@ namespace AODamageMeter.UI.ViewModels
             => FightCharacter = fightCharacter;
 
         public FightCharacter FightCharacter { get; }
-        public string FightCharacterName => FightCharacter.Name;
+        public string FightCharacterName => FightCharacter.UncoloredName;
 
         protected int? _displayIndex;
         public int? DisplayIndex

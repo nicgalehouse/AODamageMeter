@@ -12,7 +12,8 @@
       <Rectangle.Width>
         <MultiBinding Converter="{StaticResource RowWidthConverter}">
           <Binding Path="PercentWidth"/>
-          <Binding Path="ActualWidth" ElementName="MainGrid"/>
+          <!-- ActualWidth was DependencyProperty.UnsetValue randomly, can't reproduce, using fallback for safety. -->
+          <Binding Path="ActualWidth" ElementName="MainGrid" FallbackValue="0"/>
         </MultiBinding>
       </Rectangle.Width>
     </Rectangle>

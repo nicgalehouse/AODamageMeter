@@ -1,6 +1,5 @@
 ﻿using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
-using AODamageMeter.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

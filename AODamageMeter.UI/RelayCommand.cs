@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace AODamageMeter.UI.Utilities
+namespace AODamageMeter.UI
 {
     // https://msdn.microsoft.com/en-us/magazine/dd419663.aspx
     public class RelayCommand : ICommand

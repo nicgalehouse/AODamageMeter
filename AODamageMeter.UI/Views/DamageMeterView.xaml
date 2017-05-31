@@ -24,18 +24,27 @@
           MouseDown="HeaderRow_MouseDown_Drag"
           Background="{StaticResource DarkBlueBrush85}">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="26"/>
+        <ColumnDefinition Width="24"/>
         <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="26"/>
-        <ColumnDefinition Width="26"/>
-        <ColumnDefinition Width="26"/>
-        <ColumnDefinition Width="26"/>
+        <ColumnDefinition Width="24"/>
+        <ColumnDefinition Width="24"/>
+        <ColumnDefinition Width="24"/>
+        <ColumnDefinition Width="24"/>
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" x:Name="FileButton"
               Click="FileButton_Click_ShowCharacterSelection">
         <fa:ImageAwesome Icon="Users"/>
       </Button>
+
+      <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="3 0 0 0">
+        <TextBlock.Text>
+          <MultiBinding Converter="{StaticResource ViewNameConverter}">
+            <Binding Path="SelectedViewingMode"/>
+            <Binding Path="SelectedCharacter"/>
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
 
       <Button Grid.Column="2"
               Click="OptionsButton_Click_ShowOptions">
@@ -70,6 +79,8 @@
       </Button>
     </Grid>
 
-    <views:MainGridView Grid.Row="1" DataContext="{Binding DamageDoneRowViewModels}"/>
+    <views:MainGridView Grid.Row="1" DataContext="{Binding Rows}"
+                        views:MainRowView.ViewProgressionRequested="MainRowView_ViewProgressionRequested_TryProgressingView"
+                        MouseRightButtonDown="MainGridView_MouseRightButtonDown_TryRegressingView"/>
   </Grid>
 </Window>

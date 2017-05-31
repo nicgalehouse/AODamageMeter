@@ -24,52 +24,57 @@ $@"
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
-{FightCharacter.HitChancePlusPets.FormatPercent()} hit chance
-{FightCharacter.CritChancePlusPets.FormatPercent()} crit chance
-{FightCharacter.GlanceChancePlusPets.FormatPercent()} glance chance
-{FightCharacter.MissChancePlusPets.FormatPercent()} miss chance
+{FightCharacter.WeaponHitDoneChancePlusPets.FormatPercent()} weapon hit chance
+  {FightCharacter.CritDoneChancePlusPets.FormatPercent()} crit chance
+  {FightCharacter.GlanceDoneChancePlusPets.FormatPercent()} glance chance
 
-{FightCharacter.ActiveHPMPlusPets.Format()} hits / min
-{FightCharacter.ActiveCPMPlusPets.Format()} crits / min
-{FightCharacter.ActiveGPMPlusPets.Format()} glances / min
-{FightCharacter.ActiveNHPMPlusPets.Format()} nano hits / min
-{FightCharacter.ActiveIHPMPlusPets.Format()} indirect hits / min
-{FightCharacter.ActiveTHPMPlusPets.Format()} total hits / min
-{FightCharacter.ActiveMPMPlusPets.Format()} misses / min
+{FightCharacter.WeaponHitAttemptsDonePMPlusPets.Format()} weapon hit attempts / min
+  {FightCharacter.WeaponHitsDonePMPlusPets.Format()} weapon hits / min
+  {FightCharacter.CritsDonePMPlusPets.Format()} crits / min
+  {FightCharacter.GlancesDonePMPlusPets.Format()} glances / min
+{FightCharacter.NanoHitsDonePMPlusPets.Format()} nano hits / min
+{FightCharacter.IndirectHitsDonePMPlusPets.Format()} indirect hits / min
+{FightCharacter.TotalHitsDonePMPlusPets.Format()} total hits / min
 
-{FightCharacter.ActiveHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaHits.FormatPercent()}) hit dmg / min
-{FightCharacter.ActiveNHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaNanoHits.FormatPercent()}) nano dmg / min
-{FightCharacter.ActiveIHDPMPlusPets.Format()} ({FightCharacter.PercentOfDamageDonePlusPetsViaIndirectHits.FormatPercent()}) indirect dmg / min
-{FightCharacter.ActiveDPMPlusPets.Format()} total dmg / min{specialsDoneInfo}";
+{FightCharacter.WeaponDamageDonePMPlusPets.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDonePlusPets.FormatPercent()}) weapon dmg / min
+{FightCharacter.NanoDamageDonePMPlusPets.Format()} ({FightCharacter.NanoPercentOfTotalDamageDonePlusPets.FormatPercent()}) nano dmg / min
+{FightCharacter.IndirectDamageDonePMPlusPets.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent()}) indirect dmg / min
+{FightCharacter.TotalDamageDonePMPlusPets.Format()} total dmg / min
+
+{(FightCharacter.AverageWeaponDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageWeaponDamageDonePlusPets.Format())} weapon dmg / hit
+  {(FightCharacter.AverageCritDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageCritDamageDonePlusPets.Format())} crit dmg / hit
+  {(FightCharacter.AverageGlanceDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageGlanceDamageDonePlusPets.Format())} glance dmg / hit
+{(FightCharacter.AverageNanoDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageNanoDamageDonePlusPets.Format())} nano dmg / hit
+{(FightCharacter.AverageIndirectDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageIndirectDamageDonePlusPets.Format())} indirect dmg / hit{specialsDoneInfo}";
                 }
             }
         }
 
         public override void Update(int displayIndex)
         {
-            if (FightCharacter.FightPets.Count == 0)
+            if (!FightCharacter.IsFightPetOwner)
             {
-                PercentWidth = FightCharacter.PercentOfMaxDamageDonePlusPets;
-                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentOfTotalDamageDone : PercentWidth;
-                RightText = $"{FightCharacter.DamageDone.Format()} ({FightCharacter.ActiveDPM.Format()}, {percentDone.FormatPercent()})";
+                PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
+                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentOfFightsTotalDamageDone : PercentWidth;
+                RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {percentDone.FormatPercent()})";
             }
             else
             {
-                PercentWidth = FightCharacter.PercentPlusPetsOfMaxDamageDonePlusPets;
-                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentPlusPetsOfTotalDamageDone : PercentWidth;
-                RightText = $"{FightCharacter.DamageDonePlusPets.Format()} ({FightCharacter.ActiveDPMPlusPets.Format()}, {percentDone.FormatPercent()})";
+                PercentWidth = FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets;
+                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentPlusPetsOfFightsTotalDamageDone : PercentWidth;
+                RightText = $"{FightCharacter.TotalDamageDonePlusPets.Format()} ({FightCharacter.TotalDamageDonePMPlusPets.Format()}, {percentDone.FormatPercent()})";
 
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { FightCharacter }.Concat(FightCharacter.FightPets)
-                    .OrderByDescending(c => c.DamageDonePlusPets)
-                    .ThenBy(c => c.Name))
+                    .OrderByDescending(c => c.TotalDamageDonePlusPets)
+                    .ThenBy(c => c.UncoloredName))
                 {
-                    if (!_detailRowViewModelsMap.TryGetValue(fightCharacter, out RowViewModelBase detailRowViewModel))
+                    if (!_detailRowMap.TryGetValue(fightCharacter, out RowViewModelBase detailRow))
                     {
-                        _detailRowViewModelsMap.Add(fightCharacter, detailRowViewModel = new DamageDoneDetailRowViewModel(fightCharacter));
-                        DetailRowViewModels.Add(detailRowViewModel);
+                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneDetailRowViewModel(fightCharacter));
+                        DetailRows.Add(detailRow);
                     }
-                    detailRowViewModel.Update(detailRowDisplayIndex++);
+                    detailRow.Update(detailRowDisplayIndex++);
                 }
             }
 

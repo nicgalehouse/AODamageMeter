@@ -26,7 +26,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || TryMatch(Glance, out match, out glance))
             {
                 SetTarget(match, 1);
-                AttackResult = AttackResult.Hit;
+                AttackResult = AttackResult.WeaponHit;
                 SetAmount(match, 2);
                 SetDamageType(match, 3);
                 AttackModifier = crit ? AODamageMeter.AttackModifier.Crit

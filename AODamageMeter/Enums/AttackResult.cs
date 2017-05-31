@@ -2,7 +2,7 @@
 {
     public enum AttackResult
     {
-        Hit,
+        WeaponHit,
         Missed,
         NanoHit,
         IndirectHit,

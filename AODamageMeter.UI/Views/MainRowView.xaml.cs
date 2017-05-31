@@ -21,16 +21,33 @@ namespace AODamageMeter.UI.Views
             };
         }
 
-        public static readonly RoutedEvent DetailGridNeedsTogglingEvent = EventManager.RegisterRoutedEvent(
-            "DetailGridNeedsToggling", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));
+        public static readonly RoutedEvent DetailGridTogglingRequestedEvent = EventManager.RegisterRoutedEvent(
+            "DetailGridTogglingRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));
 
-        public event RoutedEventHandler DetailGridNeedsToggling
+        public event RoutedEventHandler DetailGridTogglingRequested
         {
-            add { AddHandler(DetailGridNeedsTogglingEvent, value); }
-            remove { RemoveHandler(DetailGridNeedsTogglingEvent, value); }
+            add { AddHandler(DetailGridTogglingRequestedEvent, value); }
+            remove { RemoveHandler(DetailGridTogglingRequestedEvent, value); }
         }
 
-        private void Icon_MouseDown_RaiseDetailGridNeedsToggling(object sender, MouseButtonEventArgs e)
-            => RaiseEvent(new RoutedEventArgs(DetailGridNeedsTogglingEvent));
+        private void Icon_MouseLeftButtonDown_RaiseDetailGridTogglingRequested(object sender, MouseButtonEventArgs e)
+            => RaiseEvent(new RoutedEventArgs(DetailGridTogglingRequestedEvent));
+
+        public static readonly RoutedEvent ViewProgressionRequestedEvent = EventManager.RegisterRoutedEvent(
+            "ViewProgressionRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));
+
+        public event RoutedEventHandler ViewProgressionRequested
+        {
+            add { AddHandler(ViewProgressionRequestedEvent, value); }
+            remove { RemoveHandler(ViewProgressionRequestedEvent, value); }
+        }
+
+        private void Canvas_MouseLeftButtonDown_TryRaisingViewProgressionRequested(object sender, MouseButtonEventArgs e)
+        {
+            if (e.OriginalSource is Image)
+                return; // Icon was clicked, which is for toggling the detail grid.
+
+            RaiseEvent(new RoutedEventArgs(ViewProgressionRequestedEvent));
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AODamageMeter.UI.Properties;
-using AODamageMeter.UI.Utilities;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;

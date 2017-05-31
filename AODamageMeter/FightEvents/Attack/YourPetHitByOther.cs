@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace AODamageMeter.FightEvents.Attack
 {
     // This is actually "your pet hit by other" and "other hit by your pet", we can't determine if the pet is the source or
-    // the target in general, so we use naming conventions higher up. See the comment about pets in FightEvent.cs.
+    // the target in general, so we use naming conventions higher up. See the comment in Character.
     public class YourPetHitByOther : AttackEvent
     {
         public const string EventName = "Your pet hit by other";
@@ -26,7 +26,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || TryMatch(Glance, out match, out glance))
             {
                 SetSourceAndTarget(match, 1, 2);
-                AttackResult = AttackResult.Hit;
+                AttackResult = AttackResult.WeaponHit;
                 SetAmount(match, 3);
                 SetDamageType(match, 4);
                 AttackModifier = crit ? AODamageMeter.AttackModifier.Crit

@@ -32,7 +32,7 @@ namespace AODamageMeter
             string eventName = arrayPart[1];
             DateTime timestamp = fight.DamageMeter.IsRealTimeMode ? DateTime.Now
                 : DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
-            string description = line.Substring(startIndex: lastIndexOfArrayPart + 1);
+            string description = line.Substring(lastIndexOfArrayPart + 1);
 
             switch (eventName)
             {
@@ -81,75 +81,39 @@ namespace AODamageMeter
         protected bool TryMatch(Regex regex, out Match match, out bool success)
             => success = (match = regex.Match(Description)).Success;
 
-        /* The three pet events aren't super useful. "Your pet hit by monster" almost never happens, everything you'd expect
-           in there actually happens in "Your pet hit by other". "Your pet hit by nano" also doesn't happen much. Neither of
-           these can really be relied on to deduce pet names, because they happen so infrequently or would never happen in
-           common DD-testing areas like the duel room. So that leaves "Your pet hit by other", which actually includes your
-           pet hit by other and other hit by your pet. But it doesn't include your pet's shields/reflects doing damage--those
-           get included in "Other hit by other". We could try to do better, but for now we're just gonna go with supporting a
-           convention. We don't pay special attention to the pet events, but just apply this reasoning across all events:
+        /* The owner's name never appears in the logs for their own events, just the contextual "You". So if we find the owner's
+           name (potentially colored), assume it's because they've renamed their pets to match their name. See Character for
+           the pet naming conventions, which we follow when creating the fight character for this special case.
 
-           If we see a source/target with exactly the same name as the owner, it gets attributed to a pet character named
-           "<Owner>'s pets". This works because the owner's name never appears in the log for their own events--there's
-           just the contextual "You". If we see a source/target with a name prefixed by {an existent character's name and
-           an apostrophe}, it gets registered as a pet character. In both cases, the corresponding character has the pet
-           character added to their pets. For example, we support an aggregate pet breakdown if the owner is "Elitengi"
-           and he names his pets "Elitengi", and an individual pet breakdown if the PC is "Elitengi" and he names his
-           pets "Elitengi's Robo" and "Elitengi's Doggo". The aggregate pet breakdown only works for the owner. For
-           non-owner characters, all we can do is add the damage to the character. The individual pet breakdown works for
-           all characters, owner and non-owner alike. We don't really expect any false positives here because the apostrophe
-           is an uncommonly used character across NPC and pet names right now. Biggest false positive is when a PC names
-           their pet the same as some other PC, and we can't do anything about that. We don't bother checking if the pet
-           owner is a PC, because that would complicate debugging/testing static log files, when the knowledge of a character
-           being a PC comes in eventually from people.anarchy-online.com, well after all the parsing has happened. */
+           There was a time when we created characters w/ uncolored names, but the context is useful for avoiding false positives.
+           Drawback is no aggregation when Elitengi names his robot Elitengi (in red), and same-named rows in the damage meter.
+           Oh well to the aggregation but as a todo, we should support colored names in the meter to distinguish same-names. */
 
         protected void SetSource(Match match, int index)
         {
-            string name = Character.RemoveMarkupCharacters(match.Groups[index].Value);
-            if (name == DamageMeter.Owner.Name)
+            string name = match.Groups[index].Value;
+            string uncoloredName = Character.UncolorName(name);
+            if (uncoloredName == DamageMeter.Owner.Name)
             {
-                Source = Fight.GetOrCreateFightCharacter($"{name}'s pets", Timestamp);
-                if (Source.FightPetOwner == null) // If Source isn't registered as a fight pet yet, register it.
-                {
-                    Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp)
-                        .RegisterFightPet(Source);
-                }
+                Source = Fight.GetOrCreateFightCharacter($"{uncoloredName}'s pets", Timestamp);
             }
             else
             {
                 Source = Fight.GetOrCreateFightCharacter(name, Timestamp);
-                if (Source.FightPetOwner == null // If Source isn't registered as a fight pet yet, try to register it.
-                    && name.Contains('\'')
-                    && Character.TryGetCharacter(name.Split('\'')[0], out Character petOwner))
-                {
-                    Fight.GetOrCreateFightCharacter(petOwner, Timestamp)
-                        .RegisterFightPet(Source);
-                }
             }
         }
 
         protected void SetTarget(Match match, int index)
         {
-            string name = Character.RemoveMarkupCharacters(match.Groups[index].Value);
-            if (name == DamageMeter.Owner.Name)
+            string name = match.Groups[index].Value;
+            string uncoloredName = Character.UncolorName(name);
+            if (uncoloredName == DamageMeter.Owner.Name)
             {
-                Target = Fight.GetOrCreateFightCharacter($"{name}'s pets", Timestamp);
-                if (Target.FightPetOwner == null) // If Target isn't registered as a fight pet yet, register it.
-                {
-                    Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp)
-                        .RegisterFightPet(Target);
-                }
+                Target = Fight.GetOrCreateFightCharacter($"{uncoloredName}'s pets", Timestamp);
             }
             else
             {
                 Target = Fight.GetOrCreateFightCharacter(name, Timestamp);
-                if (Target.FightPetOwner == null // If Target isn't registered as a fight pet yet, try to register it.
-                    && name.Contains('\'')
-                    && Character.TryGetCharacter(name.Split('\'')[0], out Character petOwner))
-                {
-                    Fight.GetOrCreateFightCharacter(petOwner, Timestamp)
-                        .RegisterFightPet(Target);
-                }
             }
         }
 

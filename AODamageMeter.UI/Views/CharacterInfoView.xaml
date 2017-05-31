@@ -35,7 +35,7 @@
       </Button>
     </Grid>
 
-    <Grid Grid.Row="1" Margin="1" UseLayoutRounding="True"
+    <Grid Grid.Row="1" Margin="1"
           Background="{StaticResource DarkBlueBrush85}">
       <Grid.RowDefinitions>
         <RowDefinition Height="4*"/>

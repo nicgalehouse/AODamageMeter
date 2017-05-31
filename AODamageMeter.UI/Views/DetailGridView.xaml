@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="AODamageMeter.UI.Views.DetailGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:AODamageMeter.UI"
              xmlns:views="clr-namespace:AODamageMeter.UI.Views"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:clr="clr-namespace:System;assembly=mscorlib"
@@ -19,7 +20,7 @@
   </UserControl.Resources>
 
   <!-- Transparent because already getting a darker blue from somewhere else, from a main row I guess? -->
-  <DataGrid Background="Transparent"
+  <local:RowViewModelDataGrid Background="Transparent"
             ItemsSource="{Binding Source={StaticResource DetailRowsViewSource}}">
     <DataGrid.Resources>
       <!-- A bit distracting here, because the first row always gets selected when expanding, so just hide. -->
@@ -36,5 +37,5 @@
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
     </DataGrid.Columns>
-  </DataGrid>
+  </local:RowViewModelDataGrid>
 </UserControl>

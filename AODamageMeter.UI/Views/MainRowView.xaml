@@ -6,17 +6,19 @@
              xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MainRowViewModelBase}"
              d:DesignHeight="27" d:DesignWidth="300">
-  <Canvas Height="24" Background="{StaticResource DarkBlueBrush15}">
+  <Canvas Height="24" Background="{StaticResource DarkBlueBrush15}"
+          MouseLeftButtonDown="Canvas_MouseLeftButtonDown_TryRaisingViewProgressionRequested">
     <Image Width="24"
            Source="{Binding IconPath, Converter={StaticResource IconPathToBitmapImageConverter}}"
-           MouseDown="Icon_MouseDown_RaiseDetailGridNeedsToggling"/>
+           MouseLeftButtonDown="Icon_MouseLeftButtonDown_RaiseDetailGridTogglingRequested"/>
 
     <Rectangle Height="24" Canvas.Left="24"
                Fill="{Binding Color, Converter={StaticResource ColorToRowBrushConverter}}">
       <Rectangle.Width>
         <MultiBinding Converter="{StaticResource RowWidthConverter}">
           <Binding Path="PercentWidth"/>
-          <Binding Path="ActualWidth" ElementName="MainGrid"/>
+          <!-- ActualWidth was DependencyProperty.UnsetValue randomly, can't reproduce, using fallback for safety. -->
+          <Binding Path="ActualWidth" ElementName="MainGrid" FallbackValue="0"/>
         </MultiBinding>
       </Rectangle.Width>
     </Rectangle>

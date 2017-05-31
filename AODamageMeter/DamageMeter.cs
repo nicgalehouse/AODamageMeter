@@ -24,7 +24,7 @@ namespace AODamageMeter
             : this(logFilePath, mode)
         {
             Owner = Character.GetOrCreateCharacter(characterName);
-            Owner.CharacterType = CharacterType.PlayerCharacter;
+            Owner.CharacterType = CharacterType.Player;
         }
 
         public DamageMeterMode Mode { get; }
@@ -105,7 +105,7 @@ namespace AODamageMeter
             var charactersAndBioRetrievers = Character.GetOrCreateCharactersAndBioRetrievers(loggedInCharacterNames);
             await Task.WhenAll(charactersAndBioRetrievers.bioRetrievers).ConfigureAwait(false);
             var characters = charactersAndBioRetrievers.characters;
-            characters.ForEach(c => c.CharacterType = CharacterType.PlayerCharacter);
+            characters.ForEach(c => c.CharacterType = CharacterType.Player);
 
             if (ownersID != null)
             {
@@ -130,7 +130,7 @@ namespace AODamageMeter
             if (Owner == null)
             {
                 Owner = Character.GetOrCreateCharacter("You");
-                Owner.CharacterType = CharacterType.PlayerCharacter;
+                Owner.CharacterType = CharacterType.Player;
             }
         }
 

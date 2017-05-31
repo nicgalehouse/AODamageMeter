@@ -52,7 +52,7 @@ namespace AODamageMeter
             {
                 if (!_isTotalDamageDoneCurrent)
                 {
-                    _totalDamageDone = FightCharacters.Sum(c => c.DamageDone);
+                    _totalDamageDone = FightCharacters.Sum(c => c.TotalDamageDone);
                     _isTotalDamageDoneCurrent = true;
                 }
 
@@ -68,7 +68,7 @@ namespace AODamageMeter
             {
                 if (!_isMaxDamageDoneCurrent)
                 {
-                    _maxDamageDone = FightCharacters.Max(c => c.DamageDone);
+                    _maxDamageDone = FightCharacters.Max(c => c.TotalDamageDone);
                     _isMaxDamageDoneCurrent = true;
                 }
 
@@ -84,7 +84,7 @@ namespace AODamageMeter
             {
                 if (!_isMaxDamageDonePlusPetsCurrent)
                 {
-                    _maxDamageDonePlusPets = FightCharacters.Max(c => c.DamageDonePlusPets);
+                    _maxDamageDonePlusPets = FightCharacters.Max(c => c.TotalDamageDonePlusPets);
                     _isMaxDamageDonePlusPetsCurrent = true;
                 }
 
@@ -98,7 +98,7 @@ namespace AODamageMeter
 
             var fightEvent = FightEvent.Create(this, line);
 
-            // We know these events can't cause any fight characters to enter (from FightEvent.Create), so don't let the fight start.
+            // We know these events can't cause any fight characters to enter, so don't let them start the fight.
             if (fightEvent is SystemEvent || fightEvent is UnrecognizedEvent)
                 return;
 
@@ -155,9 +155,41 @@ namespace AODamageMeter
             if (_fightCharacters.TryGetValue(character, out FightCharacter fightCharacter))
                 return fightCharacter;
 
-            fightCharacter = new FightCharacter(this, character, enteredTime);
+            if (character.IsPet)
+            {
+                if (character.PetOwner == null && Character.TryFittingPetNamingRequirements(character.Name, out string petOwnerName))
+                {
+                    Character.GetOrCreateCharacter(petOwnerName)
+                        .RegisterPet(character);
+                }
+
+                if (character.PetOwner == null)
+                    throw new ArgumentException($"{character} is a pet but doesn't have a pet owner and one can't be deduced."
+                        + " Pets need owners before being added to fights.");
+
+                var fightPetOwner = GetOrCreateFightCharacter(character.PetOwner, enteredTime);
+                fightCharacter = new FightCharacter(this, character, enteredTime, fightPetOwner);
+            }
+            else
+            {
+                fightCharacter = new FightCharacter(this, character, enteredTime);
+            }
+
             _fightCharacters[character] = fightCharacter;
+
             return fightCharacter;
         }
+
+        public bool TryGetFightCharacter(string name, out FightCharacter fightCharacter)
+        {
+            if (Character.TryGetCharacter(name, out Character character))
+                return TryGetFightCharacter(character, out fightCharacter);
+
+            fightCharacter = null;
+            return false;
+        }
+
+        public bool TryGetFightCharacter(Character character, out FightCharacter fightCharacter)
+            => _fightCharacters.TryGetValue(character, out fightCharacter);
     }
 }

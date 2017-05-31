@@ -9,15 +9,20 @@ namespace AODamageMeter
     public class Character
     {
         protected static readonly HttpClient _httpClient = new HttpClient();
-        protected static readonly HashSet<string> _ambiguousNames = new HashSet<string> { "Abnoba", "Absuum", "Agrama", "Ahomac", "Ahwere", "Akapan", "Alonissos", "Altumus", "Amatsu", "Android", "Aniitap", "Aniuchach", "Aquaan", "Aquarius", "Aquqa", "Arawn", "Aries", "Asanon", "Asatix", "Astypalia", "Atakirh", "Atezac", "Athlar", "Auraka", "Automaton", "Babyface", "Bane", "Banerider", "Bartender", "Beast", "Beit", "Belamorte", "Benacen", "Black", "Bloodcreeper", "Bodyguard", "Caal", "Cacodemon", "Cancer", "Capricorn", "Cemetiere", "Chiit", "Chirop", "Coah", "Confane", "Cool", "Crete", "Crisp", "Crusher", "Cryptthorn", "Cultist", "Cuty", "Dasyatis", "Degei", "Demenus", "Demon", "Ding", "Direseeds", "Distral", "Duoco", "Edimmu", "Egres", "Ehmat", "Ekibiogami", "Eleet", "Ershkigal", "Esanell", "Eumenides", "Fatestealer", "Fearplanter", "Fearspinner", "Fiend", "Flea", "Floe", "Folegandros", "Forefather", "Galvano", "Gargantula", "Gemini", "George", "Gladiatorbot", "Gluarash", "Goldhorns", "Gravebeau", "Gravejinx", "Grecko", "Grimwolf", "Guard", "Guardbot", "Gunbeetle", "Hatskiri", "Hawilli", "Hawqana", "Haxxor", "Hebiel", "Herne", "Hesosas", "Hine", "Humbada", "Ichiachich", "Igruana", "Ikaria", "Ilmatar", "Inicha", "Ipakut", "Irespouter", "Isham", "Ithaki", "Jealousy", "Jukes", "Jumeaux", "Kalymnos", "Kefallonia", "Keppur", "Khalum", "Kheferu", "Kolaana", "Kumpari", "Kumparimk", "Laki", "Leet", "Leetas", "Lefkada", "Lemur", "Lesvos", "Libra", "Lifebleeder", "Limnos", "Limu", "Maar", "Mare", "Marissa", "Maychwaham", "Maychwyawi", "Maynatsk", "Maywaqaham", "Medinos", "Metalomania", "Milu", "Minibronto", "Minibull", "Minimammoth", "Molokh", "Mornitor", "Morty", "Mull", "Mykonos", "Nabur", "Nanomutant", "Narunkt", "Natsmaahpt", "Naxos", "Nebamun", "Neferu", "Nesbaneb", "Neutralizer", "Nightcrawler", "Nighthowler", "Numiel", "Nyrckes", "Omathon", "Oscar", "Otacustes", "Ownz", "Ozzus", "Pajainen", "Papagena", "Pareet", "Parspalum", "Paxos", "Penkha", "Phatmos", "Pisces", "Pixie", "Plainrider", "Polly", "Poros", "Powa", "Ptahmose", "Pyiininnik", "Qallyawi", "Ragerider", "Rauni", "Razor", "Restite", "Rockflower", "Rollerrat", "Roxxor", "Sagittarius", "Salahpt", "Saliwata", "Saltworm", "Salvinous", "Samedi", "Sampasa", "Sandcrawler", "Sandworm", "Sanoo", "Sashuqa", "Scorpio", "Sebtitis", "Shadowleet", "Shadowmane", "Shet", "Sifnos", "Silvertails", "Skylight", "Skyros", "Slaugh", "Sleet", "Soleet", "Soulstepper", "Spetses", "Squasher", "Stalker", "Stark", "Stumpy", "Suppressor", "Sursunabu", "Swiftwind", "Sylvabane", "Syros", "Takheperu", "Tapiolainen", "Tarasque", "Taurus", "Tcheser", "Tchu", "Tdecin", "Technician", "Thapt", "Tinos", "Tiny", "Tiunissik", "Tombberry", "Trap", "Trip", "Trup", "Tuaninnik", "Tumulten", "Turk", "Turris", "Uklesh", "Ushamaham", "Vadleany", "Valentyia", "Valirash", "Vilesprout", "Vinstur", "Virgo", "Wakhent", "Waqamawi", "Warbot", "Wardog", "Warmachine", "Wasteprowler", "Wataptu", "Waychaw", "Waywaqa", "Webensenu", "Whire", "Windlegs", "Wrathspouter", "Xark", "Yidira", "Zakynthos", "Zias" };
+        protected static readonly HashSet<string> _ambiguousPlayerNames = new HashSet<string> { "Abnoba", "Absuum", "Agrama", "Ahomac", "Ahwere", "Akapan", "Alonissos", "Altumus", "Amatsu", "Android", "Aniitap", "Aniuchach", "Aquaan", "Aquarius", "Aquqa", "Arawn", "Aries", "Asanon", "Asatix", "Astypalia", "Atakirh", "Atezac", "Athlar", "Auraka", "Automaton", "Babyface", "Bane", "Banerider", "Bartender", "Beast", "Beit", "Belamorte", "Benacen", "Black", "Bloodcreeper", "Bodyguard", "Bruiser", "Caal", "Cacodemon", "Cancer", "Capricorn", "Cemetiere", "Chiit", "Chirop", "Coah", "Confane", "Cool", "Crete", "Crisp", "Crusher", "Cryptthorn", "Cultist", "Cuty", "Dasyatis", "Degei", "Demenus", "Demon", "Ding", "Direseeds", "Distral", "Dockworker", "Duoco", "Edimmu", "Egres", "Ehmat", "Ekibiogami", "Eleet", "Ershkigal", "Esanell", "Eumenides", "Fatestealer", "Fearplanter", "Fearspinner", "Fiend", "Flea", "Floe", "Folegandros", "Forefather", "Galvano", "Gargantula", "Gemini", "George", "Gladiatorbot", "Gluarash", "Goldhorns", "Gravebeau", "Gravejinx", "Grecko", "Grimwolf", "Guard", "Guardbot", "Gunbeetle", "Hatskiri", "Hawilli", "Hawqana", "Haxxor", "Hebiel", "Herne", "Hesosas", "Hine", "Humbada", "Ichiachich", "Igruana", "Ikaria", "Ilmatar", "Inicha", "Ipakut", "Irespouter", "Isham", "Ithaki", "Jealousy", "Jukes", "Jumeaux", "Kalymnos", "Kefallonia", "Keppur", "Khalum", "Kheferu", "Kolaana", "Kumpari", "Kumparimk", "Laki", "Leet", "Leetas", "Lefkada", "Lemur", "Lesvos", "Libra", "Lifebleeder", "Limnos", "Limu", "Maar", "Mare", "Marissa", "Maychwaham", "Maychwyawi", "Maynatsk", "Maywaqaham", "Medinos", "Metalomania", "Milu", "Minibronto", "Minibull", "Minimammoth", "Molokh", "Mornitor", "Morty", "Mull", "Mykonos", "Nabur", "Nanomutant", "Narunkt", "Natsmaahpt", "Naxos", "Nebamun", "Neferu", "Nesbaneb", "Neutralizer", "Nightcrawler", "Nighthowler", "Numiel", "Nyrckes", "Omathon", "Oscar", "Otacustes", "Ownz", "Ozzus", "Pajainen", "Papagena", "Pareet", "Parspalum", "Paxos", "Penkha", "Phatmos", "Pisces", "Pixie", "Plainrider", "Polly", "Poros", "Powa", "Protester", "Ptahmose", "Pyiininnik", "Qallyawi", "Ragerider", "Rauni", "Razor", "Restite", "Rockflower", "Rollerrat", "Roxxor", "Sagittarius", "Salahpt", "Saliwata", "Saltworm", "Salvinous", "Samedi", "Sampasa", "Sandcrawler", "Sandworm", "Sanoo", "Sashuqa", "Scorpio", "Sebtitis", "Shadowleet", "Shadowmane", "Shet", "Sifnos", "Silvertails", "Skylight", "Skyros", "Slaugh", "Sleet", "Soleet", "Soulstepper", "Spetses", "Squasher", "Stalker", "Stark", "Stumpy", "Suppressor", "Sursunabu", "Swiftwind", "Sylvabane", "Syros", "Takheperu", "Tapiolainen", "Tarasque", "Taurus", "Tcheser", "Tchu", "Tdecin", "Technician", "Thapt", "Tinos", "Tiny", "Tiunissik", "Tombberry", "Trap", "Trip", "Trup", "Tuaninnik", "Tumulten", "Turk", "Turris", "Uklesh", "Ushamaham", "Vadleany", "Valentyia", "Valirash", "Vilesprout", "Vinstur", "Virgo", "Wakhent", "Waqamawi", "Warbot", "Wardog", "Warmachine", "Wasteprowler", "Wataptu", "Waychaw", "Waywaqa", "Webensenu", "Whire", "Windlegs", "Wrathspouter", "Xark", "Yidira", "Zakynthos", "Zias", "Zodiac" };
+        protected static readonly HashSet<string> _ambiguousPetNames = new HashSet<string> { "Anansi's Abettor", "Anansi's Disciple", "Anansi's Favorite", "Anansi's Left Hand", "Anansi's Right Hand", "Aniitap's Shadow", "Asase's Drudge", "Nyame's Abettor", "Nyame's Drudge", "Pyiininnik's Shadow", "Sanity's Edge", "Tiunissik's Shadow" };
         protected static readonly Dictionary<string, Character> _characters = new Dictionary<string, Character>();
         protected static readonly Dictionary<Character, Task> _characterBioRetrievers = new Dictionary<Character, Task>();
         protected readonly object _lock = new object(); // Just using a single object for convenience; see comments/links below.
 
         protected Character(string name)
-            => Name = name;
+        {
+            Name = name;
+            UncoloredName = UncolorName(name);
+        }
 
         public string Name { get; }
+        public string UncoloredName { get; }
 
         protected CharacterType _characterType;
         public CharacterType CharacterType
@@ -89,8 +94,8 @@ namespace AODamageMeter
             set { lock (_lock) { _organizationRank = value; } }
         }
 
-        public bool IsPlayer => CharacterType == CharacterType.PlayerCharacter;
-        public bool IsNPC => CharacterType == CharacterType.NonPlayerCharacter;
+        public bool IsPlayer => CharacterType == CharacterType.Player;
+        public bool IsNPC => CharacterType == CharacterType.NPC;
         public bool IsPet => CharacterType == CharacterType.Pet;
 
         public bool HasPlayerInfo
@@ -99,7 +104,8 @@ namespace AODamageMeter
             && Breed != AODamageMeter.Breed.Unknown
             && Gender != AODamageMeter.Gender.Unknown
             && Faction != AODamageMeter.Faction.Unknown
-            && Level.HasValue && AlienLevel.HasValue;
+            && Level.HasValue
+            && AlienLevel.HasValue;
 
         public bool HasOrganizationInfo
             => IsPlayer
@@ -109,11 +115,13 @@ namespace AODamageMeter
         public Character PetOwner { get; protected set; }
         protected readonly HashSet<Character> _pets = new HashSet<Character>();
         public IReadOnlyCollection<Character> Pets => _pets;
+        public bool IsPetOwner => Pets.Count != 0;
         public void RegisterPet(Character pet)
         {
+            CharacterType = CharacterType.Player;
             pet.CharacterType = CharacterType.Pet;
-            pet.PetOwner = this;
             _pets.Add(pet);
+            pet.PetOwner = this;
         }
 
         // The idea with these two methods is that sometimes you need to wait for the bio to come, sometimes you don't. Provide
@@ -144,31 +152,27 @@ namespace AODamageMeter
             return (characterAndBioRetrievers.Select(t => t.character).ToArray(), characterAndBioRetrievers.Select(t => t.bioRetriever).ToArray());
         }
 
-        // Ignoring pets, it's very unlikely that a PC and an NPC of the same name will be participating in the same fight. For more
-        // details about pets, see the comment in FightEvent.cs. To summarize, we're able to see when a pet is named the same as the
-        // meter owner, and put it under a character named "<Owner>'s pets", so the structure I'm about to describe is flexible enough.
-        // The events we have access to would allow us to distinguish between the character named Bloodcreeper doing damage and the mob
-        // named Bloodcreeper doing damage in certain scenarios, but not all. It's such a rare occurrence that it's not worth complicating
-        // the model, so we have a single dictionary from name to character instead of two (one for PC, one for NPC) or something else.
-        // -----------------------------------------------------------------------------------------------------------------------------
-        // We conclude a name belongs to a PC if we look it up on people.anarchy-online.com successfully, and it's not ambiguous. A name
-        // is ambiguous if it's in the set above--if it can belong to a PC, and definitely does belong to an NPC. For ambiguous names,
-        // we assume it's the NPC. The set isn't complete and pets can have random names, so we can't go in the opposite direction--we
-        // can't say if it fits the naming requirements and isn't in the ambiguous set, then it belongs to a character. If you're actually
-        // playing with the character Bloodcreeper, we'll wait for definitive proof that he's a PC, which only comes through 'me hit by player'.
-        // We could use 'other hit by other' where the other is definitely an NPC and assume Bloodcreeper is a PC because NPC v NPC is
-        // rare, but that leaves people who rename their pets or bureaucrats in trouble. Could allow setting character type through the UI...
-        // Even if we know it won't end up being a PC (ambiguous), we still want to get the PC info, in case the type is changed in the future.
-        // -----------------------------------------------------------------------------------------------------------------------------
-        // This is the stateless part of the GetOrCreateCharacter process that can be run in parallel and as meter consumers update their UI.
+        // We conclude a name belongs to a player if it fits the player naming requirements and is not ambiguous. A name is ambiguous if it's
+        // in the set above--if it can belong to a player, and definitely does belong to an NPC. For ambiguous names, we assume it's the NPC.
+        // We don't require success from people.anarchy-online.com because I want to support new players who aren't indexed yet. Hurts a bit
+        // because pet owners can have their pets mistakenly marked as players, but that happens regardless when they name them after players
+        // who are already indexed, and that case is even worse. It's also more common because most cool names have been taken by players. If
+        // a name is ambiguous we wait for other proof, like from 'me hit by player' or a pet registration.
+
+        // We conclude a name belongs to a pet if it fits this naming convention: "<valid player name>'s <pet name>" (potentially colored),
+        // and isn't ambiguous. Pet events aren't very good for deducing pets, and recognizing pets immediately simplifies things (see
+        // FightCharacter comment for how). I considered creating the pet owner and registering the pet here too, but seems like bad design.
+
+        // The part after the await is safe to be run simultaneously with itself/meter consumers updating their UI--fire and forget this task.
+        // Even if we know it won't end up being a player (ambiguous), we still want to get the player info, in case the type is changed later.
         protected static async Task RetrieveCharacterBio(Character character)
         {
-            string name = character.Name;
-
-            if (FitsPlayerNamingRequirements(name))
+            if (FitsPlayerNamingRequirements(character.Name))
             {
+                character.CharacterType = !IsAmbiguousPlayerName(character.Name) ? CharacterType.Player : CharacterType.NPC;
+
                 var response = await _httpClient
-                    .GetAsync($"http://people.anarchy-online.com/character/bio/d/5/name/{name}/bio.xml?data_type=json").ConfigureAwait(false);
+                    .GetAsync($"http://people.anarchy-online.com/character/bio/d/5/name/{character.Name}/bio.xml?data_type=json").ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     var characterBio = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
@@ -176,8 +180,6 @@ namespace AODamageMeter
                     {
                         var playerInfo = characterBio[0];
                         var organizationInfo = characterBio[1] as JObject == null ? null : characterBio[1];
-                        // Important to leave the character type as what it is if we can't deduce PC, as it might've been set via context elsewhere.
-                        character.CharacterType = !_ambiguousNames.Contains(name) ? CharacterType.PlayerCharacter : character.CharacterType;
                         character.ID = playerInfo.CHAR_INSTANCE;
                         character.Profession = Profession.All.Single(p => p.Name == (string)playerInfo.PROF);
                         character.Breed = BreedHelpers.GetBreed((string)playerInfo.BREED);
@@ -189,6 +191,10 @@ namespace AODamageMeter
                         character.OrganizationRank = organizationInfo?.RANK_TITLE;
                     }
                 }
+            }
+            else if (FitsPetNamingRequirements(character.Name) && !IsAmbiguousPetName(character.Name))
+            {
+                character.CharacterType = CharacterType.Pet;
             }
         }
 
@@ -203,9 +209,59 @@ namespace AODamageMeter
             && (name.Skip(1).All(IsLowercaseOrDigit)
                 || name.EndsWith("-1") && name.Skip(1).Take(name.Length - 3).All(IsLowercaseOrDigit));
 
-        // Colored pet names have markup characters and show up like "[DLE][FF]MyPet" ("MyPet") in the log file.
-        public static string RemoveMarkupCharacters(string name)
-            => new string(name.Where(c => c >= ' ' && c <= '~').ToArray());
+        public static bool FitsPetNamingRequirements(string name)
+        {
+            int petOwnerNameLength;
+            return name != null
+                && (petOwnerNameLength = name.IndexOf("'s ")) != -1
+                && FitsPlayerNamingRequirements(UncolorName(name.Substring(0, petOwnerNameLength)));
+        }
+
+        public static bool TryFittingPetNamingRequirements(string name, out string petOwnerName)
+        {
+            int petOwnerNameLength;
+            if (name == null
+                || (petOwnerNameLength = name.IndexOf("'s ")) == -1
+                || !FitsPlayerNamingRequirements(petOwnerName = UncolorName(name.Substring(0, petOwnerNameLength))))
+            {
+                petOwnerName = null;
+                return false;
+            }
+
+            return true;
+        }
+
+        public static bool IsAmbiguousPlayerName(string name)
+            => _ambiguousPlayerNames.Contains(name);
+
+        public static bool IsAmbiguousPetName(string name)
+            => _ambiguousPetNames.Contains(name);
+
+        // Little more involved than this describes: https://forums.anarchy-online.com/showthread.php?587840-Getting-color-back-to-pet-names.
+        // I think it's always [DLE][?] that represents colors, but there can be many of those throughout the string for multi-colored names.
+        public static string UncolorName(string name)
+        {
+            char DLE = (char)16;
+
+            if (name.IndexOf(DLE) == -1)
+                return name;
+
+            char[] uncoloredName = new char[name.Length];
+            int nameIndex = 0, uncoloredNameIndex = 0;
+            while (nameIndex < name.Length)
+            {
+                if (name[nameIndex] == DLE)
+                {
+                    nameIndex += 2;
+                }
+                else
+                {
+                    uncoloredName[uncoloredNameIndex++] = name[nameIndex++];
+                }
+            }
+
+            return new string(uncoloredName, 0, uncoloredNameIndex);
+        }
 
         public override string ToString()
             => Name;
