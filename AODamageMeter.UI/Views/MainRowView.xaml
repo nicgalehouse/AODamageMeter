@@ -10,7 +10,7 @@
           MouseLeftButtonDown="Canvas_MouseLeftButtonDown_TryRaisingViewProgressionRequested">
     <Image Width="24"
            Source="{Binding IconPath, Converter={StaticResource IconPathToBitmapImageConverter}}"
-           MouseLeftButtonDown="Icon_MouseLeftButtonDown_RaiseDetailGridTogglingRequested"/>
+           MouseLeftButtonDown="Icon_MouseLeftButtonDown_TryTogglingShowDetails"/>
 
     <Rectangle Height="24" Canvas.Left="24"
                Fill="{Binding Color, Converter={StaticResource ColorToRowBrushConverter}}">

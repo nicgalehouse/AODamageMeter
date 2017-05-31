@@ -20,8 +20,7 @@
   </UserControl.Resources>
 
   <local:RowViewModelDataGrid x:Name="MainGrid" Background="{StaticResource DarkBlueBrush20}"
-            ItemsSource="{Binding Source={StaticResource MainRowsViewSource}}"
-            views:MainRowView.DetailGridTogglingRequested="MainRowView_DetailGridTogglingRequested_TryTogglingDetailGrid">
+            ItemsSource="{Binding Source={StaticResource MainRowsViewSource}}">
     <DataGrid.Resources>
       <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
       <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="{StaticResource DarkBlueColor}" Opacity=".2"/>
@@ -32,6 +31,12 @@
         <views:DetailGridView DataContext="{Binding DetailRows}"/>
       </DataTemplate>
     </DataGrid.RowDetailsTemplate>
+
+    <DataGrid.RowStyle>
+      <Style TargetType="DataGridRow">
+        <Setter Property="DetailsVisibility" Value="{Binding ShowDetails, Converter={StaticResource BoolToVisibilityConverter}}"/>
+      </Style>
+    </DataGrid.RowStyle>
 
     <DataGrid.Columns>
       <DataGridTemplateColumn Width="*">

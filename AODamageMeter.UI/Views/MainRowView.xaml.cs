@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using AODamageMeter.UI.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -21,17 +22,8 @@ namespace AODamageMeter.UI.Views
             };
         }
 
-        public static readonly RoutedEvent DetailGridTogglingRequestedEvent = EventManager.RegisterRoutedEvent(
-            "DetailGridTogglingRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));
-
-        public event RoutedEventHandler DetailGridTogglingRequested
-        {
-            add { AddHandler(DetailGridTogglingRequestedEvent, value); }
-            remove { RemoveHandler(DetailGridTogglingRequestedEvent, value); }
-        }
-
-        private void Icon_MouseLeftButtonDown_RaiseDetailGridTogglingRequested(object sender, MouseButtonEventArgs e)
-            => RaiseEvent(new RoutedEventArgs(DetailGridTogglingRequestedEvent));
+        private void Icon_MouseLeftButtonDown_TryTogglingShowDetails(object sender, MouseButtonEventArgs e)
+            => (DataContext as MainRowViewModelBase).TryTogglingShowDetails();
 
         public static readonly RoutedEvent ViewProgressionRequestedEvent = EventManager.RegisterRoutedEvent(
             "ViewProgressionRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));
