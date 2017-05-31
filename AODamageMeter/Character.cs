@@ -100,6 +100,7 @@ namespace AODamageMeter
 
         public bool HasPlayerInfo
             => IsPlayer
+            && ID != null
             && Profession != Profession.Unknown
             && Breed != AODamageMeter.Breed.Unknown
             && Gender != AODamageMeter.Gender.Unknown

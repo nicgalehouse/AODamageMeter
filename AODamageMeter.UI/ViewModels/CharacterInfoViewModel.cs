@@ -86,10 +86,18 @@ namespace AODamageMeter.UI.ViewModels
             var characterAndBioRetriever = Character.GetOrCreateCharacterAndBioRetriever(CharacterName);
             var character = characterAndBioRetriever.character;
             characterAndBioRetriever.bioRetriever.Wait(); // Not worth using await and binding IsEnableds.
-            if (character.ID == null)
+            if (!character.HasPlayerInfo)
             {
-                AutoConfigureResult = $"Auto-configure failed. Could not find character ID of {CharacterName} on http://people.anarchy-online.com/.";
-                return;
+                if (long.TryParse(LogFilePath?.Split(':').Last(), out long characterID))
+                {
+                    character.ID = characterID.ToString();
+                }
+                else
+                {
+                    AutoConfigureResult = $"Auto-configure failed. Could not find character ID of {CharacterName} on http://people.anarchy-online.com/."
+                        + " If you just created this character, as a workaround you can Shift+F9 in-game and copy & paste the displayed character ID into the log file input and try again.";
+                    return;
+                }
             }
 
             // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online
