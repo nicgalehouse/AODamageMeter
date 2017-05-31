@@ -3,10 +3,10 @@
     public static class NumberFormatter
     {
         public static string Format(this int n)
-            => Format((double)n);
+            => Format((long)n);
 
         public static string Format(this long n)
-            => Format((double)n);
+            => n < 100 ? n.ToString() : Format((double)n);
 
         public static string Format(this double n)
         {
