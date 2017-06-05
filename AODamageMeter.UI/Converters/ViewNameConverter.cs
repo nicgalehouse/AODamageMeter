@@ -11,7 +11,8 @@ namespace AODamageMeter.UI.Converters
             var selectedViewingMode = (ViewingMode)values[0];
             var selectedCharacter = (Character)values[1];
 
-            return selectedViewingMode == ViewingMode.DamageDone ? "Damage Done"
+            return selectedViewingMode == ViewingMode.ViewingModes ? "Viewing Modes"
+                : selectedViewingMode == ViewingMode.DamageDone ? "Damage Done"
                 : selectedViewingMode == ViewingMode.DamageDoneInfo ? $"{selectedCharacter?.UncoloredName}'s Damage Done"
                 : throw new NotImplementedException();
         }

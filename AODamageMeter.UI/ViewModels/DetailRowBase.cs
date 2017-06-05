@@ -1,0 +1,28 @@
+﻿using AODamageMeter.UI.Helpers;
+
+namespace AODamageMeter.UI.ViewModels
+{
+    public abstract class DetailRowBase : RowBase
+    {
+        protected DetailRowBase(FightCharacter fightCharacter, bool showIcon = false)
+            : base(fightCharacter)
+            => ShowIcon = showIcon;
+
+        public bool ShowIcon { get; }
+
+        public override void Update(int? displayIndex = null)
+        {
+            DisplayIndex = displayIndex ?? DisplayIndex;
+
+            if (ShowIcon)
+            {
+                IconPath = FightCharacter.Profession.GetIconPath();
+            }
+
+            Color = FightCharacter.IsFightPet ? FightCharacter.FightPetOwner.Profession.GetColor() : FightCharacter.Profession.GetColor();
+
+            RaisePropertyChanged(nameof(LeftTextToolTip));
+            RaisePropertyChanged(nameof(RightTextToolTip));
+        }
+    }
+}

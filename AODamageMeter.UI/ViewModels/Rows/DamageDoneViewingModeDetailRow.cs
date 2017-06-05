@@ -1,13 +1,12 @@
 ﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
-using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneMainRowViewModel : MainRowViewModelBase
+    public class DamageDoneViewingModeDetailRow : DetailRowBase
     {
-        public DamageDoneMainRowViewModel(FightCharacter fightCharacter)
-            : base(fightCharacter)
+        public DamageDoneViewingModeDetailRow(FightCharacter fightCharacter)
+            : base(fightCharacter, showIcon: true)
         { }
 
         public override string RightTextToolTip
@@ -41,41 +40,30 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.IndirectDamageDonePMPlusPets.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent()}) indirect dmg / min
 {FightCharacter.TotalDamageDonePMPlusPets.Format()} total dmg / min
 
-{(FightCharacter.AverageWeaponDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageWeaponDamageDonePlusPets.Format())} weapon dmg / hit
-  {(FightCharacter.AverageCritDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageCritDamageDonePlusPets.Format())} crit dmg / hit
-  {(FightCharacter.AverageGlanceDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageGlanceDamageDonePlusPets.Format())} glance dmg / hit
-{(FightCharacter.AverageNanoDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageNanoDamageDonePlusPets.Format())} nano dmg / hit
-{(FightCharacter.AverageIndirectDamageDonePlusPets == 0 ? "N/A" : FightCharacter.AverageIndirectDamageDonePlusPets.Format())} indirect dmg / hit{specialsDoneInfo}";
+{FightCharacter.AverageWeaponDamageDonePlusPets.Format()} weapon dmg / hit
+  {FightCharacter.AverageCritDamageDonePlusPets.Format()} crit dmg / hit
+  {FightCharacter.AverageGlanceDamageDonePlusPets.Format()} glance dmg / hit
+{FightCharacter.AverageNanoDamageDonePlusPets.Format()} nano dmg / hit
+{FightCharacter.AverageIndirectDamageDonePlusPets.Format()} indirect dmg / hit{specialsDoneInfo}";
                 }
             }
         }
 
-        public override void Update(int displayIndex)
+        public override void Update(int? displayIndex = null)
         {
             if (!FightCharacter.IsFightPetOwner)
             {
-                PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
-                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentOfFightsTotalDamageDone : PercentWidth;
+                PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets ?? 0;
+                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                    ? FightCharacter.PercentOfFightsTotalDamageDone : FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
                 RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {percentDone.FormatPercent()})";
             }
             else
             {
-                PercentWidth = FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets;
-                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentPlusPetsOfFightsTotalDamageDone : PercentWidth;
+                PercentWidth = FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets ?? 0;
+                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                    ? FightCharacter.PercentPlusPetsOfFightsTotalDamageDone : FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets;
                 RightText = $"{FightCharacter.TotalDamageDonePlusPets.Format()} ({FightCharacter.TotalDamageDonePMPlusPets.Format()}, {percentDone.FormatPercent()})";
-
-                int detailRowDisplayIndex = 1;
-                foreach (var fightCharacter in new[] { FightCharacter }.Concat(FightCharacter.FightPets)
-                    .OrderByDescending(c => c.TotalDamageDonePlusPets)
-                    .ThenBy(c => c.UncoloredName))
-                {
-                    if (!_detailRowMap.TryGetValue(fightCharacter, out RowViewModelBase detailRow))
-                    {
-                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneDetailRowViewModel(fightCharacter));
-                        DetailRows.Add(detailRow);
-                    }
-                    detailRow.Update(detailRowDisplayIndex++);
-                }
             }
 
             base.Update(displayIndex);

@@ -2,12 +2,10 @@
 {
     public static class NumberFormatter
     {
-        public static string Format(this int n)
-            => Format((long)n);
+        public const string EmDash = "—";
 
-        public static string Format(this long n)
-            => n < 100 ? n.ToString() : Format((double)n);
-
+        public static string Format(this int n) => Format((long)n);
+        public static string Format(this long n) => n < 100 ? n.ToString() : Format((double)n);
         public static string Format(this double n)
         {
             if (n == 0) return "0";
@@ -19,10 +17,16 @@
             else return $"{(n / 1000000000).ToString("F3")}B";             // 1.344B
         }
 
+        public static string Format(this int? n) => n?.Format() ?? EmDash;
+        public static string Format(this long? n) => n?.Format() ?? EmDash;
+        public static string Format(this double? n) => n?.Format() ?? EmDash;
+
         public static string FormatPercent(this double n)
         {
             if (n == 1) return "100%";
             return $"{(100 * n).ToString("F1")}%";
         }
+
+        public static string FormatPercent(this double? n) => n?.FormatPercent() ?? EmDash;
     }
 }

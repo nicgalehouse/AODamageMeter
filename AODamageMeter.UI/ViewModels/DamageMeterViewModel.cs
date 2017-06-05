@@ -29,14 +29,16 @@ namespace AODamageMeter.UI.ViewModels
             TryInitializingDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
         }
 
-        private Dictionary<FightCharacter, MainRowViewModelBase> _damageDoneRowMap = new Dictionary<FightCharacter, MainRowViewModelBase>();
-        private ObservableCollection<MainRowViewModelBase> _damageDoneRows { get; } = new ObservableCollection<MainRowViewModelBase>();
+        private ObservableCollection<MainRowBase> _viewingModeRows = new ObservableCollection<MainRowBase>();
 
-        private Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowViewModelBase>> _damageDoneInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowViewModelBase>>();
-        private Dictionary<FightCharacter, ObservableCollection<MainRowViewModelBase>> _damageDoneInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowViewModelBase>>();
+        private Dictionary<FightCharacter, MainRowBase> _damageDoneRowMap = new Dictionary<FightCharacter, MainRowBase>();
+        private ObservableCollection<MainRowBase> _damageDoneRows { get; } = new ObservableCollection<MainRowBase>();
 
-        private ObservableCollection<MainRowViewModelBase> _rows;
-        public ObservableCollection<MainRowViewModelBase> Rows
+        private Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageDoneInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
+        private Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageDoneInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
+
+        private ObservableCollection<MainRowBase> _rows;
+        public ObservableCollection<MainRowBase> Rows
         {
             get => _rows;
             set => Set(ref _rows, value);
@@ -55,32 +57,6 @@ namespace AODamageMeter.UI.ViewModels
         {
             get => _selectedCharacter;
             set => Set(ref _selectedCharacter, value);
-        }
-
-        public bool TryProgressingView(FightCharacter fightCharacter)
-        {
-            if (SelectedViewingMode == ViewingMode.DamageDone && fightCharacter != null)
-            {
-                SelectedViewingMode = ViewingMode.DamageDoneInfo;
-                SelectedCharacter = fightCharacter.Character;
-                SetAndUpdateRows();
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool TryRegressingView()
-        {
-            if (SelectedViewingMode == ViewingMode.DamageDoneInfo)
-            {
-                SelectedViewingMode = ViewingMode.DamageDone;
-                SelectedCharacter = null;
-                SetAndUpdateRows();
-                return true;
-            }
-
-            return false;
         }
 
         public bool TryInitializingDamageMeter(string characterName, string logFilePath)
@@ -136,6 +112,42 @@ namespace AODamageMeter.UI.ViewModels
             _isDamageMeterUpdaterStarted = true;
         }
 
+        public bool TryProgressingView(MainRowBase mainRowViewModelBase)
+        {
+            switch (SelectedViewingMode)
+            {
+                case ViewingMode.ViewingModes:
+                    SelectedViewingMode = ((ViewingModeMainRowBase)mainRowViewModelBase).ViewingMode;
+                    break;
+                case ViewingMode.DamageDone:
+                    SelectedViewingMode = ViewingMode.DamageDoneInfo;
+                    SelectedCharacter = mainRowViewModelBase.FightCharacter.Character;
+                    break;
+                default: return false;
+            }
+
+            SetAndUpdateRows();
+            return true;
+        }
+
+        public bool TryRegressingView()
+        {
+            switch (SelectedViewingMode)
+            {
+                case ViewingMode.DamageDone:
+                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    break;
+                case ViewingMode.DamageDoneInfo:
+                    SelectedViewingMode = ViewingMode.DamageDone;
+                    SelectedCharacter = null;
+                    break;
+                default: return false;
+            }
+
+            SetAndUpdateRows();
+            return true;
+        }
+
         private void SetAndUpdateRows()
         {
             if (_damageMeter == null) return; // Edge case where reporter lags behind cancellation/disposal.
@@ -144,10 +156,32 @@ namespace AODamageMeter.UI.ViewModels
             {
                 switch (SelectedViewingMode)
                 {
+                    case ViewingMode.ViewingModes: SetAndUpdateViewingModeRows(); return;
                     case ViewingMode.DamageDone: SetAndUpdateDamageDoneRows(); return;
                     case ViewingMode.DamageDoneInfo: SetAndUpdateDamageDoneInfoRows(); return;
                     default: throw new NotImplementedException();
                 }
+            }
+        }
+
+        private void SetAndUpdateViewingModeRows()
+        {
+            if (_viewingModeRows.Count == 0)
+            {
+                foreach (var viewingModeRow in ViewingModeMainRowBase.GetRows(_damageMeter.CurrentFight))
+                {
+                    _viewingModeRows.Add(viewingModeRow);
+                }
+            }
+
+            if (Rows != _viewingModeRows)
+            {
+                Rows = _viewingModeRows;
+            }
+
+            foreach (var viewingModeRow in _viewingModeRows)
+            {
+                viewingModeRow.Update();
             }
         }
 
@@ -160,13 +194,13 @@ namespace AODamageMeter.UI.ViewModels
 
             int displayIndex = 1;
             foreach (var fightCharacter in _damageMeter.CurrentFight.FightCharacters
-                .Where(c => !c.IsPet)
+                .Where(c => !c.IsFightPet)
                 .OrderByDescending(c => c.TotalDamageDonePlusPets)
                 .ThenBy(c => c.UncoloredName))
             {
-                if (!_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowViewModelBase damageDoneRow))
+                if (!_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
                 {
-                    _damageDoneRowMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRowViewModel(fightCharacter));
+                    _damageDoneRowMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRow(fightCharacter));
                     _damageDoneRows.Add(damageDoneRow);
                 }
                 damageDoneRow.Update(displayIndex++);
@@ -178,8 +212,8 @@ namespace AODamageMeter.UI.ViewModels
             if (!_damageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
                 return;
 
-            Dictionary<DamageInfo, MainRowViewModelBase> damageDoneInfoRowMap;
-            ObservableCollection<MainRowViewModelBase> damageDoneInfoRows;
+            Dictionary<DamageInfo, MainRowBase> damageDoneInfoRowMap;
+            ObservableCollection<MainRowBase> damageDoneInfoRows;
             if (_damageDoneInfoRowMapMap.TryGetValue(fightCharacter, out damageDoneInfoRowMap))
             {
                 damageDoneInfoRows = _damageDoneInfoRowsMap[fightCharacter];
@@ -191,8 +225,8 @@ namespace AODamageMeter.UI.ViewModels
             }
             else
             {
-                _damageDoneInfoRowMapMap[fightCharacter] = damageDoneInfoRowMap = new Dictionary<DamageInfo, MainRowViewModelBase>();
-                Rows = _damageDoneInfoRowsMap[fightCharacter] = damageDoneInfoRows = new ObservableCollection<MainRowViewModelBase>();
+                _damageDoneInfoRowMapMap[fightCharacter] = damageDoneInfoRowMap = new Dictionary<DamageInfo, MainRowBase>();
+                Rows = _damageDoneInfoRowsMap[fightCharacter] = damageDoneInfoRows = new ObservableCollection<MainRowBase>();
             }
 
             int displayIndex = 1;
@@ -200,9 +234,9 @@ namespace AODamageMeter.UI.ViewModels
                 .OrderByDescending(i => i.TotalDamagePlusPets)
                 .ThenBy(i => i.Target.UncoloredName))
             {
-                if (!damageDoneInfoRowMap.TryGetValue(damageDoneInfo, out MainRowViewModelBase damageDoneInfoRow))
+                if (!damageDoneInfoRowMap.TryGetValue(damageDoneInfo, out MainRowBase damageDoneInfoRow))
                 {
-                    damageDoneInfoRowMap.Add(damageDoneInfo, damageDoneInfoRow = new DamageDoneInfoMainRowViewModel(damageDoneInfo));
+                    damageDoneInfoRowMap.Add(damageDoneInfo, damageDoneInfoRow = new DamageDoneInfoMainRow(damageDoneInfo));
                     damageDoneInfoRows.Add(damageDoneInfoRow);
                 }
                 damageDoneInfoRow.Update(displayIndex++);
@@ -253,11 +287,12 @@ namespace AODamageMeter.UI.ViewModels
 
         private void ClearRows()
         {
+            _viewingModeRows.Clear();
             _damageDoneRowMap.Clear();
             _damageDoneRows.Clear();
             _damageDoneInfoRowMapMap.Clear();
             _damageDoneInfoRowsMap.Clear();
-            Rows?.Clear();
+            Rows = null;
         }
 
         public void DisposeDamageMeter()

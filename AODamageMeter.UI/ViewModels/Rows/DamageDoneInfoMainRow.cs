@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneInfoMainRowViewModel : MainRowViewModelBase
+    public class DamageDoneInfoMainRow : MainRowBase
     {
-        public DamageDoneInfoMainRowViewModel(DamageInfo damageDoneInfo)
+        public DamageDoneInfoMainRow(DamageInfo damageDoneInfo)
             : base(damageDoneInfo.Target)
              => DamageDoneInfo = damageDoneInfo;
 
@@ -33,27 +33,29 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
   {DamageDoneInfo.CritChancePlusPets.FormatPercent()} crit chance
   {DamageDoneInfo.GlanceChancePlusPets.FormatPercent()} glance chance
 
-{(DamageDoneInfo.AverageWeaponDamagePlusPets == 0 ? "N/A" : DamageDoneInfo.AverageWeaponDamagePlusPets.Format())} weapon dmg / hit
-  {(DamageDoneInfo.AverageCritDamagePlusPets == 0 ? "N/A" : DamageDoneInfo.AverageCritDamagePlusPets.Format())} crit dmg / hit
-  {(DamageDoneInfo.AverageGlanceDamagePlusPets == 0 ? "N/A" : DamageDoneInfo.AverageGlanceDamagePlusPets.Format())} glance dmg / hit
-{(DamageDoneInfo.AverageNanoDamagePlusPets == 0 ? "N/A" : DamageDoneInfo.AverageNanoDamagePlusPets.Format())} nano dmg / hit
-{(DamageDoneInfo.AverageIndirectDamagePlusPets == 0 ? "N/A" : DamageDoneInfo.AverageIndirectDamagePlusPets.Format())} indirect dmg / hit{specialsDoneInfo}";
+{DamageDoneInfo.AverageWeaponDamagePlusPets.Format()} weapon dmg / hit
+  {DamageDoneInfo.AverageCritDamagePlusPets.Format()} crit dmg / hit
+  {DamageDoneInfo.AverageGlanceDamagePlusPets.Format()} glance dmg / hit
+{DamageDoneInfo.AverageNanoDamagePlusPets.Format()} nano dmg / hit
+{DamageDoneInfo.AverageIndirectDamagePlusPets.Format()} indirect dmg / hit{specialsDoneInfo}";
                 }
             }
         }
 
-        public override void Update(int displayIndex)
+        public override void Update(int? displayIndex = null)
         {
             if (!Source.IsFightPetOwner)
             {
-                PercentWidth = DamageDoneInfo.PercentOfSourcesMaxDamageDone;
-                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? DamageDoneInfo.PercentOfSourcesTotalDamageDone : PercentWidth;
+                PercentWidth = DamageDoneInfo.PercentOfSourcesMaxDamageDone ?? 0;
+                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                    ? DamageDoneInfo.PercentOfSourcesTotalDamageDone : DamageDoneInfo.PercentOfSourcesMaxDamageDone;
                 RightText = $"{DamageDoneInfo.TotalDamage.Format()} ({percentDone.FormatPercent()})";
             }
             else
             {
-                PercentWidth = DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets;
-                double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? DamageDoneInfo.PercentPlusPetsOfSourcesTotalDamageDonePlusPets : PercentWidth;
+                PercentWidth = DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets ?? 0;
+                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                    ? DamageDoneInfo.PercentPlusPetsOfSourcesTotalDamageDonePlusPets : DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets;
                 RightText = $"{DamageDoneInfo.TotalDamagePlusPets.Format()} ({percentDone.FormatPercent()})";
 
                 int detailRowDisplayIndex = 1;
@@ -61,9 +63,9 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
                     .OrderByDescending(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalDamage ?? 0)
                     .ThenBy(c => c.UncoloredName))
                 {
-                    if (!_detailRowMap.TryGetValue(fightCharacter, out RowViewModelBase detailRow))
+                    if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneInfoDetailRowViewModel(fightCharacter, Target));
+                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneInfoDetailRow(fightCharacter, Target));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);

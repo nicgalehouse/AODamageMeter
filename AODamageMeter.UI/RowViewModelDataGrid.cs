@@ -15,8 +15,9 @@ namespace AODamageMeter.UI
         {
             if (newValue is ListCollectionView newCollectionView && !newCollectionView.SortDescriptions.Any())
             {
-                newCollectionView.SortDescriptions.Add(new SortDescription(nameof(RowViewModelBase.PercentWidth), ListSortDirection.Descending));
-                newCollectionView.SortDescriptions.Add(new SortDescription(nameof(RowViewModelBase.FightCharacterName), ListSortDirection.Ascending));
+                newCollectionView.SortDescriptions.Add(new SortDescription(
+                    nameof(RowBase.DisplayIndex),
+                    ListSortDirection.Ascending));
             }
 
             base.OnItemsSourceChanged(oldValue, newValue);

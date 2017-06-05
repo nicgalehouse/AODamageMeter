@@ -1,17 +1,22 @@
-﻿using System.Windows.Media;
+﻿using AODamageMeter.UI.Helpers;
+using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public abstract class RowViewModelBase : ViewModelBase
+    public abstract class RowBase : ViewModelBase
     {
-        protected RowViewModelBase(FightCharacter fightCharacter)
+        protected const string EmDash = NumberFormatter.EmDash;
+
+        protected RowBase(FightCharacter fightCharacter = null)
             => FightCharacter = fightCharacter;
 
         public FightCharacter FightCharacter { get; }
-        public string FightCharacterName => FightCharacter.UncoloredName;
+        public string FightCharacterName => FightCharacter?.UncoloredName;
 
-        protected int? _displayIndex;
-        public int? DisplayIndex
+        public virtual string LeftText => FightCharacterName;
+
+        protected int _displayIndex;
+        public int DisplayIndex
         {
             get => _displayIndex;
             protected set => Set(ref _displayIndex, value);
@@ -45,7 +50,8 @@ namespace AODamageMeter.UI.ViewModels
             protected set => Set(ref _rightText, value);
         }
 
-        public string CharacterTooltip
+        public virtual bool IsLeftTextToolTipEnabled => true;
+        public virtual string LeftTextToolTip
         {
             get
             {
@@ -62,13 +68,9 @@ $@"
             }
         }
 
+        public virtual bool IsRightTextTooltipEnabled => true;
         public abstract string RightTextToolTip { get; }
 
-        public virtual void Update(int displayIndex)
-        {
-            DisplayIndex = displayIndex;
-            RaisePropertyChanged(nameof(CharacterTooltip));
-            RaisePropertyChanged(nameof(RightTextToolTip));
-        }
+        public abstract void Update(int? displayIndex = null);
     }
 }

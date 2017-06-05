@@ -94,16 +94,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Compile>
     <Compile Include="Converters\ViewNameConverter.cs" />
-    <Compile Include="Helpers\FightCharacterExtensions.cs" />
+    <Compile Include="Helpers\DamageMeterExtensions.cs" />
     <Compile Include="RowViewModelDataGrid.cs" />
     <Compile Include="ViewingMode.cs" />
     <Compile Include="ViewModels\CharacterInfoViewModel.cs" />
     <Compile Include="ViewModels\CharacterSelectionViewModel.cs" />
-    <Compile Include="ViewModels\DetailRowViewModelBase.cs" />
-    <Compile Include="ViewModels\MainRowViewModelBase.cs" />
-    <Compile Include="ViewModels\Rows\DamageDoneDetailRowViewModel.cs" />
-    <Compile Include="ViewModels\Rows\DamageDoneInfoDetailRowViewModel.cs" />
-    <Compile Include="ViewModels\Rows\DamageDoneInfoMainRowViewModel.cs" />
+    <Compile Include="ViewModels\DetailRowBase.cs" />
+    <Compile Include="ViewModels\MainRowBase.cs" />
+    <Compile Include="ViewModels\Rows\DamageDoneDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageDoneInfoDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageDoneInfoMainRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageDoneViewingModeDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageDoneViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageTakenViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\HealingYouveDoneViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\HealingYouveTakenViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\ViewingModeMainRowBase.cs" />
     <Compile Include="Views\CharacterInfoView.xaml.cs">
       <DependentUpon>CharacterInfoView.xaml</DependentUpon>
     </Compile>
@@ -153,8 +159,8 @@
     <Compile Include="Helpers\ProfessionExtensions.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="RelayCommandParameterized.cs" />
-    <Compile Include="ViewModels\Rows\DamageDoneMainRowViewModel.cs" />
-    <Compile Include="ViewModels\RowViewModelBase.cs" />
+    <Compile Include="ViewModels\Rows\DamageDoneMainRow.cs" />
+    <Compile Include="ViewModels\RowBase.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Converters\RowWidthConverter.cs" />
@@ -245,6 +251,14 @@
       <Project>{d55d5daf-e8cc-4f4e-a30f-d1358f89d934}</Project>
       <Name>AODamageMeter</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\DamageDone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\DamageTaken.png" />
+    <Resource Include="Icons\HealingYouveDone.png" />
+    <Resource Include="Icons\HealingYouveTaken.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

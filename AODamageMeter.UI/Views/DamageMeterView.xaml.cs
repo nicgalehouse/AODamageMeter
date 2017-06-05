@@ -41,10 +41,7 @@ namespace AODamageMeter.UI.Views
         }
 
         private void MainRowView_ViewProgressionRequested_TryProgressingView(object sender, RoutedEventArgs e)
-        {
-            var mainRow = (e.OriginalSource as MainRowView).DataContext as MainRowViewModelBase;
-            _damageMeterViewModel.TryProgressingView(mainRow.FightCharacter);
-        }
+            => _damageMeterViewModel.TryProgressingView((e.OriginalSource as MainRowView).DataContext as MainRowBase);
 
         private void MainGridView_MouseRightButtonDown_TryRegressingView(object sender, MouseButtonEventArgs e)
             => _damageMeterViewModel.TryRegressingView();

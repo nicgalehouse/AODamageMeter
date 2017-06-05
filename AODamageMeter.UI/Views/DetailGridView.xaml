@@ -9,12 +9,10 @@
   <UserControl.Resources>
     <CollectionViewSource x:Key="DetailRowsViewSource" Source="{Binding}" IsLiveSortingRequested="True">
       <CollectionViewSource.LiveSortingProperties>
-        <clr:String>PercentWidth</clr:String>
+        <clr:String>DisplayIndex</clr:String>
       </CollectionViewSource.LiveSortingProperties>
-
       <CollectionViewSource.SortDescriptions>
-        <scm:SortDescription PropertyName="PercentWidth" Direction="Descending"/>
-        <scm:SortDescription PropertyName="FightCharacterName" Direction="Ascending"/>
+        <scm:SortDescription PropertyName="DisplayIndex" Direction="Ascending"/>
       </CollectionViewSource.SortDescriptions>
     </CollectionViewSource>
   </UserControl.Resources>

@@ -3,9 +3,9 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneDetailRowViewModel : DetailRowViewModelBase
+    public class DamageDoneDetailRow : DetailRowBase
     {
-        public DamageDoneDetailRowViewModel(FightCharacter fightCharacter)
+        public DamageDoneDetailRow(FightCharacter fightCharacter)
             : base(fightCharacter)
         { }
 
@@ -40,19 +40,20 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.IndirectDamageDonePM.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDone.FormatPercent()}) indirect dmg / min
 {FightCharacter.TotalDamageDonePM.Format()} total dmg / min
 
-{(FightCharacter.AverageWeaponDamageDone == 0 ? "N/A" : FightCharacter.AverageWeaponDamageDone.Format())} weapon dmg / hit
-  {(FightCharacter.AverageCritDamageDone == 0 ? "N/A" : FightCharacter.AverageCritDamageDone.Format())} crit dmg / hit
-  {(FightCharacter.AverageGlanceDamageDone == 0 ? "N/A" : FightCharacter.AverageGlanceDamageDone.Format())} glance dmg / hit
-{(FightCharacter.AverageNanoDamageDone == 0 ? "N/A" : FightCharacter.AverageNanoDamageDone.Format())} nano dmg / hit
-{(FightCharacter.AverageIndirectDamageDone == 0 ? "N/A" : FightCharacter.AverageIndirectDamageDone.Format())} indirect dmg / hit{specialsDoneInfo}";
+{FightCharacter.AverageWeaponDamageDone.Format()} weapon dmg / hit
+  {FightCharacter.AverageCritDamageDone.Format()} crit dmg / hit
+  {FightCharacter.AverageGlanceDamageDone.Format()} glance dmg / hit
+{FightCharacter.AverageNanoDamageDone.Format()} nano dmg / hit
+{FightCharacter.AverageIndirectDamageDone.Format()} indirect dmg / hit{specialsDoneInfo}";
                 }
             }
         }
 
-        public override void Update(int displayIndex)
+        public override void Update(int? displayIndex = null)
         {
-            PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
-            double percentDone = Settings.Default.ShowPercentOfTotalDamageDone ? FightCharacter.PercentOfFightsTotalDamageDone : PercentWidth;
+            PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets ?? 0;
+            double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                ? FightCharacter.PercentOfFightsTotalDamageDone : FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
             RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets.FormatPercent()}, {percentDone.FormatPercent()})";
 
             base.Update(displayIndex);

@@ -38,13 +38,13 @@ namespace AODamageMeter
         // FightCharacter creation & event handling guarantee if source has a fight pet owner, that owner has a damage info for Target.
         public long OwnersOrOwnTotalDamagePlusPets => Source.FightPetOwner?.DamageDoneInfosByTarget[Target].TotalDamagePlusPets ?? TotalDamagePlusPets;
 
-        public double WeaponPercentOfTotalDamage => TotalDamage == 0 ? 0 : WeaponDamage / (double)TotalDamage;
-        public double NanoPercentOfTotalDamage => TotalDamage == 0 ? 0 : NanoDamage / (double)TotalDamage;
-        public double IndirectPercentOfTotalDamage => TotalDamage == 0 ? 0 : IndirectDamage / (double)TotalDamage;
+        public double? WeaponPercentOfTotalDamage => WeaponDamage / TotalDamage.NullIfZero();
+        public double? NanoPercentOfTotalDamage => NanoDamage / TotalDamage.NullIfZero();
+        public double? IndirectPercentOfTotalDamage => IndirectDamage / TotalDamage.NullIfZero();
 
-        public double WeaponPercentOfTotalDamagePlusPets => TotalDamagePlusPets == 0 ? 0 : WeaponDamagePlusPets / (double)TotalDamagePlusPets;
-        public double NanoPercentOfTotalDamagePlusPets => TotalDamagePlusPets == 0 ? 0 : NanoDamagePlusPets / (double)TotalDamagePlusPets;
-        public double IndirectPercentOfTotalDamagePlusPets => TotalDamagePlusPets == 0 ? 0 : IndirectDamagePlusPets / (double)TotalDamagePlusPets;
+        public double? WeaponPercentOfTotalDamagePlusPets => WeaponDamagePlusPets / TotalDamagePlusPets.NullIfZero();
+        public double? NanoPercentOfTotalDamagePlusPets => NanoDamagePlusPets / TotalDamagePlusPets.NullIfZero();
+        public double? IndirectPercentOfTotalDamagePlusPets => IndirectDamagePlusPets / TotalDamagePlusPets.NullIfZero();
 
         public int WeaponHits { get; protected set; }
         public int Crits { get; protected set; }
@@ -64,68 +64,64 @@ namespace AODamageMeter
         public int IndirectHitsPlusPets => IndirectHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.IndirectHits ?? 0);
         public int TotalHitsPlusPets => TotalHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalHits ?? 0);
 
-        public double WeaponHitChance => WeaponHitAttempts == 0 ? 0 : WeaponHits / (double)WeaponHitAttempts;
-        public double CritChance => WeaponHitAttempts == 0 ? 0 : Crits / (double)WeaponHitAttempts;
-        public double GlanceChance => WeaponHitAttempts == 0 ? 0 : Glances / (double)WeaponHitAttempts;
-        public double MissChance => WeaponHitAttempts == 0 ? 0 : Misses / (double)WeaponHitAttempts;
+        public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
+        public double? CritChance => Crits / WeaponHitAttempts.NullIfZero();
+        public double? GlanceChance => Glances / WeaponHitAttempts.NullIfZero();
+        public double? MissChance => Misses / WeaponHitAttempts.NullIfZero();
 
-        public double WeaponHitChancePlusPets => WeaponHitAttemptsPlusPets == 0 ? 0 : WeaponHitsPlusPets / (double)WeaponHitAttemptsPlusPets;
-        public double CritChancePlusPets => WeaponHitAttemptsPlusPets == 0 ? 0 : CritsPlusPets / (double)WeaponHitAttemptsPlusPets;
-        public double GlanceChancePlusPets => WeaponHitAttemptsPlusPets == 0 ? 0 : GlancesPlusPets / (double)WeaponHitAttemptsPlusPets;
-        public double MissChancePlusPets => WeaponHitAttemptsPlusPets == 0 ? 0 : MissesPlusPets / (double)WeaponHitAttemptsPlusPets;
+        public double? WeaponHitChancePlusPets => WeaponHitsPlusPets / WeaponHitAttemptsPlusPets.NullIfZero();
+        public double? CritChancePlusPets => CritsPlusPets / WeaponHitAttemptsPlusPets.NullIfZero();
+        public double? GlanceChancePlusPets => GlancesPlusPets / WeaponHitAttemptsPlusPets.NullIfZero();
+        public double? MissChancePlusPets => MissesPlusPets / WeaponHitAttemptsPlusPets.NullIfZero();
 
-        public double AverageWeaponDamage => WeaponHits == 0 ? 0 : WeaponDamage / (double)WeaponHits;
-        public double AverageCritDamage => Crits == 0 ? 0 : CritDamage / (double)Crits;
-        public double AverageGlanceDamage => Glances == 0 ? 0 : GlanceDamage / (double)Glances;
-        public double AverageNanoDamage => NanoHits == 0 ? 0 : NanoDamage / (double)NanoHits;
-        public double AverageIndirectDamage => IndirectHits == 0 ? 0 : IndirectDamage / (double)IndirectHits;
+        public double? AverageWeaponDamage => WeaponDamage / WeaponHits.NullIfZero();
+        public double? AverageCritDamage => CritDamage / Crits.NullIfZero();
+        public double? AverageGlanceDamage => GlanceDamage / Glances.NullIfZero();
+        public double? AverageNanoDamage => NanoDamage / NanoHits.NullIfZero();
+        public double? AverageIndirectDamage => IndirectDamage / IndirectHits.NullIfZero();
 
-        public double AverageWeaponDamagePlusPets => WeaponHitsPlusPets == 0 ? 0 : WeaponDamagePlusPets / (double)WeaponHitsPlusPets;
-        public double AverageCritDamagePlusPets => CritsPlusPets == 0 ? 0 : CritDamagePlusPets / (double)CritsPlusPets;
-        public double AverageGlanceDamagePlusPets => GlancesPlusPets == 0 ? 0 : GlanceDamagePlusPets / (double)GlancesPlusPets;
-        public double AverageNanoDamagePlusPets => NanoHitsPlusPets == 0 ? 0 : NanoDamagePlusPets / (double)NanoHitsPlusPets;
-        public double AverageIndirectDamagePlusPets => IndirectHitsPlusPets == 0 ? 0 : IndirectDamagePlusPets / (double)IndirectHitsPlusPets;
+        public double? AverageWeaponDamagePlusPets => WeaponDamagePlusPets / WeaponHitsPlusPets.NullIfZero();
+        public double? AverageCritDamagePlusPets => CritDamagePlusPets / CritsPlusPets.NullIfZero();
+        public double? AverageGlanceDamagePlusPets => GlanceDamagePlusPets / GlancesPlusPets.NullIfZero();
+        public double? AverageNanoDamagePlusPets => NanoDamagePlusPets / NanoHitsPlusPets.NullIfZero();
+        public double? AverageIndirectDamagePlusPets => IndirectDamagePlusPets / IndirectHitsPlusPets.NullIfZero();
 
-        public double PercentOfOwnersOrOwnTotalDamagePlusPets => OwnersOrOwnTotalDamagePlusPets == 0 ? 0 : TotalDamage / (double)OwnersOrOwnTotalDamagePlusPets;
+        public double? PercentOfOwnersOrOwnTotalDamagePlusPets => TotalDamage / OwnersOrOwnTotalDamagePlusPets.NullIfZero();
 
-        public double PercentOfOwnersOrOwnTotalDamageDonePlusPets
+        public double? PercentOfOwnersOrOwnTotalDamageDonePlusPets
             => Source.IsFightPet
-            ? Source.FightPetOwner.TotalDamageDonePlusPets == 0 ? 0 : TotalDamage / (double)Source.FightPetOwner.TotalDamageDonePlusPets
-            : Source.TotalDamageDonePlusPets == 0 ? 0 : TotalDamage / (double)Source.TotalDamageDonePlusPets;
-        public double PercentOfOwnersOrOwnMaxDamageDonePlusPets
+            ? TotalDamage / Source.FightPetOwner.TotalDamageDonePlusPets.NullIfZero()
+            : TotalDamage / Source.TotalDamageDonePlusPets.NullIfZero();
+        public double? PercentOfOwnersOrOwnMaxDamageDonePlusPets
             => Source.IsFightPet
-            ? Source.FightPetOwner.MaxDamageDonePlusPets == 0 ? 0 : TotalDamage / (double)Source.FightPetOwner.MaxDamageDonePlusPets
-            : Source.MaxDamageDonePlusPets == 0 ? 0 : TotalDamage / (double)Source.MaxDamageDonePlusPets;
+            ? TotalDamage / Source.FightPetOwner.MaxDamageDonePlusPets.NullIfZero()
+            : TotalDamage / Source.MaxDamageDonePlusPets.NullIfZero();
 
-        public double PercentOfSourcesTotalDamageDone => Source.TotalDamageDone == 0 ? 0 : TotalDamage / (double)Source.TotalDamageDone;
-        public double PercentOfSourcesMaxDamageDone => Source.MaxDamageDone == 0 ? 0 : TotalDamage / (double)Source.MaxDamageDone;
-        public double PercentOfSourcesTotalDamageDonePlusPets => Source.TotalDamageDonePlusPets == 0 ? 0 : TotalDamage / (double)Source.TotalDamageDonePlusPets;
-        public double PercentOfSourcesMaxDamageDonePlusPets => Source.MaxDamageDonePlusPets == 0 ? 0 : TotalDamage / (double)Source.MaxDamageDonePlusPets;
+        public double? PercentOfSourcesTotalDamageDone => TotalDamage / Source.TotalDamageDone.NullIfZero();
+        public double? PercentOfSourcesMaxDamageDone => TotalDamage / Source.MaxDamageDone.NullIfZero();
+        public double? PercentOfSourcesTotalDamageDonePlusPets => TotalDamage / Source.TotalDamageDonePlusPets.NullIfZero();
+        public double? PercentOfSourcesMaxDamageDonePlusPets => TotalDamage / Source.MaxDamageDonePlusPets.NullIfZero();
 
-        public double PercentPlusPetsOfSourcesTotalDamageDonePlusPets => Source.TotalDamageDonePlusPets == 0 ? 0 : TotalDamagePlusPets / (double)Source.TotalDamageDonePlusPets;
-        public double PercentPlusPetsOfSourcesMaxDamageDonePlusPets => Source.MaxDamageDonePlusPets == 0 ? 0 : TotalDamagePlusPets / (double)Source.MaxDamageDonePlusPets;
+        public double? PercentPlusPetsOfSourcesTotalDamageDonePlusPets => TotalDamagePlusPets / Source.TotalDamageDonePlusPets.NullIfZero();
+        public double? PercentPlusPetsOfSourcesMaxDamageDonePlusPets => TotalDamagePlusPets / Source.MaxDamageDonePlusPets.NullIfZero();
 
-        public double PercentOfTargetsTotalDamageTaken => Target.TotalDamageTaken == 0 ? 0 : TotalDamage / (double)Target.TotalDamageTaken;
-        public double PercentOfTargetsMaxDamageTaken => Target.MaxDamageTaken == 0 ? 0 : TotalDamage / (double)Target.MaxDamageTaken;
-        public double PercentOfTargetsMaxDamagePlusPetsTaken => Target.MaxDamagePlusPetsTaken == 0 ? 0 : TotalDamage / (double)Target.MaxDamagePlusPetsTaken;
+        public double? PercentOfTargetsTotalDamageTaken => TotalDamage / Target.TotalDamageTaken.NullIfZero();
+        public double? PercentOfTargetsMaxDamageTaken => TotalDamage / Target.MaxDamageTaken.NullIfZero();
+        public double? PercentOfTargetsMaxDamagePlusPetsTaken => TotalDamage / Target.MaxDamagePlusPetsTaken.NullIfZero();
 
-        public double PercentPlusPetsOfTargetsTotalDamageTaken => Target.TotalDamageTaken == 0 ? 0 : TotalDamagePlusPets / (double)Target.TotalDamageTaken;
-        public double PercentPlusPetsOfTargetsMaxDamagePlusPetsTaken => Target.MaxDamagePlusPetsTaken == 0 ? 0 : TotalDamagePlusPets / (double)Target.MaxDamagePlusPetsTaken;
+        public double? PercentPlusPetsOfTargetsTotalDamageTaken => TotalDamagePlusPets / Target.TotalDamageTaken.NullIfZero();
+        public double? PercentPlusPetsOfTargetsMaxDamagePlusPetsTaken => TotalDamagePlusPets / Target.MaxDamagePlusPetsTaken.NullIfZero();
 
         protected readonly Dictionary<DamageType, int> _damageTypeHits = new Dictionary<DamageType, int>();
         protected readonly Dictionary<DamageType, long> _damageTypeDamages = new Dictionary<DamageType, long>();
         public IReadOnlyDictionary<DamageType, int> DamageTypeHits => _damageTypeHits;
         public IReadOnlyDictionary<DamageType, long> DamageTypeDamages => _damageTypeDamages;
 
-        public bool HasDamageTypeDamage(DamageType damageType)
-            => DamageTypeDamages.ContainsKey(damageType);
-
-        public bool HasSpecials
-            => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamage);
-
-        public int? GetAverageDamageTypeDamage(DamageType damageType)
-            => DamageTypeDamages.TryGetValue(damageType, out long damageTypeDamage)
-            ? (int?)(damageTypeDamage / DamageTypeHits[damageType]) : null;
+        public bool HasDamageTypeDamage(DamageType damageType) => DamageTypeDamages.ContainsKey(damageType);
+        public bool HasSpecials => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamage);
+        public int? GetDamageTypeHits(DamageType damageType) => DamageTypeHits.TryGetValue(damageType, out int damageTypeHits) ? damageTypeHits : (int?)null;
+        public long? GetDamageTypeDamage(DamageType damageType) => DamageTypeDamages.TryGetValue(damageType, out long damageTypeDamage) ? damageTypeDamage : (long?)null;
+        public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);
 
         public void AddAttackEvent(AttackEvent attackEvent)
         {

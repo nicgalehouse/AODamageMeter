@@ -13,7 +13,7 @@ namespace AODamageMeter.UI.Helpers
             .ToDictionary(p => p, p => Color.FromRgb(p.Color.R, p.Color.G, p.Color.B));
 
         public static string GetIconPath(this Profession profession)
-            => profession == null ? $"/Icons/NPC.png" : _professionIconPaths[profession] ;
+            => profession == null ? $"/Icons/NPC.png" : _professionIconPaths[profession];
 
         public static Color GetColor(this Profession profession)
             => _professionColors[profession ?? Profession.Unknown];

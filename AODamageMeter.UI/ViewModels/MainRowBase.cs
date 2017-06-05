@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public abstract class MainRowViewModelBase : RowViewModelBase
+    public abstract class MainRowBase : RowBase
     {
-        public MainRowViewModelBase(FightCharacter fightCharacter)
+        protected MainRowBase(FightCharacter fightCharacter = null)
             : base(fightCharacter)
         { }
 
@@ -23,15 +23,17 @@ namespace AODamageMeter.UI.ViewModels
         public void TryTogglingShowDetails()
             => ShowDetails = CanShowDetails ? !ShowDetails : false;
 
-        protected readonly Dictionary<FightCharacter, RowViewModelBase> _detailRowMap = new Dictionary<FightCharacter, RowViewModelBase>();
-        public ObservableCollection<RowViewModelBase> DetailRows { get; } = new ObservableCollection<RowViewModelBase>();
+        protected readonly Dictionary<FightCharacter, DetailRowBase> _detailRowMap = new Dictionary<FightCharacter, DetailRowBase>();
+        public ObservableCollection<DetailRowBase> DetailRows { get; } = new ObservableCollection<DetailRowBase>();
 
-        public override void Update(int displayIndex)
+        public override void Update(int? displayIndex = null)
         {
+            DisplayIndex = displayIndex ?? DisplayIndex;
             IconPath = FightCharacter.Profession.GetIconPath();
             Color = FightCharacter.Profession.GetColor();
 
-            base.Update(displayIndex);
+            RaisePropertyChanged(nameof(LeftTextToolTip));
+            RaisePropertyChanged(nameof(RightTextToolTip));
         }
     }
 }

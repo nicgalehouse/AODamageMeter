@@ -13,17 +13,17 @@ namespace AODamageMeter.UI.Views
 
             // Matters when font properties change. These two text blocks share the same height, and name's
             // text block has no width-only false positives, so pivot off of its event.
-            NameTextBlock.SizeChanged += (_, e) => 
+            LeftTextBlock.SizeChanged += (_, e) => 
             {
                 if (!e.HeightChanged) return;
 
-                Canvas.SetTop(NameTextBlock, (24 - NameTextBlock.ActualHeight) / 2);
-                Canvas.SetTop(RightTextBlock, (24 - NameTextBlock.ActualHeight) / 2);
+                Canvas.SetTop(LeftTextBlock, (24 - LeftTextBlock.ActualHeight) / 2);
+                Canvas.SetTop(RightTextBlock, (24 - LeftTextBlock.ActualHeight) / 2);
             };
         }
 
         private void Icon_MouseLeftButtonDown_TryTogglingShowDetails(object sender, MouseButtonEventArgs e)
-            => (DataContext as MainRowViewModelBase).TryTogglingShowDetails();
+            => (DataContext as MainRowBase).TryTogglingShowDetails();
 
         public static readonly RoutedEvent ViewProgressionRequestedEvent = EventManager.RegisterRoutedEvent(
             "ViewProgressionRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));

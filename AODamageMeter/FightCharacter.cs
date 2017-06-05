@@ -96,33 +96,23 @@ namespace AODamageMeter
         public long TotalDamageDonePlusPets => TotalDamageDone + FightPets.Sum(p => p.TotalDamageDone);
         public long OwnersOrOwnTotalDamageDonePlusPets => FightPetOwner?.TotalDamageDonePlusPets ?? TotalDamageDonePlusPets;
 
-        public double WeaponDamageDonePS => ActiveDuration.TotalSeconds <= 1 ? WeaponDamageDone : WeaponDamageDone / ActiveDuration.TotalSeconds;
-        public double NanoDamageDonePS => ActiveDuration.TotalSeconds <= 1 ? NanoDamageDone : NanoDamageDone / ActiveDuration.TotalSeconds;
-        public double IndirectDamageDonePS => ActiveDuration.TotalSeconds <= 1 ? IndirectDamageDone : IndirectDamageDone / ActiveDuration.TotalSeconds;
-        public double TotalDamageDonePS => ActiveDuration.TotalSeconds <= 1 ? TotalDamageDone : TotalDamageDone / ActiveDuration.TotalSeconds;
+        public double WeaponDamageDonePM => WeaponDamageDone / ActiveDuration.TotalMinutes;
+        public double NanoDamageDonePM => NanoDamageDone / ActiveDuration.TotalMinutes;
+        public double IndirectDamageDonePM => IndirectDamageDone / ActiveDuration.TotalMinutes;
+        public double TotalDamageDonePM => TotalDamageDone / ActiveDuration.TotalMinutes;
 
-        public double WeaponDamageDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? WeaponDamageDonePlusPets : WeaponDamageDonePlusPets / ActiveDuration.TotalSeconds;
-        public double NanoDamageDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? NanoDamageDonePlusPets : NanoDamageDonePlusPets / ActiveDuration.TotalSeconds;
-        public double IndirectDamageDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? IndirectDamageDonePlusPets : IndirectDamageDonePlusPets / ActiveDuration.TotalSeconds;
-        public double TotalDamageDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? TotalDamageDonePlusPets : TotalDamageDonePlusPets / ActiveDuration.TotalSeconds;
+        public double WeaponDamageDonePMPlusPets => WeaponDamageDonePlusPets / ActiveDuration.TotalMinutes;
+        public double NanoDamageDonePMPlusPets => NanoDamageDonePlusPets / ActiveDuration.TotalMinutes;
+        public double IndirectDamageDonePMPlusPets => IndirectDamageDonePlusPets / ActiveDuration.TotalMinutes;
+        public double TotalDamageDonePMPlusPets => TotalDamageDonePlusPets / ActiveDuration.TotalMinutes;
 
-        public double WeaponDamageDonePM => 60 * WeaponDamageDonePS;
-        public double NanoDamageDonePM => 60 * NanoDamageDonePS;
-        public double IndirectDamageDonePM => 60 * IndirectDamageDonePS;
-        public double TotalDamageDonePM => 60 * TotalDamageDonePS;
+        public double? WeaponPercentOfTotalDamageDone => WeaponDamageDone / TotalDamageDone.NullIfZero();
+        public double? NanoPercentOfTotalDamageDone => NanoDamageDone / TotalDamageDone.NullIfZero();
+        public double? IndirectPercentOfTotalDamageDone => IndirectDamageDone / TotalDamageDone.NullIfZero();
 
-        public double WeaponDamageDonePMPlusPets => 60 * WeaponDamageDonePSPlusPets;
-        public double NanoDamageDonePMPlusPets => 60 * NanoDamageDonePSPlusPets;
-        public double IndirectDamageDonePMPlusPets => 60 * IndirectDamageDonePSPlusPets;
-        public double TotalDamageDonePMPlusPets => 60 * TotalDamageDonePSPlusPets;
-
-        public double WeaponPercentOfTotalDamageDone => TotalDamageDone == 0 ? 0 : WeaponDamageDone / (double)TotalDamageDone;
-        public double NanoPercentOfTotalDamageDone => TotalDamageDone == 0 ? 0 : NanoDamageDone / (double)TotalDamageDone;
-        public double IndirectPercentOfTotalDamageDone => TotalDamageDone == 0 ? 0 : IndirectDamageDone / (double)TotalDamageDone;
-
-        public double WeaponPercentOfTotalDamageDonePlusPets => TotalDamageDonePlusPets == 0 ? 0 : WeaponDamageDonePlusPets / (double)TotalDamageDonePlusPets;
-        public double NanoPercentOfTotalDamageDonePlusPets => TotalDamageDonePlusPets == 0 ? 0 : NanoDamageDonePlusPets / (double)TotalDamageDonePlusPets;
-        public double IndirectPercentOfTotalDamageDonePlusPets => TotalDamageDonePlusPets == 0 ? 0 : IndirectDamageDonePlusPets / (double)TotalDamageDonePlusPets;
+        public double? WeaponPercentOfTotalDamageDonePlusPets => WeaponDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
+        public double? NanoPercentOfTotalDamageDonePlusPets => NanoDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
+        public double? IndirectPercentOfTotalDamageDonePlusPets => IndirectDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
 
         public int WeaponHitsDone { get; protected set; }
         public int CritsDone { get; protected set; }
@@ -142,127 +132,74 @@ namespace AODamageMeter
         public int IndirectHitsDonePlusPets => IndirectHitsDone + FightPets.Sum(p => p.IndirectHitsDone);
         public int TotalHitsDonePlusPets => TotalHitsDone + FightPets.Sum(p => p.TotalHitsDone);
 
-        public double WeaponHitsDonePS => ActiveDuration.TotalSeconds <= 1 ? WeaponHitsDone : WeaponHitsDone / ActiveDuration.TotalSeconds;
-        public double CritsDonePS => ActiveDuration.TotalSeconds <= 1 ? CritsDone : CritsDone / ActiveDuration.TotalSeconds;
-        public double GlancesDonePS => ActiveDuration.TotalSeconds <= 1 ? GlancesDone : GlancesDone / ActiveDuration.TotalSeconds;
-        public double MissesDonePS => ActiveDuration.TotalSeconds <= 1 ? MissesDone : MissesDone / ActiveDuration.TotalSeconds;
-        public double WeaponHitAttemptsDonePS => ActiveDuration.TotalSeconds <= 1 ? WeaponHitAttemptsDone : WeaponHitAttemptsDone / ActiveDuration.TotalSeconds;
-        public double NanoHitsDonePS => ActiveDuration.TotalSeconds <= 1 ? NanoHitsDone : NanoHitsDone / ActiveDuration.TotalSeconds;
-        public double IndirectHitsDonePS => ActiveDuration.TotalSeconds <= 1 ? IndirectHitsDone : IndirectHitsDone / ActiveDuration.TotalSeconds;
-        public double TotalHitsDonePS => ActiveDuration.TotalSeconds <= 1 ? TotalHitsDone : TotalHitsDone / ActiveDuration.TotalSeconds;
+        public double WeaponHitsDonePM => WeaponHitsDone / ActiveDuration.TotalMinutes;
+        public double CritsDonePM => CritsDone / ActiveDuration.TotalMinutes;
+        public double GlancesDonePM => GlancesDone / ActiveDuration.TotalMinutes;
+        public double MissesDonePM => MissesDone / ActiveDuration.TotalMinutes;
+        public double WeaponHitAttemptsDonePM => WeaponHitAttemptsDone / ActiveDuration.TotalMinutes;
+        public double NanoHitsDonePM => NanoHitsDone / ActiveDuration.TotalMinutes;
+        public double IndirectHitsDonePM => IndirectHitsDone / ActiveDuration.TotalMinutes;
+        public double TotalHitsDonePM => TotalHitsDone / ActiveDuration.TotalMinutes;
 
-        public double WeaponHitsDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? WeaponHitsDonePlusPets : WeaponHitsDonePlusPets / ActiveDuration.TotalSeconds;
-        public double CritsDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? CritsDonePlusPets : CritsDonePlusPets / ActiveDuration.TotalSeconds;
-        public double GlancesDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? GlancesDonePlusPets : GlancesDonePlusPets / ActiveDuration.TotalSeconds;
-        public double MissesDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? MissesDonePlusPets : MissesDonePlusPets / ActiveDuration.TotalSeconds;
-        public double WeaponHitAttemptsDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? WeaponHitAttemptsDonePlusPets : WeaponHitAttemptsDonePlusPets / ActiveDuration.TotalSeconds;
-        public double NanoHitsDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? NanoHitsDonePlusPets : NanoHitsDonePlusPets / ActiveDuration.TotalSeconds;
-        public double IndirectHitsDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? IndirectHitsDonePlusPets : IndirectHitsDonePlusPets / ActiveDuration.TotalSeconds;
-        public double TotalHitsDonePSPlusPets => ActiveDuration.TotalSeconds <= 1 ? TotalHitsDonePlusPets : TotalHitsDonePlusPets / ActiveDuration.TotalSeconds;
+        public double WeaponHitsDonePMPlusPets => WeaponHitsDonePlusPets / ActiveDuration.TotalMinutes;
+        public double CritsDonePMPlusPets => CritsDonePlusPets / ActiveDuration.TotalMinutes;
+        public double GlancesDonePMPlusPets => GlancesDonePlusPets / ActiveDuration.TotalMinutes;
+        public double MissesDonePMPlusPets => MissesDonePlusPets / ActiveDuration.TotalMinutes;
+        public double WeaponHitAttemptsDonePMPlusPets => WeaponHitAttemptsDonePlusPets / ActiveDuration.TotalMinutes;
+        public double NanoHitsDonePMPlusPets => NanoHitsDonePlusPets / ActiveDuration.TotalMinutes;
+        public double IndirectHitsDonePMPlusPets => IndirectHitsDonePlusPets / ActiveDuration.TotalMinutes;
+        public double TotalHitsDonePMPlusPets => TotalHitsDonePlusPets / ActiveDuration.TotalMinutes;
 
-        public double WeaponHitsDonePM => 60 * WeaponHitsDonePS;
-        public double CritsDonePM => 60 * CritsDonePS;
-        public double GlancesDonePM => 60 * GlancesDonePS;
-        public double MissesDonePM => 60 * MissesDonePS;
-        public double WeaponHitAttemptsDonePM => 60 * WeaponHitAttemptsDonePS;
-        public double NanoHitsDonePM => 60 * NanoHitsDonePS;
-        public double IndirectHitsDonePM => 60 * IndirectHitsDonePS;
-        public double TotalHitsDonePM => 60 * TotalHitsDonePS;
+        public double? WeaponHitDoneChance => WeaponHitsDone / WeaponHitAttemptsDone.NullIfZero();
+        public double? CritDoneChance => CritsDone / WeaponHitAttemptsDone.NullIfZero();
+        public double? GlanceDoneChance => GlancesDone / WeaponHitAttemptsDone.NullIfZero();
+        public double? MissDoneChance => MissesDone / WeaponHitAttemptsDone.NullIfZero();
 
-        public double WeaponHitsDonePMPlusPets => 60 * WeaponHitsDonePSPlusPets;
-        public double CritsDonePMPlusPets => 60 * CritsDonePSPlusPets;
-        public double GlancesDonePMPlusPets => 60 * GlancesDonePSPlusPets;
-        public double MissesDonePMPlusPets => 60 * MissesDonePSPlusPets;
-        public double WeaponHitAttemptsDonePMPlusPets => 60 * WeaponHitAttemptsDonePSPlusPets;
-        public double NanoHitsDonePMPlusPets => 60 * NanoHitsDonePSPlusPets;
-        public double IndirectHitsDonePMPlusPets => 60 * IndirectHitsDonePSPlusPets;
-        public double TotalHitsDonePMPlusPets => 60 * TotalHitsDonePSPlusPets;
+        public double? WeaponHitDoneChancePlusPets => WeaponHitsDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
+        public double? CritDoneChancePlusPets => CritsDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
+        public double? GlanceDoneChancePlusPets => GlancesDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
+        public double? MissDoneChancePlusPets => MissesDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
 
-        public double WeaponHitDoneChance => WeaponHitAttemptsDone == 0 ? 0 : WeaponHitsDone / (double)WeaponHitAttemptsDone;
-        public double CritDoneChance => WeaponHitAttemptsDone == 0 ? 0 : CritsDone / (double)WeaponHitAttemptsDone;
-        public double GlanceDoneChance => WeaponHitAttemptsDone == 0 ? 0 : GlancesDone / (double)WeaponHitAttemptsDone;
-        public double MissDoneChance => WeaponHitAttemptsDone == 0 ? 0 : MissesDone / (double)WeaponHitAttemptsDone;
+        public double? AverageWeaponDamageDone => WeaponDamageDone / WeaponHitsDone.NullIfZero();
+        public double? AverageCritDamageDone => CritDamageDone / CritsDone.NullIfZero();
+        public double? AverageGlanceDamageDone => GlanceDamageDone / GlancesDone.NullIfZero();
+        public double? AverageNanoDamageDone => NanoDamageDone / NanoHitsDone.NullIfZero();
+        public double? AverageIndirectDamageDone => IndirectDamageDone / IndirectHitsDone.NullIfZero();
 
-        public double WeaponHitDoneChancePlusPets => WeaponHitAttemptsDonePlusPets == 0 ? 0 : WeaponHitsDonePlusPets / (double)WeaponHitAttemptsDonePlusPets;
-        public double CritDoneChancePlusPets => WeaponHitAttemptsDonePlusPets == 0 ? 0 : CritsDonePlusPets / (double)WeaponHitAttemptsDonePlusPets;
-        public double GlanceDoneChancePlusPets => WeaponHitAttemptsDonePlusPets == 0 ? 0 : GlancesDonePlusPets / (double)WeaponHitAttemptsDonePlusPets;
-        public double MissDoneChancePlusPets => WeaponHitAttemptsDonePlusPets == 0 ? 0 : MissesDonePlusPets / (double)WeaponHitAttemptsDonePlusPets;
+        public double? AverageWeaponDamageDonePlusPets => WeaponDamageDonePlusPets / WeaponHitsDonePlusPets.NullIfZero();
+        public double? AverageCritDamageDonePlusPets => CritDamageDonePlusPets / CritsDonePlusPets.NullIfZero();
+        public double? AverageGlanceDamageDonePlusPets => GlanceDamageDonePlusPets / GlancesDonePlusPets.NullIfZero();
+        public double? AverageNanoDamageDonePlusPets => NanoDamageDonePlusPets / NanoHitsDonePlusPets.NullIfZero();
+        public double? AverageIndirectDamageDonePlusPets => IndirectDamageDonePlusPets / IndirectHitsDonePlusPets.NullIfZero();
 
-        public double AverageWeaponDamageDone => WeaponHitsDone == 0 ? 0 : WeaponDamageDone / (double)WeaponHitsDone;
-        public double AverageCritDamageDone => CritsDone == 0 ? 0 : CritDamageDone / (double)CritsDone;
-        public double AverageGlanceDamageDone => GlancesDone == 0 ? 0 : GlanceDamageDone / (double)GlancesDone;
-        public double AverageNanoDamageDone => NanoHitsDone == 0 ? 0 : NanoDamageDone / (double)NanoHitsDone;
-        public double AverageIndirectDamageDone => IndirectHitsDone == 0 ? 0 : IndirectDamageDone / (double)IndirectHitsDone;
+        public double? PercentOfOwnersOrOwnTotalDamageDonePlusPets => TotalDamageDone / OwnersOrOwnTotalDamageDonePlusPets.NullIfZero();
 
-        public double AverageWeaponDamageDonePlusPets => WeaponHitsDonePlusPets == 0 ? 0 : WeaponDamageDonePlusPets / (double)WeaponHitsDonePlusPets;
-        public double AverageCritDamageDonePlusPets => CritsDonePlusPets == 0 ? 0 : CritDamageDonePlusPets / (double)CritsDonePlusPets;
-        public double AverageGlanceDamageDonePlusPets => GlancesDonePlusPets == 0 ? 0 : GlanceDamageDonePlusPets / (double)GlancesDonePlusPets;
-        public double AverageNanoDamageDonePlusPets => NanoHitsDonePlusPets == 0 ? 0 : NanoDamageDonePlusPets / (double)NanoHitsDonePlusPets;
-        public double AverageIndirectDamageDonePlusPets => IndirectHitsDonePlusPets == 0 ? 0 : IndirectDamageDonePlusPets / (double)IndirectHitsDonePlusPets;
+        public double? PercentOfFightsTotalDamageDone => TotalDamageDone / Fight.TotalDamageDone.NullIfZero();
+        public double? PercentOfFightsMaxDamageDone => TotalDamageDone / Fight.MaxDamageDone.NullIfZero();
+        public double? PercentOfFightsMaxDamageDonePlusPets => TotalDamageDone / Fight.MaxDamageDonePlusPets.NullIfZero();
 
-        public double PercentOfOwnersOrOwnTotalDamageDonePlusPets => OwnersOrOwnTotalDamageDonePlusPets == 0 ? 0 : TotalDamageDone / (double)OwnersOrOwnTotalDamageDonePlusPets;
-
-        public double PercentOfFightsTotalDamageDone => Fight.TotalDamageDone == 0 ? 0 : TotalDamageDone / (double)Fight.TotalDamageDone;
-        public double PercentOfFightsMaxDamageDone => Fight.MaxDamageDone == 0 ? 0 : TotalDamageDone / (double)Fight.MaxDamageDone;
-        public double PercentOfFightsMaxDamageDonePlusPets => Fight.MaxDamageDonePlusPets == 0 ? 0 : TotalDamageDone / (double)Fight.MaxDamageDonePlusPets;
-
-        public double PercentPlusPetsOfFightsTotalDamageDone => Fight.TotalDamageDone == 0 ? 0 : TotalDamageDonePlusPets / (double)Fight.TotalDamageDone;
-        public double PercentPlusPetsOfFightsMaxDamageDonePlusPets => Fight.MaxDamageDonePlusPets == 0 ? 0 : TotalDamageDonePlusPets / (double)Fight.MaxDamageDonePlusPets;
+        public double? PercentPlusPetsOfFightsTotalDamageDone => TotalDamageDonePlusPets / Fight.TotalDamageDone.NullIfZero();
+        public double? PercentPlusPetsOfFightsMaxDamageDonePlusPets => TotalDamageDonePlusPets / Fight.MaxDamageDonePlusPets.NullIfZero();
 
         protected readonly Dictionary<FightCharacter, DamageInfo> _damageDoneInfosByTarget = new Dictionary<FightCharacter, DamageInfo>();
         public IReadOnlyDictionary<FightCharacter, DamageInfo> DamageDoneInfosByTarget => _damageDoneInfosByTarget;
         public IReadOnlyCollection<DamageInfo> DamageDoneInfos => _damageDoneInfosByTarget.Values;
 
-        protected bool _isMaxDamageDoneCurrent;
-        protected long _maxDamageDone;
-        public long MaxDamageDone
-        {
-            get
-            {
-                if (!_isMaxDamageDoneCurrent)
-                {
-                    _maxDamageDone = DamageDoneInfos.Any() ? DamageDoneInfos.Max(i => i.TotalDamage) : 0;
-                    _isMaxDamageDoneCurrent = true;
-                }
-
-                return _maxDamageDone;
-            }
-        }
-
-        protected bool _isMaxDamageDonePlusPetsCurrent;
-        protected long _maxDamageDonePlusPets;
-        public long MaxDamageDonePlusPets
-        {
-            get
-            {
-                if (!_isMaxDamageDonePlusPetsCurrent)
-                {
-                    _maxDamageDonePlusPets = DamageDoneInfos.Any() ? DamageDoneInfos.Max(i => i.TotalDamagePlusPets) : 0;
-                    _isMaxDamageDonePlusPetsCurrent = true;
-                }
-
-                return _maxDamageDonePlusPets;
-            }
-        }
+        protected long? _maxDamageDone, _maxDamageDonePlusPets;
+        public long? MaxDamageDone => _maxDamageDone ?? (_maxDamageDone = DamageDoneInfos.NullableMax(i => i.TotalDamage));
+        public long? MaxDamageDonePlusPets => _maxDamageDonePlusPets ?? (_maxDamageDonePlusPets = DamageDoneInfos.NullableMax(i => i.TotalDamagePlusPets));
 
         protected readonly Dictionary<DamageType, int> _damageTypeHitsDone = new Dictionary<DamageType, int>();
         protected readonly Dictionary<DamageType, long> _damageTypeDamagesDone = new Dictionary<DamageType, long>();
         public IReadOnlyDictionary<DamageType, int> DamageTypeHitsDone => _damageTypeHitsDone;
         public IReadOnlyDictionary<DamageType, long> DamageTypeDamagesDone => _damageTypeDamagesDone;
 
-        public bool HasDamageTypeDamageDone(DamageType damageType)
-            => DamageTypeDamagesDone.ContainsKey(damageType);
-
-        public bool HasSpecialsDone
-            => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamageDone);
-
-        public int? GetAverageDamageTypeDamageDone(DamageType damageType)
-            => DamageTypeDamagesDone.TryGetValue(damageType, out long damageTypeDamageDone)
-            ? (int?)(damageTypeDamageDone / DamageTypeHitsDone[damageType]) : null;
-
-        public double? GetSecondsPerDamageTypeHitDone(DamageType damageType) // For special damage types this approximates the 'recharge'.
-            => DamageTypeHitsDone.TryGetValue(damageType, out int damageTypeHitsDone)
-            ? ActiveDuration.TotalSeconds / damageTypeHitsDone : (double?)null;
+        public bool HasDamageTypeDamageDone(DamageType damageType) => DamageTypeDamagesDone.ContainsKey(damageType);
+        public bool HasSpecialsDone => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamageDone);
+        public int? GetDamageTypeHitsDone(DamageType damageType) => DamageTypeHitsDone.TryGetValue(damageType, out int damageTypeHitsDone) ? damageTypeHitsDone : (int?)null;
+        public long? GetDamageTypeDamageDone(DamageType damageType) => DamageTypeDamagesDone.TryGetValue(damageType, out long damageTypeDamageDone) ? damageTypeDamageDone : (long?)null;
+        public double? GetAverageDamageTypeDamageDone(DamageType damageType) => GetDamageTypeDamageDone(damageType) / (double?)GetDamageTypeHitsDone(damageType);
+        public double? GetSecondsPerDamageTypeHitDone(DamageType damageType) => ActiveDuration.TotalSeconds / GetDamageTypeHitsDone(damageType);
 
         public long WeaponDamageTaken { get; protected set; }
         public long CritDamageTaken { get; protected set; }
@@ -282,66 +219,31 @@ namespace AODamageMeter
         public int TotalHitsTaken => WeaponHitsTaken + NanoHitsTaken + IndirectHitsTaken;
         public int HitsAbsorbed { get; protected set; }
 
-        public double WeaponHitTakenChance => WeaponHitAttemptsTaken == 0 ? 0 : WeaponHitsTaken / (double)WeaponHitAttemptsTaken;
-        public double CritTakenChance => WeaponHitAttemptsTaken == 0 ? 0 : CritsTaken / (double)WeaponHitAttemptsTaken;
-        public double GlanceTakenChance => WeaponHitAttemptsTaken == 0 ? 0 : GlancesTaken / (double)WeaponHitAttemptsTaken;
-        public double MissTakenChance => WeaponHitAttemptsTaken == 0 ? 0 : MissesTaken / (double)WeaponHitAttemptsTaken;
+        public double? WeaponHitTakenChance => WeaponHitsTaken / WeaponHitAttemptsTaken.NullIfZero();
+        public double? CritTakenChance => CritsTaken / WeaponHitAttemptsTaken.NullIfZero();
+        public double? GlanceTakenChance => GlancesTaken / WeaponHitAttemptsTaken.NullIfZero();
+        public double? MissTakenChance => MissesTaken / WeaponHitAttemptsTaken.NullIfZero();
 
         protected readonly Dictionary<FightCharacter, DamageInfo> _damageTakenInfosBySource = new Dictionary<FightCharacter, DamageInfo>();
         public IReadOnlyDictionary<FightCharacter, DamageInfo> DamageTakenInfosBySource => _damageTakenInfosBySource;
         public IReadOnlyCollection<DamageInfo> DamageTakenInfos => _damageTakenInfosBySource.Values;
 
-        protected bool _isMaxDamageTakenCurrent;
-        protected long _maxDamageTaken;
-        public long MaxDamageTaken
-        {
-            get
-            {
-                if (!_isMaxDamageTakenCurrent)
-                {
-                    _maxDamageTaken = DamageTakenInfos.Any() ? DamageTakenInfos.Max(i => i.TotalDamage) : 0;
-                    _isMaxDamageTakenCurrent = true;
-                }
-
-                return _maxDamageTaken;
-            }
-        }
-
+        protected long? _maxDamageTaken, _maxDamagePlusPetsTaken;
+        public long? MaxDamageTaken => _maxDamageTaken ?? (_maxDamageTaken = DamageTakenInfos.NullableMax(i => i.TotalDamage));
         // Intentionally weird naming. It's not max (this + pets have taken from a source), it's max (this has taken from a source + pets).
-        protected bool _isMaxDamagePlusPetsTakenCurrent;
-        protected long _maxDamagePlusPetsTaken;
-        public long MaxDamagePlusPetsTaken
-        {
-            get
-            {
-                if (!_isMaxDamagePlusPetsTakenCurrent)
-                {
-                    _maxDamagePlusPetsTaken = DamageTakenInfosBySource.Any() ? DamageTakenInfosBySource.Values.Max(i => i.TotalDamagePlusPets) : 0;
-                    _isMaxDamagePlusPetsTakenCurrent = true;
-                }
-
-                return _maxDamagePlusPetsTaken;
-            }
-        }
+        public long? MaxDamagePlusPetsTaken => _maxDamagePlusPetsTaken ?? (_maxDamagePlusPetsTaken = DamageTakenInfos.NullableMax(i => i.TotalDamagePlusPets));
 
         protected readonly Dictionary<DamageType, int> _damageTypeHitsTaken = new Dictionary<DamageType, int>();
         protected readonly Dictionary<DamageType, long> _damageTypeDamagesTaken = new Dictionary<DamageType, long>();
         public IReadOnlyDictionary<DamageType, int> DamageTypeHitsTaken => _damageTypeHitsTaken;
         public IReadOnlyDictionary<DamageType, long> DamageTypeDamagesTaken => _damageTypeDamagesTaken;
 
-        public bool HasDamageTypeDamageTaken(DamageType damageType)
-            => DamageTypeDamagesTaken.ContainsKey(damageType);
-
-        public bool HasSpecialsTaken
-            => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamageTaken);
-
-        public int? GetAverageDamageTypeDamageTaken(DamageType damageType)
-            => DamageTypeDamagesTaken.TryGetValue(damageType, out long damageTypeDamageTaken)
-            ? (int?)(damageTypeDamageTaken / DamageTypeHitsTaken[damageType]) : null;
-
-        public double? GetSecondsPerDamageTypeHitTaken(DamageType damageType) // For special damage types this approximates the 'recharge'.
-            => DamageTypeHitsTaken.TryGetValue(damageType, out int damageTypeHitsTaken)
-            ? ActiveDuration.TotalSeconds / damageTypeHitsTaken : (double?)null;
+        public bool HasDamageTypeDamageTaken(DamageType damageType) => DamageTypeDamagesTaken.ContainsKey(damageType);
+        public bool HasSpecialsTaken => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamageTaken);
+        public int? GetDamageTypeHitsTaken(DamageType damageType) => DamageTypeHitsTaken.TryGetValue(damageType, out int damageTypeHitsTaken) ? damageTypeHitsTaken : (int?)null;
+        public long? GetDamageTypeDamageTaken(DamageType damageType) => DamageTypeDamagesTaken.TryGetValue(damageType, out long damageTypeDamageTaken) ? damageTypeDamageTaken : (long?)null;
+        public double? GetAverageDamageTypeDamageTaken(DamageType damageType) => GetDamageTypeDamageTaken(damageType) / (double?)GetDamageTypeHitsTaken(damageType);
+        public double? GetSecondsPerDamageTypeHitTaken(DamageType damageType) => ActiveDuration.TotalSeconds / GetDamageTypeHitsTaken(damageType);
 
         // We only know about healing where the owner is a source or target. When the owner is the source, we don't know
         // about realized healing. So overhealing stats only when non-owner source and owner target--non-owner source has
@@ -372,10 +274,10 @@ namespace AODamageMeter
         public int CastResistedCount { get; protected set; }
         public int CastCounteredCount { get; protected set; }
         public int CastAbortedCount { get; protected set; }
-        public double CastSuccessChance => CastAttempts == 0 ? 0 : CastSuccessCount / (double)CastAttempts;
-        public double CastResistedChance => CastAttempts == 0 ? 0 : CastResistedCount / (double)CastAttempts;
-        public double CastCounteredChance => CastAttempts == 0 ? 0 : CastCounteredCount / (double)CastAttempts;
-        public double CastAbortedChance => CastAttempts == 0 ? 0 : CastAbortedCount / (double)CastAttempts;
+        public double? CastSuccessChance => CastSuccessCount / CastAttempts.NullIfZero();
+        public double? CastResistedChance => CastResistedCount / CastAttempts.NullIfZero();
+        public double? CastCounteredChance => CastCounteredCount / CastAttempts.NullIfZero();
+        public double? CastAbortedChance => CastAbortedCount / CastAttempts.NullIfZero();
         public int CastUnavailableCount { get; protected set; }
 
         public void AddSourceAttackEvent(AttackEvent attackEvent)
@@ -431,10 +333,9 @@ namespace AODamageMeter
                     this._damageDoneInfosByTarget[attackEvent.Target] = damageInfo;
                     attackEvent.Target._damageTakenInfosBySource[this] = damageInfo;
                 }
-                _isMaxDamageDoneCurrent = false;
-                _isMaxDamageDonePlusPetsCurrent = false;
-                attackEvent.Target._isMaxDamageTakenCurrent = false;
-                attackEvent.Target._isMaxDamagePlusPetsTakenCurrent = false;
+
+                _maxDamageDone = _maxDamageDonePlusPets = null;
+                attackEvent.Target._maxDamageTaken = attackEvent.Target._maxDamagePlusPetsTaken = null;
             }
 
             if (attackEvent.DamageType.HasValue)

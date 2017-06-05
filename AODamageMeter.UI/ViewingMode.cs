@@ -2,7 +2,12 @@
 {
     public enum ViewingMode
     {
+        ViewingModes,
         DamageDone,
-        DamageDoneInfo
+        DamageDoneInfo,
+        DamageTaken,
+        DamageTakenInfo,
+        HealingYouveDone,
+        HealingYouveTaken
     }
 }

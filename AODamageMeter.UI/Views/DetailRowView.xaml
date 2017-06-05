@@ -4,9 +4,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
-             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DetailRowViewModelBase}"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:DetailRowBase}"
              d:DesignHeight="27" d:DesignWidth="300">
   <Canvas Height="18" Background="{StaticResource DarkBlueBrush15}">
+    <Image Width="18" Canvas.Left="6"
+           Visibility="{Binding ShowIcon, Converter={StaticResource BoolToVisibilityConverter}}"
+           Source="{Binding IconPath, Converter={StaticResource IconPathToBitmapImageConverter}}"/>
+
     <Rectangle Height="18" Canvas.Left="24"
                Fill="{Binding Color, Converter={StaticResource ColorToRowBrushConverter}}">
       <Rectangle.Width>
@@ -18,17 +22,19 @@
       </Rectangle.Width>
     </Rectangle>
 
-    <TextBlock x:Name="NameTextBlock" Canvas.Left="27"
-               Text="{Binding FightCharacterName, Mode=OneTime}"
+    <TextBlock x:Name="LeftTextBlock" Canvas.Left="27"
+               Text="{Binding LeftText, Mode=OneTime}"
+               ToolTipService.IsEnabled="{Binding IsLeftTextToolTipEnabled}"
                ToolTipService.Placement="Left"
                ToolTipService.HorizontalOffset="-2">
       <TextBlock.ToolTip>
-        <TextBlock Text="{Binding CharacterTooltip}"/>
+        <TextBlock Text="{Binding LeftTextToolTip}"/>
       </TextBlock.ToolTip>
     </TextBlock>
 
     <TextBlock x:Name="RightTextBlock" Canvas.Right="3"
                Text="{Binding RightText}"
+               ToolTipService.IsEnabled="{Binding IsRightTextTooltipEnabled}"
                ToolTipService.Placement="Right"
                ToolTipService.HorizontalOffset="2">
       <TextBlock.ToolTip>
