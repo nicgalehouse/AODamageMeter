@@ -4,12 +4,12 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneInfoDetailRow : DetailRowBase
+    public sealed class DamageDoneInfoDetailRow : DetailRowBase
     {
-        public DamageDoneInfoDetailRow(FightCharacter fightCharacter, FightCharacter target)
-            : base(fightCharacter)
+        public DamageDoneInfoDetailRow(FightCharacter source, FightCharacter target)
+            : base(source)
         {
-            Source = FightCharacter;
+            Source = source;
             Target = target;
         }
 
@@ -26,7 +26,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     string specialsDoneInfo = (DamageDoneInfo?.HasSpecials ?? false) ?
 $@"
 
-{DamageDoneInfo.GetSpecialsDoneInfo()}" : null;
+{DamageDoneInfo.GetSpecialsInfo()}" : null;
 
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
@@ -35,11 +35,11 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
   {DamageDoneInfo?.CritChance.FormatPercent() ?? EmDash} crit chance
   {DamageDoneInfo?.GlanceChance.FormatPercent() ?? EmDash} glance chance
 
-{DamageDoneInfo.AverageWeaponDamage.Format()} weapon dmg / hit
-  {DamageDoneInfo.AverageCritDamage.Format()} crit dmg / hit
-  {DamageDoneInfo.AverageGlanceDamage.Format()} glance dmg / hit
-{DamageDoneInfo.AverageNanoDamage.Format()} nano dmg / hit
-{DamageDoneInfo.AverageIndirectDamage.Format()} indirect dmg / hit{specialsDoneInfo}";
+{DamageDoneInfo?.AverageWeaponDamage.Format() ?? EmDash} weapon dmg / hit
+  {DamageDoneInfo?.AverageCritDamage.Format() ?? EmDash} crit dmg / hit
+  {DamageDoneInfo?.AverageGlanceDamage.Format() ?? EmDash} glance dmg / hit
+{DamageDoneInfo?.AverageNanoDamage.Format() ?? EmDash} nano dmg / hit
+{DamageDoneInfo?.AverageIndirectDamage.Format() ?? EmDash} indirect dmg / hit{specialsDoneInfo}";
                 }
             }
         }
@@ -49,7 +49,7 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
             DamageDoneInfo = DamageDoneInfo ?? Source.DamageDoneInfosByTarget.GetValueOrFallback(Target);
 
             PercentWidth = DamageDoneInfo?.PercentOfOwnersOrOwnMaxDamageDonePlusPets ?? 0;
-            double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+            double? percentDone = Settings.Default.ShowPercentOfTotal
                 ? DamageDoneInfo?.PercentOfOwnersOrOwnTotalDamageDonePlusPets : DamageDoneInfo?.PercentOfOwnersOrOwnMaxDamageDonePlusPets;
             RightText = $"{DamageDoneInfo?.TotalDamage.Format() ?? EmDash} ({DamageDoneInfo?.PercentOfOwnersOrOwnTotalDamagePlusPets.FormatPercent() ?? EmDash}, {percentDone.FormatPercent()})";
 

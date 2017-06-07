@@ -3,7 +3,7 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneDetailRow : DetailRowBase
+    public sealed class DamageDoneDetailRow : DetailRowBase
     {
         public DamageDoneDetailRow(FightCharacter fightCharacter)
             : base(fightCharacter)
@@ -52,7 +52,7 @@ $@"{DisplayIndex}. {FightCharacterName}
         public override void Update(int? displayIndex = null)
         {
             PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets ?? 0;
-            double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+            double? percentDone = Settings.Default.ShowPercentOfTotal
                 ? FightCharacter.PercentOfFightsTotalDamageDone : FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
             RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets.FormatPercent()}, {percentDone.FormatPercent()})";
 

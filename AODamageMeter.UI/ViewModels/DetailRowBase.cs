@@ -12,8 +12,6 @@ namespace AODamageMeter.UI.ViewModels
 
         public override void Update(int? displayIndex = null)
         {
-            DisplayIndex = displayIndex ?? DisplayIndex;
-
             if (ShowIcon)
             {
                 IconPath = FightCharacter.Profession.GetIconPath();
@@ -21,8 +19,7 @@ namespace AODamageMeter.UI.ViewModels
 
             Color = FightCharacter.IsFightPet ? FightCharacter.FightPetOwner.Profession.GetColor() : FightCharacter.Profession.GetColor();
 
-            RaisePropertyChanged(nameof(LeftTextToolTip));
-            RaisePropertyChanged(nameof(RightTextToolTip));
+            base.Update(displayIndex);
         }
     }
 }

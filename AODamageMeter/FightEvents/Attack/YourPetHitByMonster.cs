@@ -20,6 +20,7 @@ namespace AODamageMeter.FightEvents.Attack
         {
             if (TryMatch(Environment, out Match match))
             {
+                SetSourceToUnknown();
                 SetTarget(match, 1);
                 AttackResult = AttackResult.IndirectHit;
                 SetAmount(match, 2);

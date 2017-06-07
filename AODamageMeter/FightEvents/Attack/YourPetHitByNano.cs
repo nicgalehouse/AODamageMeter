@@ -29,6 +29,7 @@ namespace AODamageMeter.FightEvents.Attack
             }
             else if (TryMatch(Unsourced, out match))
             {
+                SetSourceToUnknown();
                 SetTarget(match, 1);
                 SetAmount(match, 2);
                 SetDamageType(match, 3);

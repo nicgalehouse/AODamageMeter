@@ -41,12 +41,14 @@ namespace AODamageMeter.FightEvents.Attack
             else if (TryMatch(Reflect, out match, out reflect)
                 || TryMatch(Shield, out match, out shield))
             {
+                SetSourceToUnknown();
                 AttackResult = AttackResult.IndirectHit;
                 SetAmount(match, 1);
                 DamageType = reflect ? AODamageMeter.DamageType.Reflect : AODamageMeter.DamageType.Shield;
             }
             else if (TryMatch(Absorb, out match))
             {
+                SetSourceToUnknown();
                 AttackResult = AttackResult.Absorbed;
                 SetAmount(match, 1);
                 SetDamageType(match, 2);

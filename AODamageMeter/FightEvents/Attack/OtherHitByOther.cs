@@ -45,6 +45,7 @@ namespace AODamageMeter.FightEvents.Attack
             else if (TryMatch(WeirdReflect, out match, out weirdReflect)
                 || TryMatch(WeirdShield, out match, out weirdShield))
             {
+                SetSourceToUnknown();
                 SetTarget(match, 1);
                 AttackResult = AttackResult.IndirectHit;
                 SetAmount(match, 2);
@@ -52,6 +53,7 @@ namespace AODamageMeter.FightEvents.Attack
             }
             else if (TryMatch(Absorb, out match))
             {
+                SetSourceAndTargetToUnknown();
                 AttackResult = AttackResult.Absorbed;
                 SetAmount(match, 1);
                 SetDamageType(match, 2);

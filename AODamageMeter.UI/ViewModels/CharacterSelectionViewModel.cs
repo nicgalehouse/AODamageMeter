@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public class CharacterSelectionViewModel : ViewModelBase
+    public sealed class CharacterSelectionViewModel : ViewModelBase
     {
         public CharacterSelectionViewModel()
         {

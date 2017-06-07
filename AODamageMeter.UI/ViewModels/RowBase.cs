@@ -71,6 +71,11 @@ $@"
         public virtual bool IsRightTextTooltipEnabled => true;
         public abstract string RightTextToolTip { get; }
 
-        public abstract void Update(int? displayIndex = null);
+        public virtual void Update(int? displayIndex = null)
+        {
+            DisplayIndex = displayIndex ?? DisplayIndex;
+            RaisePropertyChanged(nameof(LeftTextToolTip));
+            RaisePropertyChanged(nameof(RightTextToolTip));
+        }
     }
 }

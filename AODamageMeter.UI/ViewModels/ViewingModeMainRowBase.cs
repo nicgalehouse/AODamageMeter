@@ -11,7 +11,8 @@ namespace AODamageMeter.UI.ViewModels
         public static IReadOnlyList<ViewingModeMainRowBase> GetRows(Fight fight)
             => new ViewingModeMainRowBase[]
             {
-                new DamageDoneViewingModeMainRow(fight)
+                new DamageDoneViewingModeMainRow(fight),
+                new DamageTakenViewingModeMainRow(fight),
             };
 
         protected ViewingModeMainRowBase(ViewingMode viewingMode,
@@ -42,13 +43,17 @@ $@"
 
 {Fight.GetProfessionsInfo()}" : null;
 
+                    string unknownPlayerInfo = Fight.UnknownPlayerCount != 0 ?
+$@"
+    {Fight.UnknownPlayerCount} {(Fight.UnknownPlayerCount == 1 ? "Unknown" : "Unknowns")}, {Fight.AverageUnknownPlayerLevel.Format()}/{Fight.AverageUnknownPlayerAlienLevel.Format()}" : null;
+
                     return
 $@"{Fight.FightCharacterCount} {(Fight.FightCharacterCount == 1 ? "character" : "characters")}
-  {Fight.PlayerCount} {(Fight.PlayerCount == 1 ? "player" : "players")}
-  {Fight.NPCCount} {(Fight.NPCCount == 1 ? "NPC" : "NPCs")}
-
-{Fight.AveragePlayerLevel.Format()} avg level
-{Fight.AverageAlienLevel.Format()} avg alien level{professionsInfo}";
+  {Fight.PlayerCount} {(Fight.PlayerCount == 1 ? "player" : "players")}, {Fight.AveragePlayerLevel.Format()}/{Fight.AveragePlayerAlienLevel.Format()}
+    {Fight.OmniPlayerCount} {(Fight.OmniPlayerCount == 1 ? "Omni" : "Omnis")}, {Fight.AverageOmniPlayerLevel.Format()}/{Fight.AverageOmniPlayerAlienLevel.Format()}
+    {Fight.ClanPlayerCount} {(Fight.ClanPlayerCount == 1 ? "Clan" : "Clan")}, {Fight.AverageClanPlayerLevel.Format()}/{Fight.AverageClanPlayerAlienLevel.Format()}
+    {Fight.NeutralPlayerCount} {(Fight.NeutralPlayerCount == 1 ? "Neutral" : "Neutrals")}, {Fight.AverageNeutralPlayerLevel.Format()}/{Fight.AverageNeutralPlayerAlienLevel.Format()}{unknownPlayerInfo}
+  {Fight.NPCCount} {(Fight.NPCCount == 1 ? "NPC" : "NPCs")}{professionsInfo}";
                 }
             }
         }

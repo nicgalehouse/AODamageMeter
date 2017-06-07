@@ -174,11 +174,11 @@ namespace AODamageMeter
 
         public double? PercentOfOwnersOrOwnTotalDamageDonePlusPets => TotalDamageDone / OwnersOrOwnTotalDamageDonePlusPets.NullIfZero();
 
-        public double? PercentOfFightsTotalDamageDone => TotalDamageDone / Fight.TotalDamageDone.NullIfZero();
+        public double? PercentOfFightsTotalDamageDone => TotalDamageDone / Fight.TotalDamage.NullIfZero();
         public double? PercentOfFightsMaxDamageDone => TotalDamageDone / Fight.MaxDamageDone.NullIfZero();
         public double? PercentOfFightsMaxDamageDonePlusPets => TotalDamageDone / Fight.MaxDamageDonePlusPets.NullIfZero();
 
-        public double? PercentPlusPetsOfFightsTotalDamageDone => TotalDamageDonePlusPets / Fight.TotalDamageDone.NullIfZero();
+        public double? PercentPlusPetsOfFightsTotalDamageDone => TotalDamageDonePlusPets / Fight.TotalDamage.NullIfZero();
         public double? PercentPlusPetsOfFightsMaxDamageDonePlusPets => TotalDamageDonePlusPets / Fight.MaxDamageDonePlusPets.NullIfZero();
 
         protected readonly Dictionary<FightCharacter, DamageInfo> _damageDoneInfosByTarget = new Dictionary<FightCharacter, DamageInfo>();
@@ -194,6 +194,7 @@ namespace AODamageMeter
         public IReadOnlyDictionary<DamageType, int> DamageTypeHitsDone => _damageTypeHitsDone;
         public IReadOnlyDictionary<DamageType, long> DamageTypeDamagesDone => _damageTypeDamagesDone;
 
+        // Only interested in specials right now, and I'm pretty sure pets don't do those, so don't need pet versions of these methods.
         public bool HasDamageTypeDamageDone(DamageType damageType) => DamageTypeDamagesDone.ContainsKey(damageType);
         public bool HasSpecialsDone => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamageDone);
         public int? GetDamageTypeHitsDone(DamageType damageType) => DamageTypeHitsDone.TryGetValue(damageType, out int damageTypeHitsDone) ? damageTypeHitsDone : (int?)null;
@@ -209,6 +210,15 @@ namespace AODamageMeter
         public long TotalDamageTaken => WeaponDamageTaken + NanoDamageTaken + IndirectDamageTaken;
         public long DamageAbsorbed { get; protected set; }
 
+        public double WeaponDamageTakenPM => WeaponDamageTaken / ActiveDuration.TotalMinutes;
+        public double NanoDamageTakenPM => NanoDamageTaken / ActiveDuration.TotalMinutes;
+        public double IndirectDamageTakenPM => IndirectDamageTaken / ActiveDuration.TotalMinutes;
+        public double TotalDamageTakenPM => TotalDamageTaken / ActiveDuration.TotalMinutes;
+
+        public double? WeaponPercentOfTotalDamageTaken => WeaponDamageTaken / TotalDamageTaken.NullIfZero();
+        public double? NanoPercentOfTotalDamageTaken => NanoDamageTaken / TotalDamageTaken.NullIfZero();
+        public double? IndirectPercentOfTotalDamageTaken => IndirectDamageTaken / TotalDamageTaken.NullIfZero();
+
         public int WeaponHitsTaken { get; protected set; }
         public int CritsTaken { get; protected set; }
         public int GlancesTaken { get; protected set; }
@@ -219,10 +229,28 @@ namespace AODamageMeter
         public int TotalHitsTaken => WeaponHitsTaken + NanoHitsTaken + IndirectHitsTaken;
         public int HitsAbsorbed { get; protected set; }
 
+        public double WeaponHitsTakenPM => WeaponHitsTaken / ActiveDuration.TotalMinutes;
+        public double CritsTakenPM => CritsTaken / ActiveDuration.TotalMinutes;
+        public double GlancesTakenPM => GlancesTaken / ActiveDuration.TotalMinutes;
+        public double MissesTakenPM => MissesTaken / ActiveDuration.TotalMinutes;
+        public double WeaponHitAttemptsTakenPM => WeaponHitAttemptsTaken / ActiveDuration.TotalMinutes;
+        public double NanoHitsTakenPM => NanoHitsTaken / ActiveDuration.TotalMinutes;
+        public double IndirectHitsTakenPM => IndirectHitsTaken / ActiveDuration.TotalMinutes;
+        public double TotalHitsTakenPM => TotalHitsTaken / ActiveDuration.TotalMinutes;
+
         public double? WeaponHitTakenChance => WeaponHitsTaken / WeaponHitAttemptsTaken.NullIfZero();
         public double? CritTakenChance => CritsTaken / WeaponHitAttemptsTaken.NullIfZero();
         public double? GlanceTakenChance => GlancesTaken / WeaponHitAttemptsTaken.NullIfZero();
         public double? MissTakenChance => MissesTaken / WeaponHitAttemptsTaken.NullIfZero();
+
+        public double? AverageWeaponDamageTaken => WeaponDamageTaken / WeaponHitsTaken.NullIfZero();
+        public double? AverageCritDamageTaken => CritDamageTaken / CritsTaken.NullIfZero();
+        public double? AverageGlanceDamageTaken => GlanceDamageTaken / GlancesTaken.NullIfZero();
+        public double? AverageNanoDamageTaken => NanoDamageTaken / NanoHitsTaken.NullIfZero();
+        public double? AverageIndirectDamageTaken => IndirectDamageTaken / IndirectHitsTaken.NullIfZero();
+
+        public double? PercentOfFightsTotalDamageTaken => TotalDamageTaken / Fight.TotalDamage.NullIfZero();
+        public double? PercentOfFightsMaxDamageTaken => TotalDamageTaken / Fight.MaxDamageTaken.NullIfZero();
 
         protected readonly Dictionary<FightCharacter, DamageInfo> _damageTakenInfosBySource = new Dictionary<FightCharacter, DamageInfo>();
         public IReadOnlyDictionary<FightCharacter, DamageInfo> DamageTakenInfosBySource => _damageTakenInfosBySource;
@@ -230,7 +258,7 @@ namespace AODamageMeter
 
         protected long? _maxDamageTaken, _maxDamagePlusPetsTaken;
         public long? MaxDamageTaken => _maxDamageTaken ?? (_maxDamageTaken = DamageTakenInfos.NullableMax(i => i.TotalDamage));
-        // Intentionally weird naming. It's not max (this + pets have taken from a source), it's max (this has taken from a source + pets).
+        // Intentionally weird naming. It's not max (this + pets) have taken from a source, it's max this has taken from a (source + pets).
         public long? MaxDamagePlusPetsTaken => _maxDamagePlusPetsTaken ?? (_maxDamagePlusPetsTaken = DamageTakenInfos.NullableMax(i => i.TotalDamagePlusPets));
 
         protected readonly Dictionary<DamageType, int> _damageTypeHitsTaken = new Dictionary<DamageType, int>();
@@ -309,34 +337,33 @@ namespace AODamageMeter
                     IndirectDamageDone += attackEvent.Amount.Value;
                     ++IndirectHitsDone;
                     break;
-                // No sources for events where the attack results in an absorb.
+                case AttackResult.Absorbed:
+                    // Only an ⦗Unknown⦘ source for events where the attack results in an absorb, so don't bother.
+                    break;
                 default: throw new NotImplementedException();
             }
 
-            if (attackEvent.Target != null)
+            if (_damageDoneInfosByTarget.TryGetValue(attackEvent.Target, out DamageInfo damageInfo))
             {
-                if (_damageDoneInfosByTarget.TryGetValue(attackEvent.Target, out DamageInfo damageInfo))
-                {
-                    damageInfo.AddAttackEvent(attackEvent);
-                }
-                else
-                {
-                    if (IsFightPet && !FightPetOwner._damageDoneInfosByTarget.ContainsKey(attackEvent.Target))
-                    {
-                        var fightPetOwnerDamageInfo = new DamageInfo(FightPetOwner, attackEvent.Target);
-                        FightPetOwner._damageDoneInfosByTarget[attackEvent.Target] = fightPetOwnerDamageInfo;
-                        attackEvent.Target._damageTakenInfosBySource[FightPetOwner] = fightPetOwnerDamageInfo;
-                    }
-
-                    damageInfo = new DamageInfo(this, attackEvent.Target);
-                    damageInfo.AddAttackEvent(attackEvent);
-                    this._damageDoneInfosByTarget[attackEvent.Target] = damageInfo;
-                    attackEvent.Target._damageTakenInfosBySource[this] = damageInfo;
-                }
-
-                _maxDamageDone = _maxDamageDonePlusPets = null;
-                attackEvent.Target._maxDamageTaken = attackEvent.Target._maxDamagePlusPetsTaken = null;
+                damageInfo.AddAttackEvent(attackEvent);
             }
+            else
+            {
+                if (IsFightPet && !FightPetOwner._damageDoneInfosByTarget.ContainsKey(attackEvent.Target))
+                {
+                    var fightPetOwnerDamageInfo = new DamageInfo(FightPetOwner, attackEvent.Target);
+                    FightPetOwner._damageDoneInfosByTarget[attackEvent.Target] = fightPetOwnerDamageInfo;
+                    attackEvent.Target._damageTakenInfosBySource[FightPetOwner] = fightPetOwnerDamageInfo;
+                }
+
+                damageInfo = new DamageInfo(this, attackEvent.Target);
+                damageInfo.AddAttackEvent(attackEvent);
+                this._damageDoneInfosByTarget[attackEvent.Target] = damageInfo;
+                attackEvent.Target._damageTakenInfosBySource[this] = damageInfo;
+            }
+
+            _maxDamageDone = _maxDamageDonePlusPets = null;
+            attackEvent.Target._maxDamageTaken = attackEvent.Target._maxDamagePlusPetsTaken = null;
 
             if (attackEvent.DamageType.HasValue)
             {

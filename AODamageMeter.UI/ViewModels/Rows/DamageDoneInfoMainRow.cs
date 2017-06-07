@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneInfoMainRow : MainRowBase
+    public sealed class DamageDoneInfoMainRow : MainRowBase
     {
         public DamageDoneInfoMainRow(DamageInfo damageDoneInfo)
             : base(damageDoneInfo.Target)
@@ -24,7 +24,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     string specialsDoneInfo = DamageDoneInfo.HasSpecials ?
 $@"
 
-{DamageDoneInfo.GetSpecialsDoneInfo()}" : null;
+{DamageDoneInfo.GetSpecialsInfo()}" : null;
 
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
@@ -47,14 +47,14 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
             if (!Source.IsFightPetOwner)
             {
                 PercentWidth = DamageDoneInfo.PercentOfSourcesMaxDamageDone ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                double? percentDone = Settings.Default.ShowPercentOfTotal
                     ? DamageDoneInfo.PercentOfSourcesTotalDamageDone : DamageDoneInfo.PercentOfSourcesMaxDamageDone;
                 RightText = $"{DamageDoneInfo.TotalDamage.Format()} ({percentDone.FormatPercent()})";
             }
             else
             {
                 PercentWidth = DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                double? percentDone = Settings.Default.ShowPercentOfTotal
                     ? DamageDoneInfo.PercentPlusPetsOfSourcesTotalDamageDonePlusPets : DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets;
                 RightText = $"{DamageDoneInfo.TotalDamagePlusPets.Format()} ({percentDone.FormatPercent()})";
 

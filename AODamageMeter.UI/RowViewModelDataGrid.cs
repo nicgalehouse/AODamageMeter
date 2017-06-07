@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace AODamageMeter.UI
 {
-    public class RowViewModelDataGrid : DataGrid
+    public sealed class RowViewModelDataGrid : DataGrid
     {
         // Working around this issue: https://stackoverflow.com/questions/11177351/wpf-datagrid-ignores-sortdescription/.
         protected override void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)

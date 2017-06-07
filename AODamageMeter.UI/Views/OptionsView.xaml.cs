@@ -9,13 +9,13 @@ namespace AODamageMeter.UI.Views
     {
         private string _previousFontFamily = Settings.Default.FontFamily;
         private double _previousFontSize = Settings.Default.FontSize;
-        private bool _previousShowPercentOfTotalDamageDone = Settings.Default.ShowPercentOfTotalDamageDone;
+        private bool _previousShowPercentOfTotal = Settings.Default.ShowPercentOfTotal;
 
         public OptionsView()
         {
             InitializeComponent();
-            ShowPercentOfTotalDamageDoneRadioButton.IsChecked = Settings.Default.ShowPercentOfTotalDamageDone;
-            ShowPercentOfMaxDamageDoneRadioButton.IsChecked = !ShowPercentOfTotalDamageDoneRadioButton.IsChecked;
+            ShowPercentOfTotalRadioButton.IsChecked = Settings.Default.ShowPercentOfTotal;
+            ShowPercentOfMaxRadioButton.IsChecked = !ShowPercentOfTotalRadioButton.IsChecked;
         }
 
         private void OKButton_Click_CloseDialog(object sender, RoutedEventArgs e)
@@ -35,7 +35,7 @@ namespace AODamageMeter.UI.Views
             {
                 Settings.Default.FontFamily = _previousFontFamily;
                 Settings.Default.FontSize = _previousFontSize;
-                Settings.Default.ShowPercentOfTotalDamageDone = _previousShowPercentOfTotalDamageDone;
+                Settings.Default.ShowPercentOfTotal = _previousShowPercentOfTotal;
             }
             else
             {
@@ -45,10 +45,10 @@ namespace AODamageMeter.UI.Views
             base.OnClosing(e);
         }
 
-        private void ShowPercentOfTotalDamageDoneRadioButton_Checked_Persist(object sender, RoutedEventArgs e)
-            => Settings.Default.ShowPercentOfTotalDamageDone = true;
+        private void ShowPercentOfTotalRadioButton_Checked_Persist(object sender, RoutedEventArgs e)
+            => Settings.Default.ShowPercentOfTotal = true;
 
-        private void ShowPercentOfTotalDamageDoneRadioButton_Unchecked_Persist(object sender, RoutedEventArgs e)
-            => Settings.Default.ShowPercentOfTotalDamageDone = false;
+        private void ShowPercentOfTotalRadioButton_Unchecked_Persist(object sender, RoutedEventArgs e)
+            => Settings.Default.ShowPercentOfTotal = false;
     }
 }

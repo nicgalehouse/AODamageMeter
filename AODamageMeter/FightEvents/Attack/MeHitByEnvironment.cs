@@ -14,6 +14,7 @@ namespace AODamageMeter.FightEvents.Attack
         public MeHitByEnvironment(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
         {
+            SetSourceToUnknown();
             SetTargetToOwner();
             AttackResult = AttackResult.IndirectHit;
             DamageType = AODamageMeter.DamageType.Environment;

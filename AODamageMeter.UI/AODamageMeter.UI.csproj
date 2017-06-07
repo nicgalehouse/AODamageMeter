@@ -106,6 +106,10 @@
     <Compile Include="ViewModels\Rows\DamageDoneInfoMainRow.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneViewingModeDetailRow.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageTakenInfoDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageTakenInfoMainRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageTakenMainRow.cs" />
+    <Compile Include="ViewModels\Rows\DamageTakenViewingModeDetailRow.cs" />
     <Compile Include="ViewModels\Rows\DamageTakenViewingModeMainRow.cs" />
     <Compile Include="ViewModels\Rows\HealingYouveDoneViewingModeMainRow.cs" />
     <Compile Include="ViewModels\Rows\HealingYouveTakenViewingModeMainRow.cs" />

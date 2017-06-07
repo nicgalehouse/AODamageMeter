@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneViewingModeMainRow : ViewingModeMainRowBase
+    public sealed class DamageDoneViewingModeMainRow : ViewingModeMainRowBase
     {
         public DamageDoneViewingModeMainRow(Fight fight)
             : base(ViewingMode.DamageDone, "Damage Done", 1, "/Icons/DamageDone.png", Color.FromRgb(91, 84, 183), fight)
@@ -16,43 +16,43 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight.DamageMeter)
                 {
-                    string specialsDoneInfo = Fight.HasSpecialsDone ?
+                    string specialsDoneInfo = Fight.HasSpecials ?
 $@"
 
-{Fight.GetSpecialsDoneInfo()}" : null;
+{Fight.GetSpecialsInfo()}" : null;
 
                     return
 $@"{Fight.FightCharacterCount} {(Fight.FightCharacterCount == 1 ? "character": "characters")}
 
-{Fight.WeaponHitDoneChance.FormatPercent()} weapon hit chance
-  {Fight.CritDoneChance.FormatPercent()} crit chance
-  {Fight.GlanceDoneChance.FormatPercent()} glance chance
+{Fight.WeaponHitChance.FormatPercent()} weapon hit chance
+  {Fight.CritChance.FormatPercent()} crit chance
+  {Fight.GlanceChance.FormatPercent()} glance chance
 
-{Fight.WeaponHitAttemptsDonePM.Format()} weapon hit attempts / min
-  {Fight.WeaponHitsDonePM.Format()} weapon hits / min
-  {Fight.CritsDonePM.Format()} crits / min
-  {Fight.GlancesDonePM.Format()} glances / min
-{Fight.NanoHitsDonePM.Format()} nano hits / min
-{Fight.IndirectHitsDonePM.Format()} indirect hits / min
-{Fight.TotalHitsDonePM.Format()} total hits / min
+{Fight.WeaponHitAttemptsPM.Format()} weapon hit attempts / min
+  {Fight.WeaponHitsPM.Format()} weapon hits / min
+  {Fight.CritsPM.Format()} crits / min
+  {Fight.GlancesPM.Format()} glances / min
+{Fight.NanoHitsPM.Format()} nano hits / min
+{Fight.IndirectHitsPM.Format()} indirect hits / min
+{Fight.TotalHitsPM.Format()} total hits / min
 
-{Fight.WeaponDamageDonePM.Format()} ({Fight.WeaponPercentOfTotalDamageDone.FormatPercent()}) weapon dmg / min
-{Fight.NanoDamageDonePM.Format()} ({Fight.NanoPercentOfTotalDamageDone.FormatPercent()}) nano dmg / min
-{Fight.IndirectDamageDonePM.Format()} ({Fight.IndirectPercentOfTotalDamageDone.FormatPercent()}) indirect dmg / min
-{Fight.TotalDamageDonePM.Format()} total dmg / min
+{Fight.WeaponDamagePM.Format()} ({Fight.WeaponPercentOfTotalDamage.FormatPercent()}) weapon dmg / min
+{Fight.NanoDamagePM.Format()} ({Fight.NanoPercentOfTotalDamage.FormatPercent()}) nano dmg / min
+{Fight.IndirectDamagePM.Format()} ({Fight.IndirectPercentOfTotalDamage.FormatPercent()}) indirect dmg / min
+{Fight.TotalDamagePM.Format()} total dmg / min
 
-{Fight.AverageWeaponDamageDone.Format()} weapon dmg / hit
-  {Fight.AverageCritDamageDone.Format()} crit dmg / hit
-  {Fight.AverageGlanceDamageDone.Format()} glance dmg / hit
-{Fight.AverageNanoDamageDone.Format()} nano dmg / hit
-{Fight.AverageIndirectDamageDone.Format()} indirect dmg / hit{specialsDoneInfo}";
+{Fight.AverageWeaponDamage.Format()} weapon dmg / hit
+  {Fight.AverageCritDamage.Format()} crit dmg / hit
+  {Fight.AverageGlanceDamage.Format()} glance dmg / hit
+{Fight.AverageNanoDamage.Format()} nano dmg / hit
+{Fight.AverageIndirectDamage.Format()} indirect dmg / hit{specialsDoneInfo}";
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
-            RightText = $"{Fight.TotalDamageDone.Format()} ({Fight.TotalDamageDonePM.Format()})";
+            RightText = $"{Fight.TotalDamage.Format()} ({Fight.TotalDamagePM.Format()})";
 
             var topFightCharacters = Fight.FightCharacters
                 .Where(c => !c.IsFightPet)

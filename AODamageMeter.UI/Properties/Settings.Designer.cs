@@ -316,12 +316,12 @@ namespace AODamageMeter.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowPercentOfTotalDamageDone {
+        public bool ShowPercentOfTotal {
             get {
-                return ((bool)(this["ShowPercentOfTotalDamageDone"]));
+                return ((bool)(this["ShowPercentOfTotal"]));
             }
             set {
-                this["ShowPercentOfTotalDamageDone"] = value;
+                this["ShowPercentOfTotal"] = value;
             }
         }
     }

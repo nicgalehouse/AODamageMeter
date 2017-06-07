@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public class DamageMeterViewModel : ViewModelBase
+    public sealed class DamageMeterViewModel : ViewModelBase
     {
         private string _characterName;
         private string _logFilePath;
@@ -36,6 +36,12 @@ namespace AODamageMeter.UI.ViewModels
 
         private Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageDoneInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
         private Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageDoneInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
+
+        private Dictionary<FightCharacter, MainRowBase> _damageTakenRowMap = new Dictionary<FightCharacter, MainRowBase>();
+        private ObservableCollection<MainRowBase> _damageTakenRows { get; } = new ObservableCollection<MainRowBase>();
+
+        private Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageTakenInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
+        private Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageTakenInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
 
         private ObservableCollection<MainRowBase> _rows;
         public ObservableCollection<MainRowBase> Rows
@@ -123,6 +129,10 @@ namespace AODamageMeter.UI.ViewModels
                     SelectedViewingMode = ViewingMode.DamageDoneInfo;
                     SelectedCharacter = mainRowViewModelBase.FightCharacter.Character;
                     break;
+                case ViewingMode.DamageTaken:
+                    SelectedViewingMode = ViewingMode.DamageTakenInfo;
+                    SelectedCharacter = mainRowViewModelBase.FightCharacter.Character;
+                    break;
                 default: return false;
             }
 
@@ -139,6 +149,13 @@ namespace AODamageMeter.UI.ViewModels
                     break;
                 case ViewingMode.DamageDoneInfo:
                     SelectedViewingMode = ViewingMode.DamageDone;
+                    SelectedCharacter = null;
+                    break;
+                case ViewingMode.DamageTaken:
+                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    break;
+                case ViewingMode.DamageTakenInfo:
+                    SelectedViewingMode = ViewingMode.DamageTaken;
                     SelectedCharacter = null;
                     break;
                 default: return false;
@@ -159,6 +176,8 @@ namespace AODamageMeter.UI.ViewModels
                     case ViewingMode.ViewingModes: SetAndUpdateViewingModeRows(); return;
                     case ViewingMode.DamageDone: SetAndUpdateDamageDoneRows(); return;
                     case ViewingMode.DamageDoneInfo: SetAndUpdateDamageDoneInfoRows(); return;
+                    case ViewingMode.DamageTaken: SetAndUpdateDamageTakenRows(); return;
+                    case ViewingMode.DamageTakenInfo: SetAndUpdateDamageTakenInfoRows(); return;
                     default: throw new NotImplementedException();
                 }
             }
@@ -243,6 +262,64 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        private void SetAndUpdateDamageTakenRows()
+        {
+            if (Rows != _damageTakenRows)
+            {
+                Rows = _damageTakenRows;
+            }
+
+            int displayIndex = 1;
+            foreach (var fightCharacter in _damageMeter.CurrentFight.FightCharacters
+                .OrderByDescending(c => c.TotalDamageTaken)
+                .ThenBy(c => c.UncoloredName))
+            {
+                if (!_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
+                {
+                    _damageTakenRowMap.Add(fightCharacter, damageTakenRow = new DamageTakenMainRow(fightCharacter));
+                    _damageTakenRows.Add(damageTakenRow);
+                }
+                damageTakenRow.Update(displayIndex++);
+            }
+        }
+
+        private void SetAndUpdateDamageTakenInfoRows()
+        {
+            if (!_damageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
+                return;
+
+            Dictionary<DamageInfo, MainRowBase> damageTakenInfoRowMap;
+            ObservableCollection<MainRowBase> damageTakenInfoRows;
+            if (_damageTakenInfoRowMapMap.TryGetValue(fightCharacter, out damageTakenInfoRowMap))
+            {
+                damageTakenInfoRows = _damageTakenInfoRowsMap[fightCharacter];
+
+                if (Rows != damageTakenInfoRows)
+                {
+                    Rows = damageTakenInfoRows;
+                }
+            }
+            else
+            {
+                _damageTakenInfoRowMapMap[fightCharacter] = damageTakenInfoRowMap = new Dictionary<DamageInfo, MainRowBase>();
+                Rows = _damageTakenInfoRowsMap[fightCharacter] = damageTakenInfoRows = new ObservableCollection<MainRowBase>();
+            }
+
+            int displayIndex = 1;
+            foreach (var damageTakenInfo in fightCharacter.DamageTakenInfos
+                .Where(i => !i.Source.IsFightPet)
+                .OrderByDescending(i => i.TotalDamagePlusPets)
+                .ThenBy(i => i.Target.UncoloredName))
+            {
+                if (!damageTakenInfoRowMap.TryGetValue(damageTakenInfo, out MainRowBase damageTakenInfoRow))
+                {
+                    damageTakenInfoRowMap.Add(damageTakenInfo, damageTakenInfoRow = new DamageTakenInfoMainRow(damageTakenInfo));
+                    damageTakenInfoRows.Add(damageTakenInfoRow);
+                }
+                damageTakenInfoRow.Update(displayIndex++);
+            }
+        }
+
         private void StopDamageMeterUpdater()
         {
             if (!_isDamageMeterUpdaterStarted) return;
@@ -292,6 +369,10 @@ namespace AODamageMeter.UI.ViewModels
             _damageDoneRows.Clear();
             _damageDoneInfoRowMapMap.Clear();
             _damageDoneInfoRowsMap.Clear();
+            _damageTakenRowMap.Clear();
+            _damageTakenRows.Clear();
+            _damageTakenInfoRowMapMap.Clear();
+            _damageTakenInfoRowsMap.Clear();
             Rows = null;
         }
 

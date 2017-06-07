@@ -3,7 +3,7 @@ using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class HealingYouveTakenViewingModeMainRow : ViewingModeMainRowBase
+    public sealed class HealingYouveTakenViewingModeMainRow : ViewingModeMainRowBase
     {
         public HealingYouveTakenViewingModeMainRow(Fight fight)
             : base(ViewingMode.HealingYouveTaken, "Healing You've Taken", 4, "/Icons/HealingYouveTaken.png", Color.FromRgb(184, 100, 57), fight)

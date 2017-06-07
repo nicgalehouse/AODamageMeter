@@ -15,6 +15,8 @@ namespace AODamageMeter.UI.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string iconPath = (string)value;
+            if (iconPath == null) return null;
+
             if (_iconPathBitmapImages.TryGetValue(iconPath, out BitmapImage image))
                 return image;
 

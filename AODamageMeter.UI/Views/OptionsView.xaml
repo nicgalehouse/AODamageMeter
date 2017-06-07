@@ -90,12 +90,12 @@
         </ComboBox>
 
         <!-- TODO: Use binding instead of code-behind (tried, but keep running into problems). -->
-        <RadioButton x:Name="ShowPercentOfTotalDamageDoneRadioButton" GroupName="ShowPercent"
-                     Checked="ShowPercentOfTotalDamageDoneRadioButton_Checked_Persist"
-                     Unchecked="ShowPercentOfTotalDamageDoneRadioButton_Unchecked_Persist"
-                     Content="Show percent of total damage done"/>
-        <RadioButton x:Name="ShowPercentOfMaxDamageDoneRadioButton" GroupName="ShowPercent" Margin="0 2 0 10"
-                     Content="Show percent of max damage done"/>
+        <RadioButton x:Name="ShowPercentOfTotalRadioButton" GroupName="ShowPercent"
+                     Checked="ShowPercentOfTotalRadioButton_Checked_Persist"
+                     Unchecked="ShowPercentOfTotalRadioButton_Unchecked_Persist"
+                     Content="Show percent of total"/>
+        <RadioButton x:Name="ShowPercentOfMaxRadioButton" GroupName="ShowPercent" Margin="0 2 0 10"
+                     Content="Show percent of max"/>
       </StackPanel>
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"

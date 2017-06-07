@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public class CharacterInfoViewModel : ViewModelBase
+    public sealed class CharacterInfoViewModel : ViewModelBase
     {
         private CharacterSelectionViewModel _characterSelectionViewModel;
 

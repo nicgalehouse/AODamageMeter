@@ -28,12 +28,10 @@ namespace AODamageMeter.UI.ViewModels
 
         public override void Update(int? displayIndex = null)
         {
-            DisplayIndex = displayIndex ?? DisplayIndex;
             IconPath = FightCharacter.Profession.GetIconPath();
             Color = FightCharacter.Profession.GetColor();
 
-            RaisePropertyChanged(nameof(LeftTextToolTip));
-            RaisePropertyChanged(nameof(RightTextToolTip));
+            base.Update(displayIndex);
         }
     }
 }

@@ -3,7 +3,7 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class DamageDoneViewingModeDetailRow : DetailRowBase
+    public sealed class DamageDoneViewingModeDetailRow : DetailRowBase
     {
         public DamageDoneViewingModeDetailRow(FightCharacter fightCharacter)
             : base(fightCharacter, showIcon: true)
@@ -54,14 +54,14 @@ $@"{DisplayIndex}. {FightCharacterName}
             if (!FightCharacter.IsFightPetOwner)
             {
                 PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                double? percentDone = Settings.Default.ShowPercentOfTotal
                     ? FightCharacter.PercentOfFightsTotalDamageDone : FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
                 RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {percentDone.FormatPercent()})";
             }
             else
             {
                 PercentWidth = FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotalDamageDone
+                double? percentDone = Settings.Default.ShowPercentOfTotal
                     ? FightCharacter.PercentPlusPetsOfFightsTotalDamageDone : FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets;
                 RightText = $"{FightCharacter.TotalDamageDonePlusPets.Format()} ({FightCharacter.TotalDamageDonePMPlusPets.Format()}, {percentDone.FormatPercent()})";
             }

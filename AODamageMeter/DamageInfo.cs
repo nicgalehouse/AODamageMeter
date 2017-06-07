@@ -156,6 +156,9 @@ namespace AODamageMeter
                     IndirectDamage += attackEvent.Amount.Value;
                     ++IndirectHits;
                     break;
+                case AttackResult.Absorbed:
+                    // Only an ⦗Unknown⦘ source for events where the attack results in an absorb, so don't bother.
+                    break;
                 default: throw new NotImplementedException();
             }
 

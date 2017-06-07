@@ -18,14 +18,28 @@ namespace AODamageMeter
         public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
         public int FightCharacterCount => FightCharacters.Count;
         public int PlayerCount => FightCharacters.Count(c => c.IsPlayer);
+        public int OmniPlayerCount => FightCharacters.Count(c => c.Faction == Faction.Omni);
+        public int ClanPlayerCount => FightCharacters.Count(c => c.Faction == Faction.Clan);
+        public int NeutralPlayerCount => FightCharacters.Count(c => c.Faction == Faction.Neutral);
+        public int UnknownPlayerCount => FightCharacters.Count(c => c.Faction == Faction.Unknown);
         public int NPCCount => FightCharacters.Count(c => c.IsNPC);
-        public double? AveragePlayerLevel => FightCharacters.Where(c => c.IsPlayer).Sum(c => c.Level) / PlayerCount.NullIfZero();
-        public double? AverageAlienLevel => FightCharacters.Where(c => c.IsPlayer).Sum(c => c.AlienLevel) / PlayerCount.NullIfZero();
+        public double? AveragePlayerLevel => FightCharacters.Sum(c => c.Level) / PlayerCount.NullIfZero();
+        public double? AveragePlayerAlienLevel => FightCharacters.Sum(c => c.AlienLevel) / PlayerCount.NullIfZero();
+        public double? AverageOmniPlayerLevel => FightCharacters.Where(c => c.Faction == Faction.Omni).Sum(c => c.Level) / OmniPlayerCount.NullIfZero();
+        public double? AverageOmniPlayerAlienLevel => FightCharacters.Where(c => c.Faction == Faction.Omni).Sum(c => c.AlienLevel) / OmniPlayerCount.NullIfZero();
+        public double? AverageClanPlayerLevel => FightCharacters.Where(c => c.Faction == Faction.Clan).Sum(c => c.Level) / ClanPlayerCount.NullIfZero();
+        public double? AverageClanPlayerAlienLevel => FightCharacters.Where(c => c.Faction == Faction.Clan).Sum(c => c.AlienLevel) / ClanPlayerCount.NullIfZero();
+        public double? AverageNeutralPlayerLevel => FightCharacters.Where(c => c.Faction == Faction.Neutral).Sum(c => c.Level) / NeutralPlayerCount.NullIfZero();
+        public double? AverageNeutralPlayerAlienLevel => FightCharacters.Where(c => c.Faction == Faction.Neutral).Sum(c => c.AlienLevel) / NeutralPlayerCount.NullIfZero();
+        public double? AverageUnknownPlayerLevel => FightCharacters.Where(c => c.Faction == Faction.Unknown).NullableSum(c => c.Level) / UnknownPlayerCount.NullIfZero();
+        public double? AverageUnknownPlayerAlienLevel => FightCharacters.Where(c => c.Faction == Faction.Unknown).NullableSum(c => c.AlienLevel) / UnknownPlayerCount.NullIfZero();
 
         public bool HasProfession(Profession profession) => FightCharacters.Any(c => c.Profession == profession);
         public int GetProfessionCount(Profession profession) => FightCharacters.Count(c => c.Profession == profession);
-        protected int GetTotalProfessionLevel(Profession profession) => FightCharacters.Where(c => c.Profession == profession).Sum(c => c.Level) ?? 0;
+        protected int? GetTotalProfessionLevel(Profession profession) => FightCharacters.Where(c => c.Profession == profession).NullableSum(c => c.Level);
+        protected int? GetTotalProfessionAlienLevel(Profession profession) => FightCharacters.Where(c => c.Profession == profession).NullableSum(c => c.AlienLevel);
         public double? GetAverageProfessionLevel(Profession profession) => GetTotalProfessionLevel(profession) / GetProfessionCount(profession).NullIfZero();
+        public double? GetAverageProfessionAlienLevel(Profession profession) => GetTotalProfessionAlienLevel(profession) / GetProfessionCount(profession).NullIfZero();
 
         public DateTime? StartTime { get; protected set; }
         public DateTime? LatestEventTime { get; protected set; }
@@ -55,63 +69,66 @@ namespace AODamageMeter
             }
         }
 
-        protected long? _weaponDamageDone, _critDamageDone, _glanceDamageDone, _nanoDamageDone, _indirectDamageDone;
-        public long WeaponDamageDone => _weaponDamageDone ?? (_weaponDamageDone = FightCharacters.Sum(c => c.WeaponDamageDone)).Value;
-        public long CritDamageDone => _critDamageDone ?? (_critDamageDone = FightCharacters.Sum(c => c.CritDamageDone)).Value;
-        public long GlanceDamageDone => _glanceDamageDone ?? (_glanceDamageDone = FightCharacters.Sum(c => c.GlanceDamageDone)).Value;
-        public long NanoDamageDone => _nanoDamageDone ?? (_nanoDamageDone = FightCharacters.Sum(c => c.NanoDamageDone)).Value;
-        public long IndirectDamageDone => _indirectDamageDone ?? (_indirectDamageDone = FightCharacters.Sum(c => c.IndirectDamageDone)).Value;
-        public long TotalDamageDone => WeaponDamageDone + NanoDamageDone + IndirectDamageDone;
+        protected long? _weaponDamage, _critDamage, _glanceDamage, _nanoDamage, _indirectDamage;
+        public long WeaponDamage => _weaponDamage ?? (_weaponDamage = FightCharacters.Sum(c => c.WeaponDamageDone)).Value;
+        public long CritDamage => _critDamage ?? (_critDamage = FightCharacters.Sum(c => c.CritDamageDone)).Value;
+        public long GlanceDamage => _glanceDamage ?? (_glanceDamage = FightCharacters.Sum(c => c.GlanceDamageDone)).Value;
+        public long NanoDamage => _nanoDamage ?? (_nanoDamage = FightCharacters.Sum(c => c.NanoDamageDone)).Value;
+        public long IndirectDamage => _indirectDamage ?? (_indirectDamage = FightCharacters.Sum(c => c.IndirectDamageDone)).Value;
+        public long TotalDamage => WeaponDamage + NanoDamage + IndirectDamage;
+
+        public double? WeaponDamagePM => WeaponDamage / Duration?.TotalMinutes;
+        public double? NanoDamagePM => NanoDamage / Duration?.TotalMinutes;
+        public double? IndirectDamagePM => IndirectDamage / Duration?.TotalMinutes;
+        public double? TotalDamagePM => TotalDamage / Duration?.TotalMinutes;
+
+        public double? WeaponPercentOfTotalDamage => WeaponDamage / TotalDamage.NullIfZero();
+        public double? NanoPercentOfTotalDamage => NanoDamage / TotalDamage.NullIfZero();
+        public double? IndirectPercentOfTotalDamage => IndirectDamage / TotalDamage.NullIfZero();
+
+        protected int? _weaponHits, _crits, _glances, _misses, _nanoHits, _indirectHits;
+        public int WeaponHits => _weaponHits ?? (_weaponHits = FightCharacters.Sum(c => c.WeaponHitsDone)).Value;
+        public int Crits => _crits ?? (_crits = FightCharacters.Sum(c => c.CritsDone)).Value;
+        public int Glances => _glances ?? (_glances = FightCharacters.Sum(c => c.GlancesDone)).Value;
+        public int Misses => _misses ?? (_misses = FightCharacters.Sum(c => c.MissesDone)).Value;
+        public int WeaponHitAttempts => WeaponHits + Misses;
+        public int NanoHits => _nanoHits ?? (_nanoHits = FightCharacters.Sum(c => c.NanoHitsDone)).Value;
+        public int IndirectHits => _indirectHits ?? (_indirectHits = FightCharacters.Sum(c => c.IndirectHitsDone)).Value;
+        public int TotalHits => WeaponHits + NanoHits + IndirectHits;
+
+        public double? WeaponHitsPM => WeaponHits / Duration?.TotalMinutes;
+        public double? CritsPM => Crits / Duration?.TotalMinutes;
+        public double? GlancesPM => Glances / Duration?.TotalMinutes;
+        public double? MissesPM => Misses / Duration?.TotalMinutes;
+        public double? WeaponHitAttemptsPM => WeaponHitAttempts / Duration?.TotalMinutes;
+        public double? NanoHitsPM => NanoHits / Duration?.TotalMinutes;
+        public double? IndirectHitsPM => IndirectHits / Duration?.TotalMinutes;
+        public double? TotalHitsPM => TotalHits / Duration?.TotalMinutes;
+
+        public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
+        public double? CritChance => Crits / WeaponHitAttempts.NullIfZero();
+        public double? GlanceChance => Glances / WeaponHitAttempts.NullIfZero();
+        public double? MissChance => Misses / WeaponHitAttempts.NullIfZero();
+
+        public double? AverageWeaponDamage => WeaponDamage / WeaponHits.NullIfZero();
+        public double? AverageCritDamage => CritDamage / Crits.NullIfZero();
+        public double? AverageGlanceDamage => GlanceDamage / Glances.NullIfZero();
+        public double? AverageNanoDamage => NanoDamage / NanoHits.NullIfZero();
+        public double? AverageIndirectDamage => IndirectDamage / IndirectHits.NullIfZero();
+
+        public bool HasDamageTypeDamage(DamageType damageType) => FightCharacters.Any(c => c.DamageTypeDamagesDone.ContainsKey(damageType));
+        public bool HasSpecials => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamage);
+        public int? GetDamageTypeHits(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeHitsDone(damageType));
+        public long? GetDamageTypeDamage(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeDamageDone(damageType));
+        public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);
+        public double? GetSecondsPerDamageTypeHit(DamageType damageType) => Duration?.TotalSeconds / GetDamageTypeHits(damageType);
 
         protected long? _maxDamageDone, _maxDamageDonePlusPets;
         public long? MaxDamageDone => _maxDamageDone ?? (_maxDamageDone = FightCharacters.NullableMax(c => c.TotalDamageDone));
         public long? MaxDamageDonePlusPets => _maxDamageDonePlusPets ?? (_maxDamageDonePlusPets = FightCharacters.NullableMax(c => c.TotalDamageDonePlusPets));
 
-        public double? WeaponDamageDonePM => WeaponDamageDone / Duration?.TotalMinutes;
-        public double? NanoDamageDonePM => NanoDamageDone / Duration?.TotalMinutes;
-        public double? IndirectDamageDonePM => IndirectDamageDone / Duration?.TotalMinutes;
-        public double? TotalDamageDonePM => TotalDamageDone / Duration?.TotalMinutes;
-
-        public double? WeaponPercentOfTotalDamageDone => WeaponDamageDone / TotalDamageDone.NullIfZero();
-        public double? NanoPercentOfTotalDamageDone => NanoDamageDone / TotalDamageDone.NullIfZero();
-        public double? IndirectPercentOfTotalDamageDone => IndirectDamageDone / TotalDamageDone.NullIfZero();
-
-        protected int? _weaponHitsDone, _critsDone, _glancesDone, _missesDone, _nanoHitsDone, _indirectHitsDone;
-        public int WeaponHitsDone => _weaponHitsDone ?? (_weaponHitsDone = FightCharacters.Sum(c => c.WeaponHitsDone)).Value;
-        public int CritsDone => _critsDone ?? (_critsDone = FightCharacters.Sum(c => c.CritsDone)).Value;
-        public int GlancesDone => _glancesDone ?? (_glancesDone = FightCharacters.Sum(c => c.GlancesDone)).Value;
-        public int MissesDone => _missesDone ?? (_missesDone = FightCharacters.Sum(c => c.MissesDone)).Value;
-        public int WeaponHitAttemptsDone => WeaponHitsDone + MissesDone;
-        public int NanoHitsDone => _nanoHitsDone ?? (_nanoHitsDone = FightCharacters.Sum(c => c.NanoHitsDone)).Value;
-        public int IndirectHitsDone => _indirectHitsDone ?? (_indirectHitsDone = FightCharacters.Sum(c => c.IndirectHitsDone)).Value;
-        public int TotalHitsDone => WeaponHitsDone + NanoHitsDone + IndirectHitsDone;
-
-        public double? WeaponHitsDonePM => WeaponHitsDone / Duration?.TotalMinutes;
-        public double? CritsDonePM => CritsDone / Duration?.TotalMinutes;
-        public double? GlancesDonePM => GlancesDone / Duration?.TotalMinutes;
-        public double? MissesDonePM => MissesDone / Duration?.TotalMinutes;
-        public double? WeaponHitAttemptsDonePM => WeaponHitAttemptsDone / Duration?.TotalMinutes;
-        public double? NanoHitsDonePM => NanoHitsDone / Duration?.TotalMinutes;
-        public double? IndirectHitsDonePM => IndirectHitsDone / Duration?.TotalMinutes;
-        public double? TotalHitsDonePM => TotalHitsDone / Duration?.TotalMinutes ;
-
-        public double? WeaponHitDoneChance => WeaponHitsDone / WeaponHitAttemptsDone.NullIfZero();
-        public double? CritDoneChance => CritsDone / WeaponHitAttemptsDone.NullIfZero();
-        public double? GlanceDoneChance => GlancesDone / WeaponHitAttemptsDone.NullIfZero();
-        public double? MissDoneChance => MissesDone / WeaponHitAttemptsDone.NullIfZero();
-
-        public double? AverageWeaponDamageDone => WeaponDamageDone / WeaponHitsDone.NullIfZero();
-        public double? AverageCritDamageDone => CritDamageDone / CritsDone.NullIfZero();
-        public double? AverageGlanceDamageDone => GlanceDamageDone / GlancesDone.NullIfZero();
-        public double? AverageNanoDamageDone => NanoDamageDone / NanoHitsDone.NullIfZero();
-        public double? AverageIndirectDamageDone => IndirectDamageDone / IndirectHitsDone.NullIfZero();
-
-        public bool HasDamageTypeDamageDone(DamageType damageType) => FightCharacters.Any(c => c.DamageTypeDamagesDone.ContainsKey(damageType));
-        public bool HasSpecialsDone => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamageDone);
-        public int? GetDamageTypeHitsDone(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeHitsDone(damageType));
-        public long? GetDamageTypeDamageDone(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeDamageDone(damageType));
-        public double? GetAverageDamageTypeDamageDone(DamageType damageType) => GetDamageTypeDamageDone(damageType) / (double?)GetDamageTypeHitsDone(damageType);
-        public double? GetSecondsPerDamageTypeHitDone(DamageType damageType) => Duration?.TotalSeconds / GetDamageTypeHitsDone(damageType);
+        protected long? _maxDamageTaken;
+        public long? MaxDamageTaken => _maxDamageTaken ?? (_maxDamageTaken = FightCharacters.NullableMax(c => c.TotalDamageTaken));
 
         public void AddFightEvent(string line)
         {
@@ -141,11 +158,12 @@ namespace AODamageMeter
             switch (fightEvent)
             {
                 case AttackEvent attackEvent:
-                    attackEvent.Source?.AddSourceAttackEvent(attackEvent);
-                    attackEvent.Target?.AddTargetAttackEvent(attackEvent);
-                    _weaponDamageDone = _critDamageDone = _glanceDamageDone = _nanoDamageDone = _indirectDamageDone = null;
+                    attackEvent.Source.AddSourceAttackEvent(attackEvent);
+                    attackEvent.Target.AddTargetAttackEvent(attackEvent);
+                    _weaponDamage = _critDamage = _glanceDamage = _nanoDamage = _indirectDamage = null;
+                    _weaponHits = _crits = _glances = _misses = _nanoHits = _indirectHits = null;
                     _maxDamageDone = _maxDamageDonePlusPets = null;
-                    _weaponHitsDone = _critsDone = _glancesDone = _missesDone = _nanoHitsDone = _indirectHitsDone = null;
+                    _maxDamageTaken = null;
                     break;
                 case HealEvent healEvent:
                     if (healEvent.Source == healEvent.Target)
