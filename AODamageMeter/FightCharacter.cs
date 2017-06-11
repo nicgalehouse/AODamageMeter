@@ -214,12 +214,14 @@ namespace AODamageMeter
         public long NanoDamageTaken { get; protected set; }
         public long IndirectDamageTaken { get; protected set; }
         public long TotalDamageTaken => WeaponDamageTaken + NanoDamageTaken + IndirectDamageTaken;
+        // Absorbed sucks, only have it for the owner and don't have a source along with it. Keeping it independent of damage taken.
         public long DamageAbsorbed { get; protected set; }
 
         public double WeaponDamageTakenPM => WeaponDamageTaken / ActiveDuration.TotalMinutes;
         public double NanoDamageTakenPM => NanoDamageTaken / ActiveDuration.TotalMinutes;
         public double IndirectDamageTakenPM => IndirectDamageTaken / ActiveDuration.TotalMinutes;
         public double TotalDamageTakenPM => TotalDamageTaken / ActiveDuration.TotalMinutes;
+        public double DamageAbsorbedPM => DamageAbsorbed / ActiveDuration.TotalMinutes;
 
         public double? WeaponPercentOfTotalDamageTaken => WeaponDamageTaken / TotalDamageTaken.NullIfZero();
         public double? NanoPercentOfTotalDamageTaken => NanoDamageTaken / TotalDamageTaken.NullIfZero();
@@ -243,6 +245,7 @@ namespace AODamageMeter
         public double NanoHitsTakenPM => NanoHitsTaken / ActiveDuration.TotalMinutes;
         public double IndirectHitsTakenPM => IndirectHitsTaken / ActiveDuration.TotalMinutes;
         public double TotalHitsTakenPM => TotalHitsTaken / ActiveDuration.TotalMinutes;
+        public double HitsAbsorbedPM => HitsAbsorbed / ActiveDuration.TotalMinutes;
 
         public double? WeaponHitTakenChance => WeaponHitsTaken / WeaponHitAttemptsTaken.NullIfZero();
         public double? CritTakenChance => CritsTaken / WeaponHitAttemptsTaken.NullIfZero();
@@ -254,6 +257,7 @@ namespace AODamageMeter
         public double? AverageGlanceDamageTaken => GlanceDamageTaken / GlancesTaken.NullIfZero();
         public double? AverageNanoDamageTaken => NanoDamageTaken / NanoHitsTaken.NullIfZero();
         public double? AverageIndirectDamageTaken => IndirectDamageTaken / IndirectHitsTaken.NullIfZero();
+        public double? AverageDamageAbsorbed => DamageAbsorbed / HitsAbsorbed.NullIfZero();
 
         public double? PercentOfFightsTotalDamageTaken => TotalDamageTaken / Fight.TotalDamageTaken.NullIfZero();
         public double? PercentOfFightsTotalPlayerOrPetDamageTaken => TotalDamageTaken / Fight.TotalPlayerOrPetDamageTaken.NullIfZero();

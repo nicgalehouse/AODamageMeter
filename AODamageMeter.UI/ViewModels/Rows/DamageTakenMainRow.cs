@@ -42,7 +42,13 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.AverageIndirectDamageTaken.Format()} indirect dmg / hit"
 + (!FightCharacter.HasSpecialsTaken ? null : $@"
 
-{FightCharacter.GetSpecialsTakenInfo()}");
+{FightCharacter.GetSpecialsTakenInfo()}")
++ (FightCharacter.HitsAbsorbed == 0 ? null : $@"
+
+{FightCharacter.DamageAbsorbed.Format()} dmg absorbed
+{FightCharacter.HitsAbsorbedPM.Format()} hits absorbed / min
+{FightCharacter.DamageAbsorbedPM.Format()} dmg absorbed / min
+{FightCharacter.AverageDamageAbsorbed.Format()} dmg absorbed / hit");
                 }
             }
         }
