@@ -45,7 +45,7 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.GetSpecialsTakenInfo()}")
 + (FightCharacter.HitsAbsorbed == 0 ? null : $@"
 
-{FightCharacter.DamageAbsorbed.Format()} dmg absorbed
+{FightCharacter.DamageAbsorbed.ToString("N0")} dmg absorbed
 {FightCharacter.HitsAbsorbedPM.Format()} hits absorbed / min
 {FightCharacter.DamageAbsorbedPM.Format()} dmg absorbed / min
 {FightCharacter.AverageDamageAbsorbed.Format()} dmg absorbed / hit");
