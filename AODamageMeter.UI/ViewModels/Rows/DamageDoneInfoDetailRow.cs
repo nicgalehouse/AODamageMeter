@@ -23,11 +23,6 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Source.DamageMeter)
                 {
-                    string specialsDoneInfo = (DamageDoneInfo?.HasSpecials ?? false) ?
-$@"
-
-{DamageDoneInfo.GetSpecialsInfo()}" : null;
-
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
 
@@ -39,7 +34,10 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
   {DamageDoneInfo?.AverageCritDamage.Format() ?? EmDash} crit dmg / hit
   {DamageDoneInfo?.AverageGlanceDamage.Format() ?? EmDash} glance dmg / hit
 {DamageDoneInfo?.AverageNanoDamage.Format() ?? EmDash} nano dmg / hit
-{DamageDoneInfo?.AverageIndirectDamage.Format() ?? EmDash} indirect dmg / hit{specialsDoneInfo}";
+{DamageDoneInfo?.AverageIndirectDamage.Format() ?? EmDash} indirect dmg / hit"
++ (!(DamageDoneInfo?.HasSpecials ?? false) ? null : $@"
+
+{DamageDoneInfo.GetSpecialsInfo()}");
                 }
             }
         }

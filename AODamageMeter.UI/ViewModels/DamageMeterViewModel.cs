@@ -217,12 +217,24 @@ namespace AODamageMeter.UI.ViewModels
                 .OrderByDescending(c => c.TotalDamageDonePlusPets)
                 .ThenBy(c => c.UncoloredName))
             {
-                if (!_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
+                if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
+                    || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageDonePlusPets == 0)
                 {
-                    _damageDoneRowMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRow(fightCharacter));
-                    _damageDoneRows.Add(damageDoneRow);
+                    if (_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
+                    {
+                        _damageDoneRowMap.Remove(fightCharacter);
+                        _damageDoneRows.Remove(damageDoneRow);
+                    }
                 }
-                damageDoneRow.Update(displayIndex++);
+                else
+                {
+                    if (!_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
+                    {
+                        _damageDoneRowMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRow(fightCharacter));
+                        _damageDoneRows.Add(damageDoneRow);
+                    }
+                    damageDoneRow.Update(displayIndex++);
+                }
             }
         }
 
@@ -274,12 +286,24 @@ namespace AODamageMeter.UI.ViewModels
                 .OrderByDescending(c => c.TotalDamageTaken)
                 .ThenBy(c => c.UncoloredName))
             {
-                if (!_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
+                if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
+                    || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageTaken == 0)
                 {
-                    _damageTakenRowMap.Add(fightCharacter, damageTakenRow = new DamageTakenMainRow(fightCharacter));
-                    _damageTakenRows.Add(damageTakenRow);
+                    if (_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
+                    {
+                        _damageTakenRowMap.Remove(fightCharacter);
+                        _damageTakenRows.Remove(damageTakenRow);
+                    }
                 }
-                damageTakenRow.Update(displayIndex++);
+                else
+                {
+                    if (!_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
+                    {
+                        _damageTakenRowMap.Add(fightCharacter, damageTakenRow = new DamageTakenMainRow(fightCharacter));
+                        _damageTakenRows.Add(damageTakenRow);
+                    }
+                    damageTakenRow.Update(displayIndex++);
+                }
             }
         }
 

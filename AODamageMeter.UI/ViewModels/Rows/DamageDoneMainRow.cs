@@ -16,11 +16,6 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (FightCharacter.DamageMeter)
                 {
-                    string specialsDoneInfo = FightCharacter.HasSpecialsDone ?
-$@"
-
-{FightCharacter.GetSpecialsDoneInfo()}" : null;
-
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
@@ -45,30 +40,49 @@ $@"{DisplayIndex}. {FightCharacterName}
   {FightCharacter.AverageCritDamageDonePlusPets.Format()} crit dmg / hit
   {FightCharacter.AverageGlanceDamageDonePlusPets.Format()} glance dmg / hit
 {FightCharacter.AverageNanoDamageDonePlusPets.Format()} nano dmg / hit
-{FightCharacter.AverageIndirectDamageDonePlusPets.Format()} indirect dmg / hit{specialsDoneInfo}";
+{FightCharacter.AverageIndirectDamageDonePlusPets.Format()} indirect dmg / hit"
++ (!FightCharacter.HasSpecialsDone ? null : $@"
+
+{FightCharacter.GetSpecialsDoneInfo()}");
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
+            bool showNPCs = Settings.Default.ShowTopLevelNPCRows;
+
             if (!FightCharacter.IsFightPetOwner)
             {
-                PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets ?? 0;
+                PercentWidth = (showNPCs
+                    ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
+                    : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets) ?? 0;
                 double? percentDone = Settings.Default.ShowPercentOfTotal
-                    ? FightCharacter.PercentOfFightsTotalDamageDone : FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
+                    ? (showNPCs
+                        ? FightCharacter.PercentOfFightsTotalDamageDone
+                        : FightCharacter.PercentOfFightsTotalPlayerDamageDonePlusPets)
+                    : (showNPCs
+                        ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
+                        : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets);
                 RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {percentDone.FormatPercent()})";
             }
             else
             {
-                PercentWidth = FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets ?? 0;
+                PercentWidth = (showNPCs
+                    ? FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets
+                    : FightCharacter.PercentPlusPetsOfFightsMaxPlayerDamageDonePlusPets) ?? 0;
                 double? percentDone = Settings.Default.ShowPercentOfTotal
-                    ? FightCharacter.PercentPlusPetsOfFightsTotalDamageDone : FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets;
+                    ? (showNPCs
+                        ? FightCharacter.PercentPlusPetsOfFightsTotalDamageDone
+                        : FightCharacter.PercentPlusPetsOfFightsTotalPlayerDamageDonePlusPets)
+                    : (showNPCs
+                        ? FightCharacter.PercentPlusPetsOfFightsMaxDamageDonePlusPets
+                        : FightCharacter.PercentPlusPetsOfFightsMaxPlayerDamageDonePlusPets);
                 RightText = $"{FightCharacter.TotalDamageDonePlusPets.Format()} ({FightCharacter.TotalDamageDonePMPlusPets.Format()}, {percentDone.FormatPercent()})";
 
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { FightCharacter }.Concat(FightCharacter.FightPets)
-                    .OrderByDescending(c => c.TotalDamageDonePlusPets)
+                    .OrderByDescending(c => c.TotalDamageDone)
                     .ThenBy(c => c.UncoloredName))
                 {
                     if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))

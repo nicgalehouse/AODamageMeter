@@ -1,5 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
-using System;
+using AODamageMeter.UI.Properties;
 using System.Linq;
 using System.Windows.Media;
 
@@ -17,51 +17,57 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight.DamageMeter)
                 {
-                    string specialsDoneInfo = Fight.HasSpecials ?
-$@"
-
-{Fight.GetSpecialsInfo()}" : null;
+                    var stats = Fight.GetDamageTakenStats(
+                        includeNPCs: Settings.Default.ShowTopLevelNPCRows,
+                        includeZeroDamageTakens: Settings.Default.ShowTopLevelZeroDamageRows);
 
                     return
-$@"{Fight.FightCharacterCount} {(Fight.FightCharacterCount == 1 ? "character": "characters")}
+$@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")}
 
-{Fight.WeaponHitChance.FormatPercent()} weapon hit chance
-  {Fight.CritChance.FormatPercent()} crit chance
-  {Fight.GlanceChance.FormatPercent()} glance chance
+{stats.WeaponHitChance.FormatPercent()} weapon hit chance
+  {stats.CritChance.FormatPercent()} crit chance
+  {stats.GlanceChance.FormatPercent()} glance chance
 
-{Fight.WeaponHitAttemptsPM.Format()} weapon hit attempts / min
-  {Fight.WeaponHitsPM.Format()} weapon hits / min
-  {Fight.CritsPM.Format()} crits / min
-  {Fight.GlancesPM.Format()} glances / min
-{Fight.NanoHitsPM.Format()} nano hits / min
-{Fight.IndirectHitsPM.Format()} indirect hits / min
-{Fight.TotalHitsPM.Format()} total hits / min
+{stats.WeaponHitAttemptsPM.Format()} weapon hit attempts / min
+  {stats.WeaponHitsPM.Format()} weapon hits / min
+  {stats.CritsPM.Format()} crits / min
+  {stats.GlancesPM.Format()} glances / min
+{stats.NanoHitsPM.Format()} nano hits / min
+{stats.IndirectHitsPM.Format()} indirect hits / min
+{stats.TotalHitsPM.Format()} total hits / min
 
-{Fight.WeaponDamagePM.Format()} ({Fight.WeaponPercentOfTotalDamage.FormatPercent()}) weapon dmg / min
-{Fight.NanoDamagePM.Format()} ({Fight.NanoPercentOfTotalDamage.FormatPercent()}) nano dmg / min
-{Fight.IndirectDamagePM.Format()} ({Fight.IndirectPercentOfTotalDamage.FormatPercent()}) indirect dmg / min
-{Fight.TotalDamagePM.Format()} total dmg / min
+{stats.WeaponDamagePM.Format()} ({stats.WeaponPercentOfTotalDamage.FormatPercent()}) weapon dmg / min
+{stats.NanoDamagePM.Format()} ({stats.NanoPercentOfTotalDamage.FormatPercent()}) nano dmg / min
+{stats.IndirectDamagePM.Format()} ({stats.IndirectPercentOfTotalDamage.FormatPercent()}) indirect dmg / min
+{stats.TotalDamagePM.Format()} total dmg / min
 
-{Fight.AverageWeaponDamage.Format()} weapon dmg / hit
-  {Fight.AverageCritDamage.Format()} crit dmg / hit
-  {Fight.AverageGlanceDamage.Format()} glance dmg / hit
-{Fight.AverageNanoDamage.Format()} nano dmg / hit
-{Fight.AverageIndirectDamage.Format()} indirect dmg / hit{specialsDoneInfo}";
+{stats.AverageWeaponDamage.Format()} weapon dmg / hit
+  {stats.AverageCritDamage.Format()} crit dmg / hit
+  {stats.AverageGlanceDamage.Format()} glance dmg / hit
+{stats.AverageNanoDamage.Format()} nano dmg / hit
+{stats.AverageIndirectDamage.Format()} indirect dmg / hit"
++ (!stats.HasSpecials ? null : $@"
+
+{stats.GetSpecialsTakenInfo()}");
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
-            RightText = $"{Fight.TotalDamage.Format()} ({Fight.TotalDamagePM.Format()})";
+            RightText = Settings.Default.ShowTopLevelNPCRows
+                ? $"{Fight.TotalDamageTaken.Format()} ({Fight.TotalDamageTakenPM.Format()})"
+                : $"{Fight.TotalPlayerOrPetDamageTaken.Format()} ({Fight.TotalPlayerOrPetDamageTakenPM.Format()})";
 
             var topFightCharacters = Fight.FightCharacters
+                .Where(c => (Settings.Default.ShowTopLevelNPCRows || !c.IsNPC)
+                    && (Settings.Default.ShowTopLevelZeroDamageRows || c.TotalDamageTaken != 0))
                 .OrderByDescending(c => c.TotalDamageTaken)
                 .ThenBy(c => c.UncoloredName)
                 .Take(6).ToArray();
 
             foreach (var fightCharacterDetailRow in _detailRowMap
-                .Where(kvp => !topFightCharacters.Contains(kvp.Key)))
+                .Where(kvp => !topFightCharacters.Contains(kvp.Key)).ToArray())
             {
                 _detailRowMap.Remove(fightCharacterDetailRow.Key);
                 DetailRows.Remove(fightCharacterDetailRow.Value);

@@ -52,21 +52,12 @@ namespace AODamageMeter.UI.ViewModels
 
         public virtual bool IsLeftTextToolTipEnabled => true;
         public virtual string LeftTextToolTip
-        {
-            get
-            {
-                string playerInfo = FightCharacter.HasPlayerInfo ?
-$@"
+            => $"{DisplayIndex}. {FightCharacterName}"
++ (!FightCharacter.HasPlayerInfo ? null : $@"
 {FightCharacter.Level}/{FightCharacter.AlienLevel} {FightCharacter.Faction} {FightCharacter.Profession}
-{FightCharacter.Breed} {FightCharacter.Gender}" : null;
-
-                string organizationInfo = FightCharacter.HasOrganizationInfo ?
-$@"
-{FightCharacter.Organization} ({FightCharacter.OrganizationRank})" : null;
-
-                return $"{DisplayIndex}. {FightCharacterName}{playerInfo}{organizationInfo}";
-            }
-        }
+{FightCharacter.Breed} {FightCharacter.Gender}")
++ (!FightCharacter.HasOrganizationInfo ? null : $@"
+{FightCharacter.Organization} ({FightCharacter.OrganizationRank})");
 
         public virtual bool IsRightTextTooltipEnabled => true;
         public abstract string RightTextToolTip { get; }

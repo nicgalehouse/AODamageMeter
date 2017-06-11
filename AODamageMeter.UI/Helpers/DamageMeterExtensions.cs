@@ -5,23 +5,29 @@ namespace AODamageMeter.UI.Helpers
 {
     public static class DamageMeterExtensions
     {
-        public static string GetProfessionsInfo(this Fight fight)
+        public static string GetProfessionsInfo(this FightCharacterCounts counts)
             => string.Join(Environment.NewLine, Profession.All
-                .Where(fight.HasProfession)
+                .Where(counts.HasProfession)
                 .Select(p => new
                 {
                     profession = p,
-                    count = fight.GetProfessionCount(p),
-                    averageLevel = fight.GetAverageProfessionLevel(p),
-                    averageAlienLevel = fight.GetAverageProfessionAlienLevel(p)
+                    count = counts.GetProfessionCount(p),
+                    averageLevel = counts.GetAverageProfessionLevel(p),
+                    averageAlienLevel = counts.GetAverageProfessionAlienLevel(p)
                 })
                 .Select(a => $"{a.count} {a.profession}{(a.count == 1 ? "" : "s")}, {a.averageLevel.Format()}/{a.averageAlienLevel.Format()}"));
 
-        public static string GetSpecialsInfo(this Fight fight)
+        public static string GetSpecialsDoneInfo(this FightDamageDoneStats stats)
             => string.Join(Environment.NewLine, DamageTypeHelpers.SpecialDamageTypes
-                .Where(t => fight.HasDamageTypeDamage(t))
-                .Select(t => $@"{fight.GetAverageDamageTypeDamage(t).Value.Format()} dmg"
-                    + $", {fight.GetSecondsPerDamageTypeHit(t).Value.Format()} secs / {t.GetName()}"));
+                .Where(t => stats.HasDamageTypeDamage(t))
+                .Select(t => $@"{stats.GetAverageDamageTypeDamage(t).Value.Format()} dmg"
+                    + $", {stats.GetSecondsPerDamageTypeHit(t).Value.Format()} secs / {t.GetName()}"));
+
+        public static string GetSpecialsTakenInfo(this FightDamageTakenStats stats)
+            => string.Join(Environment.NewLine, DamageTypeHelpers.SpecialDamageTypes
+                .Where(t => stats.HasDamageTypeDamage(t))
+                .Select(t => $@"{stats.GetAverageDamageTypeDamage(t).Value.Format()} dmg"
+                    + $", {stats.GetSecondsPerDamageTypeHit(t).Value.Format()} secs / {t.GetName()}"));
 
         public static string GetSpecialsInfo(this DamageInfo damageInfo)
             => string.Join(Environment.NewLine, DamageTypeHelpers.SpecialDamageTypes

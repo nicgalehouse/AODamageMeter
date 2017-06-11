@@ -174,12 +174,18 @@ namespace AODamageMeter
 
         public double? PercentOfOwnersOrOwnTotalDamageDonePlusPets => TotalDamageDone / OwnersOrOwnTotalDamageDonePlusPets.NullIfZero();
 
-        public double? PercentOfFightsTotalDamageDone => TotalDamageDone / Fight.TotalDamage.NullIfZero();
+        public double? PercentOfFightsTotalDamageDone => TotalDamageDone / Fight.TotalDamageDone.NullIfZero();
+        public double? PercentOfFightsTotalPlayerDamageDonePlusPets => TotalDamageDone / Fight.TotalPlayerDamageDonePlusPets.NullIfZero();
+
+        public double? PercentPlusPetsOfFightsTotalDamageDone => TotalDamageDonePlusPets / Fight.TotalDamageDone.NullIfZero();
+        public double? PercentPlusPetsOfFightsTotalPlayerDamageDonePlusPets => TotalDamageDonePlusPets / Fight.TotalPlayerDamageDonePlusPets.NullIfZero();
+
         public double? PercentOfFightsMaxDamageDone => TotalDamageDone / Fight.MaxDamageDone.NullIfZero();
         public double? PercentOfFightsMaxDamageDonePlusPets => TotalDamageDone / Fight.MaxDamageDonePlusPets.NullIfZero();
+        public double? PercentOfFightsMaxPlayerDamageDonePlusPets => TotalDamageDone / Fight.MaxPlayerDamageDonePlusPets.NullIfZero();
 
-        public double? PercentPlusPetsOfFightsTotalDamageDone => TotalDamageDonePlusPets / Fight.TotalDamage.NullIfZero();
         public double? PercentPlusPetsOfFightsMaxDamageDonePlusPets => TotalDamageDonePlusPets / Fight.MaxDamageDonePlusPets.NullIfZero();
+        public double? PercentPlusPetsOfFightsMaxPlayerDamageDonePlusPets => TotalDamageDonePlusPets / Fight.MaxPlayerDamageDonePlusPets.NullIfZero();
 
         protected readonly Dictionary<FightCharacter, DamageInfo> _damageDoneInfosByTarget = new Dictionary<FightCharacter, DamageInfo>();
         public IReadOnlyDictionary<FightCharacter, DamageInfo> DamageDoneInfosByTarget => _damageDoneInfosByTarget;
@@ -249,8 +255,11 @@ namespace AODamageMeter
         public double? AverageNanoDamageTaken => NanoDamageTaken / NanoHitsTaken.NullIfZero();
         public double? AverageIndirectDamageTaken => IndirectDamageTaken / IndirectHitsTaken.NullIfZero();
 
-        public double? PercentOfFightsTotalDamageTaken => TotalDamageTaken / Fight.TotalDamage.NullIfZero();
+        public double? PercentOfFightsTotalDamageTaken => TotalDamageTaken / Fight.TotalDamageTaken.NullIfZero();
+        public double? PercentOfFightsTotalPlayerOrPetDamageTaken => TotalDamageTaken / Fight.TotalPlayerOrPetDamageTaken.NullIfZero();
+
         public double? PercentOfFightsMaxDamageTaken => TotalDamageTaken / Fight.MaxDamageTaken.NullIfZero();
+        public double? PercentOfFightsMaxPlayerOrPetDamageTaken => TotalDamageTaken / Fight.MaxPlayerOrPetDamageTaken.NullIfZero();
 
         protected readonly Dictionary<FightCharacter, DamageInfo> _damageTakenInfosBySource = new Dictionary<FightCharacter, DamageInfo>();
         public IReadOnlyDictionary<FightCharacter, DamageInfo> DamageTakenInfosBySource => _damageTakenInfosBySource;

@@ -15,11 +15,6 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (FightCharacter.DamageMeter)
                 {
-                    string specialsTakenInfo = FightCharacter.HasSpecialsTaken ?
-$@"
-
-{FightCharacter.GetSpecialsTakenInfo()}" : null;
-
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
@@ -44,16 +39,28 @@ $@"{DisplayIndex}. {FightCharacterName}
   {FightCharacter.AverageCritDamageTaken.Format()} crit dmg / hit
   {FightCharacter.AverageGlanceDamageTaken.Format()} glance dmg / hit
 {FightCharacter.AverageNanoDamageTaken.Format()} nano dmg / hit
-{FightCharacter.AverageIndirectDamageTaken.Format()} indirect dmg / hit{specialsTakenInfo}";
+{FightCharacter.AverageIndirectDamageTaken.Format()} indirect dmg / hit"
++ (!FightCharacter.HasSpecialsTaken ? null : $@"
+
+{FightCharacter.GetSpecialsTakenInfo()}");
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
-            PercentWidth = FightCharacter.PercentOfFightsMaxDamageTaken ?? 0;
+            bool showNPCs = Settings.Default.ShowTopLevelNPCRows;
+
+            PercentWidth = (showNPCs
+                ? FightCharacter.PercentOfFightsMaxDamageTaken
+                : FightCharacter.PercentOfFightsMaxPlayerOrPetDamageTaken) ?? 0;
             double? percentTaken = Settings.Default.ShowPercentOfTotal
-                ? FightCharacter.PercentOfFightsTotalDamageTaken : FightCharacter.PercentOfFightsMaxDamageTaken;
+                ? (showNPCs
+                    ? FightCharacter.PercentOfFightsTotalDamageTaken
+                    : FightCharacter.PercentOfFightsTotalPlayerOrPetDamageTaken)
+                : (showNPCs
+                    ? FightCharacter.PercentOfFightsMaxDamageTaken
+                    : FightCharacter.PercentOfFightsMaxPlayerOrPetDamageTaken);
             RightText = $"{FightCharacter.TotalDamageTaken.Format()} ({FightCharacter.TotalDamageTakenPM.Format()}, {percentTaken.FormatPercent()})";
 
             base.Update(displayIndex);

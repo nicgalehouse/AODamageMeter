@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using AODamageMeter.UI.ViewModels.Rows;
 using System;
 using System.Collections.Generic;
@@ -27,10 +28,10 @@ namespace AODamageMeter.UI.ViewModels
             Fight = fight;
         }
 
+        public Fight Fight { get; }
+
         public ViewingMode ViewingMode { get; }
         public sealed override string LeftText { get; }
-
-        public Fight Fight { get; }
 
         public override string LeftTextToolTip
         {
@@ -38,22 +39,29 @@ namespace AODamageMeter.UI.ViewModels
             {
                 lock (Fight.DamageMeter)
                 {
-                    string professionsInfo = Fight.PlayerCount != 0 ?
-$@"
-
-{Fight.GetProfessionsInfo()}" : null;
-
-                    string unknownPlayerInfo = Fight.UnknownPlayerCount != 0 ?
-$@"
-    {Fight.UnknownPlayerCount} {(Fight.UnknownPlayerCount == 1 ? "Unknown" : "Unknowns")}, {Fight.AverageUnknownPlayerLevel.Format()}/{Fight.AverageUnknownPlayerAlienLevel.Format()}" : null;
+                    var counts = ViewingMode == ViewingMode.DamageDone ? Fight.GetFightCharacterCounts(
+                            includeNPCs: Settings.Default.ShowTopLevelNPCRows,
+                            includeZeroDamageDones: Settings.Default.ShowTopLevelZeroDamageRows)
+                        : ViewingMode == ViewingMode.DamageTaken ? Fight.GetFightCharacterCounts(
+                            includeNPCs: Settings.Default.ShowTopLevelNPCRows,
+                            includeZeroDamageTakens: Settings.Default.ShowTopLevelZeroDamageRows)
+                        : throw new NotImplementedException();
 
                     return
-$@"{Fight.FightCharacterCount} {(Fight.FightCharacterCount == 1 ? "character" : "characters")}
-  {Fight.PlayerCount} {(Fight.PlayerCount == 1 ? "player" : "players")}, {Fight.AveragePlayerLevel.Format()}/{Fight.AveragePlayerAlienLevel.Format()}
-    {Fight.OmniPlayerCount} {(Fight.OmniPlayerCount == 1 ? "Omni" : "Omnis")}, {Fight.AverageOmniPlayerLevel.Format()}/{Fight.AverageOmniPlayerAlienLevel.Format()}
-    {Fight.ClanPlayerCount} {(Fight.ClanPlayerCount == 1 ? "Clan" : "Clan")}, {Fight.AverageClanPlayerLevel.Format()}/{Fight.AverageClanPlayerAlienLevel.Format()}
-    {Fight.NeutralPlayerCount} {(Fight.NeutralPlayerCount == 1 ? "Neutral" : "Neutrals")}, {Fight.AverageNeutralPlayerLevel.Format()}/{Fight.AverageNeutralPlayerAlienLevel.Format()}{unknownPlayerInfo}
-  {Fight.NPCCount} {(Fight.NPCCount == 1 ? "NPC" : "NPCs")}{professionsInfo}";
+$@"{counts.FightCharacterCount} {(counts.FightCharacterCount == 1 ? "character" : "characters")}
+  {counts.PlayerCount} {(counts.PlayerCount == 1 ? "player" : "players")}, {counts.AveragePlayerLevel.Format()}/{counts.AveragePlayerAlienLevel.Format()}
+    {counts.OmniPlayerCount} {(counts.OmniPlayerCount == 1 ? "Omni" : "Omnis")}, {counts.AverageOmniPlayerLevel.Format()}/{counts.AverageOmniPlayerAlienLevel.Format()}
+    {counts.ClanPlayerCount} {(counts.ClanPlayerCount == 1 ? "Clan" : "Clan")}, {counts.AverageClanPlayerLevel.Format()}/{counts.AverageClanPlayerAlienLevel.Format()}
+    {counts.NeutralPlayerCount} {(counts.NeutralPlayerCount == 1 ? "Neutral" : "Neutrals")}, {counts.AverageNeutralPlayerLevel.Format()}/{counts.AverageNeutralPlayerAlienLevel.Format()}"
++ (counts.UnknownPlayerCount == 0 ? null : $@"
+    {counts.UnknownPlayerCount} {(counts.UnknownPlayerCount == 1 ? "Unknown" : "Unknowns")}, {counts.AverageUnknownPlayerLevel.Format()}/{counts.AverageUnknownPlayerAlienLevel.Format()}")
++ (counts.PetCount == 0 ? null : $@"
+  {counts.PetCount} {(counts.PetCount == 1 ? "pet" : "pets")}")
++ (counts.NPCCount == 0 ? null : $@"
+  {counts.NPCCount} {(counts.NPCCount == 1 ? "NPC" : "NPCs")}")
++ (counts.PlayerCount == 0 ? null : $@"
+
+{counts.GetProfessionsInfo()}");
                 }
             }
         }

@@ -324,5 +324,29 @@ namespace AODamageMeter.UI.Properties {
                 this["ShowPercentOfTotal"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowTopLevelZeroDamageRows {
+            get {
+                return ((bool)(this["ShowTopLevelZeroDamageRows"]));
+            }
+            set {
+                this["ShowTopLevelZeroDamageRows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowTopLevelNPCRows {
+            get {
+                return ((bool)(this["ShowTopLevelNPCRows"]));
+            }
+            set {
+                this["ShowTopLevelNPCRows"] = value;
+            }
+        }
     }
 }

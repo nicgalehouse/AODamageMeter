@@ -15,11 +15,6 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (FightCharacter.DamageMeter)
                 {
-                    string specialsDoneInfo = FightCharacter.HasSpecialsDone ?
-$@"
-
-{FightCharacter.GetSpecialsDoneInfo()}" : null;
-
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
@@ -44,16 +39,28 @@ $@"{DisplayIndex}. {FightCharacterName}
   {FightCharacter.AverageCritDamageDone.Format()} crit dmg / hit
   {FightCharacter.AverageGlanceDamageDone.Format()} glance dmg / hit
 {FightCharacter.AverageNanoDamageDone.Format()} nano dmg / hit
-{FightCharacter.AverageIndirectDamageDone.Format()} indirect dmg / hit{specialsDoneInfo}";
+{FightCharacter.AverageIndirectDamageDone.Format()} indirect dmg / hit"
++ (!FightCharacter.HasSpecialsDone ? null : $@"
+
+{FightCharacter.GetSpecialsDoneInfo()}");
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
-            PercentWidth = FightCharacter.PercentOfFightsMaxDamageDonePlusPets ?? 0;
+            bool showNPCs = Settings.Default.ShowTopLevelNPCRows;
+
+            PercentWidth = (showNPCs
+                ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
+                : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets) ?? 0;
             double? percentDone = Settings.Default.ShowPercentOfTotal
-                ? FightCharacter.PercentOfFightsTotalDamageDone : FightCharacter.PercentOfFightsMaxDamageDonePlusPets;
+                ? (showNPCs
+                    ? FightCharacter.PercentOfFightsTotalDamageDone
+                    : FightCharacter.PercentOfFightsTotalPlayerDamageDonePlusPets)
+                : (showNPCs
+                    ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
+                    : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets);
             RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets.FormatPercent()}, {percentDone.FormatPercent()})";
 
             base.Update(displayIndex);
