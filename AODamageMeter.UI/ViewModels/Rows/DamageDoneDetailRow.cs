@@ -18,6 +18,13 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
+{FightCharacter.TotalDamageDone.ToString("N0")} total dmg
+
+{FightCharacter.WeaponDamageDonePM.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDone.FormatPercent()}) weapon dmg / min
+{FightCharacter.NanoDamageDonePM.Format()} ({FightCharacter.NanoPercentOfTotalDamageDone.FormatPercent()}) nano dmg / min
+{FightCharacter.IndirectDamageDonePM.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDone.FormatPercent()}) indirect dmg / min
+{FightCharacter.TotalDamageDonePM.Format()} total dmg / min
+
 {FightCharacter.WeaponHitDoneChance.FormatPercent()} weapon hit chance
   {FightCharacter.CritDoneChance.FormatPercent()} crit chance
   {FightCharacter.GlanceDoneChance.FormatPercent()} glance chance
@@ -29,11 +36,6 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.NanoHitsDonePM.Format()} nano hits / min
 {FightCharacter.IndirectHitsDonePM.Format()} indirect hits / min
 {FightCharacter.TotalHitsDonePM.Format()} total hits / min
-
-{FightCharacter.WeaponDamageDonePM.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDone.FormatPercent()}) weapon dmg / min
-{FightCharacter.NanoDamageDonePM.Format()} ({FightCharacter.NanoPercentOfTotalDamageDone.FormatPercent()}) nano dmg / min
-{FightCharacter.IndirectDamageDonePM.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDone.FormatPercent()}) indirect dmg / min
-{FightCharacter.TotalDamageDonePM.Format()} total dmg / min
 
 {FightCharacter.AverageWeaponDamageDone.Format()} weapon dmg / hit
   {FightCharacter.AverageCritDamageDone.Format()} crit dmg / hit

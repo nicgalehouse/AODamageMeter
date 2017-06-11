@@ -26,6 +26,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
 
+{DamageDoneInfo?.TotalDamage.ToString("N0") ?? EmDash} total dmg
+
 {DamageDoneInfo?.WeaponHitChance.FormatPercent() ?? EmDash} weapon hit chance
   {DamageDoneInfo?.CritChance.FormatPercent() ?? EmDash} crit chance
   {DamageDoneInfo?.GlanceChance.FormatPercent() ?? EmDash} glance chance

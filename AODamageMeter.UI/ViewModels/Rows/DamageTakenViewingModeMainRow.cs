@@ -24,6 +24,13 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")}
 
+{stats.TotalDamage.ToString("N0")} total dmg
+
+{stats.WeaponDamagePM.Format()} ({stats.WeaponPercentOfTotalDamage.FormatPercent()}) weapon dmg / min
+{stats.NanoDamagePM.Format()} ({stats.NanoPercentOfTotalDamage.FormatPercent()}) nano dmg / min
+{stats.IndirectDamagePM.Format()} ({stats.IndirectPercentOfTotalDamage.FormatPercent()}) indirect dmg / min
+{stats.TotalDamagePM.Format()} total dmg / min
+
 {stats.WeaponHitChance.FormatPercent()} weapon hit chance
   {stats.CritChance.FormatPercent()} crit chance
   {stats.GlanceChance.FormatPercent()} glance chance
@@ -35,11 +42,6 @@ $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "
 {stats.NanoHitsPM.Format()} nano hits / min
 {stats.IndirectHitsPM.Format()} indirect hits / min
 {stats.TotalHitsPM.Format()} total hits / min
-
-{stats.WeaponDamagePM.Format()} ({stats.WeaponPercentOfTotalDamage.FormatPercent()}) weapon dmg / min
-{stats.NanoDamagePM.Format()} ({stats.NanoPercentOfTotalDamage.FormatPercent()}) nano dmg / min
-{stats.IndirectDamagePM.Format()} ({stats.IndirectPercentOfTotalDamage.FormatPercent()}) indirect dmg / min
-{stats.TotalDamagePM.Format()} total dmg / min
 
 {stats.AverageWeaponDamage.Format()} weapon dmg / hit
   {stats.AverageCritDamage.Format()} crit dmg / hit

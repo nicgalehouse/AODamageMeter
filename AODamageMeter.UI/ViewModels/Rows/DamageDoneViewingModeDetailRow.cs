@@ -18,6 +18,13 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
+{FightCharacter.TotalDamageDonePlusPets.ToString("N0")} total dmg
+
+{FightCharacter.WeaponDamageDonePMPlusPets.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDonePlusPets.FormatPercent()}) weapon dmg / min
+{FightCharacter.NanoDamageDonePMPlusPets.Format()} ({FightCharacter.NanoPercentOfTotalDamageDonePlusPets.FormatPercent()}) nano dmg / min
+{FightCharacter.IndirectDamageDonePMPlusPets.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent()}) indirect dmg / min
+{FightCharacter.TotalDamageDonePMPlusPets.Format()} total dmg / min
+
 {FightCharacter.WeaponHitDoneChancePlusPets.FormatPercent()} weapon hit chance
   {FightCharacter.CritDoneChancePlusPets.FormatPercent()} crit chance
   {FightCharacter.GlanceDoneChancePlusPets.FormatPercent()} glance chance
@@ -29,11 +36,6 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.NanoHitsDonePMPlusPets.Format()} nano hits / min
 {FightCharacter.IndirectHitsDonePMPlusPets.Format()} indirect hits / min
 {FightCharacter.TotalHitsDonePMPlusPets.Format()} total hits / min
-
-{FightCharacter.WeaponDamageDonePMPlusPets.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDonePlusPets.FormatPercent()}) weapon dmg / min
-{FightCharacter.NanoDamageDonePMPlusPets.Format()} ({FightCharacter.NanoPercentOfTotalDamageDonePlusPets.FormatPercent()}) nano dmg / min
-{FightCharacter.IndirectDamageDonePMPlusPets.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent()}) indirect dmg / min
-{FightCharacter.TotalDamageDonePMPlusPets.Format()} total dmg / min
 
 {FightCharacter.AverageWeaponDamageDonePlusPets.Format()} weapon dmg / hit
   {FightCharacter.AverageCritDamageDonePlusPets.Format()} crit dmg / hit
