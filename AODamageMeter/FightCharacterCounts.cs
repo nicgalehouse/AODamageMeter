@@ -10,14 +10,20 @@ namespace AODamageMeter
         protected Dictionary<Profession, int> _professionTotalLevels = Profession.All.ToDictionary(p => p, p => 0);
         protected Dictionary<Profession, int> _professionTotalAlienLevels = Profession.All.ToDictionary(p => p, p => 0);
 
-        public FightCharacterCounts(Fight fight, bool includeNPCs = true, bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
+        public FightCharacterCounts(Fight fight,
+            bool includeNPCs = true,
+            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true,
+            bool includeNullOwnersHealingDones = true, bool includeNullOwnersHealingTakens = true)
         {
             Fight = fight;
+            fight.TryGetFightOwnerCharacter(out FightCharacter fightOwner);
 
             foreach (var fightCharacter in fight.FightCharacters
                 .Where(c => (includeNPCs || !c.IsNPC)
                     && (includeZeroDamageDones || c.OwnersOrOwnTotalDamageDonePlusPets != 0)
-                    && (includeZeroDamageTakens || c.TotalDamageTaken != 0)))
+                    && (includeZeroDamageTakens || c.TotalDamageTaken != 0)
+                    && (includeNullOwnersHealingDones || (fightOwner?.HealingDoneInfosByTarget.ContainsKey(c) ?? false))
+                    && (includeNullOwnersHealingTakens || (fightOwner?.HealingTakenInfosBySource.ContainsKey(c) ?? false))))
             {
                 ++FightCharacterCount;
                 // We can recognize a character as a player w/o successfully retrieving their bio...

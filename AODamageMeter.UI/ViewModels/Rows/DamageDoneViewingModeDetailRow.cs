@@ -25,12 +25,12 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.IndirectDamageDonePMPlusPets.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent()}) indirect dmg / min
 {FightCharacter.TotalDamageDonePMPlusPets.Format()} total dmg / min
 
-{FightCharacter.WeaponHitDoneChancePlusPets.FormatPercent()} weapon hit chance
+{(FightCharacter.HasIncompleteMissStatsPlusPets ? "≤ " : "")}{FightCharacter.WeaponHitDoneChancePlusPets.FormatPercent()} weapon hit chance
   {FightCharacter.CritDoneChancePlusPets.FormatPercent()} crit chance
   {FightCharacter.GlanceDoneChancePlusPets.FormatPercent()} glance chance
 
-{FightCharacter.WeaponHitAttemptsDonePMPlusPets.Format()} weapon hit attempts / min
-  {FightCharacter.WeaponHitsDonePMPlusPets.Format()} weapon hits / min
+{(FightCharacter.HasIncompleteMissStatsPlusPets ? "≥ " : "")}{FightCharacter.WeaponHitAttemptsDonePMPlusPets.Format()} weapon hit attempts / min
+{FightCharacter.WeaponHitsDonePMPlusPets.Format()} weapon hits / min
   {FightCharacter.CritsDonePMPlusPets.Format()} crits / min
   {FightCharacter.GlancesDonePMPlusPets.Format()} glances / min
 {FightCharacter.NanoHitsDonePMPlusPets.Format()} nano hits / min

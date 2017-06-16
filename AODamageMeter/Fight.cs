@@ -19,8 +19,26 @@ namespace AODamageMeter
         public IEnumerable<FightCharacter> PlayerFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayer);
         public IEnumerable<FightCharacter> PlayerOrPetFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayer || c.IsPet);
 
-        public FightCharacterCounts GetFightCharacterCounts(bool includeNPCs = true, bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
-            => new FightCharacterCounts(this, includeNPCs, includeZeroDamageDones, includeZeroDamageTakens);
+        public int GetFightCharacterCount(
+            bool includeNPCs = true,
+            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true,
+            bool includeNullOwnersHealingDones = true, bool includeNullOwnersHealingTakens = true)
+        {
+            TryGetFightOwnerCharacter(out FightCharacter fightOwner);
+
+            return FightCharacters
+                .Count(c => (includeNPCs || !c.IsNPC)
+                    && (includeZeroDamageDones || c.OwnersOrOwnTotalDamageDonePlusPets != 0)
+                    && (includeZeroDamageTakens || c.TotalDamageTaken != 0)
+                    && (includeNullOwnersHealingDones || (fightOwner?.HealingDoneInfosByTarget.ContainsKey(c) ?? false))
+                    && (includeNullOwnersHealingTakens || (fightOwner?.HealingTakenInfosBySource.ContainsKey(c) ?? false)));
+        }
+
+        public FightCharacterCounts GetFightCharacterCounts(
+            bool includeNPCs = true,
+            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true,
+            bool includeNullOwnersHealingDones = true, bool includeNullOwnersHealingTakens = true)
+            => new FightCharacterCounts(this, includeNPCs, includeZeroDamageDones, includeZeroDamageTakens, includeNullOwnersHealingDones, includeNullOwnersHealingTakens);
 
         public DateTime? StartTime { get; protected set; }
         public DateTime? LatestEventTime { get; protected set; }
@@ -126,15 +144,8 @@ namespace AODamageMeter
                     _maxDamageTaken = _maxPlayerDamageTaken = _maxPlayerOrPetDamageTaken = null;
                     break;
                 case HealEvent healEvent:
-                    if (healEvent.Source == healEvent.Target)
-                    {
-                        healEvent.Source.AddSelfHealEvent(healEvent);
-                    }
-                    else
-                    {
-                        healEvent.Source.AddSourceHealEvent(healEvent);
-                        healEvent.Target.AddTargetHealEvent(healEvent);
-                    }
+                    healEvent.Source.AddSourceHealEvent(healEvent);
+                    healEvent.Target.AddTargetHealEvent(healEvent);
                     break;
                 case LevelEvent levelEvent:
                     levelEvent.Source.AddLevelEvent(levelEvent);
@@ -190,5 +201,8 @@ namespace AODamageMeter
 
         public bool TryGetFightCharacter(Character character, out FightCharacter fightCharacter)
             => _fightCharacters.TryGetValue(character, out fightCharacter);
+
+        public bool TryGetFightOwnerCharacter(out FightCharacter fightCharacter)
+            => _fightCharacters.TryGetValue(DamageMeter.Owner, out fightCharacter);
     }
 }

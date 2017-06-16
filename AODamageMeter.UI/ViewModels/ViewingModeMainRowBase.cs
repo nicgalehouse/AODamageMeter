@@ -14,6 +14,8 @@ namespace AODamageMeter.UI.ViewModels
             {
                 new DamageDoneViewingModeMainRow(fight),
                 new DamageTakenViewingModeMainRow(fight),
+                new OwnersHealingDoneViewingModeMainRow(fight),
+                new OwnersHealingTakenViewingModeMainRow(fight)
             };
 
         protected ViewingModeMainRowBase(ViewingMode viewingMode,
@@ -45,6 +47,8 @@ namespace AODamageMeter.UI.ViewModels
                         : ViewingMode == ViewingMode.DamageTaken ? Fight.GetFightCharacterCounts(
                             includeNPCs: Settings.Default.ShowTopLevelNPCRows,
                             includeZeroDamageTakens: Settings.Default.ShowTopLevelZeroDamageRows)
+                        : ViewingMode == ViewingMode.OwnersHealingDone ? Fight.GetFightCharacterCounts(includeNullOwnersHealingDones: false)
+                        : ViewingMode == ViewingMode.OwnersHealingTaken ? Fight.GetFightCharacterCounts(includeNullOwnersHealingTakens: false)
                         : throw new NotImplementedException();
 
                     return

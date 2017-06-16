@@ -25,12 +25,12 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.IndirectDamageTakenPM.Format()} ({FightCharacter.IndirectPercentOfTotalDamageTaken.FormatPercent()}) indirect dmg / min
 {FightCharacter.TotalDamageTakenPM.Format()} total dmg / min
 
-{FightCharacter.WeaponHitTakenChance.FormatPercent()} weapon hit chance
+{(FightCharacter.HasIncompleteMissStats ? "≤ " : "")}{FightCharacter.WeaponHitTakenChance.FormatPercent()} weapon hit chance
   {FightCharacter.CritTakenChance.FormatPercent()} crit chance
   {FightCharacter.GlanceTakenChance.FormatPercent()} glance chance
 
-{FightCharacter.WeaponHitAttemptsTakenPM.Format()} weapon hit attempts / min
-  {FightCharacter.WeaponHitsTakenPM.Format()} weapon hits / min
+{(FightCharacter.HasIncompleteMissStats ? "≤ " : "")}{FightCharacter.WeaponHitAttemptsTakenPM.Format()} weapon hit attempts / min
+{FightCharacter.WeaponHitsTakenPM.Format()} weapon hits / min
   {FightCharacter.CritsTakenPM.Format()} crits / min
   {FightCharacter.GlancesTakenPM.Format()} glances / min
 {FightCharacter.NanoHitsTakenPM.Format()} nano hits / min

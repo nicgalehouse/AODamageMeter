@@ -43,6 +43,12 @@ namespace AODamageMeter.UI.ViewModels
         private Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageTakenInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
         private Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageTakenInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
 
+        private Dictionary<HealingInfo, MainRowBase> _ownersHealingDoneRowMap = new Dictionary<HealingInfo, MainRowBase>();
+        private ObservableCollection<MainRowBase> _ownersHealingDoneRows { get; } = new ObservableCollection<MainRowBase>();
+
+        private Dictionary<HealingInfo, MainRowBase> _ownersHealingTakenRowMap = new Dictionary<HealingInfo, MainRowBase>();
+        private ObservableCollection<MainRowBase> _ownersHealingTakenRows { get; } = new ObservableCollection<MainRowBase>();
+
         private ObservableCollection<MainRowBase> _rows;
         public ObservableCollection<MainRowBase> Rows
         {
@@ -95,6 +101,12 @@ namespace AODamageMeter.UI.ViewModels
 #endif
             StartDamageMeterUpdater();
 
+            if (SelectedViewingMode == ViewingMode.OwnersHealingDone
+                || SelectedViewingMode == ViewingMode.OwnersHealingTaken)
+            {
+                SelectedCharacter = _damageMeter.Owner;
+            }
+
             return true;
         }
 
@@ -124,6 +136,11 @@ namespace AODamageMeter.UI.ViewModels
             {
                 case ViewingMode.ViewingModes:
                     SelectedViewingMode = ((ViewingModeMainRowBase)mainRowViewModelBase).ViewingMode;
+                    if (SelectedViewingMode == ViewingMode.OwnersHealingDone
+                        || SelectedViewingMode == ViewingMode.OwnersHealingTaken)
+                    {
+                        SelectedCharacter = _damageMeter.Owner;
+                    }
                     break;
                 case ViewingMode.DamageDone:
                     SelectedViewingMode = ViewingMode.DamageDoneInfo;
@@ -158,6 +175,14 @@ namespace AODamageMeter.UI.ViewModels
                     SelectedViewingMode = ViewingMode.DamageTaken;
                     SelectedCharacter = null;
                     break;
+                case ViewingMode.OwnersHealingDone:
+                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedCharacter = null;
+                    break;
+                case ViewingMode.OwnersHealingTaken:
+                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedCharacter = null;
+                    break;
                 default: return false;
             }
 
@@ -178,6 +203,8 @@ namespace AODamageMeter.UI.ViewModels
                     case ViewingMode.DamageDoneInfo: SetAndUpdateDamageDoneInfoRows(); return;
                     case ViewingMode.DamageTaken: SetAndUpdateDamageTakenRows(); return;
                     case ViewingMode.DamageTakenInfo: SetAndUpdateDamageTakenInfoRows(); return;
+                    case ViewingMode.OwnersHealingDone: SetAndUpdateOwnersHealingDoneRows(); return;
+                    case ViewingMode.OwnersHealingTaken: SetAndUpdateOwnersHealingTakenRows(); return;
                     default: throw new NotImplementedException();
                 }
             }
@@ -333,7 +360,7 @@ namespace AODamageMeter.UI.ViewModels
             foreach (var damageTakenInfo in fightCharacter.DamageTakenInfos
                 .Where(i => !i.Source.IsFightPet)
                 .OrderByDescending(i => i.TotalDamagePlusPets)
-                .ThenBy(i => i.Target.UncoloredName))
+                .ThenBy(i => i.Source.UncoloredName))
             {
                 if (!damageTakenInfoRowMap.TryGetValue(damageTakenInfo, out MainRowBase damageTakenInfoRow))
                 {
@@ -341,6 +368,55 @@ namespace AODamageMeter.UI.ViewModels
                     damageTakenInfoRows.Add(damageTakenInfoRow);
                 }
                 damageTakenInfoRow.Update(displayIndex++);
+            }
+        }
+
+        private void SetAndUpdateOwnersHealingDoneRows()
+        {
+            if (Rows != _ownersHealingDoneRows)
+            {
+                Rows = _ownersHealingDoneRows;
+            }
+
+            if (!_damageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
+                return;
+
+            int displayIndex = 1;
+            foreach (var healingDoneInfo in fightOwner.HealingDoneInfos
+                .OrderByDescending(i => i.PotentialHealingPlusPets)
+                .ThenBy(i => i.Target.UncoloredName))
+            {
+                if (!_ownersHealingDoneRowMap.TryGetValue(healingDoneInfo, out MainRowBase ownersHealingDoneRow))
+                {
+                    _ownersHealingDoneRowMap.Add(healingDoneInfo, ownersHealingDoneRow = new OwnersHealingDoneMainRow(healingDoneInfo));
+                    _ownersHealingDoneRows.Add(ownersHealingDoneRow);
+                }
+                ownersHealingDoneRow.Update(displayIndex++);
+            }
+        }
+
+        private void SetAndUpdateOwnersHealingTakenRows()
+        {
+            if (Rows != _ownersHealingTakenRows)
+            {
+                Rows = _ownersHealingTakenRows;
+            }
+
+            if (!_damageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
+                return;
+
+            int displayIndex = 1;
+            foreach (var healingTakenInfo in fightOwner.HealingTakenInfos
+                .Where(i => !i.Source.IsFightPet)
+                .OrderByDescending(i => i.PotentialHealingPlusPets)
+                .ThenBy(i => i.Target.UncoloredName))
+            {
+                if (!_ownersHealingTakenRowMap.TryGetValue(healingTakenInfo, out MainRowBase ownersHealingTakenRow))
+                {
+                    _ownersHealingTakenRowMap.Add(healingTakenInfo, ownersHealingTakenRow = new OwnersHealingTakenMainRow(healingTakenInfo));
+                    _ownersHealingTakenRows.Add(ownersHealingTakenRow);
+                }
+                ownersHealingTakenRow.Update(displayIndex++);
             }
         }
 
@@ -397,6 +473,10 @@ namespace AODamageMeter.UI.ViewModels
             _damageTakenRows.Clear();
             _damageTakenInfoRowMapMap.Clear();
             _damageTakenInfoRowsMap.Clear();
+            _ownersHealingDoneRowMap.Clear();
+            _ownersHealingDoneRows.Clear();
+            _ownersHealingTakenRowMap.Clear();
+            _ownersHealingTakenRows.Clear();
             Rows = null;
         }
 

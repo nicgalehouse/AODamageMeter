@@ -69,8 +69,8 @@ namespace AODamageMeter
         public double? TotalHitsPM => TotalHits / Fight.Duration?.TotalMinutes;
 
         public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
-        public double? CritChance => Crits / WeaponHitAttempts.NullIfZero();
-        public double? GlanceChance => Glances / WeaponHitAttempts.NullIfZero();
+        public double? CritChance => Crits / WeaponHits.NullIfZero();
+        public double? GlanceChance => Glances / WeaponHits.NullIfZero();
         public double? MissChance => Misses / WeaponHitAttempts.NullIfZero();
 
         public double? AverageWeaponDamage => WeaponDamage / WeaponHits.NullIfZero();

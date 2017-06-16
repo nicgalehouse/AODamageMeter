@@ -26,7 +26,7 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
 
 {DamageDoneInfo.TotalDamagePlusPets.ToString("N0")} total dmg
 
-{DamageDoneInfo.WeaponHitChancePlusPets.FormatPercent()} weapon hit chance
+{(DamageDoneInfo.HasIncompleteMissStatsPlusPets ? "≤ " : "")}{DamageDoneInfo.WeaponHitChancePlusPets.FormatPercent()} weapon hit chance
   {DamageDoneInfo.CritChancePlusPets.FormatPercent()} crit chance
   {DamageDoneInfo.GlanceChancePlusPets.FormatPercent()} glance chance
 

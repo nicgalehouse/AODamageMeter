@@ -31,12 +31,12 @@ $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "
 {stats.IndirectDamagePM.Format()} ({stats.IndirectPercentOfTotalDamage.FormatPercent()}) indirect dmg / min
 {stats.TotalDamagePM.Format()} total dmg / min
 
-{stats.WeaponHitChance.FormatPercent()} weapon hit chance
+≤ {stats.WeaponHitChance.FormatPercent()} weapon hit chance
   {stats.CritChance.FormatPercent()} crit chance
   {stats.GlanceChance.FormatPercent()} glance chance
 
-{stats.WeaponHitAttemptsPM.Format()} weapon hit attempts / min
-  {stats.WeaponHitsPM.Format()} weapon hits / min
+≥ {stats.WeaponHitAttemptsPM.Format()} weapon hit attempts / min
+{stats.WeaponHitsPM.Format()} weapon hits / min
   {stats.CritsPM.Format()} crits / min
   {stats.GlancesPM.Format()} glances / min
 {stats.NanoHitsPM.Format()} nano hits / min

@@ -113,8 +113,14 @@
     <Compile Include="ViewModels\Rows\DamageTakenMainRow.cs" />
     <Compile Include="ViewModels\Rows\DamageTakenViewingModeDetailRow.cs" />
     <Compile Include="ViewModels\Rows\DamageTakenViewingModeMainRow.cs" />
-    <Compile Include="ViewModels\Rows\HealingYouveDoneViewingModeMainRow.cs" />
-    <Compile Include="ViewModels\Rows\HealingYouveTakenViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingDoneDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingDoneMainRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingDoneViewingModeDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingDoneViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingTakenDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingTakenMainRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingTakenViewingModeDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersHealingTakenViewingModeMainRow.cs" />
     <Compile Include="ViewModels\ViewingModeMainRowBase.cs" />
     <Compile Include="Views\CharacterInfoView.xaml.cs">
       <DependentUpon>CharacterInfoView.xaml</DependentUpon>
@@ -263,8 +269,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\DamageTaken.png" />
-    <Resource Include="Icons\HealingYouveDone.png" />
-    <Resource Include="Icons\HealingYouveTaken.png" />
+    <Resource Include="Icons\OwnersHealingDone.png" />
+    <Resource Include="Icons\OwnersHealingTaken.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

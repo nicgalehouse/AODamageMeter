@@ -7,7 +7,7 @@
         DamageDoneInfo,
         DamageTaken,
         DamageTakenInfo,
-        HealingYouveDone,
-        HealingYouveTaken
+        OwnersHealingDone,
+        OwnersHealingTaken
     }
 }

@@ -151,13 +151,13 @@ namespace AODamageMeter
         public double TotalHitsDonePMPlusPets => TotalHitsDonePlusPets / ActiveDuration.TotalMinutes;
 
         public double? WeaponHitDoneChance => WeaponHitsDone / WeaponHitAttemptsDone.NullIfZero();
-        public double? CritDoneChance => CritsDone / WeaponHitAttemptsDone.NullIfZero();
-        public double? GlanceDoneChance => GlancesDone / WeaponHitAttemptsDone.NullIfZero();
+        public double? CritDoneChance => CritsDone / WeaponHitsDone.NullIfZero();
+        public double? GlanceDoneChance => GlancesDone / WeaponHitsDone.NullIfZero();
         public double? MissDoneChance => MissesDone / WeaponHitAttemptsDone.NullIfZero();
 
         public double? WeaponHitDoneChancePlusPets => WeaponHitsDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
-        public double? CritDoneChancePlusPets => CritsDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
-        public double? GlanceDoneChancePlusPets => GlancesDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
+        public double? CritDoneChancePlusPets => CritsDonePlusPets / WeaponHitsDonePlusPets.NullIfZero();
+        public double? GlanceDoneChancePlusPets => GlancesDonePlusPets / WeaponHitsDonePlusPets.NullIfZero();
         public double? MissDoneChancePlusPets => MissesDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
 
         public double? AverageWeaponDamageDone => WeaponDamageDone / WeaponHitsDone.NullIfZero();
@@ -248,8 +248,8 @@ namespace AODamageMeter
         public double HitsAbsorbedPM => HitsAbsorbed / ActiveDuration.TotalMinutes;
 
         public double? WeaponHitTakenChance => WeaponHitsTaken / WeaponHitAttemptsTaken.NullIfZero();
-        public double? CritTakenChance => CritsTaken / WeaponHitAttemptsTaken.NullIfZero();
-        public double? GlanceTakenChance => GlancesTaken / WeaponHitAttemptsTaken.NullIfZero();
+        public double? CritTakenChance => CritsTaken / WeaponHitsTaken.NullIfZero();
+        public double? GlanceTakenChance => GlancesTaken / WeaponHitsTaken.NullIfZero();
         public double? MissTakenChance => MissesTaken / WeaponHitAttemptsTaken.NullIfZero();
 
         public double? AverageWeaponDamageTaken => WeaponDamageTaken / WeaponHitsTaken.NullIfZero();
@@ -286,19 +286,73 @@ namespace AODamageMeter
         public double? GetAverageDamageTypeDamageTaken(DamageType damageType) => GetDamageTypeDamageTaken(damageType) / (double?)GetDamageTypeHitsTaken(damageType);
         public double? GetSecondsPerDamageTypeHitTaken(DamageType damageType) => ActiveDuration.TotalSeconds / GetDamageTypeHitsTaken(damageType);
 
-        // We only know about healing where the owner is a source or target. When the owner is the source, we don't know
-        // about realized healing. So overhealing stats only when non-owner source and owner target--non-owner source has
-        // OverhealingDone (to owner) stats, owner target has OverhealingTaken (from non-owners) stats. Since owner must
-        // be source or target, it follows we only have SelfHealingDone for the owner.
-        public long SelfHealingDone { get; protected set; }
+        // We only know about misses where the owner is a source or target.
+        public bool HasIncompleteMissStats => !IsDamageMeterOwner;
+        public bool HasIncompleteMissStatsPlusPets => !IsDamageMeterOwner || FightPets.Any();
+
+        //                    1                    2                3
+        // Potential healing: owner --> non-owner, owner -/> owner, non-owner --> owner
+        // Realized healing:  owner -/> non-owner, owner --> owner, non-owner --> owner
+        // Overhealing:       owner -/> non-owner, owner -/> owner, non-owner --> owner
+        // 1. Potential healing for owner to non-owner, but no realized, so can't do overhealing.
+        // 2. No potential healing for owner to owner, but realized, so can't do overhealing.
+        // 3. Potential healing and realized for non-owner to owner, so can do overhealing.
+        // In practice, for the owner's aggregate done stats, what we use corresponds to reality (r) like so:
+        // r >= potential healing, r >= realized healing, r >= overhealing (== 0). Not to mention pets...
+        // In practice, for the owner's aggregate taken stats, what we use corresponds to reality (r) like so:
+        // r >= potential healing, r == realized healing, r >= overhealing.
         public long PotentialHealingDone { get; protected set; }
         public long RealizedHealingDone { get; protected set; }
         public long OverhealingDone { get; protected set; }
         public long NanoHealingDone { get; protected set; }
+
+        // Pets for healing done aren't as important as pets for healing taken. We can only see when the owner's pet heals the owner, not other characters.
+        public long PotentialHealingDonePlusPets => PotentialHealingDone + FightPets.Sum(p => p.PotentialHealingDone);
+        public long RealizedHealingDonePlusPets => RealizedHealingDone + FightPets.Sum(p => p.RealizedHealingDone);
+        public long OverhealingDonePlusPets => OverhealingDone + FightPets.Sum(p => p.OverhealingDone);
+        public long NanoHealingDonePlusPets => NanoHealingDone + FightPets.Sum(p => p.NanoHealingDone);
+
+        public double PotentialHealingDonePM => PotentialHealingDone / ActiveDuration.TotalMinutes;
+        public double RealizedHealingDonePM => RealizedHealingDone / ActiveDuration.TotalMinutes;
+        public double OverhealingDonePM => OverhealingDone / ActiveDuration.TotalMinutes;
+        public double NanoHealingDonePM => NanoHealingDone / ActiveDuration.TotalMinutes;
+
+        public double PotentialHealingDonePMPlusPets => PotentialHealingDonePlusPets / ActiveDuration.TotalMinutes;
+        public double RealizedHealingDonePMPlusPets => RealizedHealingDonePlusPets / ActiveDuration.TotalMinutes;
+        public double OverhealingDonePMPlusPets => OverhealingDonePlusPets / ActiveDuration.TotalMinutes;
+        public double NanoHealingDonePMPlusPets => NanoHealingDonePlusPets / ActiveDuration.TotalMinutes;
+
+        public double? PercentOfOverhealingDone => OverhealingDone / PotentialHealingDone.NullIfZero();
+        public double? PercentOfOverhealingDonePlusPets => OverhealingDonePlusPets / PotentialHealingDonePlusPets.NullIfZero();
+
+        protected readonly Dictionary<FightCharacter, HealingInfo> _healingDoneInfosByTarget = new Dictionary<FightCharacter, HealingInfo>();
+        public IReadOnlyDictionary<FightCharacter, HealingInfo> HealingDoneInfosByTarget => _healingDoneInfosByTarget;
+        public IReadOnlyCollection<HealingInfo> HealingDoneInfos => _healingDoneInfosByTarget.Values;
+
+        protected long? _maxPotentialHealingDone, _maxPotentialHealingDonePlusPets;
+        public long? MaxPotentialHealingDone => _maxPotentialHealingDone ?? (_maxPotentialHealingDone = HealingDoneInfos.NullableMax(i => i.PotentialHealing));
+        public long? MaxPotentialHealingDonePlusPets => _maxPotentialHealingDonePlusPets ?? (_maxPotentialHealingDonePlusPets = HealingDoneInfos.NullableMax(i => i.PotentialHealingPlusPets));
+
         public long PotentialHealingTaken { get; protected set; }
         public long RealizedHealingTaken { get; protected set; }
         public long OverhealingTaken { get; protected set; }
         public long NanoHealingTaken { get; protected set; }
+
+        public double PotentialHealingTakenPM => PotentialHealingTaken / ActiveDuration.TotalMinutes;
+        public double RealizedHealingTakenPM => RealizedHealingTaken / ActiveDuration.TotalMinutes;
+        public double OverhealingTakenPM => OverhealingTaken / ActiveDuration.TotalMinutes;
+        public double NanoHealingTakenPM => NanoHealingTaken / ActiveDuration.TotalMinutes;
+
+        public double? PercentOfOverhealingTaken => OverhealingTaken / PotentialHealingTaken.NullIfZero();
+
+        protected readonly Dictionary<FightCharacter, HealingInfo> _healingTakenInfosBySource = new Dictionary<FightCharacter, HealingInfo>();
+        public IReadOnlyDictionary<FightCharacter, HealingInfo> HealingTakenInfosBySource => _healingTakenInfosBySource;
+        public IReadOnlyCollection<HealingInfo> HealingTakenInfos => _healingTakenInfosBySource.Values;
+
+        protected long? _maxPotentialHealingTaken, _maxPotentialHealingPlusPetsTaken;
+        public long? MaxPotentialHealingTaken => _maxPotentialHealingTaken ?? (_maxPotentialHealingTaken = HealingTakenInfos.NullableMax(i => i.PotentialHealing));
+        // Intentionally weird naming. It's not max (this + pets) have taken from a source, it's max this has taken from a (source + pets).
+        public long? MaxPotentialHealingPlusPetsTaken => _maxPotentialHealingPlusPetsTaken ?? (_maxPotentialHealingPlusPetsTaken = HealingTakenInfos.NullableMax(i => i.PotentialHealingPlusPets));
 
         // We only know about level events where the source is the owner (there's no target).
         public long NormalXPGained { get; protected set; }
@@ -428,64 +482,76 @@ namespace AODamageMeter
             }
         }
 
-        public void AddSelfHealEvent(HealEvent healEvent)
-        {
-            if (healEvent.Source != healEvent.Target)
-                throw new ArgumentException("Use AddSourceHealEvent and AddTargetHealEvent when the source and target differ.");
-
-            if (healEvent.HealType == HealType.RealizedHealth)
-            {
-                SelfHealingDone += healEvent.Amount.Value;
-            }
-            else throw new NotImplementedException();
-        }
-
         public void AddSourceHealEvent(HealEvent healEvent)
         {
-            if (healEvent.Source == healEvent.Target)
-                throw new ArgumentException("Use AddSelfHealEvent for heal events where the source equals the target.");
+            switch (healEvent.HealType)
+            {
+                case HealType.PotentialHealth:
+                    PotentialHealingDone += healEvent.Amount.Value;
+                    break;
+                case HealType.RealizedHealth:
+                    RealizedHealingDone += healEvent.Amount.Value;
+                    if (healEvent.StartEvent != null)
+                    {
+                        OverhealingDone += healEvent.StartEvent.Amount.Value - healEvent.Amount.Value;
+                    }
+                    else // No corresponding potential, so adding realized is best we can do (happens when owner heals themselves).
+                    {
+                        PotentialHealingDone += healEvent.Amount.Value;
+                    }
+                    break;
+                case HealType.Nano:
+                    NanoHealingDone += healEvent.Amount.Value;
+                    break;
+                default: throw new NotImplementedException();
+            }
 
-            if (healEvent.HealType == HealType.PotentialHealth)
+            if (_healingDoneInfosByTarget.TryGetValue(healEvent.Target, out HealingInfo healingInfo))
             {
-                PotentialHealingDone += healEvent.Amount.Value;
+                healingInfo.AddHealEvent(healEvent);
             }
-            else if (healEvent.HealType == HealType.RealizedHealth)
+            else
             {
-                RealizedHealingDone += healEvent.Amount.Value;
+                if (IsFightPet && !FightPetOwner._healingDoneInfosByTarget.ContainsKey(healEvent.Target))
+                {
+                    var fightPetOwnerHealingInfo = new HealingInfo(FightPetOwner, healEvent.Target);
+                    FightPetOwner._healingDoneInfosByTarget[healEvent.Target] = fightPetOwnerHealingInfo;
+                    healEvent.Target._healingTakenInfosBySource[FightPetOwner] = fightPetOwnerHealingInfo;
+                }
 
-                // Right now, realized healing where the source (!= owner) is healing the owner is the only way to
-                // get here. In that case we know that the heal event must be an end event w/ a corresponding start event.
-                OverhealingDone += healEvent.StartEvent.Amount.Value - healEvent.Amount.Value;
+                healingInfo = new HealingInfo(this, healEvent.Target);
+                healingInfo.AddHealEvent(healEvent);
+                this._healingDoneInfosByTarget[healEvent.Target] = healingInfo;
+                healEvent.Target._healingTakenInfosBySource[this] = healingInfo;
             }
-            else if (healEvent.HealType == HealType.Nano)
-            {
-                NanoHealingDone += healEvent.Amount.Value;
-            }
-            else throw new NotImplementedException();
+
+            _maxPotentialHealingDone = _maxPotentialHealingDonePlusPets = null;
+            healEvent.Target._maxPotentialHealingTaken = healEvent.Target._maxPotentialHealingPlusPetsTaken = null;
         }
 
         public void AddTargetHealEvent(HealEvent healEvent)
         {
-            if (healEvent.Source == healEvent.Target)
-                throw new ArgumentException("Use AddSelfHealEvent for heal events where the source equals the target.");
-
-            if (healEvent.HealType == HealType.PotentialHealth)
+            switch (healEvent.HealType)
             {
-                PotentialHealingTaken += healEvent.Amount.Value;
+                case HealType.PotentialHealth:
+                    PotentialHealingTaken += healEvent.Amount.Value;
+                    break;
+                case HealType.RealizedHealth:
+                    RealizedHealingTaken += healEvent.Amount.Value;
+                    if (healEvent.StartEvent != null)
+                    {
+                        OverhealingTaken += healEvent.StartEvent.Amount.Value - healEvent.Amount.Value;
+                    }
+                    else // No corresponding potential, so adding realized is best we can do (happens when owner heals themselves).
+                    {
+                        PotentialHealingTaken += healEvent.Amount.Value;
+                    }
+                    break;
+                case HealType.Nano:
+                    NanoHealingTaken += healEvent.Amount.Value;
+                    break;
+                default: throw new NotImplementedException();
             }
-            else if (healEvent.HealType == HealType.RealizedHealth)
-            {
-                RealizedHealingTaken += healEvent.Amount.Value;
-
-                // Right now, realized healing where the source (!= owner) is healing the owner is the only way to
-                // get here. In that case we know that the heal event must be an end event w/ a corresponding start event.
-                OverhealingTaken += healEvent.StartEvent.Amount.Value - healEvent.Amount.Value;
-            }
-            else if (healEvent.HealType == HealType.Nano)
-            {
-                NanoHealingTaken += healEvent.Amount.Value;
-            }
-            else throw new NotImplementedException();
         }
 
         public void AddLevelEvent(LevelEvent levelEvent)

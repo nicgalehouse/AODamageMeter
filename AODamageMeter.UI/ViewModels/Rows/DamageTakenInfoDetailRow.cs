@@ -28,7 +28,7 @@ $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
 
 {DamageTakenInfo?.TotalDamage.ToString("N0") ?? EmDash} total dmg
 
-{DamageTakenInfo?.WeaponHitChance.FormatPercent() ?? EmDash} weapon hit chance
+{((DamageTakenInfo?.HasIncompleteMissStats ?? false) ? "≤ " : "")}{DamageTakenInfo?.WeaponHitChance.FormatPercent() ?? EmDash} weapon hit chance
   {DamageTakenInfo?.CritChance.FormatPercent() ?? EmDash} crit chance
   {DamageTakenInfo?.GlanceChance.FormatPercent() ?? EmDash} glance chance
 
