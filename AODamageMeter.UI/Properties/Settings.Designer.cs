@@ -25,7 +25,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("180")]
         public double DamageMeterViewHeight {
             get {
                 return ((double)(this["DamageMeterViewHeight"]));
@@ -37,7 +37,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        [global::System.Configuration.DefaultSettingValueAttribute("350")]
         public double DamageMeterViewWidth {
             get {
                 return ((double)(this["DamageMeterViewWidth"]));
@@ -135,7 +135,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("400")]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
         public double CharacterSelectionViewWidth {
             get {
                 return ((double)(this["CharacterSelectionViewWidth"]));
@@ -195,7 +195,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300")]
+        [global::System.Configuration.DefaultSettingValueAttribute("320")]
         public double CharacterInfoViewHeight {
             get {
                 return ((double)(this["CharacterInfoViewHeight"]));
@@ -346,6 +346,18 @@ namespace AODamageMeter.UI.Properties {
             }
             set {
                 this["ShowTopLevelNPCRows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("150")]
+        public double LogFileSizeColumnWidth {
+            get {
+                return ((double)(this["LogFileSizeColumnWidth"]));
+            }
+            set {
+                this["LogFileSizeColumnWidth"] = value;
             }
         }
     }

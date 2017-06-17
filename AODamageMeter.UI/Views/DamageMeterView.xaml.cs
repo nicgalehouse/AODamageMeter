@@ -21,7 +21,7 @@ namespace AODamageMeter.UI.Views
             string previousSelectedCharacterName = Settings.Default.SelectedCharacterName;
             string previousSelectedLogFilePath = Settings.Default.SelectedLogFilePath;
 
-            var characterSelectionView = new CharacterSelectionView();
+            var characterSelectionView = new CharacterSelectionView(_damageMeterViewModel);
             if (characterSelectionView.ShowDialog() == true)
             {
                 _damageMeterViewModel.TryInitializingDamageMeter(

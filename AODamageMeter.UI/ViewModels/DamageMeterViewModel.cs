@@ -15,7 +15,6 @@ namespace AODamageMeter.UI.ViewModels
     {
         private string _characterName;
         private string _logFilePath;
-        private DamageMeter _damageMeter;
         private IProgress<object> _rowUpdater;
         private CancellationTokenSource _damageMeterUpdaterCTS;
         private Task _damageMeterUpdater;
@@ -29,29 +28,23 @@ namespace AODamageMeter.UI.ViewModels
             TryInitializingDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
         }
 
-        private ObservableCollection<MainRowBase> _viewingModeRows = new ObservableCollection<MainRowBase>();
+        public DamageMeter DamageMeter { get; private set; }
 
-        private Dictionary<FightCharacter, MainRowBase> _damageDoneRowMap = new Dictionary<FightCharacter, MainRowBase>();
-        private ObservableCollection<MainRowBase> _damageDoneRows { get; } = new ObservableCollection<MainRowBase>();
-
-        private Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageDoneInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
-        private Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageDoneInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
-
-        private Dictionary<FightCharacter, MainRowBase> _damageTakenRowMap = new Dictionary<FightCharacter, MainRowBase>();
-        private ObservableCollection<MainRowBase> _damageTakenRows { get; } = new ObservableCollection<MainRowBase>();
-
-        private Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageTakenInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
-        private Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageTakenInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
-
-        private Dictionary<HealingInfo, MainRowBase> _ownersHealingDoneRowMap = new Dictionary<HealingInfo, MainRowBase>();
-        private ObservableCollection<MainRowBase> _ownersHealingDoneRows { get; } = new ObservableCollection<MainRowBase>();
-
-        private Dictionary<HealingInfo, MainRowBase> _ownersHealingTakenRowMap = new Dictionary<HealingInfo, MainRowBase>();
-        private ObservableCollection<MainRowBase> _ownersHealingTakenRows { get; } = new ObservableCollection<MainRowBase>();
-
-        private Dictionary<CastInfo, MainRowBase> _ownersCastsRowMap = new Dictionary<CastInfo, MainRowBase>();
-        private ObservableCollection<MainRowBase> _ownersCastsRows { get; } = new ObservableCollection<MainRowBase>();
-
+        private readonly ObservableCollection<MainRowBase> _viewingModeRows = new ObservableCollection<MainRowBase>();
+        private readonly Dictionary<FightCharacter, MainRowBase> _damageDoneRowMap = new Dictionary<FightCharacter, MainRowBase>();
+        private readonly ObservableCollection<MainRowBase> _damageDoneRows = new ObservableCollection<MainRowBase>();
+        private readonly Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageDoneInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
+        private readonly Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageDoneInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
+        private readonly Dictionary<FightCharacter, MainRowBase> _damageTakenRowMap = new Dictionary<FightCharacter, MainRowBase>();
+        private readonly ObservableCollection<MainRowBase> _damageTakenRows = new ObservableCollection<MainRowBase>();
+        private readonly Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>> _damageTakenInfoRowMapMap = new Dictionary<FightCharacter, Dictionary<DamageInfo, MainRowBase>>();
+        private readonly Dictionary<FightCharacter, ObservableCollection<MainRowBase>> _damageTakenInfoRowsMap = new Dictionary<FightCharacter, ObservableCollection<MainRowBase>>();
+        private readonly Dictionary<HealingInfo, MainRowBase> _ownersHealingDoneRowMap = new Dictionary<HealingInfo, MainRowBase>();
+        private readonly ObservableCollection<MainRowBase> _ownersHealingDoneRows = new ObservableCollection<MainRowBase>();
+        private readonly Dictionary<HealingInfo, MainRowBase> _ownersHealingTakenRowMap = new Dictionary<HealingInfo, MainRowBase>();
+        private readonly ObservableCollection<MainRowBase> _ownersHealingTakenRows = new ObservableCollection<MainRowBase>();
+        private readonly Dictionary<CastInfo, MainRowBase> _ownersCastsRowMap = new Dictionary<CastInfo, MainRowBase>();
+        private readonly ObservableCollection<MainRowBase> _ownersCastsRows = new ObservableCollection<MainRowBase>();
         private ObservableCollection<MainRowBase> _rows;
         public ObservableCollection<MainRowBase> Rows
         {
@@ -77,7 +70,7 @@ namespace AODamageMeter.UI.ViewModels
         public bool TryInitializingDamageMeter(string characterName, string logFilePath)
         {
             // No reason to reinitialize if same name/path AND we succeeded before (i.e., _damageMeter is not null).
-            if (_characterName == characterName && _logFilePath == logFilePath && _damageMeter != null)
+            if (_characterName == characterName && _logFilePath == logFilePath && DamageMeter != null)
                 return true;
 
             _characterName = characterName;
@@ -93,14 +86,14 @@ namespace AODamageMeter.UI.ViewModels
                 catch { return false; }
             }
 
-            _damageMeter = Character.FitsPlayerNamingRequirements(characterName)
+            DamageMeter = Character.FitsPlayerNamingRequirements(characterName)
                 ? new DamageMeter(characterName, logFilePath)
                 : new DamageMeter(logFilePath);
-            _damageMeter.IsPaused = IsPaused;
+            DamageMeter.IsPaused = IsPaused;
 #if DEBUG
-            _damageMeter.InitializeNewFight(skipToEndOfLog: false);
+            DamageMeter.InitializeNewFight(skipToEndOfLog: false);
 #else
-            _damageMeter.InitializeNewFight();
+            DamageMeter.InitializeNewFight();
 #endif
             StartDamageMeterUpdater();
 
@@ -108,7 +101,7 @@ namespace AODamageMeter.UI.ViewModels
                 || SelectedViewingMode == ViewingMode.OwnersHealingTaken
                 || SelectedViewingMode == ViewingMode.OwnersCasts)
             {
-                SelectedCharacter = _damageMeter.Owner;
+                SelectedCharacter = DamageMeter.Owner;
             }
 
             return true;
@@ -123,9 +116,9 @@ namespace AODamageMeter.UI.ViewModels
             {
                 do
                 {
-                    lock (_damageMeter)
+                    lock (DamageMeter)
                     {
-                        _damageMeter.Update().Wait();
+                        DamageMeter.Update().Wait();
                     }
                     if (_damageMeterUpdaterCTS.IsCancellationRequested) return;
                     _rowUpdater.Report(null);
@@ -147,7 +140,7 @@ namespace AODamageMeter.UI.ViewModels
                         || SelectedViewingMode == ViewingMode.OwnersHealingTaken
                         || SelectedViewingMode == ViewingMode.OwnersCasts)
                     {
-                        SelectedCharacter = _damageMeter.Owner;
+                        SelectedCharacter = DamageMeter.Owner;
                     }
                     break;
                 case ViewingMode.DamageDone:
@@ -204,9 +197,9 @@ namespace AODamageMeter.UI.ViewModels
 
         private void SetAndUpdateRows()
         {
-            if (_damageMeter == null) return; // Edge case where reporter lags behind cancellation/disposal.
+            if (DamageMeter == null) return; // Edge case where reporter lags behind cancellation/disposal.
 
-            lock (_damageMeter)
+            lock (DamageMeter)
             {
                 switch (SelectedViewingMode)
                 {
@@ -227,7 +220,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             if (_viewingModeRows.Count == 0)
             {
-                foreach (var viewingModeRow in ViewingModeMainRowBase.GetRows(_damageMeter.CurrentFight))
+                foreach (var viewingModeRow in ViewingModeMainRowBase.GetRows(DamageMeter.CurrentFight))
                 {
                     _viewingModeRows.Add(viewingModeRow);
                 }
@@ -252,7 +245,7 @@ namespace AODamageMeter.UI.ViewModels
             }
 
             int displayIndex = 1;
-            foreach (var fightCharacter in _damageMeter.CurrentFight.FightCharacters
+            foreach (var fightCharacter in DamageMeter.CurrentFight.FightCharacters
                 .Where(c => !c.IsFightPet)
                 .OrderByDescending(c => c.TotalDamageDonePlusPets)
                 .ThenBy(c => c.UncoloredName))
@@ -280,7 +273,7 @@ namespace AODamageMeter.UI.ViewModels
 
         private void SetAndUpdateDamageDoneInfoRows()
         {
-            if (!_damageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
+            if (!DamageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
                 return;
 
             Dictionary<DamageInfo, MainRowBase> damageDoneInfoRowMap;
@@ -322,7 +315,7 @@ namespace AODamageMeter.UI.ViewModels
             }
 
             int displayIndex = 1;
-            foreach (var fightCharacter in _damageMeter.CurrentFight.FightCharacters
+            foreach (var fightCharacter in DamageMeter.CurrentFight.FightCharacters
                 .OrderByDescending(c => c.TotalDamageTaken)
                 .ThenBy(c => c.UncoloredName))
             {
@@ -349,7 +342,7 @@ namespace AODamageMeter.UI.ViewModels
 
         private void SetAndUpdateDamageTakenInfoRows()
         {
-            if (!_damageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
+            if (!DamageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
                 return;
 
             Dictionary<DamageInfo, MainRowBase> damageTakenInfoRowMap;
@@ -391,7 +384,7 @@ namespace AODamageMeter.UI.ViewModels
                 Rows = _ownersHealingDoneRows;
             }
 
-            if (!_damageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
+            if (!DamageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
                 return;
 
             int displayIndex = 1;
@@ -415,7 +408,7 @@ namespace AODamageMeter.UI.ViewModels
                 Rows = _ownersHealingTakenRows;
             }
 
-            if (!_damageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
+            if (!DamageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
                 return;
 
             int displayIndex = 1;
@@ -440,7 +433,7 @@ namespace AODamageMeter.UI.ViewModels
                 Rows = _ownersCastsRows;
             }
 
-            if (!_damageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
+            if (!DamageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
                 return;
 
             int displayIndex = 1;
@@ -470,12 +463,12 @@ namespace AODamageMeter.UI.ViewModels
         public ICommand ResetDamageMeterCommand { get; }
         private void ExecuteResetDamageMeterCommand()
         {
-            if (_damageMeter == null) return;
+            if (DamageMeter == null) return;
 
             StopDamageMeterUpdater();
             ClearRows();
 
-            _damageMeter.InitializeNewFight();
+            DamageMeter.InitializeNewFight();
             StartDamageMeterUpdater();
         }
 
@@ -491,10 +484,10 @@ namespace AODamageMeter.UI.ViewModels
             {
                 Set(ref _isPaused, value);
 
-                if (_damageMeter == null) return;
-                lock (_damageMeter)
+                if (DamageMeter == null) return;
+                lock (DamageMeter)
                 {
-                    _damageMeter.IsPaused = IsPaused;
+                    DamageMeter.IsPaused = IsPaused;
                 }
             }
         }
@@ -522,8 +515,8 @@ namespace AODamageMeter.UI.ViewModels
         public void DisposeDamageMeter()
         {
             StopDamageMeterUpdater();
-            _damageMeter?.Dispose();
-            _damageMeter = null;
+            DamageMeter?.Dispose();
+            DamageMeter = null;
         }
     }
 }

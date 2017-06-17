@@ -7,10 +7,10 @@ namespace AODamageMeter.UI.Views
 {
     public partial class CharacterSelectionView : Window
     {
-        public CharacterSelectionView()
+        public CharacterSelectionView(DamageMeterViewModel damageMeterViewModel)
         {
             InitializeComponent();
-            DataContext = CharacterSelectionViewModel = new CharacterSelectionViewModel();
+            DataContext = CharacterSelectionViewModel = new CharacterSelectionViewModel(damageMeterViewModel);
         }
 
         public CharacterSelectionViewModel CharacterSelectionViewModel { get; }

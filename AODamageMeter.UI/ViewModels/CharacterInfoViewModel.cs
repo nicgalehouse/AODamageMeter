@@ -1,7 +1,5 @@
-﻿using AODamageMeter.FightEvents;
-using AODamageMeter.FightEvents.Attack;
+﻿using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
-using AODamageMeter.FightEvents.Level;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,7 +39,40 @@ namespace AODamageMeter.UI.ViewModels
         public string LogFilePath
         {
             get => _logFilePath;
-            set => Set(ref _logFilePath, value);
+            set
+            {
+                if (Set(ref _logFilePath, value))
+                {
+                    RefreshLogFileSize();
+                }
+            }
+        }
+
+        private string _logFileSize;
+        public string LogFileSize
+        {
+            get => _logFileSize;
+            set => Set(ref _logFileSize, value);
+        }
+
+        public void RefreshLogFileSize()
+        {
+            if (File.Exists(_logFilePath))
+            {
+                try
+                {
+                    var fileInfo = new FileInfo(_logFilePath);
+                    LogFileSize = $"{(fileInfo.Length / ((double)1024)).ToString("N0")} KB";
+                }
+                catch
+                {
+                    LogFileSize = null;
+                }
+            }
+            else
+            {
+                LogFileSize = null;
+            }
         }
 
         public bool IsEmpty
@@ -134,6 +165,7 @@ namespace AODamageMeter.UI.ViewModels
                     if (!File.Exists(LogFilePath))
                     {
                         File.Create(LogFilePath);
+                        RefreshLogFileSize();
                     }
                     AutoConfigureResult = "Auto-configure succeeded. An existing log file was found.";
                     return;
@@ -145,6 +177,7 @@ namespace AODamageMeter.UI.ViewModels
                     if (!File.Exists(LogFilePath))
                     {
                         File.Create(LogFilePath);
+                        RefreshLogFileSize();
                     }
                     AutoConfigureResult = "Auto-configure succeeded. An existing log file was found and reconfigured.";
                     return;
@@ -161,6 +194,7 @@ namespace AODamageMeter.UI.ViewModels
             File.WriteAllText($@"{chatWindowsPath}\{newWindowName}\Config.xml", GetAutoConfigureConfigXml(newWindowName));
             LogFilePath = $@"{chatWindowsPath}\{newWindowName}\Log.txt";
             File.Create(LogFilePath);
+            RefreshLogFileSize();
             bool isAlreadyLoggedIn = Process.GetProcessesByName("AnarchyOnline")
                 .Any(p => p.MainWindowTitle?.Contains(CharacterName) ?? false);
             AutoConfigureResult = isAlreadyLoggedIn
@@ -168,12 +202,13 @@ namespace AODamageMeter.UI.ViewModels
                 : "Auto-configure succeeded. A new log file was created.";
         }
 
+        // Doesn't include all the events that AODamageMeter logs, just the ones that seem important enough.
         private static IReadOnlyList<string> RequiredConfigGroupNames = new string[]
         {
             MeHitByEnvironment.EventName, MeHitByMonster.EventName, MeHitByNano.EventName, MeHitByPlayer.EventName, OtherHitByNano.EventName,
             OtherHitByOther.EventName, OtherMisses.EventName, YouHitOther.EventName, YouHitOtherWithNano.EventName, YourMisses.EventName,
             YourPetHitByMonster.EventName, YourPetHitByNano.EventName, YourPetHitByOther.EventName, MeGotHealth.EventName, MeGotNano.EventName,
-            YouGaveHealth.EventName, YouGaveNano.EventName, MeGotSK.EventName, MeGotXP.EventName, Research.EventName, MeCastNano.EventName
+            YouGaveHealth.EventName, YouGaveNano.EventName
         };
 
         private static string GetAutoConfigureConfigXml(string windowName) =>

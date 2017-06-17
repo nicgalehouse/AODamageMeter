@@ -46,7 +46,7 @@ namespace AODamageMeter
 
             if (skipToEndOfLog)
             {
-                _logStreamReader.BaseStream.Seek(0, SeekOrigin.End);
+                SkipToEndOfLog();
             }
 
             CurrentFight = new Fight(this)
@@ -87,6 +87,12 @@ namespace AODamageMeter
                 CurrentFight.AddFightEvent(line);
             }
         }
+
+        public void SkipToStartOfLog()
+            => _logStreamReader.BaseStream.Seek(0, SeekOrigin.Begin);
+
+        public void SkipToEndOfLog()
+            => _logStreamReader.BaseStream.Seek(0, SeekOrigin.End);
 
         protected async Task SetOwner()
         {

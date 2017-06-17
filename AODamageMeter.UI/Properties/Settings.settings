@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="DamageMeterViewHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">200</Value>
+      <Value Profile="(Default)">180</Value>
     </Setting>
     <Setting Name="DamageMeterViewWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">300</Value>
+      <Value Profile="(Default)">350</Value>
     </Setting>
     <Setting Name="DamageMeterViewTop" Type="System.Double" Scope="User">
       <Value Profile="(Default)">NaN</Value>
@@ -32,7 +32,7 @@
       <Value Profile="(Default)">350</Value>
     </Setting>
     <Setting Name="CharacterSelectionViewWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">400</Value>
+      <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="CharacterSelectionViewTop" Type="System.Double" Scope="User">
       <Value Profile="(Default)">NaN</Value>
@@ -47,7 +47,7 @@
       <Value Profile="(Default)">200</Value>
     </Setting>
     <Setting Name="CharacterInfoViewHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">300</Value>
+      <Value Profile="(Default)">320</Value>
     </Setting>
     <Setting Name="CharacterInfoViewWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
@@ -84,6 +84,9 @@
     </Setting>
     <Setting Name="ShowTopLevelNPCRows" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LogFileSizeColumnWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">150</Value>
     </Setting>
   </Settings>
 </SettingsFile>

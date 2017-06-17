@@ -52,6 +52,8 @@
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=NameColumnWidth, Mode=TwoWay}"/>
             <GridViewColumn Header="Log File" DisplayMemberBinding="{Binding LogFilePath}"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=LogFileColumnWidth, Mode=TwoWay}"/>
+            <GridViewColumn Header="File Size" DisplayMemberBinding="{Binding LogFileSize}"
+                            Width="{Binding Source={x:Static properties:Settings.Default}, Path=LogFileSizeColumnWidth, Mode=TwoWay}"/>
           </GridView>
         </ListView.View>
       </ListView>
@@ -68,8 +70,10 @@
           <Button Margin="5 0 5 5" Style="{StaticResource TextButtonStyle}"
                   IsEnabled="{Binding SelectedCharacterInfoViewModel, Converter={StaticResource ObjectToBoolConverter}}"
                   Content="Edit" Click="EditButton_Click_ShowCharacterInfo"/>
-          <Button Margin="5 0 10 5" Style="{StaticResource TextButtonStyle}"
+          <Button Margin="5 0 5 5" Style="{StaticResource TextButtonStyle}"
                   Content="Delete" Command="{Binding DeleteCommand}"/>
+          <Button Margin="35 0 10 5" Style="{StaticResource TextButtonStyle}"
+                  Content="Clear File" Command="{Binding ClearFileCommand}"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
