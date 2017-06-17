@@ -16,7 +16,8 @@ namespace AODamageMeter.UI.ViewModels
                 new DamageTakenViewingModeMainRow(fight),
                 new OwnersHealingDoneViewingModeMainRow(fight),
                 new OwnersHealingTakenViewingModeMainRow(fight),
-                new OwnersCastsViewingModeMainRow(fight)
+                new OwnersCastsViewingModeMainRow(fight),
+                new OwnersXPViewingModeMainRow(fight)
             };
 
         protected ViewingModeMainRowBase(ViewingMode viewingMode,

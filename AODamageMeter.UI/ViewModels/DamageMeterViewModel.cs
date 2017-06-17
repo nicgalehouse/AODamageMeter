@@ -139,7 +139,10 @@ namespace AODamageMeter.UI.ViewModels
             switch (SelectedViewingMode)
             {
                 case ViewingMode.ViewingModes:
-                    SelectedViewingMode = ((ViewingModeMainRowBase)mainRowViewModelBase).ViewingMode;
+                    var viewingMode = ((ViewingModeMainRowBase)mainRowViewModelBase).ViewingMode;
+                    if (viewingMode == ViewingMode.OwnersXP) return false;
+
+                    SelectedViewingMode = viewingMode;
                     if (SelectedViewingMode == ViewingMode.OwnersHealingDone
                         || SelectedViewingMode == ViewingMode.OwnersHealingTaken
                         || SelectedViewingMode == ViewingMode.OwnersCasts)

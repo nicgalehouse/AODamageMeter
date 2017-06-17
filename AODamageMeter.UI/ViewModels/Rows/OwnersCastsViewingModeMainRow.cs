@@ -50,7 +50,7 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
         {
             if (FightOwner == null && !Fight.TryGetFightOwnerCharacter(out _fightOwner))
             {
-                RightText = $"{EmDash} ({EmDash})";
+                RightText = $"{EmDash} ({EmDash}, {EmDash})";
                 return;
             }
 

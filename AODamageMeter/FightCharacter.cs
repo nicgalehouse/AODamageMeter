@@ -357,11 +357,21 @@ namespace AODamageMeter
         // We only know about level events where the source is the owner (there's no target).
         public long NormalXPGained { get; protected set; }
         public int ShadowXPGained { get; protected set; }
-        public int AlienXPGained { get; protected set; }
         public long ResearchXPGained { get; protected set; }
+        public long EffectiveXPGained => NormalXPGained + ShadowXPGained * 1000 + ResearchXPGained;
+        public int AlienXPGained { get; protected set; }
         public int PvpDuelXPGained { get; protected set; }
         public int PvpSoloXPGained { get; protected set; }
         public int PvpTeamXPGained { get; protected set; }
+
+        public double NormalXPGainedPM => NormalXPGained / ActiveDuration.TotalMinutes;
+        public double ShadowXPGainedPM => ShadowXPGained / ActiveDuration.TotalMinutes;
+        public double ResearchXPGainedPM => ResearchXPGained / ActiveDuration.TotalMinutes;
+        public double EffectiveXPGainedPM => EffectiveXPGained / ActiveDuration.TotalMinutes;
+        public double AlienXPGainedPM => AlienXPGained / ActiveDuration.TotalMinutes;
+        public double PvpDuelXPGainedPM => PvpDuelXPGained / ActiveDuration.TotalMinutes;
+        public double PvpSoloXPGainedPM => PvpSoloXPGained / ActiveDuration.TotalMinutes;
+        public double PvpTeamXPGainedPM => PvpTeamXPGained / ActiveDuration.TotalMinutes;
 
         // We only know about cast events where the source is the owner (there's no target).
         public int CastAttempts => CastSuccesses + CastCountereds + CastAborteds;
