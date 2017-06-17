@@ -4,7 +4,7 @@ namespace AODamageMeter.UI.ViewModels
 {
     public abstract class DetailRowBase : RowBase
     {
-        protected DetailRowBase(FightCharacter fightCharacter, bool showIcon = false)
+        protected DetailRowBase(FightCharacter fightCharacter = null, bool showIcon = false)
             : base(fightCharacter)
             => ShowIcon = showIcon;
 

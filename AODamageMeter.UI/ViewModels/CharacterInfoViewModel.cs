@@ -1,5 +1,7 @@
-﻿using AODamageMeter.FightEvents.Attack;
+﻿using AODamageMeter.FightEvents;
+using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
+using AODamageMeter.FightEvents.Level;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -166,16 +168,14 @@ namespace AODamageMeter.UI.ViewModels
                 : "Auto-configure succeeded. A new log file was created.";
         }
 
-        // Doesn't include all the events that AODamageMeter logs, just the ones that seem important enough right now.
         private static IReadOnlyList<string> RequiredConfigGroupNames = new string[]
         {
             MeHitByEnvironment.EventName, MeHitByMonster.EventName, MeHitByNano.EventName, MeHitByPlayer.EventName, OtherHitByNano.EventName,
             OtherHitByOther.EventName, OtherMisses.EventName, YouHitOther.EventName, YouHitOtherWithNano.EventName, YourMisses.EventName,
             YourPetHitByMonster.EventName, YourPetHitByNano.EventName, YourPetHitByOther.EventName, MeGotHealth.EventName, MeGotNano.EventName,
-            YouGaveHealth.EventName, YouGaveNano.EventName
+            YouGaveHealth.EventName, YouGaveNano.EventName, MeGotSK.EventName, MeGotXP.EventName, Research.EventName, MeCastNano.EventName
         };
 
-        // Includes all the events that AODamamgeMeter logs, not just the ones that seem important enough right now.
         private static string GetAutoConfigureConfigXml(string windowName) =>
 $@"<Archive code=""0"">
     <Array name=""selected_group_ids"">
@@ -188,7 +188,6 @@ $@"<Archive code=""0"">
         <Int64 value=""1107296259"" />
         <Int64 value=""1107296258"" />
         <Int64 value=""1107296284"" />
-        <Int64 value=""1073741825"" />
         <Int64 value=""1107296266"" />
         <Int64 value=""1107296257"" />
         <Int64 value=""1107296277"" />
@@ -212,7 +211,6 @@ $@"<Archive code=""0"">
         <String value='&quot;Your pet hit by nano&quot;' />
         <String value='&quot;Me hit by nano&quot;' />
         <String value='&quot;Research&quot;' />
-        <String value='&quot;System&quot;' />
         <String value='&quot;Other hit by other&quot;' />
         <String value='&quot;Me hit by environment&quot;' />
         <String value='&quot;Me got health&quot;' />

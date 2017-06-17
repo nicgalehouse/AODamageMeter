@@ -150,8 +150,8 @@ namespace AODamageMeter
                 case LevelEvent levelEvent:
                     levelEvent.Source.AddLevelEvent(levelEvent);
                     break;
-                case NanoEvent nanoEvent:
-                    nanoEvent.Source.AddNanoEvent(nanoEvent);
+                case MeCastNano castEvent:
+                    castEvent.Source.AddCastEvent(castEvent);
                     break;
                 default: throw new NotImplementedException();
             }

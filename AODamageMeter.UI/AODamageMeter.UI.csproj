@@ -113,6 +113,9 @@
     <Compile Include="ViewModels\Rows\DamageTakenMainRow.cs" />
     <Compile Include="ViewModels\Rows\DamageTakenViewingModeDetailRow.cs" />
     <Compile Include="ViewModels\Rows\DamageTakenViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersCastsMainRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersCastsViewingModeDetailRow.cs" />
+    <Compile Include="ViewModels\Rows\OwnersCastsViewingModeMainRow.cs" />
     <Compile Include="ViewModels\Rows\OwnersHealingDoneDetailRow.cs" />
     <Compile Include="ViewModels\Rows\OwnersHealingDoneMainRow.cs" />
     <Compile Include="ViewModels\Rows\OwnersHealingDoneViewingModeDetailRow.cs" />
@@ -271,6 +274,12 @@
     <Resource Include="Icons\DamageTaken.png" />
     <Resource Include="Icons\OwnersHealingDone.png" />
     <Resource Include="Icons\OwnersHealingTaken.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\OwnersCasts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Cast.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

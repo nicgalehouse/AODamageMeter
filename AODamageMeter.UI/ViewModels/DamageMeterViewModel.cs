@@ -49,6 +49,9 @@ namespace AODamageMeter.UI.ViewModels
         private Dictionary<HealingInfo, MainRowBase> _ownersHealingTakenRowMap = new Dictionary<HealingInfo, MainRowBase>();
         private ObservableCollection<MainRowBase> _ownersHealingTakenRows { get; } = new ObservableCollection<MainRowBase>();
 
+        private Dictionary<CastInfo, MainRowBase> _ownersCastsRowMap = new Dictionary<CastInfo, MainRowBase>();
+        private ObservableCollection<MainRowBase> _ownersCastsRows { get; } = new ObservableCollection<MainRowBase>();
+
         private ObservableCollection<MainRowBase> _rows;
         public ObservableCollection<MainRowBase> Rows
         {
@@ -102,7 +105,8 @@ namespace AODamageMeter.UI.ViewModels
             StartDamageMeterUpdater();
 
             if (SelectedViewingMode == ViewingMode.OwnersHealingDone
-                || SelectedViewingMode == ViewingMode.OwnersHealingTaken)
+                || SelectedViewingMode == ViewingMode.OwnersHealingTaken
+                || SelectedViewingMode == ViewingMode.OwnersCasts)
             {
                 SelectedCharacter = _damageMeter.Owner;
             }
@@ -137,7 +141,8 @@ namespace AODamageMeter.UI.ViewModels
                 case ViewingMode.ViewingModes:
                     SelectedViewingMode = ((ViewingModeMainRowBase)mainRowViewModelBase).ViewingMode;
                     if (SelectedViewingMode == ViewingMode.OwnersHealingDone
-                        || SelectedViewingMode == ViewingMode.OwnersHealingTaken)
+                        || SelectedViewingMode == ViewingMode.OwnersHealingTaken
+                        || SelectedViewingMode == ViewingMode.OwnersCasts)
                     {
                         SelectedCharacter = _damageMeter.Owner;
                     }
@@ -183,6 +188,10 @@ namespace AODamageMeter.UI.ViewModels
                     SelectedViewingMode = ViewingMode.ViewingModes;
                     SelectedCharacter = null;
                     break;
+                case ViewingMode.OwnersCasts:
+                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedCharacter = null;
+                    break;
                 default: return false;
             }
 
@@ -205,6 +214,7 @@ namespace AODamageMeter.UI.ViewModels
                     case ViewingMode.DamageTakenInfo: SetAndUpdateDamageTakenInfoRows(); return;
                     case ViewingMode.OwnersHealingDone: SetAndUpdateOwnersHealingDoneRows(); return;
                     case ViewingMode.OwnersHealingTaken: SetAndUpdateOwnersHealingTakenRows(); return;
+                    case ViewingMode.OwnersCasts: SetAndUpdateOwnersCastsRows(); return;
                     default: throw new NotImplementedException();
                 }
             }
@@ -420,6 +430,30 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        private void SetAndUpdateOwnersCastsRows()
+        {
+            if (Rows != _ownersCastsRows)
+            {
+                Rows = _ownersCastsRows;
+            }
+
+            if (!_damageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
+                return;
+
+            int displayIndex = 1;
+            foreach (var castInfo in fightOwner.CastInfos
+                .OrderByDescending(i => i.CastAttempts)
+                .ThenBy(i => i.NanoProgram))
+            {
+                if (!_ownersCastsRowMap.TryGetValue(castInfo, out MainRowBase ownersCastsRow))
+                {
+                    _ownersCastsRowMap.Add(castInfo, ownersCastsRow = new OwnersCastsMainRow(castInfo));
+                    _ownersCastsRows.Add(ownersCastsRow);
+                }
+                ownersCastsRow.Update(displayIndex++);
+            }
+        }
+
         private void StopDamageMeterUpdater()
         {
             if (!_isDamageMeterUpdaterStarted) return;
@@ -477,6 +511,8 @@ namespace AODamageMeter.UI.ViewModels
             _ownersHealingDoneRows.Clear();
             _ownersHealingTakenRowMap.Clear();
             _ownersHealingTakenRows.Clear();
+            _ownersCastsRowMap.Clear();
+            _ownersCastsRows.Clear();
             Rows = null;
         }
 

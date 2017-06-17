@@ -18,6 +18,7 @@ namespace AODamageMeter.UI.Converters
                 : selectedViewingMode == ViewingMode.DamageTakenInfo ? $"{selectedCharacter?.UncoloredName}'s Damage Taken"
                 : selectedViewingMode == ViewingMode.OwnersHealingDone ? $"{selectedCharacter?.UncoloredName}'s Healing Done"
                 : selectedViewingMode == ViewingMode.OwnersHealingTaken ? $"{selectedCharacter?.UncoloredName}'s Healing Taken"
+                : selectedViewingMode == ViewingMode.OwnersCasts ? $"{selectedCharacter?.UncoloredName}'s Casts"
                 : throw new NotImplementedException();
         }
 

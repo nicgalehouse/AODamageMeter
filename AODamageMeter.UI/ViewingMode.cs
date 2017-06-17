@@ -8,6 +8,7 @@
         DamageTaken,
         DamageTakenInfo,
         OwnersHealingDone,
-        OwnersHealingTaken
+        OwnersHealingTaken,
+        OwnersCasts
     }
 }

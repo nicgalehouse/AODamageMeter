@@ -3,7 +3,6 @@
     public enum CastResult
     {
         Success,
-        Resisted,
         Countered,
         Aborted
     }

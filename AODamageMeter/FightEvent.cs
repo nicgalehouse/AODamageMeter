@@ -2,7 +2,6 @@
 using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.FightEvents.Level;
-using AODamageMeter.FightEvents.Nano;
 using AODamageMeter.Helpers;
 using System;
 using System.Linq;

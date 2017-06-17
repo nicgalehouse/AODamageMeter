@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace AODamageMeter.FightEvents.Nano
+namespace AODamageMeter.FightEvents
 {
     // Here are some different cases to consider:
 
@@ -30,7 +30,7 @@ namespace AODamageMeter.FightEvents.Nano
     // that, we remember the latest potential start event, and mark it with one of the 4 real cast results
     // when the end event comes in. The details can get muddled when the last case happens. There, we'll log
     // it as IH succeeding, when in reality it was LE succeeding. But scenario is rare and the %s remain true.
-    public class MeCastNano : NanoEvent
+    public class MeCastNano : FightEvent
     {
         public const string EventName = "Me Cast Nano";
         public override string Name => EventName;
@@ -60,6 +60,18 @@ namespace AODamageMeter.FightEvents.Nano
             PleaseWait =  CreateRegex("Please wait."),
             NCU =         CreateRegex("Target does not have enough nano controlling units \\(NCU\\) left.");
 
+        public string NanoProgram { get; protected set; }
+        public bool IsStartOfCast => EndEvent != null;
+        public bool IsEndOfCast => CastResult.HasValue && !IsStartOfCast; // StartEvent may be null.
+        public CastResult? CastResult { get; protected set; }
+        public bool IsCastUnavailable { get; protected set; }
+
+        // Both null or either one not null, but never both not null.
+        // If this.StartEvent is not null, this.StartEvent.EndEvent == this.
+        // If this.EndEvent is not null, this.EndEvent.StartEvent == this.
+        public MeCastNano StartEvent { get; protected set; }
+        public MeCastNano EndEvent { get; protected set; }
+
         public MeCastNano(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
         {
@@ -77,7 +89,7 @@ namespace AODamageMeter.FightEvents.Nano
                 || TryMatch(Aborted, out match, out aborted))
             {
                 CastResult = success ? AODamageMeter.CastResult.Success
-                    : resisted ? AODamageMeter.CastResult.Resisted
+                    : resisted ? AODamageMeter.CastResult.Countered // I guess resist and counter are the same?
                     : countered ? AODamageMeter.CastResult.Countered
                     : AODamageMeter.CastResult.Aborted;
 

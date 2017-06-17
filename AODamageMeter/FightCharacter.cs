@@ -363,17 +363,31 @@ namespace AODamageMeter
         public int PvpSoloXPGained { get; protected set; }
         public int PvpTeamXPGained { get; protected set; }
 
-        // We only know about nano events where the source is the owner (there's no target).
-        public int CastAttempts => CastSuccessCount + CastResistedCount + CastCounteredCount + CastAbortedCount;
-        public int CastSuccessCount { get; protected set; }
-        public int CastResistedCount { get; protected set; }
-        public int CastCounteredCount { get; protected set; }
-        public int CastAbortedCount { get; protected set; }
-        public double? CastSuccessChance => CastSuccessCount / CastAttempts.NullIfZero();
-        public double? CastResistedChance => CastResistedCount / CastAttempts.NullIfZero();
-        public double? CastCounteredChance => CastCounteredCount / CastAttempts.NullIfZero();
-        public double? CastAbortedChance => CastAbortedCount / CastAttempts.NullIfZero();
-        public int CastUnavailableCount { get; protected set; }
+        // We only know about cast events where the source is the owner (there's no target).
+        public int CastAttempts => CastSuccesses + CastCountereds + CastAborteds;
+        public int CastSuccesses { get; protected set; }
+        public int CastCountereds { get; protected set; }
+        public int CastAborteds { get; protected set; }
+
+        public double CastAttemptsPM => CastAttempts / ActiveDuration.TotalMinutes;
+        public double CastSuccessesPM => CastSuccesses / ActiveDuration.TotalMinutes;
+        public double CastCounteredsPM => CastCountereds / ActiveDuration.TotalMinutes;
+        public double CastAbortedsPM => CastAborteds / ActiveDuration.TotalMinutes;
+
+        public double? CastSuccessChance => CastSuccesses / CastAttempts.NullIfZero();
+        public double? CastCounteredChance => CastCountereds / CastAttempts.NullIfZero();
+        public double? CastAbortedChance => CastAborteds / CastAttempts.NullIfZero();
+
+        public int CastUnavailables { get; protected set; }
+        // A measure of how much useless button spamming you're doing, I guess?
+        public double? PercentOfCastsUnavailable => CastUnavailables / (CastAttempts + CastUnavailables).NullIfZero();
+
+        protected readonly Dictionary<string, CastInfo> _castInfosByNanoProgram = new Dictionary<string, CastInfo>();
+        public IReadOnlyDictionary<string, CastInfo> CastInfosByNanoProgram => _castInfosByNanoProgram;
+        public IReadOnlyCollection<CastInfo> CastInfos => _castInfosByNanoProgram.Values;
+
+        protected int? _maxCastAttempts;
+        public int? MaxCastAttempts => _maxCastAttempts ?? (_maxCastAttempts = CastInfos.NullableMax(i => i.CastAttempts));
 
         public void AddSourceAttackEvent(AttackEvent attackEvent)
         {
@@ -569,24 +583,39 @@ namespace AODamageMeter
             }
         }
 
-        public void AddNanoEvent(NanoEvent nanoEvent)
+        public void AddCastEvent(MeCastNano castEvent)
         {
-            if (nanoEvent.IsEndOfCast)
+            if (castEvent.IsEndOfCast)
             {
-                switch (nanoEvent.CastResult.Value)
+                switch (castEvent.CastResult.Value)
                 {
-                    case CastResult.Success: ++CastSuccessCount; break;
-                    case CastResult.Resisted: ++CastResistedCount; break;
-                    case CastResult.Countered: ++CastCounteredCount; break;
-                    case CastResult.Aborted: ++CastAbortedCount; break;
+                    case CastResult.Success: ++CastSuccesses; break;
+                    case CastResult.Countered: ++CastCountereds; break;
+                    case CastResult.Aborted: ++CastAborteds; break;
                     default: throw new NotImplementedException();
                 }
+
+                if (castEvent.NanoProgram != null)
+                {
+                    if (_castInfosByNanoProgram.TryGetValue(castEvent.NanoProgram, out CastInfo castInfo))
+                    {
+                        castInfo.AddCastEvent(castEvent);
+                    }
+                    else
+                    {
+                        castInfo = new CastInfo(this, castEvent.NanoProgram);
+                        castInfo.AddCastEvent(castEvent);
+                        _castInfosByNanoProgram.Add(castEvent.NanoProgram, castInfo);
+                    }
+                }
+
+                _maxCastAttempts = null;
             }
-            else if (nanoEvent.IsCastUnavailable)
+            else if (castEvent.IsCastUnavailable)
             {
-                ++CastUnavailableCount;
+                ++CastUnavailables;
             }
-            else if (!nanoEvent.IsStartOfCast && !nanoEvent.IsEndOfCast)
+            else if (!castEvent.IsStartOfCast && !castEvent.IsEndOfCast)
             {
                 // Nothing to do here, this is how events that may eventually become start events comes in.
             }
