@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class OwnersCastsMainRow : MainRowBase
+    public sealed class OwnersCastsMainRow : MainRowBase
     {
         public OwnersCastsMainRow(CastInfo castInfo)
         {
@@ -43,10 +43,10 @@ $@"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessChance.FormatPe
 
         public override void Update(int? displayIndex = null)
         {
-            PercentWidth = CastInfo.PercentOfSourcesMaxCastAttempts ?? 0;
+            PercentWidth = CastInfo.PercentOfSourcesMaxCastSuccesses ?? 0;
             double? percentDone = Settings.Default.ShowPercentOfTotal
-                ? CastInfo.PercentOfSourcesCastAttempts : CastInfo.PercentOfSourcesMaxCastAttempts;
-            RightText = $"{CastInfo.CastSuccesses.ToString("N0")} / {CastInfo.CastAttempts.ToString("N0")} ({CastInfo.CastSuccessChance.FormatPercent()}, {percentDone.FormatPercent()})";
+                ? CastInfo.PercentOfSourcesCastSuccesses : CastInfo.PercentOfSourcesMaxCastSuccesses;
+            RightText = $"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessesPM.Format()}, {CastInfo.CastSuccessChance.FormatPercent()}, {percentDone.FormatPercent()})";
 
             DisplayIndex = displayIndex ?? DisplayIndex;
             RaisePropertyChanged(nameof(LeftTextToolTip));

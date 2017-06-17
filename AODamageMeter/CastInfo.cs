@@ -28,8 +28,8 @@ namespace AODamageMeter
         public double CastCounteredsPM => CastCountereds / Source.ActiveDuration.TotalMinutes;
         public double CastAbortedsPM => CastAborteds / Source.ActiveDuration.TotalMinutes;
 
-        public double? PercentOfSourcesCastAttempts => CastAttempts / Source.CastAttempts.NullIfZero();
-        public double? PercentOfSourcesMaxCastAttempts => CastAttempts / Source.MaxCastAttempts.NullIfZero();
+        public double? PercentOfSourcesCastSuccesses => CastSuccesses / Source.CastSuccesses.NullIfZero();
+        public double? PercentOfSourcesMaxCastSuccesses => CastSuccesses / Source.MaxCastSuccesses.NullIfZero();
 
         public void AddCastEvent(MeCastNano castEvent)
         {

@@ -54,10 +54,10 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
                 return;
             }
 
-            RightText = $"{FightOwner.CastSuccesses.ToString("N0")} / {FightOwner.CastAttempts.ToString("N0")} ({FightOwner.CastSuccessChance.FormatPercent()})";
+            RightText = $"{FightOwner.CastSuccesses.ToString("N0")} ({FightOwner.CastSuccessesPM.Format()}, {FightOwner.CastSuccessChance.FormatPercent()})";
 
             var topCastInfos = FightOwner.CastInfos
-                .OrderByDescending(i => i.CastAttempts)
+                .OrderByDescending(i => i.CastSuccesses)
                 .ThenBy(i => i.NanoProgram)
                 .Take(6).ToArray();
 

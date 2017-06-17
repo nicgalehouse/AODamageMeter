@@ -386,8 +386,8 @@ namespace AODamageMeter
         public IReadOnlyDictionary<string, CastInfo> CastInfosByNanoProgram => _castInfosByNanoProgram;
         public IReadOnlyCollection<CastInfo> CastInfos => _castInfosByNanoProgram.Values;
 
-        protected int? _maxCastAttempts;
-        public int? MaxCastAttempts => _maxCastAttempts ?? (_maxCastAttempts = CastInfos.NullableMax(i => i.CastAttempts));
+        protected int? _maxCastSuccesses;
+        public int? MaxCastSuccesses => _maxCastSuccesses ?? (_maxCastSuccesses = CastInfos.NullableMax(i => i.CastSuccesses));
 
         public void AddSourceAttackEvent(AttackEvent attackEvent)
         {
@@ -609,7 +609,7 @@ namespace AODamageMeter
                     }
                 }
 
-                _maxCastAttempts = null;
+                _maxCastSuccesses = null;
             }
             else if (castEvent.IsCastUnavailable)
             {

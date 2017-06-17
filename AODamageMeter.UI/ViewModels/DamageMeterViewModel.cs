@@ -442,7 +442,7 @@ namespace AODamageMeter.UI.ViewModels
 
             int displayIndex = 1;
             foreach (var castInfo in fightOwner.CastInfos
-                .OrderByDescending(i => i.CastAttempts)
+                .OrderByDescending(i => i.CastSuccesses)
                 .ThenBy(i => i.NanoProgram))
             {
                 if (!_ownersCastsRowMap.TryGetValue(castInfo, out MainRowBase ownersCastsRow))
