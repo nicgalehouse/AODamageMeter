@@ -3,7 +3,7 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class OwnersHealingTakenViewingModeDetailRow : DetailRowBase
+    public sealed class OwnersHealingTakenViewingModeDetailRow : DetailRowBase
     {
         public OwnersHealingTakenViewingModeDetailRow(HealingInfo healingTakenInfo)
             : base(healingTakenInfo.Source, showIcon: true)

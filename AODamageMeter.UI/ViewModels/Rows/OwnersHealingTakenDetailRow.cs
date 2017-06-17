@@ -4,7 +4,7 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class OwnersHealingTakenDetailRow : DetailRowBase
+    public sealed class OwnersHealingTakenDetailRow : DetailRowBase
     {
         public OwnersHealingTakenDetailRow(FightCharacter target, FightCharacter source)
             : base(source)

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public class OwnersHealingDoneMainRow : MainRowBase
+    public sealed class OwnersHealingDoneMainRow : MainRowBase
     {
         public OwnersHealingDoneMainRow(HealingInfo healingDoneInfo)
             : base(healingDoneInfo.Target)
