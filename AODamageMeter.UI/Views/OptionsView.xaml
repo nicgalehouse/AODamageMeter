@@ -44,8 +44,8 @@
     <Grid Grid.Row="1" Margin="1"
           Background="{StaticResource DarkBlueBrush85}">
       <Grid.RowDefinitions>
-        <RowDefinition Height="4*"/>
         <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
       <StackPanel Grid.Row="0" Margin="10">
@@ -85,6 +85,25 @@
               <System:Double>22</System:Double>
               <System:Double>23</System:Double>
               <System:Double>24</System:Double>
+            </x:Array>
+          </ComboBox.ItemsSource>
+        </ComboBox>
+
+        <TextBlock Text="Refresh interval (milliseconds):"/>
+        <ComboBox Margin="0 2 0 10"
+                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=RefreshInterval}">
+          <ComboBox.ItemsSource>
+            <x:Array Type="{x:Type System:Int32}">
+              <System:Int32>100</System:Int32>
+              <System:Int32>200</System:Int32>
+              <System:Int32>300</System:Int32>
+              <System:Int32>400</System:Int32>
+              <System:Int32>500</System:Int32>
+              <System:Int32>600</System:Int32>
+              <System:Int32>700</System:Int32>
+              <System:Int32>800</System:Int32>
+              <System:Int32>900</System:Int32>
+              <System:Int32>1000</System:Int32>
             </x:Array>
           </ComboBox.ItemsSource>
         </ComboBox>

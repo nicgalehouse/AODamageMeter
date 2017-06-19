@@ -59,7 +59,7 @@
       <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="OptionsViewHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">300</Value>
+      <Value Profile="(Default)">350</Value>
     </Setting>
     <Setting Name="OptionsViewWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
@@ -90,6 +90,9 @@
     </Setting>
     <Setting Name="ShowRowNumbers" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="RefreshInterval" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">300</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -121,7 +121,7 @@ namespace AODamageMeter.UI.ViewModels
                     }
                     if (_damageMeterUpdaterCTS.IsCancellationRequested) return;
                     _rowUpdater.Report(null);
-                } while (!_damageMeterUpdaterCTS.Token.WaitHandle.WaitOne(300));
+                } while (!_damageMeterUpdaterCTS.Token.WaitHandle.WaitOne(Settings.Default.RefreshInterval));
             }, _damageMeterUpdaterCTS.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
             _isDamageMeterUpdaterStarted = true;
         }

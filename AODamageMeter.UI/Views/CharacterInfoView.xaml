@@ -38,8 +38,8 @@
     <Grid Grid.Row="1" Margin="1"
           Background="{StaticResource DarkBlueBrush85}">
       <Grid.RowDefinitions>
-        <RowDefinition Height="4*"/>
         <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
       </Grid.RowDefinitions>
 
       <StackPanel Grid.Row="0" Margin="10">
