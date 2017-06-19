@@ -19,7 +19,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
         public CastInfo CastInfo { get; }
         public FightCharacter Source => CastInfo.Source;
 
-        public override string LeftText => CastInfo.NanoProgram;
+        public override string UnnumberedLeftText
+            => CastInfo.NanoProgram;
 
         public override string LeftTextToolTip
             => $"{DisplayIndex}. {CastInfo.NanoProgram}";

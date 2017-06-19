@@ -88,5 +88,8 @@
     <Setting Name="LogFileSizeColumnWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">150</Value>
     </Setting>
+    <Setting Name="ShowRowNumbers" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

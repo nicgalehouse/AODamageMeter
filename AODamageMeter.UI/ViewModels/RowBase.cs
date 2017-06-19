@@ -20,7 +20,18 @@ namespace AODamageMeter.UI.ViewModels
         protected DamageMeter CurrentDamageMeter => DamageMeterViewModel.DamageMeter;
 
         public abstract string Title { get; }
-        public abstract string LeftText { get; }
+
+        public abstract string UnnumberedLeftText { get; }
+
+        public virtual bool SupportsRowNumbers => true;
+
+        protected string _leftText;
+        public string LeftText
+        {
+            get => _leftText;
+            protected set => Set(ref _leftText, value);
+        }
+
         public abstract string LeftTextToolTip { get; }
 
         protected int _displayIndex;
@@ -63,6 +74,8 @@ namespace AODamageMeter.UI.ViewModels
         public virtual void Update(int? displayIndex = null)
         {
             DisplayIndex = displayIndex ?? DisplayIndex;
+            LeftText = Properties.Settings.Default.ShowRowNumbers && SupportsRowNumbers
+                ? $"{DisplayIndex}. {UnnumberedLeftText}" : UnnumberedLeftText;
             RaisePropertyChanged(nameof(LeftTextToolTip));
             RaisePropertyChanged(nameof(RightTextToolTip));
         }
@@ -77,7 +90,7 @@ namespace AODamageMeter.UI.ViewModels
             => CopyAndScript(RightTextToolTip);
 
         public string RowScriptText
-            => $"{(DisplayIndex < 10 ? " " : "")}{DisplayIndex}. {RightText} {LeftText}";
+            => $"{(DisplayIndex < 10 ? " " : "")}{DisplayIndex}. {RightText} {UnnumberedLeftText}";
 
         protected void CopyAndScript(string body)
         {

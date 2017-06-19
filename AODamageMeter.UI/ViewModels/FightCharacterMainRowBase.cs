@@ -13,8 +13,12 @@ namespace AODamageMeter.UI.ViewModels
 
         public FightCharacter FightCharacter { get; }
         public string FightCharacterName => FightCharacter.UncoloredName;
-        public sealed override string LeftText => FightCharacterName;
-        public sealed override string LeftTextToolTip => FightCharacter.Character.GetCharacterTooltip(DisplayIndex);
+
+        public sealed override string UnnumberedLeftText
+            => FightCharacterName;
+
+        public sealed override string LeftTextToolTip
+            => FightCharacter.Character.GetCharacterTooltip(DisplayIndex);
 
         public override void Update(int? displayIndex = null)
         {

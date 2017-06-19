@@ -24,7 +24,7 @@
     </Rectangle>
 
     <TextBlock x:Name="LeftTextBlock" Canvas.Left="27"
-               Text="{Binding LeftText, Mode=OneTime}"
+               Text="{Binding LeftText}"
                MouseLeftButtonDown="LeftTextBlock_MouseLeftButtonDown_CopyAndScript"
                ToolTipService.Placement="Left"
                ToolTipService.HorizontalOffset="-2">

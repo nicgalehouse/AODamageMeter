@@ -46,12 +46,13 @@ $@"{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
             if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
             {
                 RightText = $"{EmDash} ({EmDash})";
-                return;
             }
-
-            RightText = FightOwner.AlienXPGained == 0
-                ? $"{FightOwner.EffectiveXPGained.Format()} ({FightOwner.EffectiveXPGainedPM.Format()})"
-                : $"{FightOwner.EffectiveXPGained.Format()}, {FightOwner.AlienXPGained.Format()} ({FightOwner.EffectiveXPGainedPM.Format()}, {FightOwner.AlienXPGainedPM.Format()})";
+            else
+            {
+                RightText = FightOwner.AlienXPGained == 0
+                    ? $"{FightOwner.EffectiveXPGained.Format()} ({FightOwner.EffectiveXPGainedPM.Format()})"
+                    : $"{FightOwner.EffectiveXPGained.Format()}, {FightOwner.AlienXPGained.Format()} ({FightOwner.EffectiveXPGainedPM.Format()}, {FightOwner.AlienXPGainedPM.Format()})";
+            }
 
             base.Update();
         }

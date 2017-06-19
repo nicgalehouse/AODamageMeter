@@ -48,32 +48,33 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
             if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
             {
                 RightText = $"{EmDash} ({EmDash}, {EmDash})";
-                return;
             }
-
-            RightText = $"{FightOwner.CastSuccesses.ToString("N0")} ({FightOwner.CastSuccessesPM.Format()}, {FightOwner.CastSuccessChance.FormatPercent()})";
-
-            var topCastInfos = FightOwner.CastInfos
-                .OrderByDescending(i => i.CastSuccesses)
-                .ThenBy(i => i.NanoProgram)
-                .Take(6).ToArray();
-
-            foreach (var castInfoDetailRow in _detailRowMap
-                .Where(kvp => !topCastInfos.Contains(kvp.Key)).ToArray())
+            else
             {
-                _detailRowMap.Remove(castInfoDetailRow.Key);
-                DetailRows.Remove(castInfoDetailRow.Value);
-            }
+                RightText = $"{FightOwner.CastSuccesses.ToString("N0")} ({FightOwner.CastSuccessesPM.Format()}, {FightOwner.CastSuccessChance.FormatPercent()})";
 
-            int detailRowDisplayIndex = 1;
-            foreach (var castInfo in topCastInfos)
-            {
-                if (!_detailRowMap.TryGetValue(castInfo, out DetailRowBase detailRow))
+                var topCastInfos = FightOwner.CastInfos
+                    .OrderByDescending(i => i.CastSuccesses)
+                    .ThenBy(i => i.NanoProgram)
+                    .Take(6).ToArray();
+
+                foreach (var castInfoDetailRow in _detailRowMap
+                    .Where(kvp => !topCastInfos.Contains(kvp.Key)).ToArray())
                 {
-                    _detailRowMap.Add(castInfo, detailRow = new OwnersCastsViewingModeDetailRow(DamageMeterViewModel, castInfo));
-                    DetailRows.Add(detailRow);
+                    _detailRowMap.Remove(castInfoDetailRow.Key);
+                    DetailRows.Remove(castInfoDetailRow.Value);
                 }
-                detailRow.Update(detailRowDisplayIndex++);
+
+                int detailRowDisplayIndex = 1;
+                foreach (var castInfo in topCastInfos)
+                {
+                    if (!_detailRowMap.TryGetValue(castInfo, out DetailRowBase detailRow))
+                    {
+                        _detailRowMap.Add(castInfo, detailRow = new OwnersCastsViewingModeDetailRow(DamageMeterViewModel, castInfo));
+                        DetailRows.Add(detailRow);
+                    }
+                    detailRow.Update(detailRowDisplayIndex++);
+                }
             }
 
             base.Update();

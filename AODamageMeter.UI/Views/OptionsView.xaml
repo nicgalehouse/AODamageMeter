@@ -101,6 +101,8 @@
                   Content="Show top-level NPC rows"/>
         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowTopLevelZeroDamageRows}"
                   Content="Show top-level zero damage rows"/>
+        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowRowNumbers}"
+                  Content="Show row numbers"/>
       </StackPanel>
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"

@@ -18,11 +18,11 @@ namespace AODamageMeter.UI.ViewModels
             };
 
         protected ViewingModeMainRowBase(ViewingMode viewingMode,
-            string leftText, int displayIndex, string iconPath, Color color, DamageMeterViewModel damageMeterViewModel, Fight fight)
+            string unnumberedLeftText, int displayIndex, string iconPath, Color color, DamageMeterViewModel damageMeterViewModel, Fight fight)
             : base(damageMeterViewModel)
         {
             ViewingMode = viewingMode;
-            LeftText = leftText;
+            UnnumberedLeftText = unnumberedLeftText;
             DisplayIndex = displayIndex;
             IconPath = iconPath;
             Color = color;
@@ -33,8 +33,10 @@ namespace AODamageMeter.UI.ViewModels
         public Fight Fight { get; }
         public ViewingMode ViewingMode { get; }
 
-        public sealed override string Title => LeftText;
+        public sealed override string Title => UnnumberedLeftText;
 
-        public sealed override string LeftText { get; }
+        public sealed override string UnnumberedLeftText { get; }
+
+        public sealed override bool SupportsRowNumbers => false;
     }
 }

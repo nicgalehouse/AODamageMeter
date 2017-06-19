@@ -64,32 +64,33 @@ $@"{fightCharacterCount} {(fightCharacterCount == 1 ? "character" : "characters"
             if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
             {
                 RightText = $"{EmDash} ({EmDash})";
-                return;
             }
-
-            RightText = $"{FightOwner.PotentialHealingDonePlusPets.Format()} ({FightOwner.PotentialHealingDonePMPlusPets.Format()})";
-
-            var topHealingDoneInfos = FightOwner.HealingDoneInfos
-                .OrderByDescending(i => i.PotentialHealingPlusPets)
-                .ThenBy(i => i.Target.UncoloredName)
-                .Take(6).ToArray();
-
-            foreach (var fightCharacterDetailRow in _detailRowMap
-                .Where(kvp => !topHealingDoneInfos.Select(i => i.Target).Contains(kvp.Key)).ToArray())
+            else
             {
-                _detailRowMap.Remove(fightCharacterDetailRow.Key);
-                DetailRows.Remove(fightCharacterDetailRow.Value);
-            }
+                RightText = $"{FightOwner.PotentialHealingDonePlusPets.Format()} ({FightOwner.PotentialHealingDonePMPlusPets.Format()})";
 
-            int detailRowDisplayIndex = 1;
-            foreach (var healingDoneInfo in topHealingDoneInfos)
-            {
-                if (!_detailRowMap.TryGetValue(healingDoneInfo.Target, out DetailRowBase detailRow))
+                var topHealingDoneInfos = FightOwner.HealingDoneInfos
+                    .OrderByDescending(i => i.PotentialHealingPlusPets)
+                    .ThenBy(i => i.Target.UncoloredName)
+                    .Take(6).ToArray();
+
+                foreach (var fightCharacterDetailRow in _detailRowMap
+                    .Where(kvp => !topHealingDoneInfos.Select(i => i.Target).Contains(kvp.Key)).ToArray())
                 {
-                    _detailRowMap.Add(healingDoneInfo.Target, detailRow = new OwnersHealingDoneViewingModeDetailRow(DamageMeterViewModel, healingDoneInfo));
-                    DetailRows.Add(detailRow);
+                    _detailRowMap.Remove(fightCharacterDetailRow.Key);
+                    DetailRows.Remove(fightCharacterDetailRow.Value);
                 }
-                detailRow.Update(detailRowDisplayIndex++);
+
+                int detailRowDisplayIndex = 1;
+                foreach (var healingDoneInfo in topHealingDoneInfos)
+                {
+                    if (!_detailRowMap.TryGetValue(healingDoneInfo.Target, out DetailRowBase detailRow))
+                    {
+                        _detailRowMap.Add(healingDoneInfo.Target, detailRow = new OwnersHealingDoneViewingModeDetailRow(DamageMeterViewModel, healingDoneInfo));
+                        DetailRows.Add(detailRow);
+                    }
+                    detailRow.Update(detailRowDisplayIndex++);
+                }
             }
 
             base.Update();

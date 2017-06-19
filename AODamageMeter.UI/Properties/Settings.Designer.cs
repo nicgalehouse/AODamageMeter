@@ -360,5 +360,17 @@ namespace AODamageMeter.UI.Properties {
                 this["LogFileSizeColumnWidth"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowRowNumbers {
+            get {
+                return ((bool)(this["ShowRowNumbers"]));
+            }
+            set {
+                this["ShowRowNumbers"] = value;
+            }
+        }
     }
 }
