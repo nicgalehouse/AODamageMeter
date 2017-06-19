@@ -51,9 +51,7 @@ $@"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessChance.FormatPe
                 ? CastInfo.PercentOfSourcesCastSuccesses : CastInfo.PercentOfSourcesMaxCastSuccesses;
             RightText = $"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessesPM.Format()}, {CastInfo.CastSuccessChance.FormatPercent()}, {percentDone.FormatPercent()})";
 
-            DisplayIndex = displayIndex ?? DisplayIndex;
-            RaisePropertyChanged(nameof(LeftTextToolTip));
-            RaisePropertyChanged(nameof(RightTextToolTip));
+            base.Update(displayIndex);
         }
     }
 }
