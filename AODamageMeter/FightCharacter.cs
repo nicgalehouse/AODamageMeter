@@ -429,7 +429,7 @@ namespace AODamageMeter
                     ++IndirectHitsDone;
                     break;
                 case AttackResult.Absorbed:
-                    // Only an ⦗Unknown⦘ source for events where the attack results in an absorb, so don't bother.
+                    // Only an 〈Unknown〉 source for events where the attack results in an absorb, so don't bother.
                     break;
                 default: throw new NotImplementedException();
             }
@@ -605,18 +605,15 @@ namespace AODamageMeter
                     default: throw new NotImplementedException();
                 }
 
-                if (castEvent.NanoProgram != null)
+                if (_castInfosByNanoProgram.TryGetValue(castEvent.NanoProgram, out CastInfo castInfo))
                 {
-                    if (_castInfosByNanoProgram.TryGetValue(castEvent.NanoProgram, out CastInfo castInfo))
-                    {
-                        castInfo.AddCastEvent(castEvent);
-                    }
-                    else
-                    {
-                        castInfo = new CastInfo(this, castEvent.NanoProgram);
-                        castInfo.AddCastEvent(castEvent);
-                        _castInfosByNanoProgram.Add(castEvent.NanoProgram, castInfo);
-                    }
+                    castInfo.AddCastEvent(castEvent);
+                }
+                else
+                {
+                    castInfo = new CastInfo(this, castEvent.NanoProgram);
+                    castInfo.AddCastEvent(castEvent);
+                    _castInfosByNanoProgram.Add(castEvent.NanoProgram, castInfo);
                 }
 
                 _maxCastSuccesses = null;

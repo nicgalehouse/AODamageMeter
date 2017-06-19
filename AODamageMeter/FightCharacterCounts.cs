@@ -16,7 +16,7 @@ namespace AODamageMeter
             bool includeNullOwnersHealingDones = true, bool includeNullOwnersHealingTakens = true)
         {
             Fight = fight;
-            fight.TryGetFightOwnerCharacter(out FightCharacter fightOwner);
+            fight.TryGetFightOwner(out FightCharacter fightOwner);
 
             foreach (var fightCharacter in fight.FightCharacters
                 .Where(c => (includeNPCs || !c.IsNPC)

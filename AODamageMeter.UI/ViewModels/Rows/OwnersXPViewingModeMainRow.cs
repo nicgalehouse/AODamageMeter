@@ -1,12 +1,14 @@
 ﻿using AODamageMeter.UI.Helpers;
 using System.Windows.Media;
+using System;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersXPViewingModeMainRow : ViewingModeMainRowBase
     {
-        public OwnersXPViewingModeMainRow(Fight fight)
-            : base(ViewingMode.OwnersXP, $"{fight.DamageMeter.Owner}'s XP", 6, "/Icons/XP.png", Color.FromRgb(67, 98, 110), fight)
+        public OwnersXPViewingModeMainRow(DamageMeterViewModel damageMeterViewModel, Fight fight)
+            : base(ViewingMode.OwnersXP, $"{fight.DamageMeter.Owner}'s XP", 6, "/Icons/XP.png", Color.FromRgb(67, 98, 110),
+                  damageMeterViewModel, fight)
         { }
 
         public Character Owner => Fight.DamageMeter.Owner;
@@ -15,18 +17,13 @@ namespace AODamageMeter.UI.ViewModels.Rows
         public FightCharacter FightOwner => _fightOwner;
 
         public override string LeftTextToolTip
-            => $"{Owner.UncoloredName}"
-+ (!Owner.HasPlayerInfo ? null : $@"
-{Owner.Level}/{Owner.AlienLevel} {Owner.Faction} {Owner.Profession}
-{Owner.Breed} {Owner.Gender}")
-+ (!Owner.HasOrganizationInfo ? null : $@"
-{Owner.Organization} ({Owner.OrganizationRank})");
+            => Owner.GetCharacterTooltip();
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (Fight.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
@@ -46,7 +43,7 @@ $@"{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
 
         public override void Update(int? displayIndex = null)
         {
-            if (FightOwner == null && !Fight.TryGetFightOwnerCharacter(out _fightOwner))
+            if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
             {
                 RightText = $"{EmDash} ({EmDash})";
                 return;

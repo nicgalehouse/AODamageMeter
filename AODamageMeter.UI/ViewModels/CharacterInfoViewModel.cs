@@ -88,118 +88,125 @@ namespace AODamageMeter.UI.ViewModels
         public ICommand AutoConfigureCommand { get; }
         private void ExecuteAutoConfigureCommand()
         {
-            if (string.IsNullOrWhiteSpace(CharacterName))
+            try
             {
-                var loggedInCharacterNames = Process.GetProcessesByName("AnarchyOnline")
-                    .Where(p => p.MainWindowTitle?.StartsWith("Anarchy Online - ") ?? false)
-                    .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length))
-                    .ToArray();
-                var unconfiguredCharacterNames = loggedInCharacterNames
-                    .Where(n => _characterSelectionViewModel.CharacterInfoViewModels.All(c => c.CharacterName != n))
-                    .ToArray();
-                if (loggedInCharacterNames.Length == 0)
+                if (string.IsNullOrWhiteSpace(CharacterName))
                 {
-                    AutoConfigureResult = "Auto-configure failed. Unable to detect a running instance of AO from which to deduce a character name. Please enter a name manually.";
-                    return;
-                }
-                else if (loggedInCharacterNames.Length > 1 && unconfiguredCharacterNames.Length != 1)
-                {
-                    AutoConfigureResult = "Auto-configure failed. Can't deduce a sole character needing configuration from the running instances of AO. Please enter a name manually.";
-                    return;
-                }
-                CharacterName = loggedInCharacterNames.Length == 1 ? loggedInCharacterNames.Single() : unconfiguredCharacterNames.Single();
-            }
-
-            if (!Character.FitsPlayerNamingRequirements(CharacterName))
-            {
-                AutoConfigureResult = $"Auto-configure failed. {CharacterName} is not a valid character name.";
-                return;
-            }
-
-            var characterAndBioRetriever = Character.GetOrCreateCharacterAndBioRetriever(CharacterName);
-            var character = characterAndBioRetriever.character;
-            characterAndBioRetriever.bioRetriever.Wait(); // Not worth using await and binding IsEnableds.
-            if (!character.HasPlayerInfo)
-            {
-                if (long.TryParse(LogFilePath?.Split(':').Last(), out long characterID))
-                {
-                    character.ID = characterID.ToString();
-                }
-                else
-                {
-                    AutoConfigureResult = $"Auto-configure failed. Could not find character ID of {CharacterName} on http://people.anarchy-online.com/."
-                        + " If you just created this character, as a workaround you can Shift+F9 in-game and copy & paste the displayed character ID into the log file input and try again.";
-                    return;
-                }
-            }
-
-            // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online
-            string basePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Funcom\Anarchy Online";
-            // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########
-            string prefsPath = Directory.EnumerateDirectories(basePath, $"Char{character.ID}", SearchOption.AllDirectories)
-                 // Could be multiple matching pref folders from across installations; choose the one w/ the most recent activity.
-                .OrderByDescending(p => File.GetLastWriteTime($@"{p}\Prefs.xml"))
-                .FirstOrDefault();
-            // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows
-            string chatWindowsPath = $@"{prefsPath}\Chat\Windows";
-            if (prefsPath == null)
-            {
-                AutoConfigureResult = $"Auto-configure failed. Could not find Char{character.ID}'s prefs folder under {basePath}.";
-                return;
-            }
-            if (!Directory.Exists(chatWindowsPath))
-            {
-                AutoConfigureResult = $"Auto-configure failed. Could not find chat windows folder under {prefsPath}.";
-                return;
-            }
-
-            // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows\Window#
-            foreach (string path in Directory.EnumerateDirectories(chatWindowsPath, "Window*")
-                .Where(p => File.Exists($@"{p}\Config.xml")))
-            {
-                string configText = File.ReadAllText($@"{path}\Config.xml");
-                if (RequiredConfigGroupNames.All(n => configText.Contains(n))
-                    && configText.Contains("name=\"is_logged\" value=\"true\""))
-                {
-                    LogFilePath = $@"{path}\Log.txt";
-                    if (!File.Exists(LogFilePath))
+                    var loggedInCharacterNames = Process.GetProcessesByName("AnarchyOnline")
+                        .Where(p => p.MainWindowTitle?.StartsWith("Anarchy Online - ") ?? false)
+                        .Select(p => p.MainWindowTitle.Substring("Anarchy Online - ".Length))
+                        .ToArray();
+                    var unconfiguredCharacterNames = loggedInCharacterNames
+                        .Where(n => _characterSelectionViewModel.CharacterInfoViewModels.All(c => c.CharacterName != n))
+                        .ToArray();
+                    if (loggedInCharacterNames.Length == 0)
                     {
-                        File.Create(LogFilePath);
-                        RefreshLogFileSize();
+                        AutoConfigureResult = "Auto-configure failed. Unable to detect a running instance of AO from which to deduce a character name. Please enter a name manually.";
+                        return;
                     }
-                    AutoConfigureResult = "Auto-configure succeeded. An existing log file was found.";
-                    return;
-                }
-                else if (configText.Contains("Damage Meter Window"))
-                {
-                    File.WriteAllText($@"{path}\Config.xml", GetAutoConfigureConfigXml(path.Split('\\').Last()));
-                    LogFilePath = $@"{path}\Log.txt";
-                    if (!File.Exists(LogFilePath))
+                    else if (loggedInCharacterNames.Length > 1 && unconfiguredCharacterNames.Length != 1)
                     {
-                        File.Create(LogFilePath);
-                        RefreshLogFileSize();
+                        AutoConfigureResult = "Auto-configure failed. Can't deduce a sole character needing configuration from the running instances of AO. Please enter a name manually.";
+                        return;
                     }
-                    AutoConfigureResult = "Auto-configure succeeded. An existing log file was found and reconfigured.";
+                    CharacterName = loggedInCharacterNames.Length == 1 ? loggedInCharacterNames.Single() : unconfiguredCharacterNames.Single();
+                }
+
+                if (!Character.FitsPlayerNamingRequirements(CharacterName))
+                {
+                    AutoConfigureResult = $"Auto-configure failed. {CharacterName} is not a valid character name.";
                     return;
                 }
-            }
 
-            int firstAvailableWindowNumber = 1;
-            while (Directory.Exists($@"{chatWindowsPath}\Window{firstAvailableWindowNumber}"))
-            {
-                ++firstAvailableWindowNumber;
+                var characterAndBioRetriever = Character.GetOrCreateCharacterAndBioRetriever(CharacterName);
+                var character = characterAndBioRetriever.character;
+                characterAndBioRetriever.bioRetriever.Wait(); // Not worth using await and binding IsEnableds.
+                if (!character.HasPlayerInfo)
+                {
+                    if (long.TryParse(LogFilePath?.Split(':').Last(), out long characterID))
+                    {
+                        character.ID = characterID.ToString();
+                    }
+                    else
+                    {
+                        AutoConfigureResult = $"Auto-configure failed. Could not find character ID of {CharacterName} on http://people.anarchy-online.com/."
+                            + " If you just created this character, as a workaround you can Shift+F9 in-game and copy & paste the displayed character ID into the log file input and try again.";
+                        return;
+                    }
+                }
+
+                // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online
+                string basePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Funcom\Anarchy Online";
+                // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########
+                string prefsPath = Directory.EnumerateDirectories(basePath, $"Char{character.ID}", SearchOption.AllDirectories)
+                    // Could be multiple matching pref folders from across installations; choose the one w/ the most recent activity.
+                    .OrderByDescending(p => File.GetLastWriteTime($@"{p}\Prefs.xml"))
+                    .FirstOrDefault();
+                // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows
+                string chatWindowsPath = $@"{prefsPath}\Chat\Windows";
+                if (prefsPath == null)
+                {
+                    AutoConfigureResult = $"Auto-configure failed. Could not find Char{character.ID}'s prefs folder under {basePath}.";
+                    return;
+                }
+                if (!Directory.Exists(chatWindowsPath))
+                {
+                    AutoConfigureResult = $"Auto-configure failed. Could not find chat windows folder under {prefsPath}.";
+                    return;
+                }
+
+                // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows\Window#
+                foreach (string path in Directory.EnumerateDirectories(chatWindowsPath, "Window*")
+                    .Where(p => File.Exists($@"{p}\Config.xml")))
+                {
+                    string configText = File.ReadAllText($@"{path}\Config.xml");
+                    if (RequiredConfigGroupNames.All(n => configText.Contains(n))
+                        && configText.Contains("name=\"is_logged\" value=\"true\""))
+                    {
+                        LogFilePath = $@"{path}\Log.txt";
+                        if (!File.Exists(LogFilePath))
+                        {
+                            File.Create(LogFilePath);
+                            RefreshLogFileSize();
+                        }
+                        AutoConfigureResult = "Auto-configure succeeded. An existing log file was found.";
+                        return;
+                    }
+                    else if (configText.Contains("Damage Meter Window"))
+                    {
+                        File.WriteAllText($@"{path}\Config.xml", GetAutoConfigureConfigXml(path.Split('\\').Last()));
+                        LogFilePath = $@"{path}\Log.txt";
+                        if (!File.Exists(LogFilePath))
+                        {
+                            File.Create(LogFilePath);
+                            RefreshLogFileSize();
+                        }
+                        AutoConfigureResult = "Auto-configure succeeded. An existing log file was found and reconfigured.";
+                        return;
+                    }
+                }
+
+                int firstAvailableWindowNumber = 1;
+                while (Directory.Exists($@"{chatWindowsPath}\Window{firstAvailableWindowNumber}"))
+                {
+                    ++firstAvailableWindowNumber;
+                }
+                string newWindowName = $@"Window{firstAvailableWindowNumber}";
+                Directory.CreateDirectory($@"{chatWindowsPath}\{newWindowName}");
+                File.WriteAllText($@"{chatWindowsPath}\{newWindowName}\Config.xml", GetAutoConfigureConfigXml(newWindowName));
+                LogFilePath = $@"{chatWindowsPath}\{newWindowName}\Log.txt";
+                File.Create(LogFilePath);
+                RefreshLogFileSize();
+                bool isAlreadyLoggedIn = Process.GetProcessesByName("AnarchyOnline")
+                    .Any(p => p.MainWindowTitle?.Contains(CharacterName) ?? false);
+                AutoConfigureResult = isAlreadyLoggedIn
+                    ? "Auto-configure succeeded. A new log file was created, but you'll need to relog (a fast quit is fine)."
+                    : "Auto-configure succeeded. A new log file was created.";
             }
-            string newWindowName = $@"Window{firstAvailableWindowNumber}";
-            Directory.CreateDirectory($@"{chatWindowsPath}\{newWindowName}");
-            File.WriteAllText($@"{chatWindowsPath}\{newWindowName}\Config.xml", GetAutoConfigureConfigXml(newWindowName));
-            LogFilePath = $@"{chatWindowsPath}\{newWindowName}\Log.txt";
-            File.Create(LogFilePath);
-            RefreshLogFileSize();
-            bool isAlreadyLoggedIn = Process.GetProcessesByName("AnarchyOnline")
-                .Any(p => p.MainWindowTitle?.Contains(CharacterName) ?? false);
-            AutoConfigureResult = isAlreadyLoggedIn
-                ? "Auto-configure succeeded. A new log file was created, but you'll need to relog (a fast quit is fine)."
-                : "Auto-configure succeeded. A new log file was created.";
+            catch (Exception exception)
+            {
+                AutoConfigureResult = $"Auto-configure failed with an unexpected error: {exception.Message}";
+            }
         }
 
         // Doesn't include all the events that AODamageMeter logs, just the ones that seem important enough.

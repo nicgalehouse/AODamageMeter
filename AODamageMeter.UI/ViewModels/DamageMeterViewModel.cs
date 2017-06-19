@@ -24,8 +24,8 @@ namespace AODamageMeter.UI.ViewModels
         {
             ResetDamageMeterCommand = new RelayCommand(ExecuteResetDamageMeterCommand);
             ToggleIsPausedCommand = new RelayCommand(ExecuteToggleIsPausedCommand);
-            _rowUpdater = new Progress<object>(_ => SetAndUpdateRows());
-            TryInitializingDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
+            _rowUpdater = new Progress<object>(_ => UpdateDisplayedRows());
+            TryInitializeDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
         }
 
         public DamageMeter DamageMeter { get; private set; }
@@ -45,11 +45,11 @@ namespace AODamageMeter.UI.ViewModels
         private readonly ObservableCollection<MainRowBase> _ownersHealingTakenRows = new ObservableCollection<MainRowBase>();
         private readonly Dictionary<CastInfo, MainRowBase> _ownersCastsRowMap = new Dictionary<CastInfo, MainRowBase>();
         private readonly ObservableCollection<MainRowBase> _ownersCastsRows = new ObservableCollection<MainRowBase>();
-        private ObservableCollection<MainRowBase> _rows;
-        public ObservableCollection<MainRowBase> Rows
+        private ObservableCollection<MainRowBase> _displayedRows;
+        public ObservableCollection<MainRowBase> DisplayedRows
         {
-            get => _rows;
-            set => Set(ref _rows, value);
+            get => _displayedRows;
+            set => Set(ref _displayedRows, value);
         }
 
         private ViewingMode _selectedViewingMode = ViewingMode.DamageDone;
@@ -67,7 +67,7 @@ namespace AODamageMeter.UI.ViewModels
             set => Set(ref _selectedCharacter, value);
         }
 
-        public bool TryInitializingDamageMeter(string characterName, string logFilePath)
+        public bool TryInitializeDamageMeter(string characterName, string logFilePath)
         {
             // No reason to reinitialize if same name/path AND we succeeded before (i.e., _damageMeter is not null).
             if (_characterName == characterName && _logFilePath == logFilePath && DamageMeter != null)
@@ -77,7 +77,6 @@ namespace AODamageMeter.UI.ViewModels
             _logFilePath = logFilePath;
 
             DisposeDamageMeter();
-            ClearRows();
 
             if (string.IsNullOrWhiteSpace(logFilePath)) return false;
             if (!File.Exists(logFilePath))
@@ -127,7 +126,7 @@ namespace AODamageMeter.UI.ViewModels
             _isDamageMeterUpdaterStarted = true;
         }
 
-        public bool TryProgressingView(MainRowBase mainRowViewModelBase)
+        public bool TryProgressView(MainRowBase mainRowViewModelBase)
         {
             switch (SelectedViewingMode)
             {
@@ -145,20 +144,21 @@ namespace AODamageMeter.UI.ViewModels
                     break;
                 case ViewingMode.DamageDone:
                     SelectedViewingMode = ViewingMode.DamageDoneInfo;
-                    SelectedCharacter = mainRowViewModelBase.FightCharacter.Character;
+                    SelectedCharacter = ((FightCharacterMainRowBase)mainRowViewModelBase).FightCharacter.Character;
                     break;
                 case ViewingMode.DamageTaken:
                     SelectedViewingMode = ViewingMode.DamageTakenInfo;
-                    SelectedCharacter = mainRowViewModelBase.FightCharacter.Character;
+                    SelectedCharacter = ((FightCharacterMainRowBase)mainRowViewModelBase).FightCharacter.Character;
                     break;
                 default: return false;
             }
 
-            SetAndUpdateRows();
+            UpdateDisplayedRows();
+
             return true;
         }
 
-        public bool TryRegressingView()
+        public bool TryRegressView()
         {
             switch (SelectedViewingMode)
             {
@@ -191,262 +191,278 @@ namespace AODamageMeter.UI.ViewModels
                 default: return false;
             }
 
-            SetAndUpdateRows();
+            UpdateDisplayedRows();
+
             return true;
         }
 
-        private void SetAndUpdateRows()
+        private void UpdateDisplayedRows()
         {
             if (DamageMeter == null) return; // Edge case where reporter lags behind cancellation/disposal.
 
+            ObservableCollection<MainRowBase> updatedRows;
+            switch (SelectedViewingMode)
+            {
+                case ViewingMode.ViewingModes: updatedRows = GetUpdatedViewingModeRows(); break;
+                case ViewingMode.DamageDone: updatedRows = GetUpdatedDamageDoneRows(); break;
+                case ViewingMode.DamageDoneInfo: updatedRows = GetUpdatedDamageDoneInfoRows(SelectedCharacter); break;
+                case ViewingMode.DamageTaken: updatedRows = GetUpdatedDamageTakenRows(); break;
+                case ViewingMode.DamageTakenInfo: updatedRows = GetUpdatedDamageTakenInfoRows(SelectedCharacter); break;
+                case ViewingMode.OwnersHealingDone: updatedRows = GetUpdatedOwnersHealingDoneRows(); break;
+                case ViewingMode.OwnersHealingTaken: updatedRows = GetUpdatedOwnersHealingTakenRows(); break;
+                case ViewingMode.OwnersCasts: updatedRows = GetUpdatedOwnersCastsRows(); break;
+                default: throw new NotImplementedException();
+            }
+
+            if (DisplayedRows != updatedRows)
+            {
+                DisplayedRows = updatedRows;
+            }
+        }
+
+        public ObservableCollection<MainRowBase> GetUpdatedViewingModeRows()
+        {
             lock (DamageMeter)
             {
-                switch (SelectedViewingMode)
+                if (_viewingModeRows.Count == 0)
                 {
-                    case ViewingMode.ViewingModes: SetAndUpdateViewingModeRows(); return;
-                    case ViewingMode.DamageDone: SetAndUpdateDamageDoneRows(); return;
-                    case ViewingMode.DamageDoneInfo: SetAndUpdateDamageDoneInfoRows(); return;
-                    case ViewingMode.DamageTaken: SetAndUpdateDamageTakenRows(); return;
-                    case ViewingMode.DamageTakenInfo: SetAndUpdateDamageTakenInfoRows(); return;
-                    case ViewingMode.OwnersHealingDone: SetAndUpdateOwnersHealingDoneRows(); return;
-                    case ViewingMode.OwnersHealingTaken: SetAndUpdateOwnersHealingTakenRows(); return;
-                    case ViewingMode.OwnersCasts: SetAndUpdateOwnersCastsRows(); return;
-                    default: throw new NotImplementedException();
-                }
-            }
-        }
-
-        private void SetAndUpdateViewingModeRows()
-        {
-            if (_viewingModeRows.Count == 0)
-            {
-                foreach (var viewingModeRow in ViewingModeMainRowBase.GetRows(DamageMeter.CurrentFight))
-                {
-                    _viewingModeRows.Add(viewingModeRow);
-                }
-            }
-
-            if (Rows != _viewingModeRows)
-            {
-                Rows = _viewingModeRows;
-            }
-
-            foreach (var viewingModeRow in _viewingModeRows)
-            {
-                viewingModeRow.Update();
-            }
-        }
-
-        private void SetAndUpdateDamageDoneRows()
-        {
-            if (Rows != _damageDoneRows)
-            {
-                Rows = _damageDoneRows;
-            }
-
-            int displayIndex = 1;
-            foreach (var fightCharacter in DamageMeter.CurrentFight.FightCharacters
-                .Where(c => !c.IsFightPet)
-                .OrderByDescending(c => c.TotalDamageDonePlusPets)
-                .ThenBy(c => c.UncoloredName))
-            {
-                if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
-                    || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageDonePlusPets == 0)
-                {
-                    if (_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
+                    foreach (var viewingModeRow in ViewingModeMainRowBase.GetRows(this, DamageMeter.CurrentFight))
                     {
-                        _damageDoneRowMap.Remove(fightCharacter);
-                        _damageDoneRows.Remove(damageDoneRow);
+                        _viewingModeRows.Add(viewingModeRow);
                     }
+                }
+
+                foreach (var viewingModeRow in _viewingModeRows)
+                {
+                    viewingModeRow.Update();
+                }
+
+                return _viewingModeRows;
+            }
+        }
+
+        public ObservableCollection<MainRowBase> GetUpdatedDamageDoneRows()
+        {
+            lock (DamageMeter)
+            {
+                int displayIndex = 1;
+                foreach (var fightCharacter in DamageMeter.CurrentFight.FightCharacters
+                    .Where(c => !c.IsFightPet)
+                    .OrderByDescending(c => c.TotalDamageDonePlusPets)
+                    .ThenBy(c => c.UncoloredName))
+                {
+                    if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
+                        || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageDonePlusPets == 0)
+                    {
+                        if (_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
+                        {
+                            _damageDoneRowMap.Remove(fightCharacter);
+                            _damageDoneRows.Remove(damageDoneRow);
+                        }
+                    }
+                    else
+                    {
+                        if (!_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
+                        {
+                            _damageDoneRowMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRow(this, fightCharacter));
+                            _damageDoneRows.Add(damageDoneRow);
+                        }
+                        damageDoneRow.Update(displayIndex++);
+                    }
+                }
+
+                return _damageDoneRows;
+            }
+        }
+
+        private ObservableCollection<MainRowBase> GetUpdatedDamageDoneInfoRows(Character character)
+        {
+            lock (DamageMeter)
+            {
+                return DamageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter)
+                    ? GetUpdatedDamageDoneInfoRows(fightCharacter) : null;
+            }
+        }
+
+        public ObservableCollection<MainRowBase> GetUpdatedDamageDoneInfoRows(FightCharacter fightCharacter)
+        {
+            lock (DamageMeter)
+            {
+                Dictionary<DamageInfo, MainRowBase> damageDoneInfoRowMap;
+                ObservableCollection<MainRowBase> damageDoneInfoRows;
+                if (_damageDoneInfoRowMapMap.TryGetValue(fightCharacter, out damageDoneInfoRowMap))
+                {
+                    damageDoneInfoRows = _damageDoneInfoRowsMap[fightCharacter];
                 }
                 else
                 {
-                    if (!_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
-                    {
-                        _damageDoneRowMap.Add(fightCharacter, damageDoneRow = new DamageDoneMainRow(fightCharacter));
-                        _damageDoneRows.Add(damageDoneRow);
-                    }
-                    damageDoneRow.Update(displayIndex++);
+                    damageDoneInfoRowMap = _damageDoneInfoRowMapMap[fightCharacter] = new Dictionary<DamageInfo, MainRowBase>();
+                    damageDoneInfoRows = _damageDoneInfoRowsMap[fightCharacter] = new ObservableCollection<MainRowBase>();
                 }
+
+                int displayIndex = 1;
+                foreach (var damageDoneInfo in fightCharacter.DamageDoneInfos
+                    .OrderByDescending(i => i.TotalDamagePlusPets)
+                    .ThenBy(i => i.Target.UncoloredName))
+                {
+                    if (!damageDoneInfoRowMap.TryGetValue(damageDoneInfo, out MainRowBase damageDoneInfoRow))
+                    {
+                        damageDoneInfoRowMap.Add(damageDoneInfo, damageDoneInfoRow = new DamageDoneInfoMainRow(this, damageDoneInfo));
+                        damageDoneInfoRows.Add(damageDoneInfoRow);
+                    }
+                    damageDoneInfoRow.Update(displayIndex++);
+                }
+
+                return damageDoneInfoRows;
             }
         }
 
-        private void SetAndUpdateDamageDoneInfoRows()
+        public ObservableCollection<MainRowBase> GetUpdatedDamageTakenRows()
         {
-            if (!DamageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
-                return;
-
-            Dictionary<DamageInfo, MainRowBase> damageDoneInfoRowMap;
-            ObservableCollection<MainRowBase> damageDoneInfoRows;
-            if (_damageDoneInfoRowMapMap.TryGetValue(fightCharacter, out damageDoneInfoRowMap))
+            lock (DamageMeter)
             {
-                damageDoneInfoRows = _damageDoneInfoRowsMap[fightCharacter];
-
-                if (Rows != damageDoneInfoRows)
+                int displayIndex = 1;
+                foreach (var fightCharacter in DamageMeter.CurrentFight.FightCharacters
+                    .OrderByDescending(c => c.TotalDamageTaken)
+                    .ThenBy(c => c.UncoloredName))
                 {
-                    Rows = damageDoneInfoRows;
+                    if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
+                        || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageTaken == 0)
+                    {
+                        if (_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
+                        {
+                            _damageTakenRowMap.Remove(fightCharacter);
+                            _damageTakenRows.Remove(damageTakenRow);
+                        }
+                    }
+                    else
+                    {
+                        if (!_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
+                        {
+                            _damageTakenRowMap.Add(fightCharacter, damageTakenRow = new DamageTakenMainRow(this, fightCharacter));
+                            _damageTakenRows.Add(damageTakenRow);
+                        }
+                        damageTakenRow.Update(displayIndex++);
+                    }
                 }
-            }
-            else
-            {
-                _damageDoneInfoRowMapMap[fightCharacter] = damageDoneInfoRowMap = new Dictionary<DamageInfo, MainRowBase>();
-                Rows = _damageDoneInfoRowsMap[fightCharacter] = damageDoneInfoRows = new ObservableCollection<MainRowBase>();
-            }
 
-            int displayIndex = 1;
-            foreach (var damageDoneInfo in fightCharacter.DamageDoneInfos
-                .OrderByDescending(i => i.TotalDamagePlusPets)
-                .ThenBy(i => i.Target.UncoloredName))
-            {
-                if (!damageDoneInfoRowMap.TryGetValue(damageDoneInfo, out MainRowBase damageDoneInfoRow))
-                {
-                    damageDoneInfoRowMap.Add(damageDoneInfo, damageDoneInfoRow = new DamageDoneInfoMainRow(damageDoneInfo));
-                    damageDoneInfoRows.Add(damageDoneInfoRow);
-                }
-                damageDoneInfoRow.Update(displayIndex++);
+                return _damageTakenRows;
             }
         }
 
-        private void SetAndUpdateDamageTakenRows()
+        private ObservableCollection<MainRowBase> GetUpdatedDamageTakenInfoRows(Character character)
         {
-            if (Rows != _damageTakenRows)
+            lock (DamageMeter)
             {
-                Rows = _damageTakenRows;
+                return DamageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter)
+                    ? GetUpdatedDamageTakenInfoRows(fightCharacter) : null;
             }
+        }
 
-            int displayIndex = 1;
-            foreach (var fightCharacter in DamageMeter.CurrentFight.FightCharacters
-                .OrderByDescending(c => c.TotalDamageTaken)
-                .ThenBy(c => c.UncoloredName))
+        public ObservableCollection<MainRowBase> GetUpdatedDamageTakenInfoRows(FightCharacter fightCharacter)
+        {
+            lock (DamageMeter)
             {
-                if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
-                    || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageTaken == 0)
+                Dictionary<DamageInfo, MainRowBase> damageTakenInfoRowMap;
+                ObservableCollection<MainRowBase> damageTakenInfoRows;
+                if (_damageTakenInfoRowMapMap.TryGetValue(fightCharacter, out damageTakenInfoRowMap))
                 {
-                    if (_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
-                    {
-                        _damageTakenRowMap.Remove(fightCharacter);
-                        _damageTakenRows.Remove(damageTakenRow);
-                    }
+                    damageTakenInfoRows = _damageTakenInfoRowsMap[fightCharacter];
                 }
                 else
                 {
-                    if (!_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
+                    damageTakenInfoRowMap = _damageTakenInfoRowMapMap[fightCharacter] = new Dictionary<DamageInfo, MainRowBase>();
+                    damageTakenInfoRows = _damageTakenInfoRowsMap[fightCharacter] = new ObservableCollection<MainRowBase>();
+                }
+
+                int displayIndex = 1;
+                foreach (var damageTakenInfo in fightCharacter.DamageTakenInfos
+                    .Where(i => !i.Source.IsFightPet)
+                    .OrderByDescending(i => i.TotalDamagePlusPets)
+                    .ThenBy(i => i.Source.UncoloredName))
+                {
+                    if (!damageTakenInfoRowMap.TryGetValue(damageTakenInfo, out MainRowBase damageTakenInfoRow))
                     {
-                        _damageTakenRowMap.Add(fightCharacter, damageTakenRow = new DamageTakenMainRow(fightCharacter));
-                        _damageTakenRows.Add(damageTakenRow);
+                        damageTakenInfoRowMap.Add(damageTakenInfo, damageTakenInfoRow = new DamageTakenInfoMainRow(this, damageTakenInfo));
+                        damageTakenInfoRows.Add(damageTakenInfoRow);
                     }
-                    damageTakenRow.Update(displayIndex++);
+                    damageTakenInfoRow.Update(displayIndex++);
                 }
+
+                return damageTakenInfoRows;
             }
         }
 
-        private void SetAndUpdateDamageTakenInfoRows()
+        public ObservableCollection<MainRowBase> GetUpdatedOwnersHealingDoneRows()
         {
-            if (!DamageMeter.CurrentFight.TryGetFightCharacter(SelectedCharacter, out FightCharacter fightCharacter))
-                return;
-
-            Dictionary<DamageInfo, MainRowBase> damageTakenInfoRowMap;
-            ObservableCollection<MainRowBase> damageTakenInfoRows;
-            if (_damageTakenInfoRowMapMap.TryGetValue(fightCharacter, out damageTakenInfoRowMap))
+            lock (DamageMeter)
             {
-                damageTakenInfoRows = _damageTakenInfoRowsMap[fightCharacter];
+                if (!DamageMeter.CurrentFight.TryGetFightOwner(out FightCharacter fightOwner))
+                    return _ownersHealingDoneRows;
 
-                if (Rows != damageTakenInfoRows)
+                int displayIndex = 1;
+                foreach (var healingDoneInfo in fightOwner.HealingDoneInfos
+                    .OrderByDescending(i => i.PotentialHealingPlusPets)
+                    .ThenBy(i => i.Target.UncoloredName))
                 {
-                    Rows = damageTakenInfoRows;
+                    if (!_ownersHealingDoneRowMap.TryGetValue(healingDoneInfo, out MainRowBase ownersHealingDoneRow))
+                    {
+                        _ownersHealingDoneRowMap.Add(healingDoneInfo, ownersHealingDoneRow = new OwnersHealingDoneMainRow(this, healingDoneInfo));
+                        _ownersHealingDoneRows.Add(ownersHealingDoneRow);
+                    }
+                    ownersHealingDoneRow.Update(displayIndex++);
                 }
-            }
-            else
-            {
-                _damageTakenInfoRowMapMap[fightCharacter] = damageTakenInfoRowMap = new Dictionary<DamageInfo, MainRowBase>();
-                Rows = _damageTakenInfoRowsMap[fightCharacter] = damageTakenInfoRows = new ObservableCollection<MainRowBase>();
-            }
 
-            int displayIndex = 1;
-            foreach (var damageTakenInfo in fightCharacter.DamageTakenInfos
-                .Where(i => !i.Source.IsFightPet)
-                .OrderByDescending(i => i.TotalDamagePlusPets)
-                .ThenBy(i => i.Source.UncoloredName))
-            {
-                if (!damageTakenInfoRowMap.TryGetValue(damageTakenInfo, out MainRowBase damageTakenInfoRow))
-                {
-                    damageTakenInfoRowMap.Add(damageTakenInfo, damageTakenInfoRow = new DamageTakenInfoMainRow(damageTakenInfo));
-                    damageTakenInfoRows.Add(damageTakenInfoRow);
-                }
-                damageTakenInfoRow.Update(displayIndex++);
+                return _ownersHealingDoneRows;
             }
         }
 
-        private void SetAndUpdateOwnersHealingDoneRows()
+        public ObservableCollection<MainRowBase> GetUpdatedOwnersHealingTakenRows()
         {
-            if (Rows != _ownersHealingDoneRows)
+            lock (DamageMeter)
             {
-                Rows = _ownersHealingDoneRows;
-            }
+                if (!DamageMeter.CurrentFight.TryGetFightOwner(out FightCharacter fightOwner))
+                    return _ownersHealingTakenRows;
 
-            if (!DamageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
-                return;
-
-            int displayIndex = 1;
-            foreach (var healingDoneInfo in fightOwner.HealingDoneInfos
-                .OrderByDescending(i => i.PotentialHealingPlusPets)
-                .ThenBy(i => i.Target.UncoloredName))
-            {
-                if (!_ownersHealingDoneRowMap.TryGetValue(healingDoneInfo, out MainRowBase ownersHealingDoneRow))
+                int displayIndex = 1;
+                foreach (var healingTakenInfo in fightOwner.HealingTakenInfos
+                    .Where(i => !i.Source.IsFightPet)
+                    .OrderByDescending(i => i.PotentialHealingPlusPets)
+                    .ThenBy(i => i.Target.UncoloredName))
                 {
-                    _ownersHealingDoneRowMap.Add(healingDoneInfo, ownersHealingDoneRow = new OwnersHealingDoneMainRow(healingDoneInfo));
-                    _ownersHealingDoneRows.Add(ownersHealingDoneRow);
+                    if (!_ownersHealingTakenRowMap.TryGetValue(healingTakenInfo, out MainRowBase ownersHealingTakenRow))
+                    {
+                        _ownersHealingTakenRowMap.Add(healingTakenInfo, ownersHealingTakenRow = new OwnersHealingTakenMainRow(this, healingTakenInfo));
+                        _ownersHealingTakenRows.Add(ownersHealingTakenRow);
+                    }
+                    ownersHealingTakenRow.Update(displayIndex++);
                 }
-                ownersHealingDoneRow.Update(displayIndex++);
+
+                return _ownersHealingTakenRows;
             }
         }
 
-        private void SetAndUpdateOwnersHealingTakenRows()
+        public ObservableCollection<MainRowBase> GetUpdatedOwnersCastsRows()
         {
-            if (Rows != _ownersHealingTakenRows)
+            lock (DamageMeter)
             {
-                Rows = _ownersHealingTakenRows;
-            }
+                if (!DamageMeter.CurrentFight.TryGetFightOwner(out FightCharacter fightOwner))
+                    return _ownersCastsRows;
 
-            if (!DamageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
-                return;
-
-            int displayIndex = 1;
-            foreach (var healingTakenInfo in fightOwner.HealingTakenInfos
-                .Where(i => !i.Source.IsFightPet)
-                .OrderByDescending(i => i.PotentialHealingPlusPets)
-                .ThenBy(i => i.Target.UncoloredName))
-            {
-                if (!_ownersHealingTakenRowMap.TryGetValue(healingTakenInfo, out MainRowBase ownersHealingTakenRow))
+                int displayIndex = 1;
+                foreach (var castInfo in fightOwner.CastInfos
+                    .OrderByDescending(i => i.CastSuccesses)
+                    .ThenBy(i => i.NanoProgram))
                 {
-                    _ownersHealingTakenRowMap.Add(healingTakenInfo, ownersHealingTakenRow = new OwnersHealingTakenMainRow(healingTakenInfo));
-                    _ownersHealingTakenRows.Add(ownersHealingTakenRow);
+                    if (!_ownersCastsRowMap.TryGetValue(castInfo, out MainRowBase ownersCastsRow))
+                    {
+                        _ownersCastsRowMap.Add(castInfo, ownersCastsRow = new OwnersCastsMainRow(this, castInfo));
+                        _ownersCastsRows.Add(ownersCastsRow);
+                    }
+                    ownersCastsRow.Update(displayIndex++);
                 }
-                ownersHealingTakenRow.Update(displayIndex++);
-            }
-        }
 
-        private void SetAndUpdateOwnersCastsRows()
-        {
-            if (Rows != _ownersCastsRows)
-            {
-                Rows = _ownersCastsRows;
-            }
-
-            if (!DamageMeter.CurrentFight.TryGetFightOwnerCharacter(out FightCharacter fightOwner))
-                return;
-
-            int displayIndex = 1;
-            foreach (var castInfo in fightOwner.CastInfos
-                .OrderByDescending(i => i.CastSuccesses)
-                .ThenBy(i => i.NanoProgram))
-            {
-                if (!_ownersCastsRowMap.TryGetValue(castInfo, out MainRowBase ownersCastsRow))
-                {
-                    _ownersCastsRowMap.Add(castInfo, ownersCastsRow = new OwnersCastsMainRow(castInfo));
-                    _ownersCastsRows.Add(ownersCastsRow);
-                }
-                ownersCastsRow.Update(displayIndex++);
+                return _ownersCastsRows;
             }
         }
 
@@ -466,10 +482,13 @@ namespace AODamageMeter.UI.ViewModels
             if (DamageMeter == null) return;
 
             StopDamageMeterUpdater();
-            ClearRows();
 
-            DamageMeter.InitializeNewFight();
-            StartDamageMeterUpdater();
+            lock (DamageMeter)
+            {
+                ClearRows();
+                DamageMeter.InitializeNewFight();
+                StartDamageMeterUpdater();
+            }
         }
 
         public ICommand ToggleIsPausedCommand { get; }
@@ -492,6 +511,20 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        public void DisposeDamageMeter()
+        {
+            if (DamageMeter == null) return;
+
+            StopDamageMeterUpdater();
+
+            lock (DamageMeter)
+            {
+                ClearRows();
+                DamageMeter.Dispose();
+                DamageMeter = null;
+            }
+        }
+
         private void ClearRows()
         {
             _viewingModeRows.Clear();
@@ -509,14 +542,7 @@ namespace AODamageMeter.UI.ViewModels
             _ownersHealingTakenRows.Clear();
             _ownersCastsRowMap.Clear();
             _ownersCastsRows.Clear();
-            Rows = null;
-        }
-
-        public void DisposeDamageMeter()
-        {
-            StopDamageMeterUpdater();
-            DamageMeter?.Dispose();
-            DamageMeter = null;
+            DisplayedRows = null;
         }
     }
 }

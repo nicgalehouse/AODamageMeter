@@ -24,7 +24,7 @@ namespace AODamageMeter.UI.Views
             var characterSelectionView = new CharacterSelectionView(_damageMeterViewModel);
             if (characterSelectionView.ShowDialog() == true)
             {
-                _damageMeterViewModel.TryInitializingDamageMeter(
+                _damageMeterViewModel.TryInitializeDamageMeter(
                     Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
             }
         }
@@ -40,11 +40,11 @@ namespace AODamageMeter.UI.Views
             }
         }
 
-        private void MainRowView_ViewProgressionRequested_TryProgressingView(object sender, RoutedEventArgs e)
-            => _damageMeterViewModel.TryProgressingView((e.OriginalSource as MainRowView).DataContext as MainRowBase);
+        private void MainRowView_ProgressViewRequested_TryProgressView(object sender, RoutedEventArgs e)
+            => _damageMeterViewModel.TryProgressView(((MainRowView)e.OriginalSource).MainRow);
 
-        private void MainGridView_MouseRightButtonDown_TryRegressingView(object sender, MouseButtonEventArgs e)
-            => _damageMeterViewModel.TryRegressingView();
+        private void MainGridView_MouseRightButtonDown_TryRegressView(object sender, MouseButtonEventArgs e)
+            => _damageMeterViewModel.TryRegressView();
 
         private void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
             => Close();

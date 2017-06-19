@@ -3,17 +3,19 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public sealed class DamageDoneDetailRow : DetailRowBase
+    public sealed class DamageDoneDetailRow : FightCharacterDetailRowBase
     {
-        public DamageDoneDetailRow(FightCharacter fightCharacter)
-            : base(fightCharacter)
+        public DamageDoneDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter fightCharacter)
+            : base(damageMeterViewModel, fightCharacter)
         { }
+
+        public override string Title => $"{FightCharacterName}'s Damage Done (Detail)";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (FightCharacter.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{DisplayIndex}. {FightCharacterName}

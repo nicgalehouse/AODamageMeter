@@ -30,6 +30,10 @@ namespace AODamageMeter.FightEvents
     // that, we remember the latest potential start event, and mark it with one of the 4 real cast results
     // when the end event comes in. The details can get muddled when the last case happens. There, we'll log
     // it as IH succeeding, when in reality it was LE succeeding. But scenario is rare and the %s remain true.
+
+    // Here's another one I recently found. Freak Shield is a perk, but creates a Me Cast Nano success...
+    // [System] You successfully perform Freak Shield.
+    // [Me Cast Nano] Nano program executed successfully.
     public class MeCastNano : FightEvent
     {
         public const string EventName = "Me Cast Nano";
@@ -62,7 +66,7 @@ namespace AODamageMeter.FightEvents
 
         public string NanoProgram { get; protected set; }
         public bool IsStartOfCast => EndEvent != null;
-        public bool IsEndOfCast => CastResult.HasValue && !IsStartOfCast; // StartEvent may be null.
+        public bool IsEndOfCast => StartEvent != null;
         public CastResult? CastResult { get; protected set; }
         public bool IsCastUnavailable { get; protected set; }
 
@@ -93,11 +97,6 @@ namespace AODamageMeter.FightEvents
                     : countered ? AODamageMeter.CastResult.Countered
                     : AODamageMeter.CastResult.Aborted;
 
-                // I don't think this can ever be null in the textbook case. Almost all events we log are independent
-                // of one another, but here's a case where they're not. There's another case over in MeGotHealth, but
-                // there the start event being null is a standard case. Here, it may only be null because of the filters
-                // the user has configured in their chat windows, i.e, excluding lines with "Executing Nano Program:".
-                // ... Or because of when the fight is restarted, so make sure it's for the same fight.
                 if (_latestPotentialStartEvent != null && _latestPotentialStartEvent.Fight == fight)
                 {
                     _latestPotentialStartEvent.CastResult = CastResult;

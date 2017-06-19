@@ -22,24 +22,53 @@ namespace AODamageMeter.UI.Views
             };
         }
 
-        private void Icon_MouseLeftButtonDown_TryTogglingShowDetails(object sender, MouseButtonEventArgs e)
-            => (DataContext as MainRowBase).TryTogglingShowDetails();
+        public static readonly RoutedEvent ProgressViewRequestedEvent = EventManager.RegisterRoutedEvent(
+            "ProgressViewRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));
 
-        public static readonly RoutedEvent ViewProgressionRequestedEvent = EventManager.RegisterRoutedEvent(
-            "ViewProgressionRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(MainRowView));
-
-        public event RoutedEventHandler ViewProgressionRequested
+        public event RoutedEventHandler ProgressViewRequested
         {
-            add { AddHandler(ViewProgressionRequestedEvent, value); }
-            remove { RemoveHandler(ViewProgressionRequestedEvent, value); }
+            add { AddHandler(ProgressViewRequestedEvent, value); }
+            remove { RemoveHandler(ProgressViewRequestedEvent, value); }
         }
 
-        private void Canvas_MouseLeftButtonDown_TryRaisingViewProgressionRequested(object sender, MouseButtonEventArgs e)
-        {
-            if (e.OriginalSource is Image)
-                return; // Icon was clicked, which is for toggling the detail grid.
+        public MainRowBase MainRow => (MainRowBase)DataContext;
 
-            RaiseEvent(new RoutedEventArgs(ViewProgressionRequestedEvent));
+        private bool IsCtrlKeyDown
+            => Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+        private void Canvas_MouseLeftButtonDown_TryCopyAndScriptOrTryRaiseProgressViewRequested(object sender, MouseButtonEventArgs e)
+        {
+            if (IsCtrlKeyDown)
+            {
+                MainRow.TryCopyAndScriptProgressedRowsInfo();
+            }
+            else
+            {
+                RaiseEvent(new RoutedEventArgs(ProgressViewRequestedEvent));
+            }
+            e.Handled = true;
+        }
+
+        private void Icon_MouseLeftButtonDown_TryToggleShowDetails(object sender, MouseButtonEventArgs e)
+        {
+            MainRow.TryToggleShowDetails();
+            e.Handled = true;
+        }
+
+        private void LeftTextBlock_MouseLeftButtonDown_CopyAndScript(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsCtrlKeyDown) return;
+
+            MainRow.CopyAndScriptLeftTextTooltip();
+            e.Handled = true;
+        }
+
+        private void RightTextBlock_MouseLeftButtonDown_CopyAndScript(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsCtrlKeyDown) return;
+
+            MainRow.CopyAndScriptRightTextTooltip();
+            e.Handled = true;
         }
     }
 }

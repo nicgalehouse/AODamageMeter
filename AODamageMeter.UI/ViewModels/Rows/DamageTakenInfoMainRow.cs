@@ -5,11 +5,13 @@ using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public sealed class DamageTakenInfoMainRow : MainRowBase
+    public sealed class DamageTakenInfoMainRow : FightCharacterMainRowBase
     {
-        public DamageTakenInfoMainRow(DamageInfo damageTakenInfo)
-            : base(damageTakenInfo.Source)
+        public DamageTakenInfoMainRow(DamageMeterViewModel damageMeterViewModel, DamageInfo damageTakenInfo)
+            : base(damageMeterViewModel, damageTakenInfo.Source)
              => DamageTakenInfo = damageTakenInfo;
+
+        public override string Title => $"{Target.UncoloredName}'s Damage Taken from {Source.UncoloredName}";
 
         public DamageInfo DamageTakenInfo { get; }
         public FightCharacter Target => DamageTakenInfo.Target;
@@ -19,7 +21,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (Source.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
@@ -65,7 +67,7 @@ $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
                 {
                     if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(fightCharacter, detailRow = new DamageTakenInfoDetailRow(Target, fightCharacter));
+                        _detailRowMap.Add(fightCharacter, detailRow = new DamageTakenInfoDetailRow(DamageMeterViewModel, Target, fightCharacter));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);

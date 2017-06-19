@@ -10,13 +10,12 @@ namespace AODamageMeter
 {
     public class DamageMeter : IDisposable
     {
-        protected readonly string _logFilePath;
         protected readonly StreamReader _logStreamReader;
 
         public DamageMeter(string logFilePath, DamageMeterMode mode = DamageMeterMode.RealTime)
         {
-            _logFilePath = logFilePath;
-            _logStreamReader = new StreamReader(File.Open(logFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+            LogFilePath = logFilePath;
+            _logStreamReader = new StreamReader(File.Open(LogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             Mode = mode;
         }
 
@@ -27,6 +26,7 @@ namespace AODamageMeter
             Owner.CharacterType = CharacterType.Player;
         }
 
+        public string LogFilePath { get; }
         public DamageMeterMode Mode { get; }
         public bool IsRealTimeMode => Mode == DamageMeterMode.RealTime;
         public bool IsParsedTimeMode => Mode == DamageMeterMode.ParsedTime;
@@ -97,7 +97,7 @@ namespace AODamageMeter
         protected async Task SetOwner()
         {
             // We can (probably?) find the owner's ID from the specified log path...
-            string ownersID = _logFilePath.Split('\\', '/')
+            string ownersID = LogFilePath.Split('\\', '/')
                 .LastOrDefault(d => d.StartsWith("Char"))
                 ?.Substring("Char".Length);
 

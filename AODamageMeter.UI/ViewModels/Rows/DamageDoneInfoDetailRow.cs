@@ -4,14 +4,16 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public sealed class DamageDoneInfoDetailRow : DetailRowBase
+    public sealed class DamageDoneInfoDetailRow : FightCharacterDetailRowBase
     {
-        public DamageDoneInfoDetailRow(FightCharacter source, FightCharacter target)
-            : base(source)
+        public DamageDoneInfoDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter source, FightCharacter target)
+            : base(damageMeterViewModel, source)
         {
             Source = source;
             Target = target;
         }
+
+        public override string Title => $"{Source.UncoloredName}'s Damage Done to {Target.UncoloredName} (Detail)";
 
         public DamageInfo DamageDoneInfo { get; private set; }
         public FightCharacter Source { get; }
@@ -21,7 +23,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (Source.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}

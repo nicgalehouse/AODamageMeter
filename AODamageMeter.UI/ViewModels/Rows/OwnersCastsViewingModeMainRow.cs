@@ -1,14 +1,18 @@
 ﻿using AODamageMeter.UI.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersCastsViewingModeMainRow : ViewingModeMainRowBase
     {
-        public OwnersCastsViewingModeMainRow(Fight fight)
-            : base(ViewingMode.OwnersCasts, $"{fight.DamageMeter.Owner}'s Casts", 5, "/Icons/OwnersCasts.png", Color.FromRgb(54, 111, 238), fight)
+        private readonly Dictionary<CastInfo, DetailRowBase> _detailRowMap = new Dictionary<CastInfo, DetailRowBase>();
+
+        public OwnersCastsViewingModeMainRow(DamageMeterViewModel damageMeterViewModel, Fight fight)
+            : base(ViewingMode.OwnersCasts, $"{fight.DamageMeter.Owner}'s Casts", 5, "/Icons/OwnersCasts.png", Color.FromRgb(54, 111, 238),
+                  damageMeterViewModel, fight)
         { }
 
         public Character Owner => Fight.DamageMeter.Owner;
@@ -16,21 +20,14 @@ namespace AODamageMeter.UI.ViewModels.Rows
         private FightCharacter _fightOwner;
         public FightCharacter FightOwner => _fightOwner;
 
-        private readonly new Dictionary<CastInfo, DetailRowBase> _detailRowMap = new Dictionary<CastInfo, DetailRowBase>();
-
         public override string LeftTextToolTip
-            => $"{Owner.UncoloredName}"
-+ (!Owner.HasPlayerInfo ? null : $@"
-{Owner.Level}/{Owner.AlienLevel} {Owner.Faction} {Owner.Profession}
-{Owner.Breed} {Owner.Gender}")
-+ (!Owner.HasOrganizationInfo ? null : $@"
-{Owner.Organization} ({Owner.OrganizationRank})");
+            => Owner.GetCharacterTooltip();
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (Fight.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSuccessChance.FormatPercent() ?? EmDash}) succeeded
@@ -48,7 +45,7 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
 
         public override void Update(int? displayIndex = null)
         {
-            if (FightOwner == null && !Fight.TryGetFightOwnerCharacter(out _fightOwner))
+            if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
             {
                 RightText = $"{EmDash} ({EmDash}, {EmDash})";
                 return;
@@ -73,13 +70,27 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
             {
                 if (!_detailRowMap.TryGetValue(castInfo, out DetailRowBase detailRow))
                 {
-                    _detailRowMap.Add(castInfo, detailRow = new OwnersCastsViewingModeDetailRow(castInfo));
+                    _detailRowMap.Add(castInfo, detailRow = new OwnersCastsViewingModeDetailRow(DamageMeterViewModel, castInfo));
                     DetailRows.Add(detailRow);
                 }
                 detailRow.Update(detailRowDisplayIndex++);
             }
 
             base.Update();
+        }
+
+        public override bool TryCopyAndScriptProgressedRowsInfo()
+        {
+            var body = new StringBuilder();
+            foreach (var ownersCastsRow in DamageMeterViewModel.GetUpdatedOwnersCastsRows()
+                .OrderBy(r => r.DisplayIndex))
+            {
+                body.AppendLine(ownersCastsRow.RowScriptText);
+            }
+
+            CopyAndScript(body.ToString());
+
+            return true;
         }
     }
 }

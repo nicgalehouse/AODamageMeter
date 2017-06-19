@@ -19,6 +19,7 @@ namespace AODamageMeter
             Target = target;
         }
 
+        public DamageMeter DamageMeter => Source.DamageMeter;
         public FightCharacter Source { get; }
         public FightCharacter Target { get; }
 
@@ -160,7 +161,7 @@ namespace AODamageMeter
                     ++IndirectHits;
                     break;
                 case AttackResult.Absorbed:
-                    // Only an ⦗Unknown⦘ source for events where the attack results in an absorb, so don't bother.
+                    // Only an 〈Unknown〉 source for events where the attack results in an absorb, so don't bother.
                     break;
                 default: throw new NotImplementedException();
             }

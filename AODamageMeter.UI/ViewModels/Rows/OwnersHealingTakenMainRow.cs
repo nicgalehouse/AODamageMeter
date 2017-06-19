@@ -5,11 +5,13 @@ using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public sealed class OwnersHealingTakenMainRow : MainRowBase
+    public sealed class OwnersHealingTakenMainRow : FightCharacterMainRowBase
     {
-        public OwnersHealingTakenMainRow(HealingInfo healingTakenInfo)
-            : base(healingTakenInfo.Source)
+        public OwnersHealingTakenMainRow(DamageMeterViewModel damageMeterViewModel, HealingInfo healingTakenInfo)
+            : base(damageMeterViewModel, healingTakenInfo.Source)
             => HealingTakenInfo = healingTakenInfo;
+
+        public override string Title => $"{Target.UncoloredName}'s Healing Taken from {Source.UncoloredName}";
 
         public HealingInfo HealingTakenInfo { get; }
         public FightCharacter Target => HealingTakenInfo.Target;
@@ -20,7 +22,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (Source.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
@@ -58,7 +60,7 @@ $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
                 {
                     if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(fightCharacter, detailRow = new OwnersHealingTakenDetailRow(Target, fightCharacter));
+                        _detailRowMap.Add(fightCharacter, detailRow = new OwnersHealingTakenDetailRow(DamageMeterViewModel, Target, fightCharacter));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);

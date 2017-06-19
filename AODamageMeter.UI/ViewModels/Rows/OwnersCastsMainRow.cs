@@ -6,12 +6,15 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersCastsMainRow : MainRowBase
     {
-        public OwnersCastsMainRow(CastInfo castInfo)
+        public OwnersCastsMainRow(DamageMeterViewModel damageMeterViewModel, CastInfo castInfo)
+            : base(damageMeterViewModel)
         {
             CastInfo = castInfo;
             IconPath = "/Icons/Cast.png";
             Color = Color.FromRgb(54, 111, 238);
         }
+
+        public override string Title => $"{Source.UncoloredName}'s Casts of {CastInfo.NanoProgram}";
 
         public CastInfo CastInfo { get; }
         public FightCharacter Source => CastInfo.Source;
@@ -25,7 +28,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (Source.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessChance.FormatPercent()}) succeeded

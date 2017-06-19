@@ -63,7 +63,7 @@ namespace AODamageMeter.UI.ViewModels
             }
             catch
             {
-                if (!SelectedCharacterInfoViewModel.LogFileSize.EndsWith(" (can't clear logged in)"))
+                if (!SelectedCharacterInfoViewModel.LogFileSize.EndsWith(" (can't clear when logged in)"))
                 {
                     SelectedCharacterInfoViewModel.LogFileSize += " (can't clear when logged in)";
                 }

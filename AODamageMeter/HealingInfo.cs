@@ -18,6 +18,7 @@ namespace AODamageMeter
             Target = target;
         }
 
+        public DamageMeter DamageMeter => Source.DamageMeter;
         public FightCharacter Source { get; }
         public FightCharacter Target { get; }
 

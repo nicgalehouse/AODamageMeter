@@ -3,11 +3,13 @@ using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public sealed class OwnersHealingDoneViewingModeDetailRow : DetailRowBase
+    public sealed class OwnersHealingDoneViewingModeDetailRow : FightCharacterDetailRowBase
     {
-        public OwnersHealingDoneViewingModeDetailRow(HealingInfo healingDoneInfo)
-            : base(healingDoneInfo.Target, showIcon: true)
+        public OwnersHealingDoneViewingModeDetailRow(DamageMeterViewModel damageMeterViewModel, HealingInfo healingDoneInfo)
+            : base(damageMeterViewModel, healingDoneInfo.Target, showIcon: true)
             => HealingDoneInfo = healingDoneInfo;
+
+        public override string Title => $"{Source.UncoloredName}'s Healing Done to {Target.UncoloredName}";
 
         public HealingInfo HealingDoneInfo { get; }
         public FightCharacter Source => HealingDoneInfo.Source;
@@ -18,7 +20,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (Source.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}

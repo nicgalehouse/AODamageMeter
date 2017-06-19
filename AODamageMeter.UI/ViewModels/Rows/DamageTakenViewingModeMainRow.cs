@@ -1,21 +1,41 @@
 ﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class DamageTakenViewingModeMainRow : ViewingModeMainRowBase
     {
-        public DamageTakenViewingModeMainRow(Fight fight)
-            : base(ViewingMode.DamageTaken, "Damage Taken", 2, "/Icons/DamageTaken.png", Color.FromRgb(88, 166, 86), fight)
+        private readonly Dictionary<FightCharacter, DetailRowBase> _detailRowMap = new Dictionary<FightCharacter, DetailRowBase>();
+
+        public DamageTakenViewingModeMainRow(DamageMeterViewModel damageMeterViewModel, Fight fight)
+            : base(ViewingMode.DamageTaken, "Damage Taken", 2, "/Icons/DamageTaken.png", Color.FromRgb(88, 166, 86),
+                  damageMeterViewModel, fight)
         { }
+
+        public override string LeftTextToolTip
+        {
+            get
+            {
+                lock (CurrentDamageMeter)
+                {
+                    var counts = Fight.GetFightCharacterCounts(
+                        includeNPCs: Settings.Default.ShowTopLevelNPCRows,
+                        includeZeroDamageTakens: Settings.Default.ShowTopLevelZeroDamageRows);
+
+                    return counts.GetFightCharacterCountsTooltip();
+                }
+            }
+        }
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (Fight.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     var stats = Fight.GetDamageTakenStats(
                         includeNPCs: Settings.Default.ShowTopLevelNPCRows,
@@ -80,13 +100,27 @@ $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "
             {
                 if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                 {
-                    _detailRowMap.Add(fightCharacter, detailRow = new DamageTakenViewingModeDetailRow(fightCharacter));
+                    _detailRowMap.Add(fightCharacter, detailRow = new DamageTakenViewingModeDetailRow(DamageMeterViewModel, fightCharacter));
                     DetailRows.Add(detailRow);
                 }
                 detailRow.Update(detailRowDisplayIndex++);
             }
 
             base.Update();
+        }
+
+        public override bool TryCopyAndScriptProgressedRowsInfo()
+        {
+            var body = new StringBuilder();
+            foreach (var damageTakenRow in DamageMeterViewModel.GetUpdatedDamageTakenRows()
+                .OrderBy(r => r.DisplayIndex))
+            {
+                body.AppendLine(damageTakenRow.RowScriptText);
+            }
+
+            CopyAndScript(body.ToString());
+
+            return true;
         }
     }
 }

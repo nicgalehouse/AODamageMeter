@@ -1,20 +1,23 @@
 ﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
 using System.Linq;
+using System.Text;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
-    public sealed class DamageDoneMainRow : MainRowBase
+    public sealed class DamageDoneMainRow : FightCharacterMainRowBase
     {
-        public DamageDoneMainRow(FightCharacter fightCharacter)
-            : base(fightCharacter)
+        public DamageDoneMainRow(DamageMeterViewModel damageMeterViewModel, FightCharacter fightCharacter)
+            : base(damageMeterViewModel, fightCharacter)
         { }
+
+        public override string Title => $"{FightCharacterName}'s Damage Done";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (FightCharacter.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     return
 $@"{DisplayIndex}. {FightCharacterName}
@@ -89,7 +92,7 @@ $@"{DisplayIndex}. {FightCharacterName}
                 {
                     if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneDetailRow(fightCharacter));
+                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneDetailRow(DamageMeterViewModel, fightCharacter));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);
@@ -97,6 +100,20 @@ $@"{DisplayIndex}. {FightCharacterName}
             }
 
             base.Update(displayIndex);
+        }
+
+        public override bool TryCopyAndScriptProgressedRowsInfo()
+        {
+            var body = new StringBuilder();
+            foreach (var damageDoneInfoRow in DamageMeterViewModel.GetUpdatedDamageDoneInfoRows(FightCharacter)
+                .OrderBy(r => r.DisplayIndex))
+            {
+                body.AppendLine(damageDoneInfoRow.RowScriptText);
+            }
+
+            CopyAndScript(body.ToString());
+
+            return true;
         }
     }
 }

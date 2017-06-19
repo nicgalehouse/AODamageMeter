@@ -218,7 +218,7 @@ namespace AODamageMeter
                 && FitsPlayerNamingRequirements(UncolorName(name.Substring(0, petOwnerNameLength)));
         }
 
-        public static bool TryFittingPetNamingRequirements(string name, out string petOwnerName)
+        public static bool TryFitPetNamingRequirements(string name, out string petOwnerName)
         {
             int petOwnerNameLength;
             if (name == null
@@ -265,6 +265,6 @@ namespace AODamageMeter
         }
 
         public override string ToString()
-            => Name;
+            => UncoloredName;
     }
 }

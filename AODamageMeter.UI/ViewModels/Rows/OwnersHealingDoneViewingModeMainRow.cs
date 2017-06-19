@@ -1,23 +1,42 @@
 ﻿using AODamageMeter.UI.Helpers;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersHealingDoneViewingModeMainRow : ViewingModeMainRowBase
     {
-        public OwnersHealingDoneViewingModeMainRow(Fight fight)
-            : base(ViewingMode.OwnersHealingDone, $"{fight.DamageMeter.Owner}'s Healing Done", 3, "/Icons/OwnersHealingDone.png", Color.FromRgb(197, 135, 25), fight)
+        private readonly Dictionary<FightCharacter, DetailRowBase> _detailRowMap = new Dictionary<FightCharacter, DetailRowBase>();
+
+        public OwnersHealingDoneViewingModeMainRow(DamageMeterViewModel damageMeterViewModel, Fight fight)
+            : base(ViewingMode.OwnersHealingDone, $"{fight.DamageMeter.Owner}'s Healing Done", 3, "/Icons/OwnersHealingDone.png", Color.FromRgb(197, 135, 25),
+                  damageMeterViewModel, fight)
         { }
 
         private FightCharacter _fightOwner;
         public FightCharacter FightOwner => _fightOwner;
 
+        public override string LeftTextToolTip
+        {
+            get
+            {
+                lock (CurrentDamageMeter)
+                {
+                    var counts = Fight
+                        .GetFightCharacterCounts(includeNullOwnersHealingDones: false);
+
+                    return counts.GetFightCharacterCountsTooltip();
+                }
+            }
+        }
+
         public override string RightTextToolTip
         {
             get
             {
-                lock (Fight.DamageMeter)
+                lock (CurrentDamageMeter)
                 {
                     int fightCharacterCount = Fight
                         .GetFightCharacterCount(includeNullOwnersHealingDones: false);
@@ -42,7 +61,7 @@ $@"{fightCharacterCount} {(fightCharacterCount == 1 ? "character" : "characters"
 
         public override void Update(int? displayIndex = null)
         {
-            if (FightOwner == null && !Fight.TryGetFightOwnerCharacter(out _fightOwner))
+            if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
             {
                 RightText = $"{EmDash} ({EmDash})";
                 return;
@@ -67,13 +86,27 @@ $@"{fightCharacterCount} {(fightCharacterCount == 1 ? "character" : "characters"
             {
                 if (!_detailRowMap.TryGetValue(healingDoneInfo.Target, out DetailRowBase detailRow))
                 {
-                    _detailRowMap.Add(healingDoneInfo.Target, detailRow = new OwnersHealingDoneViewingModeDetailRow(healingDoneInfo));
+                    _detailRowMap.Add(healingDoneInfo.Target, detailRow = new OwnersHealingDoneViewingModeDetailRow(DamageMeterViewModel, healingDoneInfo));
                     DetailRows.Add(detailRow);
                 }
                 detailRow.Update(detailRowDisplayIndex++);
             }
 
             base.Update();
+        }
+
+        public override bool TryCopyAndScriptProgressedRowsInfo()
+        {
+            var body = new StringBuilder();
+            foreach (var ownersHealingDoneRow in DamageMeterViewModel.GetUpdatedOwnersHealingDoneRows()
+                .OrderBy(r => r.DisplayIndex))
+            {
+                body.AppendLine(ownersHealingDoneRow.RowScriptText);
+            }
+
+            CopyAndScript(body.ToString());
+
+            return true;
         }
     }
 }

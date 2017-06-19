@@ -24,7 +24,7 @@ namespace AODamageMeter
             bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true,
             bool includeNullOwnersHealingDones = true, bool includeNullOwnersHealingTakens = true)
         {
-            TryGetFightOwnerCharacter(out FightCharacter fightOwner);
+            TryGetFightOwner(out FightCharacter fightOwner);
 
             return FightCharacters
                 .Count(c => (includeNPCs || !c.IsNPC)
@@ -167,7 +167,7 @@ namespace AODamageMeter
 
             if (character.IsPet)
             {
-                if (character.PetOwner == null && Character.TryFittingPetNamingRequirements(character.Name, out string petOwnerName))
+                if (character.PetOwner == null && Character.TryFitPetNamingRequirements(character.Name, out string petOwnerName))
                 {
                     Character.GetOrCreateCharacter(petOwnerName)
                         .RegisterPet(character);
@@ -202,7 +202,7 @@ namespace AODamageMeter
         public bool TryGetFightCharacter(Character character, out FightCharacter fightCharacter)
             => _fightCharacters.TryGetValue(character, out fightCharacter);
 
-        public bool TryGetFightOwnerCharacter(out FightCharacter fightCharacter)
-            => _fightCharacters.TryGetValue(DamageMeter.Owner, out fightCharacter);
+        public bool TryGetFightOwner(out FightCharacter fightOwner)
+            => _fightCharacters.TryGetValue(DamageMeter.Owner, out fightOwner);
     }
 }

@@ -12,6 +12,7 @@ namespace AODamageMeter
             NanoProgram = nanoProgram;
         }
 
+        public DamageMeter DamageMeter => Source.DamageMeter;
         public FightCharacter Source { get; }
         public string NanoProgram { get; }
 

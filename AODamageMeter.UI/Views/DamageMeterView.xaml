@@ -79,8 +79,8 @@
       </Button>
     </Grid>
 
-    <views:MainGridView Grid.Row="1" DataContext="{Binding Rows}"
-                        views:MainRowView.ViewProgressionRequested="MainRowView_ViewProgressionRequested_TryProgressingView"
-                        MouseRightButtonDown="MainGridView_MouseRightButtonDown_TryRegressingView"/>
+    <views:MainGridView Grid.Row="1" DataContext="{Binding DisplayedRows}"
+                        views:MainRowView.ProgressViewRequested="MainRowView_ProgressViewRequested_TryProgressView"
+                        MouseRightButtonDown="MainGridView_MouseRightButtonDown_TryRegressView"/>
   </Grid>
 </Window>

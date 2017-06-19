@@ -132,17 +132,17 @@ namespace AODamageMeter
             => Source = Target = Fight.GetOrCreateFightCharacter(DamageMeter.Owner, Timestamp);
 
         /* It's convenient to have a source and a target for every attack event, so to achieve that we sometimes use a character
-           named ⦗Unknown⦘. Then for example we can have a single TotalDamage value at the fight level, instead of two slightly
+           named 〈Unknown〉. Then for example we can have a single TotalDamage value at the fight level, instead of two slightly
            different values, TotalDamageDone and TotalDamageTaken. */
 
         protected void SetSourceToUnknown()
-            => Source = Fight.GetOrCreateFightCharacter("⦗Unknown⦘", Timestamp);
+            => Source = Fight.GetOrCreateFightCharacter("〈Unknown〉", Timestamp);
 
         protected void SetTargetToUnknown()
-            => Target = Fight.GetOrCreateFightCharacter("⦗Unknown⦘", Timestamp);
+            => Target = Fight.GetOrCreateFightCharacter("〈Unknown〉", Timestamp);
 
         protected void SetSourceAndTargetToUnknown()
-            => Source = Target = Fight.GetOrCreateFightCharacter("⦗Unknown⦘", Timestamp);
+            => Source = Target = Fight.GetOrCreateFightCharacter("〈Unknown〉", Timestamp);
 
         protected void SetAmount(Match match, int index)
             => Amount = int.Parse(match.Groups[index].Value);
