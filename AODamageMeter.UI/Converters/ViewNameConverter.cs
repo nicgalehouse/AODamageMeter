@@ -11,15 +11,19 @@ namespace AODamageMeter.UI.Converters
             var selectedViewingMode = (ViewingMode)values[0];
             var selectedCharacter = (Character)values[1];
 
-            return selectedViewingMode == ViewingMode.ViewingModes ? "Viewing Modes"
-                : selectedViewingMode == ViewingMode.DamageDone ? "Damage Done"
-                : selectedViewingMode == ViewingMode.DamageDoneInfo ? $"{selectedCharacter?.UncoloredName}'s Damage Done"
-                : selectedViewingMode == ViewingMode.DamageTaken ? "Damage Taken"
-                : selectedViewingMode == ViewingMode.DamageTakenInfo ? $"{selectedCharacter?.UncoloredName}'s Damage Taken"
-                : selectedViewingMode == ViewingMode.OwnersHealingDone ? $"{selectedCharacter?.UncoloredName}'s Healing Done"
-                : selectedViewingMode == ViewingMode.OwnersHealingTaken ? $"{selectedCharacter?.UncoloredName}'s Healing Taken"
-                : selectedViewingMode == ViewingMode.OwnersCasts ? $"{selectedCharacter?.UncoloredName}'s Casts"
-                : throw new NotImplementedException();
+            switch (selectedViewingMode)
+            {
+                case ViewingMode.Fights: return "Fights";
+                case ViewingMode.ViewingModes: return "Viewing Modes";
+                case ViewingMode.DamageDone: return "Damage Done";
+                case ViewingMode.DamageDoneInfo: return $"{selectedCharacter?.UncoloredName}'s Damage Done";
+                case ViewingMode.DamageTaken: return "Damage Taken";
+                case ViewingMode.DamageTakenInfo: return $"{selectedCharacter?.UncoloredName}'s Damage Taken";
+                case ViewingMode.OwnersHealingDone: return $"{selectedCharacter?.UncoloredName}'s Healing Done";
+                case ViewingMode.OwnersHealingTaken: return $"{selectedCharacter?.UncoloredName}'s Healing Taken";
+                case ViewingMode.OwnersCasts: return $"{selectedCharacter?.UncoloredName}'s Casts";
+                default: throw new NotImplementedException();
+            }
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

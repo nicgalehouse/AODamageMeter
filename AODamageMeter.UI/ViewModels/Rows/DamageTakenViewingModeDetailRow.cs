@@ -7,8 +7,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class DamageTakenViewingModeDetailRow : FightCharacterDetailRowBase
     {
-        public DamageTakenViewingModeDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter fightCharacter)
-            : base(damageMeterViewModel, fightCharacter, showIcon: true)
+        public DamageTakenViewingModeDetailRow(FightViewModel fightViewModel, FightCharacter fightCharacter)
+            : base(fightViewModel, fightCharacter, showIcon: true)
         { }
 
         public override string Title => $"{FightCharacterName}'s Damage Taken";
@@ -17,12 +17,12 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
-{FightCharacter.TotalDamageTaken.ToString("N0")} total dmg
+{FightCharacter.TotalDamageTaken:N0} total dmg
 
 {FightCharacter.WeaponDamageTakenPM.Format()} ({FightCharacter.WeaponPercentOfTotalDamageTaken.FormatPercent()}) weapon dmg / min
 {FightCharacter.NanoDamageTakenPM.Format()} ({FightCharacter.NanoPercentOfTotalDamageTaken.FormatPercent()}) nano dmg / min
@@ -51,7 +51,7 @@ $@"{DisplayIndex}. {FightCharacterName}
 {FightCharacter.GetSpecialsTakenInfo()}")
 + (FightCharacter.HitsAbsorbed == 0 ? null : $@"
 
-{FightCharacter.DamageAbsorbed.ToString("N0")} dmg absorbed
+{FightCharacter.DamageAbsorbed:N0} dmg absorbed
 {FightCharacter.HitsAbsorbedPM.Format()} hits absorbed / min
 {FightCharacter.DamageAbsorbedPM.Format()} dmg absorbed / min
 {FightCharacter.AverageDamageAbsorbed.Format()} dmg absorbed / hit");
@@ -81,7 +81,7 @@ $@"{DisplayIndex}. {FightCharacterName}
         public override bool TryCopyAndScriptProgressedRowsInfo()
         {
             var body = new StringBuilder();
-            foreach (var damageTakenInfoRow in DamageMeterViewModel.GetUpdatedDamageTakenInfoRows(FightCharacter)
+            foreach (var damageTakenInfoRow in FightViewModel.GetUpdatedDamageTakenInfoRows(FightCharacter)
                 .OrderBy(r => r.DisplayIndex))
             {
                 body.AppendLine(damageTakenInfoRow.RowScriptText);

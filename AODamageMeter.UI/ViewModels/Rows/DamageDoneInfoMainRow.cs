@@ -7,26 +7,26 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class DamageDoneInfoMainRow : FightCharacterMainRowBase
     {
-        public DamageDoneInfoMainRow(DamageMeterViewModel damageMeterViewModel, DamageInfo damageDoneInfo)
-            : base(damageMeterViewModel, damageDoneInfo.Target)
+        public DamageDoneInfoMainRow(FightViewModel fightViewModel, DamageInfo damageDoneInfo)
+            : base(fightViewModel, damageDoneInfo.Target)
              => DamageDoneInfo = damageDoneInfo;
-
-        public override string Title => $"{Source.UncoloredName}'s Damage Done to {Target.UncoloredName}";
 
         public DamageInfo DamageDoneInfo { get; }
         public FightCharacter Source => DamageDoneInfo.Source;
         public FightCharacter Target => DamageDoneInfo.Target;
 
+        public override string Title => $"{Source.UncoloredName}'s Damage Done to {Target.UncoloredName}";
+
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
 
-{DamageDoneInfo.TotalDamagePlusPets.ToString("N0")} total dmg
+{DamageDoneInfo.TotalDamagePlusPets:N0} total dmg
 
 {(DamageDoneInfo.HasIncompleteMissStatsPlusPets ? "≤ " : "")}{DamageDoneInfo.WeaponHitChancePlusPets.FormatPercent()} weapon hit chance
   {DamageDoneInfo.CritChancePlusPets.FormatPercent()} crit chance
@@ -67,7 +67,7 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
                 {
                     if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneInfoDetailRow(DamageMeterViewModel, fightCharacter, Target));
+                        _detailRowMap.Add(fightCharacter, detailRow = new DamageDoneInfoDetailRow(FightViewModel, fightCharacter, Target));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);

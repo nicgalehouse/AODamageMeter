@@ -2,6 +2,7 @@
 {
     public enum ViewingMode
     {
+        Fights,
         ViewingModes,
         DamageDone,
         DamageDoneInfo,

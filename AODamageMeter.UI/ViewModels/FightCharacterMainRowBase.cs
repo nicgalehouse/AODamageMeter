@@ -7,18 +7,15 @@ namespace AODamageMeter.UI.ViewModels
     {
         protected readonly Dictionary<FightCharacter, DetailRowBase> _detailRowMap = new Dictionary<FightCharacter, DetailRowBase>();
 
-        public FightCharacterMainRowBase(DamageMeterViewModel damageMeterViewModel, FightCharacter fightCharacter)
-            : base(damageMeterViewModel)
+        public FightCharacterMainRowBase(FightViewModel fightViewModel, FightCharacter fightCharacter)
+            : base(fightViewModel)
             => FightCharacter = fightCharacter;
 
         public FightCharacter FightCharacter { get; }
         public string FightCharacterName => FightCharacter.UncoloredName;
 
-        public sealed override string UnnumberedLeftText
-            => FightCharacterName;
-
-        public sealed override string LeftTextToolTip
-            => FightCharacter.Character.GetCharacterTooltip(DisplayIndex);
+        public sealed override string UnnumberedLeftText => FightCharacterName;
+        public sealed override string LeftTextToolTip => FightCharacter.GetCharacterTooltip(DisplayIndex);
 
         public override void Update(int? displayIndex = null)
         {

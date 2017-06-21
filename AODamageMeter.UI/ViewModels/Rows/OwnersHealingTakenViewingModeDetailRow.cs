@@ -1,30 +1,28 @@
-﻿using System;
-using AODamageMeter.UI.Helpers;
+﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersHealingTakenViewingModeDetailRow : FightCharacterDetailRowBase
     {
-        public OwnersHealingTakenViewingModeDetailRow(DamageMeterViewModel damageMeterViewModel, HealingInfo healingTakenInfo)
-            : base(damageMeterViewModel, healingTakenInfo.Source, showIcon: true)
+        public OwnersHealingTakenViewingModeDetailRow(FightViewModel fightViewModel, HealingInfo healingTakenInfo)
+            : base(fightViewModel, healingTakenInfo.Source, showIcon: true)
             => HealingTakenInfo = healingTakenInfo;
 
-        public override string Title => $"{Target.UncoloredName}'s Healing Taken from {Source.UncoloredName}";
-
         public HealingInfo HealingTakenInfo { get; }
-        public FightCharacter Target => HealingTakenInfo.Target;
         public FightCharacter Source => HealingTakenInfo.Source;
-        public bool IsOwnerTheSource => Source.IsDamageMeterOwner;
+        public bool IsOwnerTheSource => Source.IsOwner;
+
+        public override string Title => $"{Owner.UncoloredName}'s Healing Taken from {Source.UncoloredName}";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
+$@"{DisplayIndex}. {Owner.UncoloredName} <- {Source.UncoloredName}
 
 {(IsOwnerTheSource ? "≥ " : "")}{HealingTakenInfo.PotentialHealingPlusPets.Format()} potential healing
 {HealingTakenInfo.RealizedHealingPlusPets.Format()} realized healing

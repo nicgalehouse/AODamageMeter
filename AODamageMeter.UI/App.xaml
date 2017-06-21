@@ -131,7 +131,7 @@
 
     <Style TargetType="fa:ImageAwesome">
       <Setter Property="Foreground" Value="{StaticResource LightBlueBrush}"/>
-      <Setter Property="Margin" Value="2"/>
+      <Setter Property="Margin" Value="1"/>
     </Style>
 
     <Style TargetType="local:RowViewModelDataGrid">

@@ -6,28 +6,24 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersHealingTakenDetailRow : FightCharacterDetailRowBase
     {
-        public OwnersHealingTakenDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter target, FightCharacter source)
-            : base(damageMeterViewModel, source)
-        {
-            Target = target;
-            Source = source;
-        }
-
-        public override string Title => $"{Target.UncoloredName}'s Healing Taken from {Source.UncoloredName} (Detail)";
+        public OwnersHealingTakenDetailRow(FightViewModel fightViewModel, FightCharacter source)
+            : base(fightViewModel, source)
+            => Source = source;
 
         public HealingInfo HealingTakenInfo { get; private set; }
-        public FightCharacter Target { get; }
         public FightCharacter Source { get; }
-        public bool IsOwnerTheSource => Source.IsDamageMeterOwner;
+        public bool IsOwnerTheSource => Source.IsOwner;
+
+        public override string Title => $"{Owner.UncoloredName}'s Healing Taken from {Source.UncoloredName} (Detail)";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
+$@"{DisplayIndex}. {Owner.UncoloredName} <- {Source.UncoloredName}
 
 {(IsOwnerTheSource ? "≥ " : "")}{HealingTakenInfo?.PotentialHealing.Format() ?? EmDash} potential healing
 {HealingTakenInfo?.RealizedHealing.Format() ?? EmDash} realized healing
@@ -41,7 +37,7 @@ $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
 
         public override void Update(int? displayIndex = null)
         {
-            HealingTakenInfo = HealingTakenInfo ?? Target.HealingTakenInfosBySource.GetValueOrFallback(Source);
+            HealingTakenInfo = HealingTakenInfo ?? FightOwner.HealingTakenInfosBySource.GetValueOrFallback(Source);
 
             PercentWidth = HealingTakenInfo?.PercentOfTargetsMaxPotentialHealingPlusPetsTaken ?? 0;
             double? percentDone = Settings.Default.ShowPercentOfTotal

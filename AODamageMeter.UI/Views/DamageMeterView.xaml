@@ -30,6 +30,8 @@
         <ColumnDefinition Width="24"/>
         <ColumnDefinition Width="24"/>
         <ColumnDefinition Width="24"/>
+        <ColumnDefinition Width="24"/>
+        <ColumnDefinition Width="24"/>
       </Grid.ColumnDefinitions>
 
       <Button Grid.Column="0" x:Name="FileButton"
@@ -47,12 +49,19 @@
       </TextBlock>
 
       <Button Grid.Column="2"
+              Command="{Binding ClearFightHistoryCommand}"
+              Visibility="{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay,
+                                   Converter={StaticResource BoolToVisibilityConverter}}">
+        <fa:ImageAwesome Icon="Trash"/>
+      </Button>
+
+      <Button Grid.Column="3"
               Click="OptionsButton_Click_ShowOptions">
         <fa:ImageAwesome Icon="Gear"/>
       </Button>
 
       <!-- Not using a ToggleButton because the highlight when toggled seemed too distracting. -->
-      <Button Grid.Column="3"
+      <Button Grid.Column="4"
               Command="{Binding ToggleIsPausedCommand}">
         <fa:ImageAwesome>
           <fa:ImageAwesome.Style>
@@ -68,12 +77,20 @@
         </fa:ImageAwesome>
       </Button>
 
-      <Button Grid.Column="4"
-              Command="{Binding ResetDamageMeterCommand}">
+      <Button Grid.Column="5"
+              Command="{Binding ResetAndSaveFightCommand}">
+        <Grid>
+          <fa:ImageAwesome Icon="Plus" Height="6"/>
+          <fa:ImageAwesome Icon="Refresh"/>
+        </Grid>
+      </Button>
+
+      <Button Grid.Column="6"
+              Command="{Binding ResetFightCommand}">
         <fa:ImageAwesome Icon="Refresh"/>
       </Button>
 
-      <Button Grid.Column="5"
+      <Button Grid.Column="7"
               Click="CloseButton_Click_CloseApplication">
         <fa:ImageAwesome Icon="Close"/>
       </Button>

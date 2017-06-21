@@ -10,24 +10,17 @@ namespace AODamageMeter.UI.ViewModels.Rows
     {
         private readonly Dictionary<CastInfo, DetailRowBase> _detailRowMap = new Dictionary<CastInfo, DetailRowBase>();
 
-        public OwnersCastsViewingModeMainRow(DamageMeterViewModel damageMeterViewModel, Fight fight)
-            : base(ViewingMode.OwnersCasts, $"{fight.DamageMeter.Owner}'s Casts", 5, "/Icons/OwnersCasts.png", Color.FromRgb(54, 111, 238),
-                  damageMeterViewModel, fight)
+        public OwnersCastsViewingModeMainRow(FightViewModel fightViewModel)
+            : base(ViewingMode.OwnersCasts, $"{fightViewModel.Owner}'s Casts", 5, "/Icons/OwnersCasts.png", Color.FromRgb(54, 111, 238), fightViewModel)
         { }
 
-        public Character Owner => Fight.DamageMeter.Owner;
-
-        private FightCharacter _fightOwner;
-        public FightCharacter FightOwner => _fightOwner;
-
-        public override string LeftTextToolTip
-            => Owner.GetCharacterTooltip();
+        public override string LeftTextToolTip => Owner.GetCharacterTooltip();
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSuccessChance.FormatPercent() ?? EmDash}) succeeded
@@ -45,13 +38,13 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
 
         public override void Update(int? displayIndex = null)
         {
-            if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
+            if (FightOwner == null)
             {
                 RightText = $"{EmDash} ({EmDash}, {EmDash})";
             }
             else
             {
-                RightText = $"{FightOwner.CastSuccesses.ToString("N0")} ({FightOwner.CastSuccessesPM.Format()}, {FightOwner.CastSuccessChance.FormatPercent()})";
+                RightText = $"{FightOwner.CastSuccesses:N0} ({FightOwner.CastSuccessesPM.Format()}, {FightOwner.CastSuccessChance.FormatPercent()})";
 
                 var topCastInfos = FightOwner.CastInfos
                     .OrderByDescending(i => i.CastSuccesses)
@@ -70,7 +63,7 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
                 {
                     if (!_detailRowMap.TryGetValue(castInfo, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(castInfo, detailRow = new OwnersCastsViewingModeDetailRow(DamageMeterViewModel, castInfo));
+                        _detailRowMap.Add(castInfo, detailRow = new OwnersCastsViewingModeDetailRow(FightViewModel, castInfo));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);
@@ -83,7 +76,7 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
         public override bool TryCopyAndScriptProgressedRowsInfo()
         {
             var body = new StringBuilder();
-            foreach (var ownersCastsRow in DamageMeterViewModel.GetUpdatedOwnersCastsRows()
+            foreach (var ownersCastsRow in FightViewModel.GetUpdatedOwnersCastsRows()
                 .OrderBy(r => r.DisplayIndex))
             {
                 body.AppendLine(ownersCastsRow.RowScriptText);

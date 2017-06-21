@@ -9,20 +9,21 @@ namespace AODamageMeter.UI.ViewModels
     public abstract class RowBase : ViewModelBase
     {
         protected const string EmDash = NumberFormatter.EmDash;
+        protected const string EnDash = NumberFormatter.EnDash;
 
-        protected RowBase(DamageMeterViewModel damageMeterViewModel)
-            => DamageMeterViewModel = damageMeterViewModel;
+        protected RowBase(FightViewModel fightViewModel)
+            => FightViewModel = fightViewModel;
 
-        protected DamageMeterViewModel DamageMeterViewModel { get; }
-
-        // This damage meter isn't necessarily the same damage meter that created the stats for this row. Important
-        // because it's this (most recent) damage meter that controls where the script file should be located.
-        protected DamageMeter CurrentDamageMeter => DamageMeterViewModel.DamageMeter;
+        public FightViewModel FightViewModel { get; }
+        protected DamageMeter DamageMeter => FightViewModel.DamageMeter;
+        protected Fight Fight => FightViewModel.Fight;
+        protected Character Owner => FightViewModel.Owner;
+        protected FightCharacter FightOwner => FightViewModel.FightOwner;
 
         public abstract string Title { get; }
-
         public abstract string UnnumberedLeftText { get; }
-
+        public abstract string LeftTextToolTip { get; }
+        public abstract string RightTextToolTip { get; }
         public virtual bool SupportsRowNumbers => true;
 
         protected string _leftText;
@@ -31,8 +32,6 @@ namespace AODamageMeter.UI.ViewModels
             get => _leftText;
             protected set => Set(ref _leftText, value);
         }
-
-        public abstract string LeftTextToolTip { get; }
 
         protected int _displayIndex;
         public int DisplayIndex
@@ -69,8 +68,6 @@ namespace AODamageMeter.UI.ViewModels
             protected set => Set(ref _rightText, value);
         }
 
-        public abstract string RightTextToolTip { get; }
-
         public virtual void Update(int? displayIndex = null)
         {
             DisplayIndex = displayIndex ?? DisplayIndex;
@@ -94,7 +91,10 @@ namespace AODamageMeter.UI.ViewModels
 
         protected void CopyAndScript(string body)
         {
-            Clipboard.SetText($"{Title}{Environment.NewLine}{Environment.NewLine}{body}");
+            Clipboard.SetText(
+$@"{Title}
+
+{body}");
 
             string scriptTitle = Title;
             string scriptBody = FormatForScript(body);
@@ -107,14 +107,14 @@ namespace AODamageMeter.UI.ViewModels
 
             if (VerifyScriptDirectoryExists())
             {
-                try { File.WriteAllText(CurrentDamageMeter.GetScriptFilePath(), script); }
+                try { File.WriteAllText(DamageMeter.GetScriptFilePath(), script); }
                 catch { }
             }
         }
 
         private bool VerifyScriptDirectoryExists()
         {
-            string scriptFolderPath = CurrentDamageMeter.GetScriptFolderPath();
+            string scriptFolderPath = DamageMeter.GetScriptFolderPath();
             if (!Directory.Exists(scriptFolderPath))
             {
                 try { Directory.CreateDirectory(scriptFolderPath); }

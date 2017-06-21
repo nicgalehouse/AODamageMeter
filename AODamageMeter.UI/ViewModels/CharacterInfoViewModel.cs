@@ -62,7 +62,7 @@ namespace AODamageMeter.UI.ViewModels
                 try
                 {
                     var fileInfo = new FileInfo(_logFilePath);
-                    LogFileSize = $"{(fileInfo.Length / ((double)1024)).ToString("N0")} KB";
+                    LogFileSize = $"{fileInfo.Length / ((double)1024):N0} KB";
                 }
                 catch
                 {

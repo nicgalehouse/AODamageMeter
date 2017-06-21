@@ -6,24 +6,24 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class DamageTakenInfoDetailRow : FightCharacterDetailRowBase
     {
-        public DamageTakenInfoDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter target, FightCharacter source)
-            : base(damageMeterViewModel, source)
+        public DamageTakenInfoDetailRow(FightViewModel fightViewModel, FightCharacter target, FightCharacter source)
+            : base(fightViewModel, source)
         {
             Target = target;
             Source = source;
         }
 
-        public override string Title => $"{Target.UncoloredName}'s Damage Taken from {Source.UncoloredName} (Detail)";
-
         public DamageInfo DamageTakenInfo { get; private set; }
         public FightCharacter Target { get; }
         public FightCharacter Source { get; }
+
+        public override string Title => $"{Target.UncoloredName}'s Damage Taken from {Source.UncoloredName} (Detail)";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}

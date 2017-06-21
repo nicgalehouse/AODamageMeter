@@ -6,37 +6,33 @@ namespace AODamageMeter.UI.ViewModels
 {
     public abstract class ViewingModeMainRowBase : MainRowBase
     {
-        public static IReadOnlyList<ViewingModeMainRowBase> GetRows(DamageMeterViewModel damageMeterViewModel, Fight fight)
+        public static IReadOnlyList<ViewingModeMainRowBase> GetRows(FightViewModel fightViewModel)
             => new ViewingModeMainRowBase[]
             {
-                new DamageDoneViewingModeMainRow(damageMeterViewModel, fight),
-                new DamageTakenViewingModeMainRow(damageMeterViewModel, fight),
-                new OwnersHealingDoneViewingModeMainRow(damageMeterViewModel, fight),
-                new OwnersHealingTakenViewingModeMainRow(damageMeterViewModel, fight),
-                new OwnersCastsViewingModeMainRow(damageMeterViewModel, fight),
-                new OwnersXPViewingModeMainRow(damageMeterViewModel, fight)
+                new DamageDoneViewingModeMainRow(fightViewModel),
+                new DamageTakenViewingModeMainRow(fightViewModel),
+                new OwnersHealingDoneViewingModeMainRow(fightViewModel),
+                new OwnersHealingTakenViewingModeMainRow(fightViewModel),
+                new OwnersCastsViewingModeMainRow(fightViewModel),
+                new OwnersXPViewingModeMainRow(fightViewModel)
             };
 
         protected ViewingModeMainRowBase(ViewingMode viewingMode,
-            string unnumberedLeftText, int displayIndex, string iconPath, Color color, DamageMeterViewModel damageMeterViewModel, Fight fight)
-            : base(damageMeterViewModel)
+            string title, int displayIndex, string iconPath, Color color, FightViewModel fightViewModel)
+            : base(fightViewModel)
         {
             ViewingMode = viewingMode;
-            UnnumberedLeftText = unnumberedLeftText;
+            Title = title;
             DisplayIndex = displayIndex;
             IconPath = iconPath;
             Color = color;
             PercentWidth = 1;
-            Fight = fight;
         }
 
-        public Fight Fight { get; }
         public ViewingMode ViewingMode { get; }
 
-        public sealed override string Title => UnnumberedLeftText;
-
-        public sealed override string UnnumberedLeftText { get; }
-
+        public sealed override string Title { get; }
+        public sealed override string UnnumberedLeftText => Title;
         public sealed override bool SupportsRowNumbers => false;
     }
 }

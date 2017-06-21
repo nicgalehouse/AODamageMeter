@@ -1,29 +1,21 @@
 ﻿using AODamageMeter.UI.Helpers;
 using System.Windows.Media;
-using System;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersXPViewingModeMainRow : ViewingModeMainRowBase
     {
-        public OwnersXPViewingModeMainRow(DamageMeterViewModel damageMeterViewModel, Fight fight)
-            : base(ViewingMode.OwnersXP, $"{fight.DamageMeter.Owner}'s XP", 6, "/Icons/XP.png", Color.FromRgb(67, 98, 110),
-                  damageMeterViewModel, fight)
+        public OwnersXPViewingModeMainRow(FightViewModel fightViewModel)
+            : base(ViewingMode.OwnersXP, $"{fightViewModel.Owner}'s XP", 6, "/Icons/XP.png", Color.FromRgb(67, 98, 110), fightViewModel)
         { }
 
-        public Character Owner => Fight.DamageMeter.Owner;
-
-        private FightCharacter _fightOwner;
-        public FightCharacter FightOwner => _fightOwner;
-
-        public override string LeftTextToolTip
-            => Owner.GetCharacterTooltip();
+        public override string LeftTextToolTip => Owner.GetCharacterTooltip();
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
@@ -43,7 +35,7 @@ $@"{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
 
         public override void Update(int? displayIndex = null)
         {
-            if (FightOwner == null && !Fight.TryGetFightOwner(out _fightOwner))
+            if (FightOwner == null)
             {
                 RightText = $"{EmDash} ({EmDash})";
             }

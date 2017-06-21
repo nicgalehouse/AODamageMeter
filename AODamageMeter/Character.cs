@@ -146,13 +146,6 @@ namespace AODamageMeter
             return (character, characterBioRetriever);
         }
 
-        public static Character[] GetOrCreateCharacters(params string[] names) => GetOrCreateCharactersAndBioRetrievers(names).characters;
-        public static (Character[] characters, Task[] bioRetrievers) GetOrCreateCharactersAndBioRetrievers(params string[] names)
-        {
-            var characterAndBioRetrievers = names.Select(GetOrCreateCharacterAndBioRetriever).ToArray();
-            return (characterAndBioRetrievers.Select(t => t.character).ToArray(), characterAndBioRetrievers.Select(t => t.bioRetriever).ToArray());
-        }
-
         // We conclude a name belongs to a player if it fits the player naming requirements and is not ambiguous. A name is ambiguous if it's
         // in the set above--if it can belong to a player, and definitely does belong to an NPC. For ambiguous names, we assume it's the NPC.
         // We don't require success from people.anarchy-online.com because I want to support new players who aren't indexed yet. Hurts a bit

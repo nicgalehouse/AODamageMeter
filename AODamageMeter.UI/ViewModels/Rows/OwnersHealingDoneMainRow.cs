@@ -7,25 +7,24 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersHealingDoneMainRow : FightCharacterMainRowBase
     {
-        public OwnersHealingDoneMainRow(DamageMeterViewModel damageMeterViewModel, HealingInfo healingDoneInfo)
-            : base(damageMeterViewModel, healingDoneInfo.Target)
+        public OwnersHealingDoneMainRow(FightViewModel fightViewModel, HealingInfo healingDoneInfo)
+            : base(fightViewModel, healingDoneInfo.Target)
             => HealingDoneInfo = healingDoneInfo;
 
-        public override string Title => $"{Source.UncoloredName}'s Healing Done to {Target.UncoloredName}";
-
         public HealingInfo HealingDoneInfo { get; }
-        public FightCharacter Source => HealingDoneInfo.Source;
         public FightCharacter Target => HealingDoneInfo.Target;
-        public bool IsOwnerTheTarget => Target.IsDamageMeterOwner;
+        public bool IsOwnerTheTarget => Target.IsOwner;
+
+        public override string Title => $"{Owner.UncoloredName}'s Healing Done to {Target.UncoloredName}";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
+$@"{DisplayIndex}. {Owner.UncoloredName} -> {Target.UncoloredName}
 
 {(IsOwnerTheTarget ? "≥ " : "")}{HealingDoneInfo.PotentialHealingPlusPets.Format()} potential healing
 {(IsOwnerTheTarget ? "" : "≥ ")}{HealingDoneInfo.RealizedHealingPlusPets.Format()} realized healing
@@ -39,7 +38,7 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
 
         public override void Update(int? displayIndex = null)
         {
-            if (!Source.IsFightPetOwner)
+            if (!FightOwner.IsFightPetOwner)
             {
                 PercentWidth = HealingDoneInfo.PercentOfSourcesMaxPotentialHealingDone ?? 0;
                 double? percentDone = Settings.Default.ShowPercentOfTotal
@@ -54,13 +53,13 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
                 RightText = $"{HealingDoneInfo.PotentialHealingPlusPets.Format()} ({percentDone.FormatPercent()})";
 
                 int detailRowDisplayIndex = 1;
-                foreach (var fightCharacter in new[] { Source }.Concat(Source.FightPets)
+                foreach (var fightCharacter in new[] { FightOwner }.Concat(FightOwner.FightPets)
                     .OrderByDescending(c => c.HealingDoneInfosByTarget.GetValueOrFallback(Target)?.PotentialHealing ?? 0)
                     .ThenBy(c => c.UncoloredName))
                 {
                     if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(fightCharacter, detailRow = new OwnersHealingDoneDetailRow(DamageMeterViewModel, fightCharacter, Target));
+                        _detailRowMap.Add(fightCharacter, detailRow = new OwnersHealingDoneDetailRow(FightViewModel, fightCharacter, Target));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);

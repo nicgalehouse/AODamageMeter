@@ -104,6 +104,7 @@
     <Compile Include="ViewModels\DetailRowBase.cs" />
     <Compile Include="ViewModels\FightCharacterDetailRowBase.cs" />
     <Compile Include="ViewModels\FightCharacterMainRowBase.cs" />
+    <Compile Include="ViewModels\FightViewModel.cs" />
     <Compile Include="ViewModels\MainRowBase.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneDetailRow.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneInfoDetailRow.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="ViewModels\Rows\DamageTakenMainRow.cs" />
     <Compile Include="ViewModels\Rows\DamageTakenViewingModeDetailRow.cs" />
     <Compile Include="ViewModels\Rows\DamageTakenViewingModeMainRow.cs" />
+    <Compile Include="ViewModels\Rows\FightMainRow.cs" />
     <Compile Include="ViewModels\Rows\OwnersCastsMainRow.cs" />
     <Compile Include="ViewModels\Rows\OwnersCastsViewingModeDetailRow.cs" />
     <Compile Include="ViewModels\Rows\OwnersCastsViewingModeMainRow.cs" />

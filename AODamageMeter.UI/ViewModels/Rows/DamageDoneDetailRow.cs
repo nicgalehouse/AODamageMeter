@@ -5,8 +5,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class DamageDoneDetailRow : FightCharacterDetailRowBase
     {
-        public DamageDoneDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter fightCharacter)
-            : base(damageMeterViewModel, fightCharacter)
+        public DamageDoneDetailRow(FightViewModel fightViewModel, FightCharacter fightCharacter)
+            : base(fightViewModel, fightCharacter)
         { }
 
         public override string Title => $"{FightCharacterName}'s Damage Done (Detail)";
@@ -15,12 +15,12 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
-{FightCharacter.TotalDamageDone.ToString("N0")} total dmg
+{FightCharacter.TotalDamageDone:N0} total dmg
 
 {FightCharacter.WeaponDamageDonePM.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDone.FormatPercent()}) weapon dmg / min
 {FightCharacter.NanoDamageDonePM.Format()} ({FightCharacter.NanoPercentOfTotalDamageDone.FormatPercent()}) nano dmg / min

@@ -42,7 +42,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             if (_damageMeterViewModel.DamageMeter != null)
             {
-                lock (_damageMeterViewModel.DamageMeter)
+                lock (_damageMeterViewModel.CurrentFight)
                 {
                     TryClearFile();
                 }

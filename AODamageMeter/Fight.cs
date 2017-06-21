@@ -42,7 +42,9 @@ namespace AODamageMeter
 
         public DateTime? StartTime { get; protected set; }
         public DateTime? LatestEventTime { get; protected set; }
+        public DateTime? EndTime { get; set; }
         public bool HasStarted => StartTime.HasValue;
+        public bool HasEnded => EndTime.HasValue;
 
         protected Stopwatch _stopwatch;
         public TimeSpan? Duration => DamageMeter.IsRealTimeMode ? _stopwatch?.Elapsed : LatestEventTime - StartTime;

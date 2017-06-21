@@ -7,8 +7,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class DamageDoneViewingModeDetailRow : FightCharacterDetailRowBase
     {
-        public DamageDoneViewingModeDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter fightCharacter)
-            : base(damageMeterViewModel, fightCharacter, showIcon: true)
+        public DamageDoneViewingModeDetailRow(FightViewModel fightViewModel, FightCharacter fightCharacter)
+            : base(fightViewModel, fightCharacter, showIcon: true)
         { }
 
         public override string Title => $"{FightCharacterName}'s Damage Done";
@@ -17,12 +17,12 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{DisplayIndex}. {FightCharacterName}
 
-{FightCharacter.TotalDamageDonePlusPets.ToString("N0")} total dmg
+{FightCharacter.TotalDamageDonePlusPets:N0} total dmg
 
 {FightCharacter.WeaponDamageDonePMPlusPets.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDonePlusPets.FormatPercent()}) weapon dmg / min
 {FightCharacter.NanoDamageDonePMPlusPets.Format()} ({FightCharacter.NanoPercentOfTotalDamageDonePlusPets.FormatPercent()}) nano dmg / min
@@ -92,7 +92,7 @@ $@"{DisplayIndex}. {FightCharacterName}
         public override bool TryCopyAndScriptProgressedRowsInfo()
         {
             var body = new StringBuilder();
-            foreach (var damageDoneInfoRow in DamageMeterViewModel.GetUpdatedDamageDoneInfoRows(FightCharacter)
+            foreach (var damageDoneInfoRow in FightViewModel.GetUpdatedDamageDoneInfoRows(FightCharacter)
                 .OrderBy(r => r.DisplayIndex))
             {
                 body.AppendLine(damageDoneInfoRow.RowScriptText);

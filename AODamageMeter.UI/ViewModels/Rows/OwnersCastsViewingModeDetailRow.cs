@@ -6,36 +6,31 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersCastsViewingModeDetailRow : DetailRowBase
     {
-        public OwnersCastsViewingModeDetailRow(DamageMeterViewModel damageMeterViewModel, CastInfo castInfo)
-            : base(damageMeterViewModel, showIcon: true)
+        public OwnersCastsViewingModeDetailRow(FightViewModel fightViewModel, CastInfo castInfo)
+            : base(fightViewModel, showIcon: true)
         {
             CastInfo = castInfo;
             IconPath = "/Icons/Cast.png";
             Color = Color.FromRgb(54, 111, 238);
         }
 
-        public override string Title => $"{Source.UncoloredName}'s Casts of {CastInfo.NanoProgram}";
-
         public CastInfo CastInfo { get; }
-        public FightCharacter Source => CastInfo.Source;
 
-        public override string UnnumberedLeftText
-            => CastInfo.NanoProgram;
-
-        public override string LeftTextToolTip
-            => $"{DisplayIndex}. {CastInfo.NanoProgram}";
+        public override string Title => $"{Owner.UncoloredName}'s Casts of {CastInfo.NanoProgram}";
+        public override string UnnumberedLeftText => CastInfo.NanoProgram;
+        public override string LeftTextToolTip => $"{DisplayIndex}. {CastInfo.NanoProgram}";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
-$@"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessChance.FormatPercent()}) succeeded
-{CastInfo.CastCountereds.ToString("N0")} ({CastInfo.CastCounteredChance.FormatPercent()}) countered
-{CastInfo.CastAborteds.ToString("N0")} ({CastInfo.CastAbortedChance.FormatPercent()}) aborted
-{CastInfo.CastAttempts.ToString("N0")} attempted
+$@"{CastInfo.CastSuccesses:N0} ({CastInfo.CastSuccessChance.FormatPercent()}) succeeded
+{CastInfo.CastCountereds:N0} ({CastInfo.CastCounteredChance.FormatPercent()}) countered
+{CastInfo.CastAborteds:N0} ({CastInfo.CastAbortedChance.FormatPercent()}) aborted
+{CastInfo.CastAttempts:N0} attempted
 
 {CastInfo.CastSuccessesPM.Format()} succeeded / min
 {CastInfo.CastCounteredsPM.Format()} countered / min
@@ -50,7 +45,7 @@ $@"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessChance.FormatPe
             PercentWidth = CastInfo.PercentOfSourcesMaxCastSuccesses ?? 0;
             double? percentDone = Settings.Default.ShowPercentOfTotal
                 ? CastInfo.PercentOfSourcesCastSuccesses : CastInfo.PercentOfSourcesMaxCastSuccesses;
-            RightText = $"{CastInfo.CastSuccesses.ToString("N0")} ({CastInfo.CastSuccessesPM.Format()}, {CastInfo.CastSuccessChance.FormatPercent()}, {percentDone.FormatPercent()})";
+            RightText = $"{CastInfo.CastSuccesses:N0} ({CastInfo.CastSuccessesPM.Format()}, {CastInfo.CastSuccessChance.FormatPercent()}, {percentDone.FormatPercent()})";
 
             base.Update(displayIndex);
         }

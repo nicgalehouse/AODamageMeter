@@ -5,6 +5,9 @@ namespace AODamageMeter.UI.Helpers
 {
     public static class DamageMeterExtensions
     {
+        public static string GetCharacterTooltip(this FightCharacter fightCharacter, int? displayIndex = null)
+            => fightCharacter.Character.GetCharacterTooltip(displayIndex);
+
         public static string GetCharacterTooltip(this Character character, int? displayIndex = null)
             => $"{(displayIndex.HasValue ? $"{displayIndex}. " : "")}{character.UncoloredName}"
 + (!character.HasPlayerInfo ? null : $@"

@@ -34,7 +34,7 @@ namespace AODamageMeter
         public DamageMeter DamageMeter => Fight.DamageMeter;
         public Fight Fight { get; }
         public Character Character { get; }
-        public bool IsDamageMeterOwner => Character == DamageMeter.Owner;
+        public bool IsOwner => Character == DamageMeter.Owner;
         public string Name => Character.Name;
         public string UncoloredName => Character.UncoloredName;
         public CharacterType CharacterType => Character.CharacterType;
@@ -287,8 +287,8 @@ namespace AODamageMeter
         public double? GetSecondsPerDamageTypeHitTaken(DamageType damageType) => ActiveDuration.TotalSeconds / GetDamageTypeHitsTaken(damageType);
 
         // We only know about misses where the owner is a source or target.
-        public bool HasIncompleteMissStats => !IsDamageMeterOwner;
-        public bool HasIncompleteMissStatsPlusPets => !IsDamageMeterOwner || FightPets.Any();
+        public bool HasIncompleteMissStats => !IsOwner;
+        public bool HasIncompleteMissStatsPlusPets => !IsOwner || FightPets.Any();
 
         //                    1                    2                3
         // Potential healing: owner --> non-owner, owner -/> owner, non-owner --> owner

@@ -5,25 +5,24 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersHealingDoneViewingModeDetailRow : FightCharacterDetailRowBase
     {
-        public OwnersHealingDoneViewingModeDetailRow(DamageMeterViewModel damageMeterViewModel, HealingInfo healingDoneInfo)
-            : base(damageMeterViewModel, healingDoneInfo.Target, showIcon: true)
+        public OwnersHealingDoneViewingModeDetailRow(FightViewModel fightViewModel, HealingInfo healingDoneInfo)
+            : base(fightViewModel, healingDoneInfo.Target, showIcon: true)
             => HealingDoneInfo = healingDoneInfo;
 
-        public override string Title => $"{Source.UncoloredName}'s Healing Done to {Target.UncoloredName}";
-
         public HealingInfo HealingDoneInfo { get; }
-        public FightCharacter Source => HealingDoneInfo.Source;
         public FightCharacter Target => HealingDoneInfo.Target;
-        public bool IsOwnerTheTarget => Target.IsDamageMeterOwner;
+        public bool IsOwnerTheTarget => Target.IsOwner;
+
+        public override string Title => $"{Owner.UncoloredName}'s Healing Done to {Target.UncoloredName}";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
+$@"{DisplayIndex}. {Owner.UncoloredName} -> {Target.UncoloredName}
 
 {(IsOwnerTheTarget ? "≥ " : "")}{HealingDoneInfo.PotentialHealingPlusPets.Format()} potential healing
 {(IsOwnerTheTarget ? "" : "≥ ")}{HealingDoneInfo.RealizedHealingPlusPets.Format()} realized healing
@@ -37,7 +36,7 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
 
         public override void Update(int? displayIndex = null)
         {
-            if (!Source.IsFightPetOwner)
+            if (!FightOwner.IsFightPetOwner)
             {
                 PercentWidth = HealingDoneInfo.PercentOfSourcesMaxPotentialHealingDone ?? 0;
                 double? percentDone = Settings.Default.ShowPercentOfTotal

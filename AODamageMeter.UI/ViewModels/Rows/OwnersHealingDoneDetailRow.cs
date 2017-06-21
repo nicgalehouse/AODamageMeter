@@ -6,28 +6,28 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersHealingDoneDetailRow : FightCharacterDetailRowBase
     {
-        public OwnersHealingDoneDetailRow(DamageMeterViewModel damageMeterViewModel, FightCharacter source, FightCharacter target)
-            : base(damageMeterViewModel, source)
+        public OwnersHealingDoneDetailRow(FightViewModel fightViewModel, FightCharacter source, FightCharacter target)
+            : base(fightViewModel, source)
         {
             Source = source;
             Target = target;
         }
 
-        public override string Title => $"{Source.UncoloredName}'s Healing Done to {Target.UncoloredName} (Detail)";
-
         public HealingInfo HealingDoneInfo { get; private set; }
         public FightCharacter Source { get; }
         public FightCharacter Target { get; }
-        public bool IsOwnerTheTarget => Target.IsDamageMeterOwner;
-        public bool IsOwnerTheTargetAndSource => Target.IsDamageMeterOwner && Source.IsDamageMeterOwner;
-        public bool IsOwnerNotTheTargetOrTheSource => !Target.IsDamageMeterOwner && !Source.IsDamageMeterOwner;
-        public bool IsOwnerTheTargetAndNotTheSource => Target.IsDamageMeterOwner && !Source.IsDamageMeterOwner;
+        public bool IsOwnerTheTarget => Target.IsOwner;
+        public bool IsOwnerTheTargetAndSource => Target.IsOwner && Source.IsOwner;
+        public bool IsOwnerNotTheTargetOrTheSource => !Target.IsOwner && !Source.IsOwner;
+        public bool IsOwnerTheTargetAndNotTheSource => Target.IsOwner && !Source.IsOwner;
+
+        public override string Title => $"{Source.UncoloredName}'s Healing Done to {Target.UncoloredName} (Detail)";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
 $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}

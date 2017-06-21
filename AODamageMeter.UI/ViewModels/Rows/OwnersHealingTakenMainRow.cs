@@ -7,25 +7,24 @@ namespace AODamageMeter.UI.ViewModels.Rows
 {
     public sealed class OwnersHealingTakenMainRow : FightCharacterMainRowBase
     {
-        public OwnersHealingTakenMainRow(DamageMeterViewModel damageMeterViewModel, HealingInfo healingTakenInfo)
-            : base(damageMeterViewModel, healingTakenInfo.Source)
+        public OwnersHealingTakenMainRow(FightViewModel fightViewModel, HealingInfo healingTakenInfo)
+            : base(fightViewModel, healingTakenInfo.Source)
             => HealingTakenInfo = healingTakenInfo;
 
-        public override string Title => $"{Target.UncoloredName}'s Healing Taken from {Source.UncoloredName}";
-
         public HealingInfo HealingTakenInfo { get; }
-        public FightCharacter Target => HealingTakenInfo.Target;
         public FightCharacter Source => HealingTakenInfo.Source;
-        public bool IsOwnerTheSource => Source.IsDamageMeterOwner;
+        public bool IsOwnerTheSource => Source.IsOwner;
+
+        public override string Title => $"{Owner.UncoloredName}'s Healing Taken from {Source.UncoloredName}";
 
         public override string RightTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
+$@"{DisplayIndex}. {Owner.UncoloredName} <- {Source.UncoloredName}
 
 {(IsOwnerTheSource ? "≥ " : "")}{HealingTakenInfo.PotentialHealingPlusPets.Format()} potential healing
 {HealingTakenInfo.RealizedHealingPlusPets.Format()} realized healing
@@ -55,12 +54,12 @@ $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
 
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { Source }.Concat(Source.FightPets)
-                    .OrderByDescending(c => c.HealingDoneInfosByTarget.GetValueOrFallback(Target)?.PotentialHealing ?? 0)
+                    .OrderByDescending(c => c.HealingDoneInfosByTarget.GetValueOrFallback(FightOwner)?.PotentialHealing ?? 0)
                     .ThenBy(c => c.UncoloredName))
                 {
                     if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                     {
-                        _detailRowMap.Add(fightCharacter, detailRow = new OwnersHealingTakenDetailRow(DamageMeterViewModel, Target, fightCharacter));
+                        _detailRowMap.Add(fightCharacter, detailRow = new OwnersHealingTakenDetailRow(FightViewModel, fightCharacter));
                         DetailRows.Add(detailRow);
                     }
                     detailRow.Update(detailRowDisplayIndex++);

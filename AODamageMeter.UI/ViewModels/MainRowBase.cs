@@ -5,11 +5,9 @@ namespace AODamageMeter.UI.ViewModels
 {
     public abstract class MainRowBase : RowBase
     {
-        protected MainRowBase(DamageMeterViewModel damageMeterViewModel)
-            : base(damageMeterViewModel)
+        protected MainRowBase(FightViewModel fightViewModel)
+            : base(fightViewModel)
         { }
-
-        public bool CanShowDetails => DetailRows.Any();
 
         private bool _showDetails;
         public bool ShowDetails
@@ -19,7 +17,7 @@ namespace AODamageMeter.UI.ViewModels
         }
 
         public void TryToggleShowDetails()
-            => ShowDetails = CanShowDetails ? !ShowDetails : false;
+            => ShowDetails = DetailRows.Any() ? !ShowDetails : false;
 
         public ObservableCollection<DetailRowBase> DetailRows { get; } = new ObservableCollection<DetailRowBase>();
     }

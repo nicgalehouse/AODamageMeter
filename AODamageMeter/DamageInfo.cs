@@ -124,8 +124,8 @@ namespace AODamageMeter
         public long? GetDamageTypeDamage(DamageType damageType) => DamageTypeDamages.TryGetValue(damageType, out long damageTypeDamage) ? damageTypeDamage : (long?)null;
         public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);
 
-        public bool HasIncompleteMissStats => !Source.IsDamageMeterOwner && !Target.IsDamageMeterOwner;
-        public bool HasIncompleteMissStatsPlusPets => (!Source.IsDamageMeterOwner || Source.FightPets.Any()) && !Target.IsDamageMeterOwner;
+        public bool HasIncompleteMissStats => !Source.IsOwner && !Target.IsOwner;
+        public bool HasIncompleteMissStatsPlusPets => (!Source.IsOwner || Source.FightPets.Any()) && !Target.IsOwner;
 
         public void AddAttackEvent(AttackEvent attackEvent)
         {

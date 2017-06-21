@@ -11,16 +11,15 @@ namespace AODamageMeter.UI.ViewModels.Rows
     {
         private readonly Dictionary<FightCharacter, DetailRowBase> _detailRowMap = new Dictionary<FightCharacter, DetailRowBase>();
 
-        public DamageTakenViewingModeMainRow(DamageMeterViewModel damageMeterViewModel, Fight fight)
-            : base(ViewingMode.DamageTaken, "Damage Taken", 2, "/Icons/DamageTaken.png", Color.FromRgb(88, 166, 86),
-                  damageMeterViewModel, fight)
+        public DamageTakenViewingModeMainRow(FightViewModel fightViewModel)
+            : base(ViewingMode.DamageTaken, "Damage Taken", 2, "/Icons/DamageTaken.png", Color.FromRgb(88, 166, 86), fightViewModel)
         { }
 
         public override string LeftTextToolTip
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     var counts = Fight.GetFightCharacterCounts(
                         includeNPCs: Settings.Default.ShowTopLevelNPCRows,
@@ -35,7 +34,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         {
             get
             {
-                lock (CurrentDamageMeter)
+                lock (Fight)
                 {
                     var stats = Fight.GetDamageTakenStats(
                         includeNPCs: Settings.Default.ShowTopLevelNPCRows,
@@ -44,7 +43,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")}
 
-{stats.TotalDamage.ToString("N0")} total dmg
+{stats.TotalDamage:N0} total dmg
 
 {stats.WeaponDamagePM.Format()} ({stats.WeaponPercentOfTotalDamage.FormatPercent()}) weapon dmg / min
 {stats.NanoDamagePM.Format()} ({stats.NanoPercentOfTotalDamage.FormatPercent()}) nano dmg / min
@@ -100,7 +99,7 @@ $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "
             {
                 if (!_detailRowMap.TryGetValue(fightCharacter, out DetailRowBase detailRow))
                 {
-                    _detailRowMap.Add(fightCharacter, detailRow = new DamageTakenViewingModeDetailRow(DamageMeterViewModel, fightCharacter));
+                    _detailRowMap.Add(fightCharacter, detailRow = new DamageTakenViewingModeDetailRow(FightViewModel, fightCharacter));
                     DetailRows.Add(detailRow);
                 }
                 detailRow.Update(detailRowDisplayIndex++);
@@ -112,7 +111,7 @@ $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "
         public override bool TryCopyAndScriptProgressedRowsInfo()
         {
             var body = new StringBuilder();
-            foreach (var damageTakenRow in DamageMeterViewModel.GetUpdatedDamageTakenRows()
+            foreach (var damageTakenRow in FightViewModel.GetUpdatedDamageTakenRows()
                 .OrderBy(r => r.DisplayIndex))
             {
                 body.AppendLine(damageTakenRow.RowScriptText);
