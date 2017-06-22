@@ -1,6 +1,5 @@
 ﻿using AODamageMeter.Helpers;
 using AODamageMeter.UI.Helpers;
-using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
@@ -49,11 +48,9 @@ $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
         public override void Update(int? displayIndex = null)
         {
             DamageTakenInfo = DamageTakenInfo ?? Target.DamageTakenInfosBySource.GetValueOrFallback(Source);
-
-            PercentWidth = DamageTakenInfo?.PercentOfTargetsMaxDamagePlusPetsTaken ?? 0;
-            double? percentTaken = Settings.Default.ShowPercentOfTotal
-                ? DamageTakenInfo?.PercentOfTargetsTotalDamageTaken : DamageTakenInfo?.PercentOfTargetsMaxDamagePlusPetsTaken;
-            RightText = $"{DamageTakenInfo?.TotalDamage.Format() ?? EmDash} ({DamageTakenInfo?.PercentOfOwnersOrOwnTotalDamagePlusPets.FormatPercent() ?? EmDash}, {percentTaken.FormatPercent()})";
+            PercentOfTotal = DamageTakenInfo?.PercentOfTargetsTotalDamageTaken;
+            PercentOfMax = DamageTakenInfo?.PercentOfTargetsMaxDamagePlusPetsTaken;
+            RightText = $"{DamageTakenInfo?.TotalDamage.Format() ?? EmDash} ({DamageTakenInfo?.PercentOfOwnersOrOwnTotalDamagePlusPets.FormatPercent() ?? EmDash}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

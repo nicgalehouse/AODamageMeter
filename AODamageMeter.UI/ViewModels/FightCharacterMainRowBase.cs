@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using System.Collections.Generic;
 
 namespace AODamageMeter.UI.ViewModels
@@ -17,8 +18,14 @@ namespace AODamageMeter.UI.ViewModels
         public sealed override string UnnumberedLeftText => FightCharacterName;
         public sealed override string LeftTextToolTip => FightCharacter.GetCharacterTooltip(DisplayIndex);
 
+        public double? PercentOfTotal { get; protected set; }
+        public double? PercentOfMax { get; protected set; }
+        public double? DisplayedPercent => Settings.Default.ShowPercentOfTotal ? PercentOfTotal : PercentOfMax;
+
         public override void Update(int? displayIndex = null)
         {
+            PercentWidth = PercentOfMax ?? 0;
+
             IconPath = FightCharacter.Profession.GetIconPath();
             Color = FightCharacter.Profession.GetColor();
 

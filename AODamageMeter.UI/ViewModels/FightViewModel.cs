@@ -78,8 +78,8 @@ namespace AODamageMeter.UI.ViewModels
                     .OrderByDescending(c => c.TotalDamageDonePlusPets)
                     .ThenBy(c => c.UncoloredName))
                 {
-                    if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
-                        || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageDonePlusPets == 0)
+                    if (!Settings.Default.IncludeTopLevelNPCRows && fightCharacter.IsNPC
+                        || !Settings.Default.IncludeTopLevelZeroDamageRows && fightCharacter.TotalDamageDonePlusPets == 0)
                     {
                         if (_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
                         {
@@ -153,8 +153,8 @@ namespace AODamageMeter.UI.ViewModels
                     .OrderByDescending(c => c.TotalDamageTaken)
                     .ThenBy(c => c.UncoloredName))
                 {
-                    if (!Settings.Default.ShowTopLevelNPCRows && fightCharacter.IsNPC
-                        || !Settings.Default.ShowTopLevelZeroDamageRows && fightCharacter.TotalDamageTaken == 0)
+                    if (!Settings.Default.IncludeTopLevelNPCRows && fightCharacter.IsNPC
+                        || !Settings.Default.IncludeTopLevelZeroDamageRows && fightCharacter.TotalDamageTaken == 0)
                     {
                         if (_damageTakenRowMap.TryGetValue(fightCharacter, out MainRowBase damageTakenRow))
                         {

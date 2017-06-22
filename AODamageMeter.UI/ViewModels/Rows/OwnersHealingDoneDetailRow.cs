@@ -1,6 +1,5 @@
 ﻿using AODamageMeter.Helpers;
 using AODamageMeter.UI.Helpers;
-using AODamageMeter.UI.Properties;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
@@ -45,11 +44,9 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
         public override void Update(int? displayIndex = null)
         {
             HealingDoneInfo = HealingDoneInfo ?? Source.HealingDoneInfosByTarget.GetValueOrFallback(Target);
-
-            PercentWidth = HealingDoneInfo?.PercentOfOwnersOrOwnMaxPotentialHealingDonePlusPets ?? 0;
-            double? percentDone = Settings.Default.ShowPercentOfTotal
-                ? HealingDoneInfo?.PercentOfOwnersOrOwnPotentialHealingDoneDonePlusPets : HealingDoneInfo?.PercentOfOwnersOrOwnMaxPotentialHealingDonePlusPets;
-            RightText = $"{HealingDoneInfo?.PotentialHealing.Format() ?? EmDash} ({HealingDoneInfo?.PercentOfOwnersOrOwnPotentialHealingPlusPets.FormatPercent() ?? EmDash}, {percentDone.FormatPercent()})";
+            PercentOfTotal = HealingDoneInfo?.PercentOfOwnersOrOwnPotentialHealingDoneDonePlusPets;
+            PercentOfMax = HealingDoneInfo?.PercentOfOwnersOrOwnMaxPotentialHealingDonePlusPets;
+            RightText = $"{HealingDoneInfo?.PotentialHealing.Format() ?? EmDash} ({HealingDoneInfo?.PercentOfOwnersOrOwnPotentialHealingPlusPets.FormatPercent() ?? EmDash}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

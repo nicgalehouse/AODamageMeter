@@ -328,24 +328,24 @@ namespace AODamageMeter.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowTopLevelZeroDamageRows {
+        public bool IncludeTopLevelZeroDamageRows {
             get {
-                return ((bool)(this["ShowTopLevelZeroDamageRows"]));
+                return ((bool)(this["IncludeTopLevelZeroDamageRows"]));
             }
             set {
-                this["ShowTopLevelZeroDamageRows"] = value;
+                this["IncludeTopLevelZeroDamageRows"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool ShowTopLevelNPCRows {
+        public bool IncludeTopLevelNPCRows {
             get {
-                return ((bool)(this["ShowTopLevelNPCRows"]));
+                return ((bool)(this["IncludeTopLevelNPCRows"]));
             }
             set {
-                this["ShowTopLevelNPCRows"] = value;
+                this["IncludeTopLevelNPCRows"] = value;
             }
         }
         

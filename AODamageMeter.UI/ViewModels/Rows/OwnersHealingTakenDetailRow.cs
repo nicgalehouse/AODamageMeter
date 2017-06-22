@@ -38,11 +38,9 @@ $@"{DisplayIndex}. {Owner.UncoloredName} <- {Source.UncoloredName}
         public override void Update(int? displayIndex = null)
         {
             HealingTakenInfo = HealingTakenInfo ?? FightOwner.HealingTakenInfosBySource.GetValueOrFallback(Source);
-
-            PercentWidth = HealingTakenInfo?.PercentOfTargetsMaxPotentialHealingPlusPetsTaken ?? 0;
-            double? percentDone = Settings.Default.ShowPercentOfTotal
-                ? HealingTakenInfo?.PercentOfTargetsPotentialHealingTaken : HealingTakenInfo?.PercentOfTargetsMaxPotentialHealingPlusPetsTaken;
-            RightText = $"{HealingTakenInfo?.PotentialHealing.Format() ?? EmDash} ({HealingTakenInfo?.PercentOfOwnersOrOwnPotentialHealingPlusPets.FormatPercent() ?? EmDash}, {percentDone.FormatPercent()})";
+            PercentOfTotal = HealingTakenInfo?.PercentOfTargetsPotentialHealingTaken;
+            PercentOfMax = HealingTakenInfo?.PercentOfTargetsMaxPotentialHealingPlusPetsTaken;
+            RightText = $"{HealingTakenInfo?.PotentialHealing.Format() ?? EmDash} ({HealingTakenInfo?.PercentOfOwnersOrOwnPotentialHealingPlusPets.FormatPercent() ?? EmDash}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

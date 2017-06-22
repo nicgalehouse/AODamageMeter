@@ -97,6 +97,7 @@
     </Compile>
     <Compile Include="Converters\ViewNameConverter.cs" />
     <Compile Include="Helpers\DamageMeterExtensions.cs" />
+    <Compile Include="Helpers\SharedTooltips.cs" />
     <Compile Include="RowViewModelDataGrid.cs" />
     <Compile Include="ViewingMode.cs" />
     <Compile Include="ViewModels\CharacterInfoViewModel.cs" />

@@ -53,19 +53,13 @@ $@"{DisplayIndex}. {FightCharacterName}
 
         public override void Update(int? displayIndex = null)
         {
-            bool showNPCs = Settings.Default.ShowTopLevelNPCRows;
-
-            PercentWidth = (showNPCs
+            PercentOfTotal = Settings.Default.IncludeTopLevelNPCRows
+                ? FightCharacter.PercentOfFightsTotalDamageDone
+                : FightCharacter.PercentOfFightsTotalPlayerDamageDonePlusPets;
+            PercentOfMax = Settings.Default.IncludeTopLevelNPCRows
                 ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
-                : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets) ?? 0;
-            double? percentDone = Settings.Default.ShowPercentOfTotal
-                ? (showNPCs
-                    ? FightCharacter.PercentOfFightsTotalDamageDone
-                    : FightCharacter.PercentOfFightsTotalPlayerDamageDonePlusPets)
-                : (showNPCs
-                    ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
-                    : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets);
-            RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets.FormatPercent()}, {percentDone.FormatPercent()})";
+                : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets;
+            RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets.FormatPercent()}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

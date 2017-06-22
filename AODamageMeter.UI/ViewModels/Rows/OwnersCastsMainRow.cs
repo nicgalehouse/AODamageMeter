@@ -20,32 +20,27 @@ namespace AODamageMeter.UI.ViewModels.Rows
         public override string UnnumberedLeftText => CastInfo.NanoProgram;
         public override string LeftTextToolTip => $"{DisplayIndex}. {CastInfo.NanoProgram}";
 
+        public double? PercentOfTotal { get; private set; }
+        public double? PercentOfMax { get; private set; }
+        public double? DisplayedPercent => Settings.Default.ShowPercentOfTotal ? PercentOfTotal : PercentOfMax;
+
         public override string RightTextToolTip
         {
             get
             {
                 lock (Fight)
                 {
-                    return
-$@"{CastInfo.CastSuccesses:N0} ({CastInfo.CastSuccessChance.FormatPercent()}) succeeded
-{CastInfo.CastCountereds:N0} ({CastInfo.CastCounteredChance.FormatPercent()}) countered
-{CastInfo.CastAborteds:N0} ({CastInfo.CastAbortedChance.FormatPercent()}) aborted
-{CastInfo.CastAttempts:N0} attempted
-
-{CastInfo.CastSuccessesPM.Format()} succeeded / min
-{CastInfo.CastCounteredsPM.Format()} countered / min
-{CastInfo.CastAbortedsPM.Format()} aborted / min
-{CastInfo.CastAttemptsPM.Format()} attempted / min";
+                    return CastInfo.GetOwnersCastsTooltip();
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
-            PercentWidth = CastInfo.PercentOfSourcesMaxCastSuccesses ?? 0;
-            double? percentDone = Settings.Default.ShowPercentOfTotal
-                ? CastInfo.PercentOfSourcesCastSuccesses : CastInfo.PercentOfSourcesMaxCastSuccesses;
-            RightText = $"{CastInfo.CastSuccesses:N0} ({CastInfo.CastSuccessesPM.Format()}, {CastInfo.CastSuccessChance.FormatPercent()}, {percentDone.FormatPercent()})";
+            PercentOfTotal = CastInfo.PercentOfSourcesCastSuccesses;
+            PercentOfMax = CastInfo.PercentOfSourcesMaxCastSuccesses;
+            PercentWidth = PercentOfMax ?? 0;
+            RightText = $"{CastInfo.CastSuccesses:N0} ({CastInfo.CastSuccessesPM.Format()}, {CastInfo.CastSuccessChance.FormatPercent()}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

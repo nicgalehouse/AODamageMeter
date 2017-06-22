@@ -290,7 +290,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             if (DamageMeter == null) return;
 
-            StartNewFight(saveCurrentFight: true);
+            StartNewFight(saveCurrentFight: CurrentFight?.HasStarted ?? false);
         }
 
         public ICommand ResetFightCommand { get; }

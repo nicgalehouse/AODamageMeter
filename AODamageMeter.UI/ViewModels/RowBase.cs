@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using System;
 using System.IO;
 using System.Windows;
@@ -15,10 +16,10 @@ namespace AODamageMeter.UI.ViewModels
             => FightViewModel = fightViewModel;
 
         public FightViewModel FightViewModel { get; }
-        protected DamageMeter DamageMeter => FightViewModel.DamageMeter;
-        protected Fight Fight => FightViewModel.Fight;
-        protected Character Owner => FightViewModel.Owner;
-        protected FightCharacter FightOwner => FightViewModel.FightOwner;
+        public DamageMeter DamageMeter => FightViewModel.DamageMeter;
+        public Fight Fight => FightViewModel.Fight;
+        public Character Owner => FightViewModel.Owner;
+        public FightCharacter FightOwner => FightViewModel.FightOwner;
 
         public abstract string Title { get; }
         public abstract string UnnumberedLeftText { get; }
@@ -71,8 +72,9 @@ namespace AODamageMeter.UI.ViewModels
         public virtual void Update(int? displayIndex = null)
         {
             DisplayIndex = displayIndex ?? DisplayIndex;
-            LeftText = Properties.Settings.Default.ShowRowNumbers && SupportsRowNumbers
-                ? $"{DisplayIndex}. {UnnumberedLeftText}" : UnnumberedLeftText;
+            LeftText = Settings.Default.ShowRowNumbers && SupportsRowNumbers
+                ? $"{DisplayIndex}. {UnnumberedLeftText}"
+                : UnnumberedLeftText;
             RaisePropertyChanged(nameof(LeftTextToolTip));
             RaisePropertyChanged(nameof(RightTextToolTip));
         }

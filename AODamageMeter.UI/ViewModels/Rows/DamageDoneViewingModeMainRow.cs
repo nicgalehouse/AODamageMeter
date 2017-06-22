@@ -22,8 +22,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     var counts = Fight.GetFightCharacterCounts(
-                        includeNPCs: Settings.Default.ShowTopLevelNPCRows,
-                        includeZeroDamageDones: Settings.Default.ShowTopLevelZeroDamageRows);
+                        includeNPCs: Settings.Default.IncludeTopLevelNPCRows,
+                        includeZeroDamageDones: Settings.Default.IncludeTopLevelZeroDamageRows);
 
                     return counts.GetFightCharacterCountsTooltip();
                 }
@@ -37,8 +37,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     var stats = Fight.GetDamageDoneStats(
-                        includeNPCs: Settings.Default.ShowTopLevelNPCRows,
-                        includeZeroDamageDones: Settings.Default.ShowTopLevelZeroDamageRows);
+                        includeNPCs: Settings.Default.IncludeTopLevelNPCRows,
+                        includeZeroDamageDones: Settings.Default.IncludeTopLevelZeroDamageRows);
 
                     return
 $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")}
@@ -76,13 +76,13 @@ $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "
 
         public override void Update(int? displayIndex = null)
         {
-            RightText = Settings.Default.ShowTopLevelNPCRows
+            RightText = Settings.Default.IncludeTopLevelNPCRows
                 ? $"{Fight.TotalDamageDone.Format()} ({Fight.TotalDamageDonePM.Format()})"
                 : $"{Fight.TotalPlayerDamageDonePlusPets.Format()} ({Fight.TotalPlayerDamageDonePMPlusPets.Format()})";
 
             var topFightCharacters = Fight.FightCharacters
-                .Where(c => (Settings.Default.ShowTopLevelNPCRows || !c.IsNPC)
-                    && (Settings.Default.ShowTopLevelZeroDamageRows || c.TotalDamageDonePlusPets != 0))
+                .Where(c => (Settings.Default.IncludeTopLevelNPCRows || !c.IsNPC)
+                    && (Settings.Default.IncludeTopLevelZeroDamageRows || c.TotalDamageDonePlusPets != 0))
                 .Where(c => !c.IsFightPet)
                 .OrderByDescending(c => c.TotalDamageDonePlusPets)
                 .ThenBy(c => c.UncoloredName)

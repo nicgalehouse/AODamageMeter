@@ -1,6 +1,5 @@
 ﻿using AODamageMeter.Helpers;
 using AODamageMeter.UI.Helpers;
-using AODamageMeter.UI.Properties;
 using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
@@ -46,20 +45,12 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
 
         public override void Update(int? displayIndex = null)
         {
-            if (!Source.IsFightPetOwner)
-            {
-                PercentWidth = DamageDoneInfo.PercentOfSourcesMaxDamageDone ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotal
-                    ? DamageDoneInfo.PercentOfSourcesTotalDamageDone : DamageDoneInfo.PercentOfSourcesMaxDamageDone;
-                RightText = $"{DamageDoneInfo.TotalDamage.Format()} ({percentDone.FormatPercent()})";
-            }
-            else
-            {
-                PercentWidth = DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotal
-                    ? DamageDoneInfo.PercentPlusPetsOfSourcesTotalDamageDonePlusPets : DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets;
-                RightText = $"{DamageDoneInfo.TotalDamagePlusPets.Format()} ({percentDone.FormatPercent()})";
+            PercentOfTotal = DamageDoneInfo.PercentPlusPetsOfSourcesTotalDamageDonePlusPets;
+            PercentOfMax = DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets;
+            RightText = $"{DamageDoneInfo.TotalDamagePlusPets.Format()} ({DisplayedPercent.FormatPercent()})";
 
+            if (Source.IsFightPetOwner)
+            {
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { Source }.Concat(Source.FightPets)
                     .OrderByDescending(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalDamage ?? 0)

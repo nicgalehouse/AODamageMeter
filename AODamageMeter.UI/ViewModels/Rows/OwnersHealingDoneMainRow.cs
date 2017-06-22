@@ -1,6 +1,5 @@
 ﻿using AODamageMeter.Helpers;
 using AODamageMeter.UI.Helpers;
-using AODamageMeter.UI.Properties;
 using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.Rows
@@ -13,7 +12,6 @@ namespace AODamageMeter.UI.ViewModels.Rows
 
         public HealingInfo HealingDoneInfo { get; }
         public FightCharacter Target => HealingDoneInfo.Target;
-        public bool IsOwnerTheTarget => Target.IsOwner;
 
         public override string Title => $"{Owner.UncoloredName}'s Healing Done to {Target.UncoloredName}";
 
@@ -23,35 +21,19 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight)
                 {
-                    return
-$@"{DisplayIndex}. {Owner.UncoloredName} -> {Target.UncoloredName}
-
-{(IsOwnerTheTarget ? "≥ " : "")}{HealingDoneInfo.PotentialHealingPlusPets.Format()} potential healing
-{(IsOwnerTheTarget ? "" : "≥ ")}{HealingDoneInfo.RealizedHealingPlusPets.Format()} realized healing
-≥ {HealingDoneInfo.OverhealingPlusPets.Format()} overhealing
-{(IsOwnerTheTarget ? "≥ " : "")}{HealingDoneInfo.NanoHealingPlusPets.Format()} nano healing
-
-≥ {HealingDoneInfo.PercentOfOverhealingPlusPets.FormatPercent()} overhealing";
+                    return HealingDoneInfo.GetOwnersHealingDoneTooltip(DisplayIndex);
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
-            if (!FightOwner.IsFightPetOwner)
-            {
-                PercentWidth = HealingDoneInfo.PercentOfSourcesMaxPotentialHealingDone ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotal
-                    ? HealingDoneInfo.PercentOfSourcesPotentialHealingDone : HealingDoneInfo.PercentOfSourcesMaxPotentialHealingDone;
-                RightText = $"{HealingDoneInfo.PotentialHealing.Format()} ({percentDone.FormatPercent()})";
-            }
-            else
-            {
-                PercentWidth = HealingDoneInfo.PercentPlusPetsOfSourcesMaxPotentialHealingDonePlusPets ?? 0;
-                double? percentDone = Settings.Default.ShowPercentOfTotal
-                    ? HealingDoneInfo.PercentPlusPetsOfSourcesPotentialHealingDonePlusPets : HealingDoneInfo.PercentPlusPetsOfSourcesMaxPotentialHealingDonePlusPets;
-                RightText = $"{HealingDoneInfo.PotentialHealingPlusPets.Format()} ({percentDone.FormatPercent()})";
+            PercentOfTotal = HealingDoneInfo.PercentPlusPetsOfSourcesPotentialHealingDonePlusPets;
+            PercentOfMax = HealingDoneInfo.PercentPlusPetsOfSourcesMaxPotentialHealingDonePlusPets;
+            RightText = $"{HealingDoneInfo.PotentialHealingPlusPets.Format()} ({DisplayedPercent.FormatPercent()})";
 
+            if (FightOwner.IsFightPetOwner)
+            {
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { FightOwner }.Concat(FightOwner.FightPets)
                     .OrderByDescending(c => c.HealingDoneInfosByTarget.GetValueOrFallback(Target)?.PotentialHealing ?? 0)

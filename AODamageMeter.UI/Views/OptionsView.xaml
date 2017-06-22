@@ -116,12 +116,12 @@
         <RadioButton x:Name="ShowPercentOfMaxRadioButton" GroupName="ShowPercent" Margin="0 2 0 10"
                      Content="Show percent of max"/>
 
-        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowTopLevelNPCRows}"
-                  Content="Show top-level NPC rows"/>
-        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowTopLevelZeroDamageRows}"
-                  Content="Show top-level zero damage rows"/>
         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowRowNumbers}"
                   Content="Show row numbers"/>
+        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeTopLevelNPCRows}"
+                  Content="Include top-level NPC rows"/>
+        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=IncludeTopLevelZeroDamageRows}"
+                  Content="Include top-level zero damage rows"/>
       </StackPanel>
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"

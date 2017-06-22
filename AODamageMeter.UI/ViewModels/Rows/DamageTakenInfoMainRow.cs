@@ -46,20 +46,12 @@ $@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
 
         public override void Update(int? displayIndex = null)
         {
-            if (!Source.IsFightPetOwner)
-            {
-                PercentWidth = DamageTakenInfo.PercentOfTargetsMaxDamagePlusPetsTaken ?? 0;
-                double? percentTaken = Settings.Default.ShowPercentOfTotal
-                    ? DamageTakenInfo.PercentOfTargetsTotalDamageTaken : DamageTakenInfo.PercentOfTargetsMaxDamagePlusPetsTaken;
-                RightText = $"{DamageTakenInfo.TotalDamage.Format()} ({percentTaken.FormatPercent()})";
-            }
-            else
-            {
-                PercentWidth = DamageTakenInfo.PercentPlusPetsOfTargetsMaxDamagePlusPetsTaken ?? 0;
-                double? percentTaken = Settings.Default.ShowPercentOfTotal
-                    ? DamageTakenInfo.PercentPlusPetsOfTargetsTotalDamageTaken : DamageTakenInfo.PercentPlusPetsOfTargetsMaxDamagePlusPetsTaken;
-                RightText = $"{DamageTakenInfo.TotalDamagePlusPets.Format()} ({percentTaken.FormatPercent()})";
+            PercentOfTotal = DamageTakenInfo.PercentPlusPetsOfTargetsTotalDamageTaken;
+            PercentOfMax = DamageTakenInfo.PercentPlusPetsOfTargetsMaxDamagePlusPetsTaken;
+            RightText = $"{DamageTakenInfo.TotalDamagePlusPets.Format()} ({DisplayedPercent.FormatPercent()})";
 
+            if (Source.IsFightPetOwner)
+            {
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { Source }.Concat(Source.FightPets)
                     .OrderByDescending(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalDamage ?? 0)
