@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AODamageMeter.UI", "AODamageMeter.UI\AODamageMeter.UI.csproj", "{0DA22B8F-9C0C-4C13-B3BD-C19B388D89E4}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AODamageMeter.AmbiguityHelper", "AODamageMeter.AmbiguityHelper\AODamageMeter.AmbiguityHelper.csproj", "{B96CDD76-F4EB-4AEF-8E75-9E68D95B1A35}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1D032EE-F208-41B2-A533-83974A68739B}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
