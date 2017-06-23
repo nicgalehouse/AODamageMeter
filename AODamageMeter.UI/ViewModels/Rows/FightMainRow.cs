@@ -4,7 +4,6 @@ using AODamageMeter.UI.Properties;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
@@ -24,13 +23,13 @@ namespace AODamageMeter.UI.ViewModels.Rows
         public double? DisplayedPercent => Settings.Default.ShowPercentOfTotal ? FightOwnersPercentOfTotalDamageDone : FightOwnersPercentOfMaxDamageDone;
 
         public override string Title
-            => Fight.HasEnded ? $"Fight ({Fight.StartTime:t}-{Fight.EndTime:t}, {Duration})"
-            : Fight.HasStarted ? $"Fight ({Fight.StartTime:t}-{DateTime.Now:t}, {Duration})"
+            => Fight.HasEnded ? $"Fight ({Fight.StartTime:hh:mm}-{Fight.EndTime:hh:mm}, {Duration})"
+            : Fight.HasStarted ? $"Fight ({Fight.StartTime:hh:mm}-{DateTime.Now:hh:mm}, {Duration})"
             : "Fight (unstarted)";
 
         public override string UnnumberedLeftText
-            => Fight.HasEnded ? $"{Fight.StartTime:t}{EnDash}{Fight.EndTime:t}, {Duration}"
-            : Fight.HasStarted ? $"{Fight.StartTime:t}{EnDash}{DateTime.Now:t}, {Duration}"
+            => Fight.HasEnded ? $"{Fight.StartTime:hh:mm}{EnDash}{Fight.EndTime:hh:mm}, {Duration}"
+            : Fight.HasStarted ? $"{Fight.StartTime:hh:mm}{EnDash}{DateTime.Now:hh:mm}, {Duration}"
             : $"Unstarted";
 
         public override string LeftTextToolTip
@@ -41,7 +40,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 {
                     var counts = Fight.GetFightCharacterCounts(includeNPCs: Settings.Default.IncludeTopLevelNPCRows);
 
-                    return counts.GetFightCharacterCountsTooltip();
+                    return counts.GetFightCharacterCountsTooltip("Fight");
                 }
             }
         }
@@ -53,18 +52,18 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     return
-$@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}
+$@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}'s Damage Done
 
 {FightOwner?.TotalDamageDonePlusPets.ToString("N0") ?? EmDash} total dmg
 {FightOwnersPercentOfTotalDamageDone.FormatPercent()} of fight's total dmg
 {FightOwnersPercentOfMaxDamageDone.FormatPercent()} of fight's max dmg
 
-{FightOwner?.WeaponDamageDonePMPlusPets.Format() ?? EmDash} ({FightOwner?.WeaponPercentOfTotalDamageDonePlusPets.FormatPercent() ?? EmDash}) weapon dmg / min
-{FightOwner?.NanoDamageDonePMPlusPets.Format() ?? EmDash} ({FightOwner?.NanoPercentOfTotalDamageDonePlusPets.FormatPercent() ?? EmDash}) nano dmg / min
-{FightOwner?.IndirectDamageDonePMPlusPets.Format() ?? EmDash} ({FightOwner?.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent() ?? EmDash}) indirect dmg / min
+{FightOwner?.WeaponDamageDonePMPlusPets.Format() ?? EmDash} ({FightOwner?.WeaponPercentOfTotalDamageDonePlusPets.FormatPercent() ?? EmDashPercent}) weapon dmg / min
+{FightOwner?.NanoDamageDonePMPlusPets.Format() ?? EmDash} ({FightOwner?.NanoPercentOfTotalDamageDonePlusPets.FormatPercent() ?? EmDashPercent}) nano dmg / min
+{FightOwner?.IndirectDamageDonePMPlusPets.Format() ?? EmDash} ({FightOwner?.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent() ?? EmDashPercent}) indirect dmg / min
 {FightOwner?.TotalDamageDonePMPlusPets.Format() ?? EmDash} total dmg / min
 
-{(FightOwner?.HasIncompleteMissStatsPlusPets ?? false ? "≤ " : "")}{FightOwner?.WeaponHitDoneChancePlusPets.FormatPercent() ?? EmDash} weapon hit chance
+{(FightOwner?.HasIncompleteMissStatsPlusPets ?? false ? "≤ " : "")}{FightOwner?.WeaponHitDoneChancePlusPets.FormatPercent() ?? EmDashPercent} weapon hit chance
   {FightOwner?.CritDoneChancePlusPets.FormatPercent()} crit chance
   {FightOwner?.GlanceDoneChancePlusPets.FormatPercent()} glance chance
 
@@ -154,17 +153,6 @@ $@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}
         }
 
         public override bool TryCopyAndScriptProgressedRowsInfo()
-        {
-            var body = new StringBuilder();
-            foreach (var damageDoneRow in FightViewModel.GetUpdatedDamageDoneRows()
-                .OrderBy(r => r.DisplayIndex))
-            {
-                body.AppendLine(damageDoneRow.RowScriptText);
-            }
-
-            CopyAndScript(body.ToString());
-
-            return true;
-        }
+            => CopyAndScriptProgressedRowsInfo(FightViewModel.GetUpdatedDamageDoneRows());
     }
 }

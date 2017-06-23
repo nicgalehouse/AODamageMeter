@@ -172,7 +172,8 @@ namespace AODamageMeter.UI.ViewModels
                         AutoConfigureResult = "Auto-configure succeeded. An existing log file was found.";
                         return;
                     }
-                    else if (configText.Contains("Damage Meter Window"))
+                    else if (configText.Contains("Damage Meter Window")
+                        || configText.Contains("Damage Meter Log"))
                     {
                         File.WriteAllText($@"{path}\Config.xml", GetAutoConfigureConfigXml(path.Split('\\').Last()));
                         LogFilePath = $@"{path}\Log.txt";
@@ -294,7 +295,7 @@ $@"<Archive code=""0"">
     <String name=""window_name"" value='&quot;{windowName}&quot;' />
     <Bool name=""is_default_window"" value=""false"" />
     <Bool name=""is_startup_window"" value=""false"" />
-    <String name=""name"" value='&quot;Damage Meter Window&quot;' />
+    <String name=""name"" value='&quot;Damage Meter Log&quot;' />
 </Archive>
 ";
     }

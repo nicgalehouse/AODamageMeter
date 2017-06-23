@@ -13,24 +13,26 @@
 + (!character.HasOrganizationInfo ? null : $@"
 {character.Organization} ({character.OrganizationRank})");
 
-        public static string GetFightCharacterCountsTooltip(this FightCharacterCounts counts)
-=> $@"{counts.FightCharacterCount} {(counts.FightCharacterCount == 1 ? "character" : "characters")}
-  {counts.PlayerCount} {(counts.PlayerCount == 1 ? "player" : "players")}, {counts.AveragePlayerLevel.Format()}/{counts.AveragePlayerAlienLevel.Format()}
-    {counts.OmniPlayerCount} {(counts.OmniPlayerCount == 1 ? "Omni" : "Omnis")}, {counts.AverageOmniPlayerLevel.Format()}/{counts.AverageOmniPlayerAlienLevel.Format()}
-    {counts.ClanPlayerCount} {(counts.ClanPlayerCount == 1 ? "Clan" : "Clan")}, {counts.AverageClanPlayerLevel.Format()}/{counts.AverageClanPlayerAlienLevel.Format()}
-    {counts.NeutralPlayerCount} {(counts.NeutralPlayerCount == 1 ? "Neutral" : "Neutrals")}, {counts.AverageNeutralPlayerLevel.Format()}/{counts.AverageNeutralPlayerAlienLevel.Format()}"
+        public static string GetFightCharacterCountsTooltip(this FightCharacterCounts counts, string title)
+=> $@"{title} ({counts.FightCharacterCount} {(counts.FightCharacterCount == 1 ? "character" : "characters")})
+
+{counts.PlayerCount} {(counts.PlayerCount == 1 ? "player" : "players")}, {counts.AveragePlayerLevel.Format()}/{counts.AveragePlayerAlienLevel.Format()}
+  {counts.OmniPlayerCount} {(counts.OmniPlayerCount == 1 ? "Omni" : "Omnis")}, {counts.AverageOmniPlayerLevel.Format()}/{counts.AverageOmniPlayerAlienLevel.Format()}
+  {counts.ClanPlayerCount} {(counts.ClanPlayerCount == 1 ? "Clan" : "Clan")}, {counts.AverageClanPlayerLevel.Format()}/{counts.AverageClanPlayerAlienLevel.Format()}
+  {counts.NeutralPlayerCount} {(counts.NeutralPlayerCount == 1 ? "Neutral" : "Neutrals")}, {counts.AverageNeutralPlayerLevel.Format()}/{counts.AverageNeutralPlayerAlienLevel.Format()}"
 + (counts.UnknownPlayerCount == 0 ? null : $@"
-    {counts.UnknownPlayerCount} {(counts.UnknownPlayerCount == 1 ? "Unknown" : "Unknowns")}, {counts.AverageUnknownPlayerLevel.Format()}/{counts.AverageUnknownPlayerAlienLevel.Format()}")
+  {counts.UnknownPlayerCount} {(counts.UnknownPlayerCount == 1 ? "Unknown" : "Unknowns")}, {counts.AverageUnknownPlayerLevel.Format()}/{counts.AverageUnknownPlayerAlienLevel.Format()}")
 + (counts.PetCount == 0 ? null : $@"
-  {counts.PetCount} {(counts.PetCount == 1 ? "pet" : "pets")}")
+{counts.PetCount} {(counts.PetCount == 1 ? "pet" : "pets")}")
 + (counts.NPCCount == 0 ? null : $@"
-  {counts.NPCCount} {(counts.NPCCount == 1 ? "NPC" : "NPCs")}")
+{counts.NPCCount} {(counts.NPCCount == 1 ? "NPC" : "NPCs")}")
 + (counts.PlayerCount == 0 ? null : $@"
 
 {counts.GetProfessionsInfo()}");
 
-        public static string GetFightCharacterDamageDoneTooltip(this FightCharacter fightCharacter, int displayIndex, double? percentOfTotal, double? percentOfMax)
-=> $@"{displayIndex}. {fightCharacter.UncoloredName}
+        public static string GetFightCharacterDamageDoneTooltip(this FightCharacter fightCharacter,
+            string title, int displayIndex, double? percentOfTotal, double? percentOfMax)
+=> $@"{displayIndex}. {title}
 
 {fightCharacter.TotalDamageDonePlusPets:N0} total dmg
 {percentOfTotal.FormatPercent()} of fight's total dmg
@@ -62,10 +64,13 @@
 
 {fightCharacter.GetSpecialsDoneInfo()}");
 
-        public static string GetFightCharacterDamageTakenTooltip(this FightCharacter fightCharacter, int displayIndex)
-=> $@"{displayIndex}. {fightCharacter.UncoloredName}
+        public static string GetFightCharacterDamageTakenTooltip(this FightCharacter fightCharacter,
+            string title, int displayIndex, double? percentOfTotal, double? percentOfMax)
+=> $@"{displayIndex}. {title}
 
 {fightCharacter.TotalDamageTaken:N0} total dmg
+{percentOfTotal.FormatPercent()} of fight's total dmg
+{percentOfMax.FormatPercent()} of fight's max dmg
 
 {fightCharacter.WeaponDamageTakenPM.Format()} ({fightCharacter.WeaponPercentOfTotalDamageTaken.FormatPercent()}) weapon dmg / min
 {fightCharacter.NanoDamageTakenPM.Format()} ({fightCharacter.NanoPercentOfTotalDamageTaken.FormatPercent()}) nano dmg / min
@@ -99,8 +104,14 @@
 {fightCharacter.DamageAbsorbedPM.Format()} dmg absorbed / min
 {fightCharacter.AverageDamageAbsorbed.Format()} dmg absorbed / hit");
 
-        public static string GetOwnersCastsTooltip(this CastInfo castInfo)
-=> $@"{castInfo.CastSuccesses:N0} ({castInfo.CastSuccessChance.FormatPercent()}) succeeded
+        public static string GetOwnersCastsTooltip(this CastInfo castInfo,
+            string title, int displayIndex, double? percentOfTotal, double? percentOfMax)
+=> $@"{displayIndex}. {title}
+
+{percentOfTotal.FormatPercent()} of total casts
+{percentOfMax.FormatPercent()} of max casts
+
+{castInfo.CastSuccesses:N0} ({castInfo.CastSuccessChance.FormatPercent()}) succeeded
 {castInfo.CastCountereds:N0} ({castInfo.CastCounteredChance.FormatPercent()}) countered
 {castInfo.CastAborteds:N0} ({castInfo.CastAbortedChance.FormatPercent()}) aborted
 {castInfo.CastAttempts:N0} attempted
@@ -110,16 +121,18 @@
 {castInfo.CastAbortedsPM.Format()} aborted / min
 {castInfo.CastAttemptsPM.Format()} attempted / min";
 
-        public static string GetOwnersHealingDoneTooltip(this HealingInfo healingDoneInfo, int displayIndex)
+        public static string GetOwnersHealingDoneTooltip(this HealingInfo healingDoneInfo,
+            string title, int displayIndex, double? percentOfTotal, double? percentOfMax)
         {
-            var owner = healingDoneInfo.Source;
-            var target = healingDoneInfo.Target;
-            bool isOwnerTheTarget = target.IsOwner;
+            bool isOwnerTheTarget = healingDoneInfo.Target.IsOwner;
 
             return
-$@"{displayIndex}. {owner.UncoloredName} -> {target.UncoloredName}
+$@"{displayIndex}. {title}
 
 {(isOwnerTheTarget ? "≥ " : "")}{healingDoneInfo.PotentialHealingPlusPets.Format()} potential healing
+{percentOfTotal.FormatPercent()} of {healingDoneInfo.Source.UncoloredName}'s total healing
+{percentOfMax.FormatPercent()} of {healingDoneInfo.Source.UncoloredName}'s max healing
+
 {(isOwnerTheTarget ? "" : "≥ ")}{healingDoneInfo.RealizedHealingPlusPets.Format()} realized healing
 ≥ {healingDoneInfo.OverhealingPlusPets.Format()} overhealing
 {(isOwnerTheTarget ? "≥ " : "")}{healingDoneInfo.NanoHealingPlusPets.Format()} nano healing
@@ -127,16 +140,18 @@ $@"{displayIndex}. {owner.UncoloredName} -> {target.UncoloredName}
 ≥ {healingDoneInfo.PercentOfOverhealingPlusPets.FormatPercent()} overhealing";
         }
 
-        public static string GetOwnersHealingTakenTooltip(this HealingInfo healingTakenInfo, int displayIndex)
+        public static string GetOwnersHealingTakenTooltip(this HealingInfo healingTakenInfo,
+            string title, int displayIndex, double? percentOfTotal, double? percentOfMax)
         {
-            var owner = healingTakenInfo.Target;
-            var source = healingTakenInfo.Source;
-            bool isOwnerTheSource = source.IsOwner;
+            bool isOwnerTheSource = healingTakenInfo.Source.IsOwner;
 
             return
-$@"{displayIndex}. {owner.UncoloredName} <- {source.UncoloredName}
+$@"{displayIndex}. {title}
 
 {(isOwnerTheSource ? "≥ " : "")}{healingTakenInfo.PotentialHealingPlusPets.Format()} potential healing
+{percentOfTotal.FormatPercent()} of {healingTakenInfo.Target.UncoloredName}'s total healing
+{percentOfMax.FormatPercent()} of {healingTakenInfo.Target.UncoloredName}'s max healing
+
 {healingTakenInfo.RealizedHealingPlusPets.Format()} realized healing
 {(isOwnerTheSource ? "≥ " : "")}{healingTakenInfo.OverhealingPlusPets.Format()} overhealing
 {(isOwnerTheSource ? "≥ " : "")}{healingTakenInfo.NanoHealingPlusPets.Format()} nano healing

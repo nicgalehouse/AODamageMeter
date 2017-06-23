@@ -25,13 +25,15 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
+$@"{DisplayIndex}. {Title}
 
-{DamageDoneInfo?.TotalDamage.ToString("N0") ?? EmDash} total dmg
+{DamageDoneInfo?.TotalDamage.ToString("N0") ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}) total dmg
+{PercentOfTotal.FormatPercent()} of {Source.FightPetOwnerOrSelf.UncoloredName}'s total dmg
+{PercentOfMax.FormatPercent()} of {Source.FightPetOwnerOrSelf.UncoloredName}'s max dmg
 
-{((DamageDoneInfo?.HasIncompleteMissStats ?? false) ? "≤ " : "")}{DamageDoneInfo?.WeaponHitChance.FormatPercent() ?? EmDash} weapon hit chance
-  {DamageDoneInfo?.CritChance.FormatPercent() ?? EmDash} crit chance
-  {DamageDoneInfo?.GlanceChance.FormatPercent() ?? EmDash} glance chance
+{((DamageDoneInfo?.HasIncompleteMissStats ?? false) ? "≤ " : "")}{DamageDoneInfo?.WeaponHitChance.FormatPercent() ?? EmDashPercent} weapon hit chance
+  {DamageDoneInfo?.CritChance.FormatPercent() ?? EmDashPercent} crit chance
+  {DamageDoneInfo?.GlanceChance.FormatPercent() ?? EmDashPercent} glance chance
 
 {DamageDoneInfo?.AverageWeaponDamage.Format() ?? EmDash} weapon dmg / hit
   {DamageDoneInfo?.AverageCritDamage.Format() ?? EmDash} crit dmg / hit
@@ -50,7 +52,8 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
             DamageDoneInfo = DamageDoneInfo ?? Source.DamageDoneInfosByTarget.GetValueOrFallback(Target);
             PercentOfTotal = DamageDoneInfo?.PercentOfOwnersOrOwnTotalDamageDonePlusPets;
             PercentOfMax = DamageDoneInfo?.PercentOfOwnersOrOwnMaxDamageDonePlusPets;
-            RightText = $"{DamageDoneInfo?.TotalDamage.Format() ?? EmDash} ({DamageDoneInfo?.PercentOfOwnersOrOwnTotalDamagePlusPets.FormatPercent() ?? EmDash}, {DisplayedPercent.FormatPercent()})";
+            PercentOfOwnersOrOwnTotalPlusPets = DamageDoneInfo?.PercentOfOwnersOrOwnTotalDamagePlusPets;
+            RightText = $"{DamageDoneInfo?.TotalDamage.Format() ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

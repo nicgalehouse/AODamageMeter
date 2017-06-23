@@ -6,7 +6,7 @@
       <Value Profile="(Default)">180</Value>
     </Setting>
     <Setting Name="DamageMeterViewWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">350</Value>
+      <Value Profile="(Default)">400</Value>
     </Setting>
     <Setting Name="DamageMeterViewTop" Type="System.Double" Scope="User">
       <Value Profile="(Default)">NaN</Value>

@@ -18,9 +18,11 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {FightCharacterName}
+$@"{DisplayIndex}. {Title}
 
-{FightCharacter.TotalDamageDone:N0} total dmg
+{FightCharacter.TotalDamageDone:N0} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}) total dmg
+{PercentOfTotal.FormatPercent()} of fight's total dmg
+{PercentOfMax.FormatPercent()} of fight's max dmg
 
 {FightCharacter.WeaponDamageDonePM.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDone.FormatPercent()}) weapon dmg / min
 {FightCharacter.NanoDamageDonePM.Format()} ({FightCharacter.NanoPercentOfTotalDamageDone.FormatPercent()}) nano dmg / min
@@ -59,7 +61,8 @@ $@"{DisplayIndex}. {FightCharacterName}
             PercentOfMax = Settings.Default.IncludeTopLevelNPCRows
                 ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
                 : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets;
-            RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets.FormatPercent()}, {DisplayedPercent.FormatPercent()})";
+            PercentOfOwnersOrOwnTotalPlusPets = FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets;
+            RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

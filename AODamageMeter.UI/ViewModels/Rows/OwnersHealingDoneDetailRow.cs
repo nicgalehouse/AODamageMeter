@@ -29,14 +29,17 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
+$@"{DisplayIndex}. {Title}
 
-{(IsOwnerTheTargetAndSource || IsOwnerNotTheTargetOrTheSource ? "≥ " : "")}{HealingDoneInfo?.PotentialHealing.Format() ?? EmDash} potential healing
+{(IsOwnerTheTargetAndSource || IsOwnerNotTheTargetOrTheSource ? "≥ " : "")}{HealingDoneInfo?.PotentialHealing.Format() ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}) potential healing
+{PercentOfTotal.FormatPercent()} of {Source.FightPetOwnerOrSelf.UncoloredName}'s total healing
+{PercentOfMax.FormatPercent()} of {Source.FightPetOwnerOrSelf.UncoloredName}'s max healing
+
 {(IsOwnerTheTarget ? "" : "≥ ")}{HealingDoneInfo?.RealizedHealing.Format() ?? EmDash} realized healing
 {(IsOwnerTheTargetAndNotTheSource ? "" : "≥ ")}{HealingDoneInfo?.Overhealing.Format() ?? EmDash} overhealing
 {(IsOwnerTheTargetAndSource || IsOwnerNotTheTargetOrTheSource ? "≥ " : "")}{HealingDoneInfo?.NanoHealing.Format() ?? EmDash} nano healing
 
-{(IsOwnerTheTargetAndNotTheSource ? "" : "≥ ")}{HealingDoneInfo?.PercentOfOverhealing.FormatPercent() ?? EmDash} overhealing";
+{(IsOwnerTheTargetAndNotTheSource ? "" : "≥ ")}{HealingDoneInfo?.PercentOfOverhealing.FormatPercent() ?? EmDashPercent} overhealing";
                 }
             }
         }
@@ -46,7 +49,8 @@ $@"{DisplayIndex}. {Source.UncoloredName} -> {Target.UncoloredName}
             HealingDoneInfo = HealingDoneInfo ?? Source.HealingDoneInfosByTarget.GetValueOrFallback(Target);
             PercentOfTotal = HealingDoneInfo?.PercentOfOwnersOrOwnPotentialHealingDoneDonePlusPets;
             PercentOfMax = HealingDoneInfo?.PercentOfOwnersOrOwnMaxPotentialHealingDonePlusPets;
-            RightText = $"{HealingDoneInfo?.PotentialHealing.Format() ?? EmDash} ({HealingDoneInfo?.PercentOfOwnersOrOwnPotentialHealingPlusPets.FormatPercent() ?? EmDash}, {DisplayedPercent.FormatPercent()})";
+            PercentOfOwnersOrOwnTotalPlusPets = HealingDoneInfo?.PercentOfOwnersOrOwnPotentialHealingPlusPets;
+            RightText = $"{HealingDoneInfo?.PotentialHealing.Format() ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

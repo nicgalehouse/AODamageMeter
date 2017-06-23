@@ -1,7 +1,6 @@
 ﻿using AODamageMeter.UI.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
@@ -23,9 +22,11 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     return
-$@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSuccessChance.FormatPercent() ?? EmDash}) succeeded
-{FightOwner?.CastCountereds.ToString("N0") ?? EmDash} ({FightOwner?.CastCounteredChance.FormatPercent() ?? EmDash}) countered
-{FightOwner?.CastAborteds.ToString("N0") ?? EmDash} ({FightOwner?.CastAbortedChance.FormatPercent() ?? EmDash}) aborted
+$@"{Title}
+
+{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSuccessChance.FormatPercent() ?? EmDashPercent}) succeeded
+{FightOwner?.CastCountereds.ToString("N0") ?? EmDash} ({FightOwner?.CastCounteredChance.FormatPercent() ?? EmDashPercent}) countered
+{FightOwner?.CastAborteds.ToString("N0") ?? EmDash} ({FightOwner?.CastAbortedChance.FormatPercent() ?? EmDashPercent}) aborted
 {FightOwner?.CastAttempts.ToString("N0") ?? EmDash} attempted
 
 {FightOwner?.CastSuccessesPM.Format() ?? EmDash} succeeded / min
@@ -74,17 +75,6 @@ $@"{FightOwner?.CastSuccesses.ToString("N0") ?? EmDash} ({FightOwner?.CastSucces
         }
 
         public override bool TryCopyAndScriptProgressedRowsInfo()
-        {
-            var body = new StringBuilder();
-            foreach (var ownersCastsRow in FightViewModel.GetUpdatedOwnersCastsRows()
-                .OrderBy(r => r.DisplayIndex))
-            {
-                body.AppendLine(ownersCastsRow.RowScriptText);
-            }
-
-            CopyAndScript(body.ToString());
-
-            return true;
-        }
+            => CopyAndScriptProgressedRowsInfo(FightViewModel.GetUpdatedOwnersCastsRows());
     }
 }

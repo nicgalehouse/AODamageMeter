@@ -80,6 +80,7 @@ namespace AODamageMeter
         public IReadOnlyCollection<FightCharacter> FightPets => _fightPets;
         public bool IsFightPetOwner => FightPets.Count != 0;
         public bool IsFightPet => FightPetOwner != null;
+        public FightCharacter FightPetOwnerOrSelf => FightPetOwner ?? this;
 
         public long WeaponDamageDone { get; protected set; }
         public long CritDamageDone { get; protected set; }

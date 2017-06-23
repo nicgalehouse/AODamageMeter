@@ -1,7 +1,6 @@
 ﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
 using System.Linq;
-using System.Text;
 
 namespace AODamageMeter.UI.ViewModels.Rows
 {
@@ -19,7 +18,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight)
                 {
-                    return FightCharacter.GetFightCharacterDamageDoneTooltip(DisplayIndex, PercentOfTotal, PercentOfMax);
+                    return FightCharacter.GetFightCharacterDamageDoneTooltip(Title, DisplayIndex, PercentOfTotal, PercentOfMax);
                 }
             }
         }
@@ -54,17 +53,6 @@ namespace AODamageMeter.UI.ViewModels.Rows
         }
 
         public override bool TryCopyAndScriptProgressedRowsInfo()
-        {
-            var body = new StringBuilder();
-            foreach (var damageDoneInfoRow in FightViewModel.GetUpdatedDamageDoneInfoRows(FightCharacter)
-                .OrderBy(r => r.DisplayIndex))
-            {
-                body.AppendLine(damageDoneInfoRow.RowScriptText);
-            }
-
-            CopyAndScript(body.ToString());
-
-            return true;
-        }
+            => CopyAndScriptProgressedRowsInfo(FightViewModel.GetUpdatedDamageDoneInfoRows(FightCharacter));
     }
 }

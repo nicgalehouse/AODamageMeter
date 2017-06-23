@@ -1,7 +1,6 @@
 ﻿using AODamageMeter.UI.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
@@ -14,19 +13,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
             : base(ViewingMode.OwnersHealingTaken, $"{fightViewModel.Owner}'s Healing Taken", 4, "/Icons/OwnersHealingTaken.png", Color.FromRgb(184, 100, 57), fightViewModel)
         { }
 
-        public override string LeftTextToolTip
-        {
-            get
-            {
-                lock (Fight)
-                {
-                    var counts = Fight
-                        .GetFightCharacterCounts(includeNullOwnersHealingTakens: false);
-
-                    return counts.GetFightCharacterCountsTooltip();
-                }
-            }
-        }
+        public override string LeftTextToolTip => Owner.GetCharacterTooltip();
 
         public override string RightTextToolTip
         {
@@ -34,11 +21,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight)
                 {
-                    int fightCharacterCount = Fight
-                        .GetFightCharacterCount(includeNullOwnersHealingTakens: false);
-
                     return
-$@"{fightCharacterCount} {(fightCharacterCount == 1 ? "character" : "characters")}
+$@"{Title}
 
 ≥ {FightOwner?.PotentialHealingTaken.Format() ?? EmDash} potential healing
 {FightOwner?.RealizedHealingTaken.Format() ?? EmDash} realized healing
@@ -50,7 +34,7 @@ $@"{fightCharacterCount} {(fightCharacterCount == 1 ? "character" : "characters"
 ≥ {FightOwner?.OverhealingTakenPM.Format() ?? EmDash} overhealing / min
 ≥ {FightOwner?.NanoHealingTakenPM.Format() ?? EmDash} nano healing / min
 
-≥ {FightOwner?.PercentOfOverhealingTaken.FormatPercent() ?? EmDash} overhealing";
+≥ {FightOwner?.PercentOfOverhealingTaken.FormatPercent() ?? EmDashPercent} overhealing";
                 }
             }
         }
@@ -94,17 +78,6 @@ $@"{fightCharacterCount} {(fightCharacterCount == 1 ? "character" : "characters"
         }
 
         public override bool TryCopyAndScriptProgressedRowsInfo()
-        {
-            var body = new StringBuilder();
-            foreach (var ownersHealingTakenRow in FightViewModel.GetUpdatedOwnersHealingTakenRows()
-                .OrderBy(r => r.DisplayIndex))
-            {
-                body.AppendLine(ownersHealingTakenRow.RowScriptText);
-            }
-
-            CopyAndScript(body.ToString());
-
-            return true;
-        }
+            => CopyAndScriptProgressedRowsInfo(FightViewModel.GetUpdatedOwnersHealingTakenRows());
     }
 }

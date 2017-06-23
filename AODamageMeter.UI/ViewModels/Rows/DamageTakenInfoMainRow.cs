@@ -24,9 +24,11 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     return
-$@"{DisplayIndex}. {Target.UncoloredName} <- {Source.UncoloredName}
+$@"{DisplayIndex}. {Title}
 
 {DamageTakenInfo.TotalDamage:N0} total dmg
+{PercentOfTotal.FormatPercent()} of {Target.UncoloredName}'s total dmg
+{PercentOfMax.FormatPercent()} of {Target.UncoloredName}'s max dmg
 
 {(DamageTakenInfo.HasIncompleteMissStatsPlusPets ? "≤ " : "")}{DamageTakenInfo.WeaponHitChancePlusPets.FormatPercent()} weapon hit chance
   {DamageTakenInfo.CritChancePlusPets.FormatPercent()} crit chance

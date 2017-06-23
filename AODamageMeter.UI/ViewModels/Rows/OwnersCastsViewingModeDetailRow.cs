@@ -30,7 +30,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight)
                 {
-                    return CastInfo.GetOwnersCastsTooltip();
+                    return CastInfo.GetOwnersCastsTooltip(Title, DisplayIndex, PercentOfTotal, PercentOfMax);
                 }
             }
         }

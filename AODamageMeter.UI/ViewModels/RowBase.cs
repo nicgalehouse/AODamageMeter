@@ -1,7 +1,10 @@
 ﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
@@ -11,6 +14,7 @@ namespace AODamageMeter.UI.ViewModels
     {
         protected const string EmDash = NumberFormatter.EmDash;
         protected const string EnDash = NumberFormatter.EnDash;
+        protected const string EmDashPercent = NumberFormatter.EmDashPercent;
 
         protected RowBase(FightViewModel fightViewModel)
             => FightViewModel = fightViewModel;
@@ -85,21 +89,31 @@ namespace AODamageMeter.UI.ViewModels
         public virtual bool TryCopyAndScriptProgressedRowsInfo()
             => false;
 
-        public void CopyAndScriptRightTextTooltip()
-            => CopyAndScript(RightTextToolTip);
-
-        public string RowScriptText
-            => $"{(DisplayIndex < 10 ? " " : "")}{DisplayIndex}. {RightText} {UnnumberedLeftText}";
-
-        protected void CopyAndScript(string body)
+        protected bool CopyAndScriptProgressedRowsInfo(IEnumerable<MainRowBase> progressedRows)
         {
-            Clipboard.SetText(
+            var body = new StringBuilder();
+            foreach (var row in progressedRows.OrderBy(r => r.DisplayIndex))
+            {
+                body.AppendLine($"{(row.DisplayIndex < 10 ? " " : "")}{row.DisplayIndex}. {row.RightText} {row.UnnumberedLeftText}");
+            }
+
+            CopyAndScript(
 $@"{Title}
 
 {body}");
 
+            return true;
+        }
+
+        public void CopyAndScriptRightTextTooltip()
+            => CopyAndScript(RightTextToolTip);
+
+        protected void CopyAndScript(string text)
+        {
+            Clipboard.SetText(text);
+
             string scriptTitle = Title;
-            string scriptBody = FormatForScript(body);
+            string scriptBody = FormatForScript(text);
             int markupLength = "<a href=\"text://\"></a>".Length;
             int totalLength = scriptTitle.Length + scriptBody.Length + markupLength;
             int lengthOverTheLimit = Math.Max(totalLength - 1024, 0);

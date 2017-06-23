@@ -18,7 +18,9 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 lock (Fight)
                 {
                     return
-$@"{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
+$@"{Title}
+
+{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
 {FightOwner?.ShadowXPGained.Format() ?? EmDash} SK
 {FightOwner?.ResearchXPGained.Format() ?? EmDash} research XP
 {FightOwner?.EffectiveXPGained.Format() ?? EmDash} effective XP

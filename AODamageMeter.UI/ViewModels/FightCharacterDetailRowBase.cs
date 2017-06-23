@@ -18,6 +18,7 @@ namespace AODamageMeter.UI.ViewModels
         public double? PercentOfTotal { get; protected set; }
         public double? PercentOfMax { get; protected set; }
         public double? DisplayedPercent => Settings.Default.ShowPercentOfTotal ? PercentOfTotal : PercentOfMax;
+        public double? PercentOfOwnersOrOwnTotalPlusPets { get; protected set; }
 
         public override void Update(int? displayIndex = null)
         {

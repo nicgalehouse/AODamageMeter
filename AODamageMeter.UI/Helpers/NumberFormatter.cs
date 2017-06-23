@@ -4,6 +4,7 @@
     {
         public const string EmDash = "—";
         public const string EnDash = "–";
+        public const string EmDashPercent = "—%";
 
         public static string Format(this int n) => Format((long)n);
         public static string Format(this long n) => n < 100 ? n.ToString() : Format((double)n);
@@ -28,6 +29,6 @@
             return $"{100 * n:F1}%";
         }
 
-        public static string FormatPercent(this double? n) => n?.FormatPercent() ?? EmDash;
+        public static string FormatPercent(this double? n) => n?.FormatPercent() ?? EmDashPercent;
     }
 }

@@ -2,7 +2,6 @@
 using AODamageMeter.UI.Properties;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
@@ -25,7 +24,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                         includeNPCs: Settings.Default.IncludeTopLevelNPCRows,
                         includeZeroDamageDones: Settings.Default.IncludeTopLevelZeroDamageRows);
 
-                    return counts.GetFightCharacterCountsTooltip();
+                    return counts.GetFightCharacterCountsTooltip(Title);
                 }
             }
         }
@@ -41,7 +40,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                         includeZeroDamageDones: Settings.Default.IncludeTopLevelZeroDamageRows);
 
                     return
-$@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")}
+$@"{Title} ({stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")})
 
 {stats.TotalDamage:N0} total dmg
 
@@ -110,17 +109,6 @@ $@"{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "
         }
 
         public override bool TryCopyAndScriptProgressedRowsInfo()
-        {
-            var body = new StringBuilder();
-            foreach (var damageDoneRow in FightViewModel.GetUpdatedDamageDoneRows()
-                .OrderBy(r => r.DisplayIndex))
-            {
-                body.AppendLine(damageDoneRow.RowScriptText);
-            }
-
-            CopyAndScript(body.ToString());
-
-            return true;
-        }
+            => CopyAndScriptProgressedRowsInfo(FightViewModel.GetUpdatedDamageDoneRows());
     }
 }

@@ -37,7 +37,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("350")]
+        [global::System.Configuration.DefaultSettingValueAttribute("400")]
         public double DamageMeterViewWidth {
             get {
                 return ((double)(this["DamageMeterViewWidth"]));

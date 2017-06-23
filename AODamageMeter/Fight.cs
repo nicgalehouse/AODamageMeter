@@ -21,24 +21,15 @@ namespace AODamageMeter
 
         public int GetFightCharacterCount(
             bool includeNPCs = true,
-            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true,
-            bool includeNullOwnersHealingDones = true, bool includeNullOwnersHealingTakens = true)
-        {
-            TryGetFightOwner(out FightCharacter fightOwner);
-
-            return FightCharacters
-                .Count(c => (includeNPCs || !c.IsNPC)
-                    && (includeZeroDamageDones || c.OwnersOrOwnTotalDamageDonePlusPets != 0)
-                    && (includeZeroDamageTakens || c.TotalDamageTaken != 0)
-                    && (includeNullOwnersHealingDones || (fightOwner?.HealingDoneInfosByTarget.ContainsKey(c) ?? false))
-                    && (includeNullOwnersHealingTakens || (fightOwner?.HealingTakenInfosBySource.ContainsKey(c) ?? false)));
-        }
+            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
+            => FightCharacters.Count(c => (includeNPCs || !c.IsNPC)
+                && (includeZeroDamageDones || c.OwnersOrOwnTotalDamageDonePlusPets != 0)
+                && (includeZeroDamageTakens || c.TotalDamageTaken != 0));
 
         public FightCharacterCounts GetFightCharacterCounts(
             bool includeNPCs = true,
-            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true,
-            bool includeNullOwnersHealingDones = true, bool includeNullOwnersHealingTakens = true)
-            => new FightCharacterCounts(this, includeNPCs, includeZeroDamageDones, includeZeroDamageTakens, includeNullOwnersHealingDones, includeNullOwnersHealingTakens);
+            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
+            => new FightCharacterCounts(this, includeNPCs, includeZeroDamageDones, includeZeroDamageTakens);
 
         public DateTime? StartTime { get; protected set; }
         public DateTime? LatestEventTime { get; protected set; }

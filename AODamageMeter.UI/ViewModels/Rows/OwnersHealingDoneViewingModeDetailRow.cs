@@ -19,7 +19,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight)
                 {
-                    return HealingDoneInfo.GetOwnersHealingDoneTooltip(DisplayIndex);
+                    return HealingDoneInfo.GetOwnersHealingDoneTooltip(Title, DisplayIndex, PercentOfTotal, PercentOfMax);
                 }
             }
         }
