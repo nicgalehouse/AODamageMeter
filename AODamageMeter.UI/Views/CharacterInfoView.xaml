@@ -30,7 +30,8 @@
       <TextBlock Grid.Column="0"
                  Margin="5 0 0 0" VerticalAlignment="Center"
                  Text="{Binding RelativeSource={RelativeSource AncestorType=Window, Mode=FindAncestor}, Path=Title}"/>
-      <Button Grid.Column="1" IsCancel="True">
+      <Button Grid.Column="1" IsCancel="True"
+              ToolTip="Close">
         <fa:ImageAwesome Icon="Close"/>
       </Button>
     </Grid>

@@ -29,8 +29,9 @@
       </Grid.ColumnDefinitions>
 
       <TextBlock Grid.Column="0" Margin="5 0 0 0" VerticalAlignment="Center"
-                 Text="Select a Character"/>
-      <Button Grid.Column="1" IsCancel="True">
+                 Text="Select Character"/>
+      <Button Grid.Column="1" IsCancel="True"
+              ToolTip="Close">
         <fa:ImageAwesome Icon="Close"/>
       </Button>
     </Grid>
