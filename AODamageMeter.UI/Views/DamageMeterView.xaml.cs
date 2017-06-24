@@ -14,14 +14,22 @@ namespace AODamageMeter.UI.Views
         {
             InitializeComponent();
             DataContext = _damageMeterViewModel = new DamageMeterViewModel();
+
+            if (_damageMeterViewModel.DamageMeter == null)
+            {
+                Loaded += (_, __) => ShowCharacterSelection();
+            }
         }
 
         private void FileButton_Click_ShowCharacterSelection(object sender, RoutedEventArgs e)
+            => ShowCharacterSelection();
+
+        private void ShowCharacterSelection()
         {
             string previousSelectedCharacterName = Settings.Default.SelectedCharacterName;
             string previousSelectedLogFilePath = Settings.Default.SelectedLogFilePath;
 
-            var characterSelectionView = new CharacterSelectionView(_damageMeterViewModel);
+            var characterSelectionView = new CharacterSelectionView(_damageMeterViewModel) { Owner = this };
             if (characterSelectionView.ShowDialog() == true)
             {
                 _damageMeterViewModel.TryInitializeDamageMeter(

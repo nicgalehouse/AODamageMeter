@@ -55,7 +55,7 @@ namespace AODamageMeter.UI.ViewModels
                 switch (SelectedViewingMode)
                 {
                     case ViewingMode.Fights: return "Fights";
-                    case ViewingMode.Fight: return SelectedFightViewModel?.FightTitle ?? "Fight (no character selected)";
+                    case ViewingMode.Fight: return SelectedFightViewModel?.FightTitle ?? "Fight";
                     case ViewingMode.DamageDone: return "Damage Done";
                     case ViewingMode.DamageDoneInfo: return $"{SelectedCharacter.UncoloredName}'s Damage Done";
                     case ViewingMode.DamageTaken: return "Damage Taken";

@@ -1,5 +1,6 @@
 ﻿using AODamageMeter.UI.ViewModels;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -11,11 +12,19 @@ namespace AODamageMeter.UI.Views
         {
             InitializeComponent();
             DataContext = CharacterSelectionViewModel = new CharacterSelectionViewModel(damageMeterViewModel);
+            if (!CharacterSelectionViewModel.CharacterInfoViewModels.Any()
+                && damageMeterViewModel.DamageMeter == null)
+            {
+                Loaded += (_, __) => ShowNewCharacterInfo();
+            }
         }
 
         public CharacterSelectionViewModel CharacterSelectionViewModel { get; }
 
         private void AddButton_Click_ShowCharacterInfo(object sender, RoutedEventArgs e)
+            => ShowNewCharacterInfo();
+
+        private void ShowNewCharacterInfo()
         {
             var characterInfoView = new CharacterInfoView(new CharacterInfoViewModel(CharacterSelectionViewModel)) { Owner = this };
             if (characterInfoView.ShowDialog() == true

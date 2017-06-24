@@ -28,7 +28,13 @@ namespace AODamageMeter.UI.ViewModels
         }
 
         public void Add(CharacterInfoViewModel characterInfoViewModel)
-            => CharacterInfoViewModels.Add(characterInfoViewModel);
+        {
+            CharacterInfoViewModels.Add(characterInfoViewModel);
+            if (CharacterInfoViewModels.Count == 1)
+            {
+                SelectedCharacterInfoViewModel = characterInfoViewModel;
+            }
+        }
 
         public ICommand DeleteCommand { get; }
         public bool CanExecuteDeleteCommand() => SelectedCharacterInfoViewModel != null;

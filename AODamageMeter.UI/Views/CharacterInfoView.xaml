@@ -12,7 +12,8 @@
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewHeight, Mode=TwoWay}"
         Width="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewWidth, Mode=TwoWay}"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewTop, Mode=TwoWay}"
-        Left="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewLeft, Mode=TwoWay}">
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=CharacterInfoViewLeft, Mode=TwoWay}"
+        FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="24"/>
@@ -45,7 +46,7 @@
 
       <StackPanel Grid.Row="0" Margin="10">
         <TextBlock Text="Name:"/>
-        <TextBox Margin="0 2 0 10"
+        <TextBox Margin="0 2 0 10" x:Name="NameTextBox"
                  Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Text="Log file:"/>
         <TextBox Margin="0 2 0 5"

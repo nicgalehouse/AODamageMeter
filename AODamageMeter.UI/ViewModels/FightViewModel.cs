@@ -61,7 +61,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             lock (Fight)
             {
-                if (_viewingModeRows.Count == 0)
+                if (!_viewingModeRows.Any())
                 {
                     foreach (var viewingModeRow in ViewingModeMainRowBase.GetRows(this))
                     {

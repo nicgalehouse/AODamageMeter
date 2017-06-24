@@ -9,10 +9,10 @@
       <Value Profile="(Default)">400</Value>
     </Setting>
     <Setting Name="DamageMeterViewTop" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">NaN</Value>
+      <Value Profile="(Default)">197</Value>
     </Setting>
     <Setting Name="DamageMeterViewLeft" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">NaN</Value>
+      <Value Profile="(Default)">127</Value>
     </Setting>
     <Setting Name="CharacterNames" Type="System.Collections.Specialized.StringCollection" Scope="User">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -35,10 +35,10 @@
       <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="CharacterSelectionViewTop" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">NaN</Value>
+      <Value Profile="(Default)">231</Value>
     </Setting>
     <Setting Name="CharacterSelectionViewLeft" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">NaN</Value>
+      <Value Profile="(Default)">160</Value>
     </Setting>
     <Setting Name="NameColumnWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">110</Value>
@@ -53,10 +53,10 @@
       <Value Profile="(Default)">300</Value>
     </Setting>
     <Setting Name="CharacterInfoViewTop" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">NaN</Value>
+      <Value Profile="(Default)">371</Value>
     </Setting>
     <Setting Name="CharacterInfoViewLeft" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">NaN</Value>
+      <Value Profile="(Default)">265</Value>
     </Setting>
     <Setting Name="OptionsViewHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">350</Value>

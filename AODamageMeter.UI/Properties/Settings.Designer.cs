@@ -49,7 +49,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("197")]
         public double DamageMeterViewTop {
             get {
                 return ((double)(this["DamageMeterViewTop"]));
@@ -61,7 +61,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("127")]
         public double DamageMeterViewLeft {
             get {
                 return ((double)(this["DamageMeterViewLeft"]));
@@ -147,7 +147,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("231")]
         public double CharacterSelectionViewTop {
             get {
                 return ((double)(this["CharacterSelectionViewTop"]));
@@ -159,7 +159,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("160")]
         public double CharacterSelectionViewLeft {
             get {
                 return ((double)(this["CharacterSelectionViewLeft"]));
@@ -219,7 +219,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("371")]
         public double CharacterInfoViewTop {
             get {
                 return ((double)(this["CharacterInfoViewTop"]));
@@ -231,7 +231,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        [global::System.Configuration.DefaultSettingValueAttribute("265")]
         public double CharacterInfoViewLeft {
             get {
                 return ((double)(this["CharacterInfoViewLeft"]));
