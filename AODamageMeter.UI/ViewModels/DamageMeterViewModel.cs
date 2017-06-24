@@ -18,6 +18,7 @@ namespace AODamageMeter.UI.ViewModels
         private Task _damageMeterUpdater;
         private bool _isDamageMeterUpdaterStarted;
         private readonly ObservableCollection<MainRowBase> _fightRows = new ObservableCollection<MainRowBase>();
+        private bool _historicalFightsNeedUpdating = false;
 
         public DamageMeterViewModel()
         {
@@ -27,6 +28,16 @@ namespace AODamageMeter.UI.ViewModels
             ResetAndSaveFightCommand = new RelayCommand(ExecuteResetAndSaveFightCommand);
             ResetFightCommand = new RelayCommand(ExecuteResetFightCommand);
             TryInitializeDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
+            // Fights in the fight history have ended. The only way their stats can change is if settings like IncludeTopLevelNPCRows
+            // change. This optimization could be generalized with more effort to fight-level updates. But we have to deal with the cost
+            // of always updating fight-level rows regardless (when viewing the running fight), so not a big deal. Here we're making
+            // sure the app runs just as smoothly when there's 1 fight as when there's 100 fights in the fight history.
+            Settings.Default.PropertyChanged += (_, e) =>
+            {
+                _historicalFightsNeedUpdating = _historicalFightsNeedUpdating
+                    || (e.PropertyName[0] == 'S' && e.PropertyName[1] == 'h')  // ShowRowNumbers, ShowPercentOfTotal
+                    || (e.PropertyName[0] == 'I' && e.PropertyName[1] == 'n'); // IncludeTopLevelZeroDamageRows, IncludeTopLevelNPCRows
+            };
         }
 
         public DamageMeter DamageMeter { get; private set; }
@@ -91,15 +102,25 @@ namespace AODamageMeter.UI.ViewModels
         {
             StopDamageMeterUpdater();
 
-            if (LatestFightViewModel != null && !saveCurrentFight)
-            {
-                _fightRows.RemoveAt(_fightRows.Count - 1);
-            }
 #if DEBUG
             DamageMeter.InitializeNewFight(skipToEndOfLog: false, saveCurrentFight: saveCurrentFight);
 #else
             DamageMeter.InitializeNewFight(saveCurrentFight: saveCurrentFight);
 #endif
+            if (LatestFightViewModel != null)
+            {
+                if (saveCurrentFight)
+                {
+                    // Final update before the fight gets updated only when settings change (see constructor above). We're
+                    // doing this after InitializeNewFight because that's when this fight gets paused & stats set in stone.
+                    _fightRows[_fightRows.Count - 1].Update();
+                }
+                else
+                {
+                    _fightRows.RemoveAt(_fightRows.Count - 1);
+                }
+            }
+
             LatestFightViewModel = new FightViewModel(CurrentFight);
             SelectedFightViewModel = SelectedViewingMode != ViewingMode.Fights ? LatestFightViewModel : null;
             _fightRows.Add(new FightMainRow(LatestFightViewModel, displayIndex: _fightRows.Count + 1));
@@ -244,9 +265,18 @@ namespace AODamageMeter.UI.ViewModels
         {
             lock (CurrentFight)
             {
-                foreach (var fightRow in _fightRows)
+                if (_historicalFightsNeedUpdating)
                 {
-                    fightRow.Update();
+                    foreach (var fightRow in _fightRows)
+                    {
+                        fightRow.Update();
+                    }
+
+                    _historicalFightsNeedUpdating = false;
+                }
+                else
+                {
+                    _fightRows[_fightRows.Count - 1].Update();
                 }
 
                 return _fightRows;
