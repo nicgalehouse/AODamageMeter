@@ -47,13 +47,13 @@ namespace AODamageMeter.FightEvents
             Resisted =    CreateRegex("Target resisted."),
             Countered =   CreateRegex("Your target countered the nano program."),
             Aborted =     CreateRegex("Nano program aborted."),
-            Unavailable = CreateRegex("Executing programs is currently unavailable."),
             Wait =        CreateRegex("Wait for current nano program execution to finish."),
-            Already =     CreateRegex("Nano program failed. Already executing nanoprogram."),
             Unable =      CreateRegex("Unable to execute nano program. You can't execute this nano on the target."),
+            Unavailable = CreateRegex("Executing programs is currently unavailable."),
+            Already =     CreateRegex("Nano program failed. Already executing nanoprogram."),
             Nano =        CreateRegex($"You need at least {AMOUNT} remaining nano energy to execute this program."),
             Better =      CreateRegex("NCU error: Better nano program already running."),
-            Stand =       CreateRegex("Unable to execute nano program. You must stand still."),
+            StandStill =  CreateRegex("Unable to execute nano program. You must stand still."),
             NotFound =    CreateRegex("Unable to execute nano program. Target not found."),
             LoS =         CreateRegex("Target is not in line of sight!"),
             Range1 =      CreateRegex("Target out of range for nano program."),
@@ -62,7 +62,9 @@ namespace AODamageMeter.FightEvents
             Falling =     CreateRegex("You can't execute nanoprograms while falling!"),
             Items =       CreateRegex("You can't execute nano programs on items."),
             PleaseWait =  CreateRegex("Please wait."),
-            NCU =         CreateRegex("Target does not have enough nano controlling units \\(NCU\\) left.");
+            NCU =         CreateRegex("Target does not have enough nano controlling units \\(NCU\\) left."),
+            NotAllowed =  CreateRegex("You are not allowed to execute hostile nanoprogram on this target."),
+            StandUp =     CreateRegex("You must be standing up to execute a nano program.");
 
         public string NanoProgram { get; protected set; }
         public bool IsStartOfCast => EndEvent != null;
@@ -107,13 +109,14 @@ namespace AODamageMeter.FightEvents
                     _latestPotentialStartEvent = null;
                 }
             }
-            else if (TryMatch(Unavailable, out match)
-                || TryMatch(Wait, out match)
-                || TryMatch(Already, out match)
+#if DEBUG
+            else if (TryMatch(Wait, out match)
                 || TryMatch(Unable, out match)
+                || TryMatch(Unavailable, out match)
+                || TryMatch(Already, out match)
                 || TryMatch(Nano, out match)
                 || TryMatch(Better, out match)
-                || TryMatch(Stand, out match)
+                || TryMatch(StandStill, out match)
                 || TryMatch(NotFound, out match)
                 || TryMatch(LoS, out match)
                 || TryMatch(Range1, out match)
@@ -122,11 +125,16 @@ namespace AODamageMeter.FightEvents
                 || TryMatch(Falling, out match)
                 || TryMatch(Items, out match)
                 || TryMatch(PleaseWait, out match)
-                || TryMatch(NCU, out match))
+                || TryMatch(NCU, out match)
+                || TryMatch(NotAllowed, out match)
+                || TryMatch(StandUp, out match))
             {
                 IsCastUnavailable = true;
             }
             else IsUnmatched = true;
+#else
+            else IsCastUnavailable = true;
+#endif
         }
     }
 }
