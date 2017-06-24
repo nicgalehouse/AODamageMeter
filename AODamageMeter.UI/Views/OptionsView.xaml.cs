@@ -33,6 +33,12 @@ namespace AODamageMeter.UI.Views
             }
         }
 
+        private void ShowPercentOfTotalRadioButton_Checked_Persist(object sender, RoutedEventArgs e)
+            => Settings.Default.ShowPercentOfTotal = true;
+
+        private void ShowPercentOfTotalRadioButton_Unchecked_Persist(object sender, RoutedEventArgs e)
+            => Settings.Default.ShowPercentOfTotal = false;
+
         protected override void OnClosing(CancelEventArgs e)
         {
             if (DialogResult != true)
@@ -52,11 +58,5 @@ namespace AODamageMeter.UI.Views
 
             base.OnClosing(e);
         }
-
-        private void ShowPercentOfTotalRadioButton_Checked_Persist(object sender, RoutedEventArgs e)
-            => Settings.Default.ShowPercentOfTotal = true;
-
-        private void ShowPercentOfTotalRadioButton_Unchecked_Persist(object sender, RoutedEventArgs e)
-            => Settings.Default.ShowPercentOfTotal = false;
     }
 }
