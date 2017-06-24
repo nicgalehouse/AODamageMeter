@@ -14,7 +14,9 @@
 {character.Organization} ({character.OrganizationRank})");
 
         public static string GetFightCharacterCountsTooltip(this FightCharacterCounts counts, string title)
-=> $@"{title} ({counts.FightCharacterCount} {(counts.FightCharacterCount == 1 ? "character" : "characters")})
+=> $@"{title}
+
+{counts.FightCharacterCount} {(counts.FightCharacterCount == 1 ? "character" : "characters")}
 
 {counts.PlayerCount} {(counts.PlayerCount == 1 ? "player" : "players")}, {counts.AveragePlayerLevel.Format()}/{counts.AveragePlayerAlienLevel.Format()}
   {counts.OmniPlayerCount} {(counts.OmniPlayerCount == 1 ? "Omni" : "Omnis")}, {counts.AverageOmniPlayerLevel.Format()}/{counts.AverageOmniPlayerAlienLevel.Format()}

@@ -3,7 +3,7 @@
     public enum ViewingMode
     {
         Fights,
-        ViewingModes,
+        Fight,
         DamageDone,
         DamageDoneInfo,
         DamageTaken,

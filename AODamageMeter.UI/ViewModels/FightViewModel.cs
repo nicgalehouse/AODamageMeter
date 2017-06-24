@@ -1,5 +1,8 @@
-﻿using AODamageMeter.UI.Properties;
+﻿using AODamageMeter.Helpers;
+using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using AODamageMeter.UI.ViewModels.Rows;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -30,6 +33,13 @@ namespace AODamageMeter.UI.ViewModels
         public Fight Fight { get; }
         public DamageMeter DamageMeter => Fight.DamageMeter;
         public Character Owner => Fight.DamageMeter.Owner;
+
+        public string FightDuration => (Fight.Duration ?? TimeSpan.Zero).WithoutMilliseconds().ToString("g");
+
+        public string FightTitle
+            => Fight.HasEnded ? $"Fight ({Fight.StartTime:hh:mm}{NumberFormatter.EnDash}{Fight.EndTime:hh:mm}, {FightDuration})"
+            : Fight.HasStarted ? $"Fight ({Fight.StartTime:hh:mm}{NumberFormatter.EnDash}{DateTime.Now:hh:mm}, {FightDuration})"
+            : "Fight (unstarted)";
 
         private FightCharacter _fightOwner;
         public FightCharacter FightOwner

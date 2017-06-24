@@ -18,7 +18,7 @@ namespace AODamageMeter.UI.ViewModels
         private Task _damageMeterUpdater;
         private bool _isDamageMeterUpdaterStarted;
         private readonly ObservableCollection<MainRowBase> _fightRows = new ObservableCollection<MainRowBase>();
-        private bool _historicalFightsNeedUpdating = false;
+        private bool _historicalFightRowsNeedUpdating = false;
 
         public DamageMeterViewModel()
         {
@@ -28,38 +28,44 @@ namespace AODamageMeter.UI.ViewModels
             ResetAndSaveFightCommand = new RelayCommand(ExecuteResetAndSaveFightCommand);
             ResetFightCommand = new RelayCommand(ExecuteResetFightCommand);
             TryInitializeDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
-            // Fights in the fight history have ended. The only way their stats can change is if settings like IncludeTopLevelNPCRows
-            // change. This optimization could be generalized with more effort to fight-level updates. But we have to deal with the cost
-            // of always updating fight-level rows regardless (when viewing the running fight), so not a big deal. Here we're making
-            // sure the app runs just as smoothly when there's 1 fight as when there's 100 fights in the fight history.
+            // Performance optimization: don't let performance degrade as the # of fights in the fight history increase.
+            // Would be more complicated to extend this to views within a historical fight, but possible. But don't need
+            // to do it there because it's less expensive than the unavoidable cost of updating the current fight.
             Settings.Default.PropertyChanged += (_, e) =>
-            {
-                _historicalFightsNeedUpdating = _historicalFightsNeedUpdating
-                    || (e.PropertyName[0] == 'S' && e.PropertyName[1] == 'h')  // ShowRowNumbers, ShowPercentOfTotal
-                    || (e.PropertyName[0] == 'I' && e.PropertyName[1] == 'n'); // IncludeTopLevelZeroDamageRows, IncludeTopLevelNPCRows
-            };
+                _historicalFightRowsNeedUpdating = _historicalFightRowsNeedUpdating
+                    || e.PropertyName == nameof(Settings.Default.ShowRowNumbers)
+                    || e.PropertyName == nameof(Settings.Default.ShowPercentOfTotal)
+                    || e.PropertyName == nameof(Settings.Default.IncludeTopLevelZeroDamageRows)
+                    || e.PropertyName == nameof(Settings.Default.IncludeTopLevelNPCRows);
         }
 
         public DamageMeter DamageMeter { get; private set; }
         public Character Owner => DamageMeter?.Owner;
         public Fight CurrentFight => DamageMeter?.CurrentFight;
 
-        private FightViewModel LatestFightViewModel { get; set; }
+        private ViewingMode SelectedViewingMode { get; set; } = ViewingMode.Fight;
+        private FightViewModel CurrentFightViewModel { get; set; }
         private FightViewModel SelectedFightViewModel { get; set; }
+        private Character SelectedCharacter { get; set; }
 
-        private ViewingMode _selectedViewingMode = ViewingMode.ViewingModes;
-        public ViewingMode SelectedViewingMode
+        public string Title
         {
-            get => _selectedViewingMode;
-            private set => Set(ref _selectedViewingMode, value);
-        }
-
-        // Using Character rather than FightCharacter so the view can exist independently of damage meter resets.
-        private Character _selectedCharacter;
-        public Character SelectedCharacter
-        {
-            get => _selectedCharacter;
-            private set => Set(ref _selectedCharacter, value);
+            get
+            {
+                switch (SelectedViewingMode)
+                {
+                    case ViewingMode.Fights: return "Fights";
+                    case ViewingMode.Fight: return SelectedFightViewModel?.FightTitle ?? "Fight (no character selected)";
+                    case ViewingMode.DamageDone: return "Damage Done";
+                    case ViewingMode.DamageDoneInfo: return $"{SelectedCharacter.UncoloredName}'s Damage Done";
+                    case ViewingMode.DamageTaken: return "Damage Taken";
+                    case ViewingMode.DamageTakenInfo: return $"{SelectedCharacter.UncoloredName}'s Damage Taken";
+                    case ViewingMode.OwnersHealingDone: return $"{SelectedCharacter.UncoloredName}'s Healing Done";
+                    case ViewingMode.OwnersHealingTaken: return $"{SelectedCharacter.UncoloredName}'s Healing Taken";
+                    case ViewingMode.OwnersCasts: return $"{SelectedCharacter.UncoloredName}'s Casts";
+                    default: throw new NotImplementedException();
+                }
+            }
         }
 
         private ObservableCollection<MainRowBase> _displayedRows;
@@ -93,6 +99,7 @@ namespace AODamageMeter.UI.ViewModels
                 || SelectedViewingMode == ViewingMode.OwnersCasts)
             {
                 SelectedCharacter = Owner;
+                RaisePropertyChanged(nameof(Title));
             }
 
             return true;
@@ -107,12 +114,12 @@ namespace AODamageMeter.UI.ViewModels
 #else
             DamageMeter.InitializeNewFight(saveCurrentFight: saveCurrentFight);
 #endif
-            if (LatestFightViewModel != null)
+            if (CurrentFightViewModel != null)
             {
                 if (saveCurrentFight)
                 {
-                    // Final update before the fight gets updated only when settings change (see constructor above). We're
-                    // doing this after InitializeNewFight because that's when this fight gets paused & stats set in stone.
+                    // Final update before this fight row gets updated only when settings change (see constructor above). We're
+                    // doing this after InitializeNewFight because that's when this fight gets paused & its stats set in stone.
                     _fightRows[_fightRows.Count - 1].Update();
                 }
                 else
@@ -121,9 +128,9 @@ namespace AODamageMeter.UI.ViewModels
                 }
             }
 
-            LatestFightViewModel = new FightViewModel(CurrentFight);
-            SelectedFightViewModel = SelectedViewingMode != ViewingMode.Fights ? LatestFightViewModel : null;
-            _fightRows.Add(new FightMainRow(LatestFightViewModel, displayIndex: _fightRows.Count + 1));
+            CurrentFightViewModel = new FightViewModel(CurrentFight);
+            SelectedFightViewModel = SelectedViewingMode != ViewingMode.Fights ? CurrentFightViewModel : null;
+            _fightRows.Add(new FightMainRow(CurrentFightViewModel, displayIndex: _fightRows.Count + 1));
 
             StartDamageMeterUpdater();
         }
@@ -163,10 +170,10 @@ namespace AODamageMeter.UI.ViewModels
             switch (SelectedViewingMode)
             {
                 case ViewingMode.Fights:
-                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedViewingMode = ViewingMode.Fight;
                     SelectedFightViewModel = mainRow.FightViewModel;
                     break;
-                case ViewingMode.ViewingModes:
+                case ViewingMode.Fight:
                     var viewingMode = ((ViewingModeMainRowBase)mainRow).ViewingMode;
                     if (viewingMode == ViewingMode.OwnersXP) return false;
 
@@ -189,6 +196,7 @@ namespace AODamageMeter.UI.ViewModels
                 default: return false;
             }
 
+            RaisePropertyChanged(nameof(Title));
             UpdateDisplayedRows();
 
             return true;
@@ -198,39 +206,40 @@ namespace AODamageMeter.UI.ViewModels
         {
             switch (SelectedViewingMode)
             {
-                case ViewingMode.ViewingModes:
+                case ViewingMode.Fight:
                     SelectedViewingMode = ViewingMode.Fights;
                     SelectedFightViewModel = null;
                     break;
                 case ViewingMode.DamageDone:
-                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedViewingMode = ViewingMode.Fight;
                     break;
                 case ViewingMode.DamageDoneInfo:
                     SelectedViewingMode = ViewingMode.DamageDone;
                     SelectedCharacter = null;
                     break;
                 case ViewingMode.DamageTaken:
-                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedViewingMode = ViewingMode.Fight;
                     break;
                 case ViewingMode.DamageTakenInfo:
                     SelectedViewingMode = ViewingMode.DamageTaken;
                     SelectedCharacter = null;
                     break;
                 case ViewingMode.OwnersHealingDone:
-                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedViewingMode = ViewingMode.Fight;
                     SelectedCharacter = null;
                     break;
                 case ViewingMode.OwnersHealingTaken:
-                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedViewingMode = ViewingMode.Fight;
                     SelectedCharacter = null;
                     break;
                 case ViewingMode.OwnersCasts:
-                    SelectedViewingMode = ViewingMode.ViewingModes;
+                    SelectedViewingMode = ViewingMode.Fight;
                     SelectedCharacter = null;
                     break;
                 default: return false;
             }
 
+            RaisePropertyChanged(nameof(Title));
             UpdateDisplayedRows();
 
             return true;
@@ -244,7 +253,13 @@ namespace AODamageMeter.UI.ViewModels
             switch (SelectedViewingMode)
             {
                 case ViewingMode.Fights: updatedRows = GetUpdatedFightRows(); break;
-                case ViewingMode.ViewingModes: updatedRows = SelectedFightViewModel.GetUpdatedViewingModeRows(); break;
+                case ViewingMode.Fight:
+                    updatedRows = SelectedFightViewModel.GetUpdatedViewingModeRows();
+                    if (SelectedFightViewModel == CurrentFightViewModel)
+                    {
+                        RaisePropertyChanged(nameof(Title));
+                    }
+                    break;
                 case ViewingMode.DamageDone: updatedRows = SelectedFightViewModel.GetUpdatedDamageDoneRows(); break;
                 case ViewingMode.DamageDoneInfo: updatedRows = SelectedFightViewModel.GetUpdatedDamageDoneInfoRows(SelectedCharacter); break;
                 case ViewingMode.DamageTaken: updatedRows = SelectedFightViewModel.GetUpdatedDamageTakenRows(); break;
@@ -265,14 +280,14 @@ namespace AODamageMeter.UI.ViewModels
         {
             lock (CurrentFight)
             {
-                if (_historicalFightsNeedUpdating)
+                if (_historicalFightRowsNeedUpdating)
                 {
                     foreach (var fightRow in _fightRows)
                     {
                         fightRow.Update();
                     }
 
-                    _historicalFightsNeedUpdating = false;
+                    _historicalFightRowsNeedUpdating = false;
                 }
                 else
                 {

@@ -112,14 +112,14 @@ $@"{Title}
         {
             Clipboard.SetText(text);
 
-            string scriptTitle = Title;
+            string scriptTitle = FormatForScript(Title);
             string scriptBody = FormatForScript(text);
             int markupLength = "<a href=\"text://\"></a>".Length;
             int totalLength = scriptTitle.Length + scriptBody.Length + markupLength;
             int lengthOverTheLimit = Math.Max(totalLength - 1024, 0);
             string script = lengthOverTheLimit > 0
-                ? $"<a href=\"text://{scriptBody.Substring(0, scriptBody.Length - lengthOverTheLimit - 3)}...\">{Title}</a>"
-                : $"<a href=\"text://{scriptBody}\">{Title}</a>";
+                ? $"<a href=\"text://{scriptBody.Substring(0, scriptBody.Length - lengthOverTheLimit - 3)}...\">{scriptTitle}</a>"
+                : $"<a href=\"text://{scriptBody}\">{scriptTitle}</a>";
 
             if (VerifyScriptDirectoryExists())
             {
@@ -142,6 +142,7 @@ $@"{Title}
         private string FormatForScript(string text)
             => text.Replace(Environment.NewLine, "<br>")
             .Replace(EmDash, "--")
+            .Replace(EnDash, "-")
             .Replace("≤", "<=")
             .Replace("≥", ">=")
             .Replace("〈", "(")

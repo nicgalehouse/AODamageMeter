@@ -40,7 +40,9 @@ namespace AODamageMeter.UI.ViewModels.Rows
                         includeZeroDamageTakens: Settings.Default.IncludeTopLevelZeroDamageRows);
 
                     return
-$@"{Title} ({stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")})
+$@"{Title}
+
+{stats.FightCharacterCount} {(stats.FightCharacterCount == 1 ? "character": "characters")}
 
 {stats.TotalDamage:N0} total dmg
 

@@ -15,7 +15,6 @@
     <converters:IconPathToBitmapImageConverter x:Key="IconPathToBitmapImageConverter"/>
     <converters:BoolToNegationConverter x:Key="BoolToNegationConverter"/>
     <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter"/>
-    <converters:ViewNameConverter x:Key="ViewNameConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <Color x:Key="LightBlueColor">#73CBD3</Color>

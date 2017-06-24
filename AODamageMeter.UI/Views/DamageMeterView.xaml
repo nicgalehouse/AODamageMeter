@@ -40,14 +40,8 @@
         <fa:ImageAwesome Icon="Users"/>
       </Button>
 
-      <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="3 0 0 0">
-        <TextBlock.Text>
-          <MultiBinding Converter="{StaticResource ViewNameConverter}">
-            <Binding Path="SelectedViewingMode"/>
-            <Binding Path="SelectedCharacter"/>
-          </MultiBinding>
-        </TextBlock.Text>
-      </TextBlock>
+      <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="3 0 0 0"
+                 Text="{Binding Title}"/>
 
       <Button Grid.Column="2"
               Command="{Binding ClearFightHistoryCommand}"

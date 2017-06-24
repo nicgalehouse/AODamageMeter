@@ -95,7 +95,6 @@
     <Compile Include="Converters\StringToVisibilityConverter.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>
-    <Compile Include="Converters\ViewNameConverter.cs" />
     <Compile Include="Helpers\DamageMeterExtensions.cs" />
     <Compile Include="Helpers\SharedTooltips.cs" />
     <Compile Include="RowViewModelDataGrid.cs" />

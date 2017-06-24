@@ -1,5 +1,4 @@
-﻿using AODamageMeter.Helpers;
-using AODamageMeter.UI.Helpers;
+﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,6 @@ namespace AODamageMeter.UI.ViewModels.Rows
             : base(fightViewModel)
             => DisplayIndex = displayIndex;
 
-        public string Duration => (Fight.Duration ?? TimeSpan.Zero).WithoutMilliseconds().ToString("g");
 
         public int? FightOwnersDisplayIndex { get; private set; }
         public double? FightOwnersPercentOfTotalDamageDone { get; private set; }
@@ -23,13 +21,11 @@ namespace AODamageMeter.UI.ViewModels.Rows
         public double? DisplayedPercent => Settings.Default.ShowPercentOfTotal ? FightOwnersPercentOfTotalDamageDone : FightOwnersPercentOfMaxDamageDone;
 
         public override string Title
-            => Fight.HasEnded ? $"Fight ({Fight.StartTime:hh:mm}-{Fight.EndTime:hh:mm}, {Duration})"
-            : Fight.HasStarted ? $"Fight ({Fight.StartTime:hh:mm}-{DateTime.Now:hh:mm}, {Duration})"
-            : "Fight (unstarted)";
+            => FightViewModel.FightTitle;
 
         public override string UnnumberedLeftText
-            => Fight.HasEnded ? $"{Fight.StartTime:hh:mm}{EnDash}{Fight.EndTime:hh:mm}, {Duration}"
-            : Fight.HasStarted ? $"{Fight.StartTime:hh:mm}{EnDash}{DateTime.Now:hh:mm}, {Duration}"
+            => Fight.HasEnded ? $"{Fight.StartTime:hh:mm}{EnDash}{Fight.EndTime:hh:mm}, {FightViewModel.FightDuration}"
+            : Fight.HasStarted ? $"{Fight.StartTime:hh:mm}{EnDash}{DateTime.Now:hh:mm}, {FightViewModel.FightDuration}"
             : $"Unstarted";
 
         public override string LeftTextToolTip
@@ -40,7 +36,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 {
                     var counts = Fight.GetFightCharacterCounts(includeNPCs: Settings.Default.IncludeTopLevelNPCRows);
 
-                    return counts.GetFightCharacterCountsTooltip("Fight");
+                    return counts.GetFightCharacterCountsTooltip(Title);
                 }
             }
         }
