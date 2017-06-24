@@ -77,7 +77,10 @@ namespace AODamageMeter.UI.ViewModels
 
         public bool TryInitializeDamageMeter(string characterName, string logFilePath)
         {
-            if (_characterName == characterName && _logFilePath == logFilePath)
+            if (string.IsNullOrWhiteSpace(characterName) || string.IsNullOrWhiteSpace(logFilePath))
+                return false;
+
+            if (characterName == _characterName && logFilePath == _logFilePath)
                 return true;
 
             if (!File.Exists(logFilePath))
