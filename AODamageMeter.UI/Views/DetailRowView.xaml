@@ -37,7 +37,8 @@
                Text="{Binding RightText}"
                MouseLeftButtonDown="RightTextBlock_MouseLeftButtonDown_CopyAndScript"
                ToolTipService.Placement="Right"
-               ToolTipService.HorizontalOffset="2">
+               ToolTipService.HorizontalOffset="2"
+               Opacity="0">
       <TextBlock.ToolTip>
         <TextBlock Text="{Binding RightTextToolTip}"/>
       </TextBlock.ToolTip>

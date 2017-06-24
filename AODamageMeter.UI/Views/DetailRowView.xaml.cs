@@ -1,6 +1,8 @@
 ﻿using AODamageMeter.UI.ViewModels;
+using System;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace AODamageMeter.UI.Views
 {
@@ -12,12 +14,22 @@ namespace AODamageMeter.UI.Views
 
             // Matters when font properties change. These two text blocks share the same height, and name's
             // text block has no width-only false positives, so pivot off of its event.
-            LeftTextBlock.SizeChanged += (_, e) => 
+            LeftTextBlock.SizeChanged += (_, e) =>
             {
                 if (!e.HeightChanged) return;
 
                 Canvas.SetTop(LeftTextBlock, (18 - LeftTextBlock.ActualHeight) / 2);
                 Canvas.SetTop(RightTextBlock, (18 - LeftTextBlock.ActualHeight) / 2);
+            };
+
+            // Annoying flash of the right text over the left side of the row happens when quickly changing between
+            // views w/ detail rows expanded. This slightly delays making the right text visible to prevent the flash.
+            // I guess it leads to a much less noticeable flash itself, but there's already a little flash regardless.
+            // Can we solve directly/differently? Maybe z-index but then would have to put something on the far left...
+            // Code based on: https://stackoverflow.com/questions/19684191/rendering-not-finished-in-loaded-event.
+            RightTextBlock.Loaded += (_, __) =>
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => RightTextBlock.Opacity = 1));
             };
         }
 
