@@ -1,3 +1,4 @@
+using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
 using AODamageMeter.UI.ViewModels.Rows;
 using System;
@@ -85,7 +86,7 @@ namespace AODamageMeter.UI.ViewModels
 
             if (!File.Exists(logFilePath))
             {
-                try { File.Create(logFilePath); }
+                try { FileHelper.CreateEmptyFile(logFilePath); }
                 catch { return false; }
             }
 

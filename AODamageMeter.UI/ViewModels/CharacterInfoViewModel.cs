@@ -1,5 +1,6 @@
 ﻿using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
+using AODamageMeter.UI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -167,7 +168,7 @@ namespace AODamageMeter.UI.ViewModels
                         LogFilePath = $@"{path}\Log.txt";
                         if (!File.Exists(LogFilePath))
                         {
-                            File.Create(LogFilePath);
+                            FileHelper.CreateEmptyFile(LogFilePath);
                             RefreshLogFileSize();
                         }
                         AutoConfigureResult = "Auto-configure succeeded. An existing log file was found.";
@@ -180,7 +181,7 @@ namespace AODamageMeter.UI.ViewModels
                         LogFilePath = $@"{path}\Log.txt";
                         if (!File.Exists(LogFilePath))
                         {
-                            File.Create(LogFilePath);
+                            FileHelper.CreateEmptyFile(LogFilePath);
                             RefreshLogFileSize();
                         }
                         AutoConfigureResult = "Auto-configure succeeded. An existing log file was found and reconfigured.";
@@ -197,7 +198,7 @@ namespace AODamageMeter.UI.ViewModels
                 Directory.CreateDirectory($@"{chatWindowsPath}\{newWindowName}");
                 File.WriteAllText($@"{chatWindowsPath}\{newWindowName}\Config.xml", GetAutoConfigureConfigXml(newWindowName));
                 LogFilePath = $@"{chatWindowsPath}\{newWindowName}\Log.txt";
-                File.Create(LogFilePath);
+                FileHelper.CreateEmptyFile(LogFilePath);
                 RefreshLogFileSize();
                 bool isAlreadyLoggedIn = Process.GetProcessesByName("AnarchyOnline")
                     .Any(p => p.MainWindowTitle?.Contains(CharacterName) ?? false);

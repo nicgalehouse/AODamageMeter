@@ -1,6 +1,8 @@
-﻿using AODamageMeter.UI.Properties;
+﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using AODamageMeter.UI.ViewModels;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -32,8 +34,30 @@ namespace AODamageMeter.UI.Views
             var characterSelectionView = new CharacterSelectionView(_damageMeterViewModel) { Owner = this };
             if (characterSelectionView.ShowDialog() == true)
             {
-                _damageMeterViewModel.TryInitializeDamageMeter(
-                    Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
+                if (string.IsNullOrWhiteSpace(Settings.Default.SelectedCharacterName))
+                    return; // In this case we said 'No character selected' above the OK button, so I guess they know.
+
+                if (string.IsNullOrWhiteSpace(Settings.Default.SelectedLogFilePath))
+                {
+                    MessageBox.Show(
+                        $"No log file for {Settings.Default.SelectedCharacterName} has been specified.",
+                        "Log file not specified",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+                else if (!File.Exists(Settings.Default.SelectedLogFilePath))
+                {
+                    MessageBox.Show(
+                        $"Log file for {Settings.Default.SelectedCharacterName} at {Settings.Default.SelectedLogFilePath} can't be found.",
+                        "Log file not found",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                }
+                else
+                {
+                    _damageMeterViewModel.TryInitializeDamageMeter(
+                        Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
+                }
             }
         }
 
