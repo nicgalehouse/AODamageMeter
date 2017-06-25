@@ -28,7 +28,8 @@ namespace AODamageMeter.UI.ViewModels
             get => _characterName;
             set
             {
-                if (Set(ref _characterName, value))
+                if (Set(ref _characterName, string.IsNullOrWhiteSpace(value)
+                    ? value : char.ToUpperInvariant(value[0]) + value.Substring(1).ToLowerInvariant()))
                 {
                     AutoConfigureResult = null;
                 }

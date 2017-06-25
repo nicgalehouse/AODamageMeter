@@ -14,7 +14,7 @@ namespace AODamageMeter.AmbiguityHelper
                 .SelectMany(l => l.Split()) 
                 .Select(n => n.Trim())
                 .Where(n => !string.IsNullOrEmpty(n))
-                .Select(n => $"{char.ToUpper(n[0])}{n.Substring(1).ToLower()}")
+                .Select(n => $"{char.ToUpperInvariant(n[0])}{n.Substring(1).ToLowerInvariant()}")
                 .Where(Character.FitsPlayerNamingRequirements)
                 .Distinct()
                 .OrderBy(n => n)
@@ -34,7 +34,7 @@ namespace AODamageMeter.AmbiguityHelper
                 .Where(n => !string.IsNullOrEmpty(n))
                 .Select(n => string.Join(" ", n
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(p => $"{char.ToUpper(p[0])}{p.Substring(1).ToLower()}")))
+                    .Select(p => $"{char.ToUpperInvariant(p[0])}{p.Substring(1).ToLowerInvariant()}")))
                 .Where(Character.FitsPetNamingRequirements)
                 .Distinct()
                 .OrderBy(n => n)
