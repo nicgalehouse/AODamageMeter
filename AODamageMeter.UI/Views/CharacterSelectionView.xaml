@@ -78,19 +78,9 @@
         </StackPanel>
 
         <StackPanel Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-          <TextBlock Margin="10 10 10 5" HorizontalAlignment="Right">
-            <!-- Just trying to do this: "{SelectedCharacterInfoViewModel?.CharacterName ?? No character} selected."... yay WPF? -->
-            <TextBlock.Style>
-              <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="Text" Value="{Binding SelectedCharacterInfoViewModel.CharacterName, StringFormat={}{0} selected.}"/>
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding SelectedCharacterInfoViewModel.CharacterName}" Value="{x:Null}">
-                    <Setter Property="Text" Value="No character selected."/>
-                  </DataTrigger>
-                </Style.Triggers>
-              </Style>
-            </TextBlock.Style>
-          </TextBlock>
+          <TextBlock Margin="10 10 10 5" HorizontalAlignment="Right"
+                     Text="{Binding SelectedCharacterInfoViewModel.CharacterName, FallbackValue='No character selected',
+                                    Converter={StaticResource SelectedCharacterDescriptionConverter}}"/>
 
           <StackPanel Margin="10 0 10 10" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Style="{StaticResource TextButtonStyle}"

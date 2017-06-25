@@ -92,6 +92,7 @@
     <Compile Include="Converters\ColorToRowBrushConverter.cs" />
     <Compile Include="Converters\IconPathToBitmapImageConverter.cs" />
     <Compile Include="Converters\ObjectToBoolConverter.cs" />
+    <Compile Include="Converters\SelectedCharacterDescriptionConverter.cs" />
     <Compile Include="Converters\StringToVisibilityConverter.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>
