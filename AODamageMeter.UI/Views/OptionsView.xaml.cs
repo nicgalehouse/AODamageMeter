@@ -10,6 +10,7 @@ namespace AODamageMeter.UI.Views
         private string _previousFontFamily = Settings.Default.FontFamily;
         private double _previousFontSize = Settings.Default.FontSize;
         private int _previousRefreshInterval = Settings.Default.RefreshInterval;
+        private int _previousMaxNumberOfDetailRows = Settings.Default.MaxNumberOfDetailRows;
         private bool _previousShowPercentOfTotal = Settings.Default.ShowPercentOfTotal;
         private bool _previousShowRowNumbers = Settings.Default.ShowRowNumbers;
         private bool _previousIncludeTopLevelNPCRows = Settings.Default.IncludeTopLevelNPCRows;
@@ -46,6 +47,7 @@ namespace AODamageMeter.UI.Views
                 Settings.Default.FontFamily = _previousFontFamily;
                 Settings.Default.FontSize = _previousFontSize;
                 Settings.Default.RefreshInterval = _previousRefreshInterval;
+                Settings.Default.MaxNumberOfDetailRows = _previousMaxNumberOfDetailRows;
                 Settings.Default.ShowPercentOfTotal = _previousShowPercentOfTotal;
                 Settings.Default.ShowRowNumbers = _previousShowRowNumbers;
                 Settings.Default.IncludeTopLevelNPCRows = _previousIncludeTopLevelNPCRows;

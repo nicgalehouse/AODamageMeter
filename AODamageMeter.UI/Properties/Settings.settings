@@ -59,7 +59,7 @@
       <Value Profile="(Default)">265</Value>
     </Setting>
     <Setting Name="OptionsViewHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">350</Value>
+      <Value Profile="(Default)">380</Value>
     </Setting>
     <Setting Name="OptionsViewWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
@@ -93,6 +93,9 @@
     </Setting>
     <Setting Name="RefreshInterval" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">300</Value>
+    </Setting>
+    <Setting Name="MaxNumberOfDetailRows" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">6</Value>
     </Setting>
   </Settings>
 </SettingsFile>

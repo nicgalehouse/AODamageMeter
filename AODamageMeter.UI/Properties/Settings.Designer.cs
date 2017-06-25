@@ -243,7 +243,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("350")]
+        [global::System.Configuration.DefaultSettingValueAttribute("380")]
         public double OptionsViewHeight {
             get {
                 return ((double)(this["OptionsViewHeight"]));
@@ -382,6 +382,18 @@ namespace AODamageMeter.UI.Properties {
             }
             set {
                 this["RefreshInterval"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("6")]
+        public int MaxNumberOfDetailRows {
+            get {
+                return ((int)(this["MaxNumberOfDetailRows"]));
+            }
+            set {
+                this["MaxNumberOfDetailRows"] = value;
             }
         }
     }

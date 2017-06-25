@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -52,13 +53,13 @@ $@"{Title}
                 var topHealingDoneInfos = FightOwner.HealingDoneInfos
                     .OrderByDescending(i => i.PotentialHealingPlusPets)
                     .ThenBy(i => i.Target.UncoloredName)
-                    .Take(6).ToArray();
+                    .Take(Settings.Default.MaxNumberOfDetailRows).ToArray();
 
-                foreach (var fightCharacterDetailRow in _detailRowMap
-                    .Where(kvp => !topHealingDoneInfos.Select(i => i.Target).Contains(kvp.Key)).ToArray())
+                foreach (var noLongerTopHealingDoneTarget in _detailRowMap.Keys
+                    .Except(topHealingDoneInfos.Select(i => i.Target)).ToArray())
                 {
-                    _detailRowMap.Remove(fightCharacterDetailRow.Key);
-                    DetailRows.Remove(fightCharacterDetailRow.Value);
+                    DetailRows.Remove(_detailRowMap[noLongerTopHealingDoneTarget]);
+                    _detailRowMap.Remove(noLongerTopHealingDoneTarget);
                 }
 
                 int detailRowDisplayIndex = 1;

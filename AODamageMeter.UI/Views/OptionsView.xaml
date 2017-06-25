@@ -109,6 +109,51 @@
           </ComboBox.ItemsSource>
         </ComboBox>
 
+        <TextBlock Text="Max number of detail rows:"/>
+        <ComboBox Margin="0 2 0 10"
+                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=MaxNumberOfDetailRows}">
+          <ComboBox.ItemsSource>
+            <x:Array Type="{x:Type System:Int32}">
+              <System:Int32>1</System:Int32>
+              <System:Int32>2</System:Int32>
+              <System:Int32>3</System:Int32>
+              <System:Int32>4</System:Int32>
+              <System:Int32>5</System:Int32>
+              <System:Int32>6</System:Int32>
+              <System:Int32>7</System:Int32>
+              <System:Int32>8</System:Int32>
+              <System:Int32>9</System:Int32>
+              <System:Int32>10</System:Int32>
+              <System:Int32>11</System:Int32>
+              <System:Int32>12</System:Int32>
+              <System:Int32>13</System:Int32>
+              <System:Int32>14</System:Int32>
+              <System:Int32>15</System:Int32>
+              <System:Int32>16</System:Int32>
+              <System:Int32>17</System:Int32>
+              <System:Int32>18</System:Int32>
+              <System:Int32>19</System:Int32>
+              <System:Int32>20</System:Int32>
+              <System:Int32>21</System:Int32>
+              <System:Int32>22</System:Int32>
+              <System:Int32>23</System:Int32>
+              <System:Int32>24</System:Int32>
+              <System:Int32>25</System:Int32>
+              <System:Int32>26</System:Int32>
+              <System:Int32>27</System:Int32>
+              <System:Int32>28</System:Int32>
+              <System:Int32>29</System:Int32>
+              <System:Int32>30</System:Int32>
+              <System:Int32>31</System:Int32>
+              <System:Int32>32</System:Int32>
+              <System:Int32>33</System:Int32>
+              <System:Int32>34</System:Int32>
+              <System:Int32>35</System:Int32>
+              <System:Int32>36</System:Int32>
+            </x:Array>
+          </ComboBox.ItemsSource>
+        </ComboBox>
+
         <!-- TODO: Use binding instead of code-behind (tried, but keep running into problems). -->
         <RadioButton x:Name="ShowPercentOfTotalRadioButton" GroupName="ShowPercent"
                      Checked="ShowPercentOfTotalRadioButton_Checked_Persist"

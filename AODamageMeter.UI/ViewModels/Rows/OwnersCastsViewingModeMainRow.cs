@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.UI.Helpers;
+using AODamageMeter.UI.Properties;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -50,13 +51,13 @@ $@"{Title}
                 var topCastInfos = FightOwner.CastInfos
                     .OrderByDescending(i => i.CastSuccesses)
                     .ThenBy(i => i.NanoProgram)
-                    .Take(6).ToArray();
+                    .Take(Settings.Default.MaxNumberOfDetailRows).ToArray();
 
-                foreach (var castInfoDetailRow in _detailRowMap
-                    .Where(kvp => !topCastInfos.Contains(kvp.Key)).ToArray())
+                foreach (var noLongerTopCastInfo in _detailRowMap.Keys
+                    .Except(topCastInfos).ToArray())
                 {
-                    _detailRowMap.Remove(castInfoDetailRow.Key);
-                    DetailRows.Remove(castInfoDetailRow.Value);
+                    DetailRows.Remove(_detailRowMap[noLongerTopCastInfo]);
+                    _detailRowMap.Remove(noLongerTopCastInfo);
                 }
 
                 int detailRowDisplayIndex = 1;

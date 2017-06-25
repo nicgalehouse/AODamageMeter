@@ -87,13 +87,13 @@ $@"{Title}
                 .Where(c => !c.IsFightPet)
                 .OrderByDescending(c => c.TotalDamageDonePlusPets)
                 .ThenBy(c => c.UncoloredName)
-                .Take(6).ToArray();
+                .Take(Settings.Default.MaxNumberOfDetailRows).ToArray();
 
-            foreach (var fightCharacterDetailRow in _detailRowMap
-                .Where(kvp => !topFightCharacters.Contains(kvp.Key)).ToArray())
+            foreach (var noLongerTopFightCharacter in _detailRowMap.Keys
+                .Except(topFightCharacters).ToArray())
             {
-                _detailRowMap.Remove(fightCharacterDetailRow.Key);
-                DetailRows.Remove(fightCharacterDetailRow.Value);
+                DetailRows.Remove(_detailRowMap[noLongerTopFightCharacter]);
+                _detailRowMap.Remove(noLongerTopFightCharacter);
             }
 
             int detailRowDisplayIndex = 1;
