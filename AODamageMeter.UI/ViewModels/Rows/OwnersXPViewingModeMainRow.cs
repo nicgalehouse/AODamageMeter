@@ -20,17 +20,17 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{Title}
 
-{FightOwner?.NormalXPGained.Format() ?? EmDash} XP
-{FightOwner?.ShadowXPGained.Format() ?? EmDash} SK
-{FightOwner?.ResearchXPGained.Format() ?? EmDash} research XP
-{FightOwner?.EffectiveXPGained.Format() ?? EmDash} effective XP
-{FightOwner?.AlienXPGained.Format() ?? EmDash} alien XP
+{FightOwner?.NormalXPGained.FormatSigned() ?? EmDash} XP
+{FightOwner?.ShadowXPGained.FormatSigned() ?? EmDash} SK
+{FightOwner?.ResearchXPGained.FormatSigned() ?? EmDash} research XP
+{FightOwner?.EffectiveXPGained.FormatSigned() ?? EmDash} effective XP
+{FightOwner?.AlienXPGained.FormatSigned() ?? EmDash} alien XP
 
-{FightOwner?.NormalXPGainedPM.Format() ?? EmDash} XP / min
-{FightOwner?.ShadowXPGainedPM.Format() ?? EmDash} SK / min
-{FightOwner?.ResearchXPGainedPM.Format() ?? EmDash} research XP / min
-{FightOwner?.EffectiveXPGainedPM.Format() ?? EmDash} effective XP / min
-{FightOwner?.AlienXPGainedPM.Format() ?? EmDash} alien XP / min";
+{FightOwner?.NormalXPGainedPM.FormatSigned() ?? EmDash} XP / min
+{FightOwner?.ShadowXPGainedPM.FormatSigned() ?? EmDash} SK / min
+{FightOwner?.ResearchXPGainedPM.FormatSigned() ?? EmDash} research XP / min
+{FightOwner?.EffectiveXPGainedPM.FormatSigned() ?? EmDash} effective XP / min
+{FightOwner?.AlienXPGainedPM.FormatSigned() ?? EmDash} alien XP / min";
                 }
             }
         }
@@ -44,8 +44,8 @@ $@"{Title}
             else
             {
                 RightText = FightOwner.AlienXPGained == 0
-                    ? $"{FightOwner.EffectiveXPGained.Format()} ({FightOwner.EffectiveXPGainedPM.Format()})"
-                    : $"{FightOwner.EffectiveXPGained.Format()}, {FightOwner.AlienXPGained.Format()} ({FightOwner.EffectiveXPGainedPM.Format()}, {FightOwner.AlienXPGainedPM.Format()})";
+                    ? $"{FightOwner.EffectiveXPGained.FormatSigned()} ({FightOwner.EffectiveXPGainedPM.FormatSigned()})"
+                    : $"{FightOwner.EffectiveXPGained.FormatSigned()}, {FightOwner.AlienXPGained.FormatSigned()} ({FightOwner.EffectiveXPGainedPM.FormatSigned()}, {FightOwner.AlienXPGainedPM.FormatSigned()})";
             }
 
             base.Update();
