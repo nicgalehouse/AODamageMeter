@@ -106,7 +106,7 @@ namespace AODamageMeter.UI.ViewModels
                     }
                     else if (loggedInCharacterNames.Length > 1 && unconfiguredCharacterNames.Length != 1)
                     {
-                        AutoConfigureResult = "Auto-configure failed. Can't deduce a sole character needing configuration from the running instances of AO. Please enter a name manually.";
+                        AutoConfigureResult = "Auto-configure failed. Can't deduce a character name because you're logged in to multiple instances of AO. Please enter a name manually.";
                         return;
                     }
                     CharacterName = loggedInCharacterNames.Length == 1 ? loggedInCharacterNames.Single() : unconfiguredCharacterNames.Single();
