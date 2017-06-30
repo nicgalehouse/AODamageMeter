@@ -67,8 +67,8 @@ namespace AODamageMeter
         public DateTime Timestamp { get; }
         public string Description { get; }
         public bool IsUnmatched { get; protected set; }
-        public FightCharacter Source { get; protected set; }
-        public FightCharacter Target { get; protected set; }
+        public FightCharacter Source { get; protected internal set; }
+        public FightCharacter Target { get; protected internal set; }
         public int? Amount { get; protected set; }
 
         protected static Regex CreateRegex(string body, bool rightToLeft = false)

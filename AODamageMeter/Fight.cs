@@ -53,6 +53,8 @@ namespace AODamageMeter
             }
         }
 
+        public bool HasObservedPVP { get; protected set; }
+
         public FightDamageDoneStats GetDamageDoneStats(bool includeNPCs = true, bool includeZeroDamageDones = true)
             => new FightDamageDoneStats(this, includeNPCs, includeZeroDamageDones);
 
@@ -120,6 +122,26 @@ namespace AODamageMeter
             switch (fightEvent)
             {
                 case AttackEvent attackEvent:
+                    // If we're not in PVP, and we're the pet of a bureaucrat, the fact that we're damaging a player
+                    // probably means that there's an uncharmed version of our charm fighting a player nearby, and that
+                    // we're misrecognizing the damage as belonging to our pet. No way to deal w/ the other case, where
+                    // an uncharmed version attacks an NPC, because it looks just like a charmed version attacking an NPC.
+                    // As a way to maintain a little more accurracy for the crat's DPM, switch the source. Similar for taken.
+                    if (attackEvent.IsPVP) { HasObservedPVP = true; }
+                    if (!HasObservedPVP
+                        && attackEvent.Source.FightPetMaster?.Profession == Profession.Bureaucrat
+                        && !attackEvent.Source.Character.FitsPetNamingConventions() // Because if we do fit, we're definitely not a charm.
+                        && attackEvent.Target.IsPlayer)
+                    {
+                        attackEvent.Source = GetOrCreateFightCharacter($"{attackEvent.Source.Name} (mob)", attackEvent.Timestamp);
+                    }
+                    if (!HasObservedPVP
+                        && attackEvent.Target.FightPetMaster?.Profession == Profession.Bureaucrat
+                        && !attackEvent.Target.Character.FitsPetNamingConventions() // Because if we do fit, we're definitely not a charm.
+                        && attackEvent.Source.IsPlayer)
+                    {
+                        attackEvent.Target = GetOrCreateFightCharacter($"{attackEvent.Target.Name} (mob)", attackEvent.Timestamp);
+                    }
                     attackEvent.Source.AddSourceAttackEvent(attackEvent);
                     attackEvent.Target.AddTargetAttackEvent(attackEvent);
                     ClearCachedDamageComputations();
