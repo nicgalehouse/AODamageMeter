@@ -22,6 +22,6 @@ Instructions
 ------------
 Left-clicking on a row navigates down a level into its sub-rows and right-clicking anywhere navigates in reverse. Left-clicking on row icons is used to expand detail rows, like the individualized pet/master rows I mentioned above, or a preview of the rows that would be revealed by left-clicking on the row itself (in certain contexts).
 
-Hover over the left text or the right text of any row to reveal relevant informational tooltips. All data is exposable through a single script, /aodm. To populate the script with data, ctrl+left-click on any left tooltip, the middle part of a row (if it has sub-rows), or any right tooltip. The corresponding data is copied to your clipboard and into the /aodm script.
+Hover over the left text or the right text of any row to reveal relevant informational tooltips. All data is exposable through a single script, /aodm. To populate the script with data, ctrl+left-click on any left tooltip, the middle part of a row (if it has sub-rows), or any right tooltip. The corresponding data is copied to your clipboard and into the /aodm script. Just type "/aodm" in-game or create a macro like "/macro aodm /aodm" to share the data.
 
 Ctrl+right-click on a row when in the Damage Done view to add that character as your pet. Ctrl+shift+right-click a row, then ctrl+shift+right-click a second row to add the first character as a pet of the second character. Ctrl+right-click on any pet detail row to unassign the pet.
