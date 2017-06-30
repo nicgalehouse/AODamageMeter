@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="AODamageMeter.UI.Views.DetailGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
              xmlns:local="clr-namespace:AODamageMeter.UI"
              xmlns:views="clr-namespace:AODamageMeter.UI.Views"
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
@@ -21,9 +22,8 @@
   <local:RowViewModelDataGrid Background="Transparent"
             ItemsSource="{Binding Source={StaticResource DetailRowsViewSource}}">
     <DataGrid.Resources>
-      <!-- A bit distracting here, because the first row always gets selected when expanding, so just hide. -->
-      <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Opacity="0"/>
-      <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Opacity="0"/>
+      <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" po:Freeze="True"/>
+      <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="Transparent" po:Freeze="True"/>
     </DataGrid.Resources>
 
     <DataGrid.Columns>
