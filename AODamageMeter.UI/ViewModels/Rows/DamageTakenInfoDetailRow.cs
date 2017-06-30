@@ -27,7 +27,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {Title}
 
-{DamageTakenInfo?.TotalDamage.ToString("N0") ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}) total dmg
+{DamageTakenInfo?.TotalDamage.ToString("N0") ?? EmDash} ({PercentOfMastersOrOwnTotalPlusPets.FormatPercent()}) total dmg
 {PercentOfTotal.FormatPercent()} of {Target.UncoloredName}'s total dmg
 {PercentOfMax.FormatPercent()} of {Target.UncoloredName}'s max dmg
 
@@ -52,8 +52,8 @@ $@"{DisplayIndex}. {Title}
             DamageTakenInfo = DamageTakenInfo ?? Target.DamageTakenInfosBySource.GetValueOrFallback(Source);
             PercentOfTotal = DamageTakenInfo?.PercentOfTargetsTotalDamageTaken;
             PercentOfMax = DamageTakenInfo?.PercentOfTargetsMaxDamagePlusPetsTaken;
-            PercentOfOwnersOrOwnTotalPlusPets = DamageTakenInfo?.PercentOfOwnersOrOwnTotalDamagePlusPets;
-            RightText = $"{DamageTakenInfo?.TotalDamage.Format() ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
+            PercentOfMastersOrOwnTotalPlusPets = DamageTakenInfo?.PercentOfMastersOrOwnTotalDamagePlusPets;
+            RightText = $"{DamageTakenInfo?.TotalDamage.Format() ?? EmDash} ({PercentOfMastersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

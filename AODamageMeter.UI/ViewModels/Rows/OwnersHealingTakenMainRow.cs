@@ -32,7 +32,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
             PercentOfMax = HealingTakenInfo.PercentPlusPetsOfTargetsMaxPotentialHealingPlusPetsTaken;
             RightText = $"{HealingTakenInfo.PotentialHealingPlusPets.Format()} ({DisplayedPercent.FormatPercent()})";
 
-            if (Source.IsFightPetOwner)
+            if (Source.IsFightPetMaster)
             {
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { Source }.Concat(Source.FightPets)
@@ -47,6 +47,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     detailRow.Update(detailRowDisplayIndex++);
                 }
             }
+
+            CleanUpOldPetDetailRowsIfNecessary(Source);
 
             base.Update(displayIndex);
         }

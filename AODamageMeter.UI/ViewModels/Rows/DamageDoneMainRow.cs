@@ -33,7 +33,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                 : FightCharacter.PercentPlusPetsOfFightsMaxPlayerDamageDonePlusPets;
             RightText = $"{FightCharacter.TotalDamageDonePlusPets.Format()} ({FightCharacter.TotalDamageDonePMPlusPets.Format()}, {DisplayedPercent.FormatPercent()})";
 
-            if (FightCharacter.IsFightPetOwner)
+            if (FightCharacter.IsFightPetMaster)
             {
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { FightCharacter }.Concat(FightCharacter.FightPets)
@@ -48,6 +48,8 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     detailRow.Update(detailRowDisplayIndex++);
                 }
             }
+
+            CleanUpOldPetDetailRowsIfNecessary(FightCharacter);
 
             base.Update(displayIndex);
         }

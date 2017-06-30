@@ -13,7 +13,7 @@ namespace AODamageMeter.UI.ViewModels
         public bool ShowDetails
         {
             get => _showDetails;
-            private set => Set(ref _showDetails, value);
+            protected set => Set(ref _showDetails, value);
         }
 
         public void TryToggleShowDetails()

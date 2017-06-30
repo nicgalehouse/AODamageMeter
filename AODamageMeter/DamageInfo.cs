@@ -36,8 +36,8 @@ namespace AODamageMeter
         public long NanoDamagePlusPets => NanoDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.NanoDamage ?? 0);
         public long IndirectDamagePlusPets => IndirectDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.IndirectDamage ?? 0);
         public long TotalDamagePlusPets => TotalDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalDamage ?? 0);
-        // FightCharacter creation & event handling guarantee if source has a fight pet owner, that owner has a damage info for Target.
-        public long OwnersOrOwnTotalDamagePlusPets => Source.FightPetOwner?.DamageDoneInfosByTarget[Target].TotalDamagePlusPets ?? TotalDamagePlusPets;
+        // FightPet registration handling guarantees if source has a fight pet master, that master has a damage info for Target.
+        public long MastersOrOwnTotalDamagePlusPets => Source.FightPetMaster?.DamageDoneInfosByTarget[Target].TotalDamagePlusPets ?? TotalDamagePlusPets;
 
         public double? WeaponPercentOfTotalDamage => WeaponDamage / TotalDamage.NullIfZero();
         public double? NanoPercentOfTotalDamage => NanoDamage / TotalDamage.NullIfZero();
@@ -87,15 +87,15 @@ namespace AODamageMeter
         public double? AverageNanoDamagePlusPets => NanoDamagePlusPets / NanoHitsPlusPets.NullIfZero();
         public double? AverageIndirectDamagePlusPets => IndirectDamagePlusPets / IndirectHitsPlusPets.NullIfZero();
 
-        public double? PercentOfOwnersOrOwnTotalDamagePlusPets => TotalDamage / OwnersOrOwnTotalDamagePlusPets.NullIfZero();
+        public double? PercentOfMastersOrOwnTotalDamagePlusPets => TotalDamage / MastersOrOwnTotalDamagePlusPets.NullIfZero();
 
-        public double? PercentOfOwnersOrOwnTotalDamageDonePlusPets
+        public double? PercentOfMastersOrOwnTotalDamageDonePlusPets
             => Source.IsFightPet
-            ? TotalDamage / Source.FightPetOwner.TotalDamageDonePlusPets.NullIfZero()
+            ? TotalDamage / Source.FightPetMaster.TotalDamageDonePlusPets.NullIfZero()
             : TotalDamage / Source.TotalDamageDonePlusPets.NullIfZero();
-        public double? PercentOfOwnersOrOwnMaxDamageDonePlusPets
+        public double? PercentOfMastersOrOwnMaxDamageDonePlusPets
             => Source.IsFightPet
-            ? TotalDamage / Source.FightPetOwner.MaxDamageDonePlusPets.NullIfZero()
+            ? TotalDamage / Source.FightPetMaster.MaxDamageDonePlusPets.NullIfZero()
             : TotalDamage / Source.MaxDamageDonePlusPets.NullIfZero();
 
         public double? PercentOfSourcesTotalDamageDone => TotalDamage / Source.TotalDamageDone.NullIfZero();

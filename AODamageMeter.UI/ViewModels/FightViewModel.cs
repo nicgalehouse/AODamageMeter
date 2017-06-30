@@ -84,11 +84,11 @@ namespace AODamageMeter.UI.ViewModels
             {
                 int displayIndex = 1;
                 foreach (var fightCharacter in Fight.FightCharacters
-                    .Where(c => !c.IsFightPet)
                     .OrderByDescending(c => c.TotalDamageDonePlusPets)
                     .ThenBy(c => c.UncoloredName))
                 {
-                    if (!Settings.Default.IncludeTopLevelNPCRows && fightCharacter.IsNPC
+                    if (fightCharacter.IsFightPet
+                        || !Settings.Default.IncludeTopLevelNPCRows && fightCharacter.IsNPC
                         || !Settings.Default.IncludeTopLevelZeroDamageRows && fightCharacter.TotalDamageDonePlusPets == 0)
                     {
                         if (_damageDoneRowMap.TryGetValue(fightCharacter, out MainRowBase damageDoneRow))
@@ -133,8 +133,8 @@ namespace AODamageMeter.UI.ViewModels
                 }
                 else
                 {
-                    damageDoneInfoRowMap = _damageDoneInfoRowMapMap[fightCharacter] = new Dictionary<DamageInfo, MainRowBase>();
-                    damageDoneInfoRows = _damageDoneInfoRowsMap[fightCharacter] = new ObservableCollection<MainRowBase>();
+                    _damageDoneInfoRowMapMap[fightCharacter] = damageDoneInfoRowMap = new Dictionary<DamageInfo, MainRowBase>();
+                    _damageDoneInfoRowsMap[fightCharacter] = damageDoneInfoRows = new ObservableCollection<MainRowBase>();
                 }
 
                 int displayIndex = 1;
@@ -208,22 +208,32 @@ namespace AODamageMeter.UI.ViewModels
                 }
                 else
                 {
-                    damageTakenInfoRowMap = _damageTakenInfoRowMapMap[fightCharacter] = new Dictionary<DamageInfo, MainRowBase>();
-                    damageTakenInfoRows = _damageTakenInfoRowsMap[fightCharacter] = new ObservableCollection<MainRowBase>();
+                    _damageTakenInfoRowMapMap[fightCharacter] = damageTakenInfoRowMap = new Dictionary<DamageInfo, MainRowBase>();
+                    _damageTakenInfoRowsMap[fightCharacter] = damageTakenInfoRows = new ObservableCollection<MainRowBase>();
                 }
 
                 int displayIndex = 1;
                 foreach (var damageTakenInfo in fightCharacter.DamageTakenInfos
-                    .Where(i => !i.Source.IsFightPet)
                     .OrderByDescending(i => i.TotalDamagePlusPets)
                     .ThenBy(i => i.Source.UncoloredName))
                 {
-                    if (!damageTakenInfoRowMap.TryGetValue(damageTakenInfo, out MainRowBase damageTakenInfoRow))
+                    if (damageTakenInfo.Source.IsFightPet)
                     {
-                        damageTakenInfoRowMap.Add(damageTakenInfo, damageTakenInfoRow = new DamageTakenInfoMainRow(this, damageTakenInfo));
-                        damageTakenInfoRows.Add(damageTakenInfoRow);
+                        if (damageTakenInfoRowMap.TryGetValue(damageTakenInfo, out MainRowBase damageTakenInfoRow))
+                        {
+                            damageTakenInfoRowMap.Remove(damageTakenInfo);
+                            damageTakenInfoRows.Remove(damageTakenInfoRow);
+                        }
                     }
-                    damageTakenInfoRow.Update(displayIndex++);
+                    else
+                    {
+                        if (!damageTakenInfoRowMap.TryGetValue(damageTakenInfo, out MainRowBase damageTakenInfoRow))
+                        {
+                            damageTakenInfoRowMap.Add(damageTakenInfo, damageTakenInfoRow = new DamageTakenInfoMainRow(this, damageTakenInfo));
+                            damageTakenInfoRows.Add(damageTakenInfoRow);
+                        }
+                        damageTakenInfoRow.Update(displayIndex++);
+                    }
                 }
 
                 return damageTakenInfoRows;
@@ -263,16 +273,26 @@ namespace AODamageMeter.UI.ViewModels
 
                 int displayIndex = 1;
                 foreach (var healingTakenInfo in FightOwner.HealingTakenInfos
-                    .Where(i => !i.Source.IsFightPet)
                     .OrderByDescending(i => i.PotentialHealingPlusPets)
                     .ThenBy(i => i.Target.UncoloredName))
                 {
-                    if (!_ownersHealingTakenRowMap.TryGetValue(healingTakenInfo, out MainRowBase ownersHealingTakenRow))
+                    if (healingTakenInfo.Source.IsFightPet)
                     {
-                        _ownersHealingTakenRowMap.Add(healingTakenInfo, ownersHealingTakenRow = new OwnersHealingTakenMainRow(this, healingTakenInfo));
-                        _ownersHealingTakenRows.Add(ownersHealingTakenRow);
+                        if (_ownersHealingTakenRowMap.TryGetValue(healingTakenInfo, out MainRowBase ownersHealingTakenRow))
+                        {
+                            _ownersHealingTakenRowMap.Remove(healingTakenInfo);
+                            _ownersHealingTakenRows.Remove(ownersHealingTakenRow);
+                        }
                     }
-                    ownersHealingTakenRow.Update(displayIndex++);
+                    else
+                    {
+                        if (!_ownersHealingTakenRowMap.TryGetValue(healingTakenInfo, out MainRowBase ownersHealingTakenRow))
+                        {
+                            _ownersHealingTakenRowMap.Add(healingTakenInfo, ownersHealingTakenRow = new OwnersHealingTakenMainRow(this, healingTakenInfo));
+                            _ownersHealingTakenRows.Add(ownersHealingTakenRow);
+                        }
+                        ownersHealingTakenRow.Update(displayIndex++);
+                    }
                 }
 
                 return _ownersHealingTakenRows;

@@ -24,8 +24,8 @@
   {counts.NeutralPlayerCount} {(counts.NeutralPlayerCount == 1 ? "Neutral" : "Neutrals")}, {counts.AverageNeutralPlayerLevel.Format()}/{counts.AverageNeutralPlayerAlienLevel.Format()}"
 + (counts.UnknownPlayerCount == 0 ? null : $@"
   {counts.UnknownPlayerCount} {(counts.UnknownPlayerCount == 1 ? "Unknown" : "Unknowns")}, {counts.AverageUnknownPlayerLevel.Format()}/{counts.AverageUnknownPlayerAlienLevel.Format()}")
-+ (counts.PetCount == 0 ? null : $@"
-{counts.PetCount} {(counts.PetCount == 1 ? "pet" : "pets")}")
++ (counts.FightPetCount == 0 ? null : $@"
+{counts.FightPetCount} {(counts.FightPetCount == 1 ? "pet" : "pets")}")
 + (counts.NPCCount == 0 ? null : $@"
 {counts.NPCCount} {(counts.NPCCount == 1 ? "NPC" : "NPCs")}")
 + (counts.PlayerCount == 0 ? null : $@"

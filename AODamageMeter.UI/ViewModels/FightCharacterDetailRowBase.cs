@@ -18,7 +18,7 @@ namespace AODamageMeter.UI.ViewModels
         public double? PercentOfTotal { get; protected set; }
         public double? PercentOfMax { get; protected set; }
         public double? DisplayedPercent => Settings.Default.ShowPercentOfTotal ? PercentOfTotal : PercentOfMax;
-        public double? PercentOfOwnersOrOwnTotalPlusPets { get; protected set; }
+        public double? PercentOfMastersOrOwnTotalPlusPets { get; protected set; }
 
         public override void Update(int? displayIndex = null)
         {
@@ -28,7 +28,7 @@ namespace AODamageMeter.UI.ViewModels
             {
                 IconPath = FightCharacter.Profession.GetIconPath();
             }
-            Color = FightCharacter.IsFightPet ? FightCharacter.FightPetOwner.Profession.GetColor() : FightCharacter.Profession.GetColor();
+            Color = FightCharacter.IsFightPet ? FightCharacter.FightPetMaster.Profession.GetColor() : FightCharacter.Profession.GetColor();
 
             base.Update(displayIndex);
         }

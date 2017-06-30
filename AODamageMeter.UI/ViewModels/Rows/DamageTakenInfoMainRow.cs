@@ -26,7 +26,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {Title}
 
-{DamageTakenInfo.TotalDamage:N0} total dmg
+{DamageTakenInfo.TotalDamagePlusPets:N0} total dmg
 {PercentOfTotal.FormatPercent()} of {Target.UncoloredName}'s total dmg
 {PercentOfMax.FormatPercent()} of {Target.UncoloredName}'s max dmg
 
@@ -52,7 +52,7 @@ $@"{DisplayIndex}. {Title}
             PercentOfMax = DamageTakenInfo.PercentPlusPetsOfTargetsMaxDamagePlusPetsTaken;
             RightText = $"{DamageTakenInfo.TotalDamagePlusPets.Format()} ({DisplayedPercent.FormatPercent()})";
 
-            if (Source.IsFightPetOwner)
+            if (Source.IsFightPetMaster)
             {
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { Source }.Concat(Source.FightPets)
@@ -67,6 +67,8 @@ $@"{DisplayIndex}. {Title}
                     detailRow.Update(detailRowDisplayIndex++);
                 }
             }
+
+            CleanUpOldPetDetailRowsIfNecessary(Source);
 
             base.Update(displayIndex);
         }

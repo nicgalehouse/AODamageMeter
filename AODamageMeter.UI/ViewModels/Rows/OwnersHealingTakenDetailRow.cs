@@ -24,7 +24,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {Title}
 
-{(IsOwnerTheSource ? "≥ " : "")}{HealingTakenInfo?.PotentialHealing.Format() ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}) potential healing
+{(IsOwnerTheSource ? "≥ " : "")}{HealingTakenInfo?.PotentialHealing.Format() ?? EmDash} ({PercentOfMastersOrOwnTotalPlusPets.FormatPercent()}) potential healing
 {PercentOfTotal.FormatPercent()} of {Owner.UncoloredName}'s total healing
 {PercentOfMax.FormatPercent()} of {Owner.UncoloredName}'s max healing
 
@@ -42,8 +42,8 @@ $@"{DisplayIndex}. {Title}
             HealingTakenInfo = HealingTakenInfo ?? FightOwner.HealingTakenInfosBySource.GetValueOrFallback(Source);
             PercentOfTotal = HealingTakenInfo?.PercentOfTargetsPotentialHealingTaken;
             PercentOfMax = HealingTakenInfo?.PercentOfTargetsMaxPotentialHealingPlusPetsTaken;
-            PercentOfOwnersOrOwnTotalPlusPets = HealingTakenInfo?.PercentOfOwnersOrOwnPotentialHealingPlusPets;
-            RightText = $"{HealingTakenInfo?.PotentialHealing.Format() ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
+            PercentOfMastersOrOwnTotalPlusPets = HealingTakenInfo?.PercentOfMastersOrOwnPotentialHealingPlusPets;
+            RightText = $"{HealingTakenInfo?.PotentialHealing.Format() ?? EmDash} ({PercentOfMastersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

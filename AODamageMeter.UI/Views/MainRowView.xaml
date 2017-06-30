@@ -7,7 +7,8 @@
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:MainRowBase}"
              d:DesignHeight="27" d:DesignWidth="300">
   <Canvas Height="24" Background="{StaticResource DarkBlueBrush15}"
-          MouseLeftButtonDown="Canvas_MouseLeftButtonDown_TryCopyAndScriptOrTryRaiseProgressViewRequested">
+          MouseLeftButtonDown="Canvas_MouseLeftButtonDown_TryCopyAndScriptOrTryRaiseProgressViewRequested"
+          MouseRightButtonDown="Canvas_RightMouseButtonDown_TryRaiseRegisterOwnersFightPetRequestedOrTryRaiseRegisterFightPetRequested">
     <Image Width="24"
            Source="{Binding IconPath, Converter={StaticResource IconPathToBitmapImageConverter}}"
            MouseLeftButtonDown="Icon_MouseLeftButtonDown_TryToggleShowDetails"/>

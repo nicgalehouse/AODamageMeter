@@ -4,6 +4,7 @@ using AODamageMeter.UI.ViewModels.Rows;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -94,7 +95,11 @@ namespace AODamageMeter.UI.ViewModels
 
             _characterName = characterName;
             _logFilePath = logFilePath;
-            DamageMeter = new DamageMeter(characterName, logFilePath) { IsPaused = IsPaused };
+            DamageMeter = new DamageMeter(characterName, logFilePath)
+            {
+                IsPaused = IsPaused,
+                PetRegistrations = PetRegistrationRepository.PetRegistrations
+            };
             StartNewFight();
 
             // If the view was scoped to the old owner, update to the new owner so the view's title updates.
@@ -348,6 +353,46 @@ namespace AODamageMeter.UI.ViewModels
             if (DamageMeter == null) return;
 
             StartNewFight();
+        }
+
+        public bool TryRegisterOwnersFightPet(DamageDoneMainRow fightPetRow) => TryRegisterFightPet(fightPetRow);
+        public bool TryRegisterFightPet(DamageDoneMainRow fightPetRow, DamageDoneMainRow fightPetMasterRow = null)
+        {
+            lock (CurrentFight)
+            {
+                var fight = fightPetRow.Fight;
+                var fightPet = fightPetRow.FightCharacter;
+                var fightPetMaster = fightPetMasterRow?.FightCharacter
+                    ?? fight.GetOrCreateFightCharacter(DamageMeter.Owner, DateTime.Now);
+
+                if (fight.TryRegisterFightPet(fightPet, fightPetMaster))
+                {
+                    PetRegistrationRepository.AddRegistration(fightPet, fightPetMaster);
+                    _fightRows.Single(r => r.FightViewModel == fightPetRow.FightViewModel).Update();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public bool TryDeregisterFightPet(DamageDoneDetailRow fightPetRow)
+        {
+            lock (CurrentFight)
+            {
+                var fight = fightPetRow.Fight;
+                var fightPet = fightPetRow.FightCharacter;
+                var fightPetMaster = fightPet.FightPetMaster;
+
+                if (fight.TryDeregisterFightPet(fightPet))
+                {
+                    PetRegistrationRepository.RemoveRegistration(fightPet, fightPetMaster);
+                    _fightRows.Single(r => r.FightViewModel == fightPetRow.FightViewModel).Update();
+                    return true;
+                }
+
+                return false;
+            }
         }
 
         public void DisposeDamageMeter()

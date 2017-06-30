@@ -17,18 +17,10 @@ namespace AODamageMeter
         protected readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
         public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
         public IEnumerable<FightCharacter> PlayerFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayer);
-        public IEnumerable<FightCharacter> PlayerOrPetFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayer || c.IsPet);
-
-        public int GetFightCharacterCount(
-            bool includeNPCs = true,
-            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
-            => FightCharacters.Count(c => (includeNPCs || !c.IsNPC)
-                && (includeZeroDamageDones || c.OwnersOrOwnTotalDamageDonePlusPets != 0)
-                && (includeZeroDamageTakens || c.TotalDamageTaken != 0));
+        public IEnumerable<FightCharacter> PlayerOrPetFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayer || c.IsFightPet);
 
         public FightCharacterCounts GetFightCharacterCounts(
-            bool includeNPCs = true,
-            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
+            bool includeNPCs = true, bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
             => new FightCharacterCounts(this, includeNPCs, includeZeroDamageDones, includeZeroDamageTakens);
 
         public DateTime? StartTime { get; protected set; }
@@ -130,11 +122,7 @@ namespace AODamageMeter
                 case AttackEvent attackEvent:
                     attackEvent.Source.AddSourceAttackEvent(attackEvent);
                     attackEvent.Target.AddTargetAttackEvent(attackEvent);
-                    _totalDamage = null;
-                    _totalPlayerDamageDone = _totalPlayerDamageDonePlusPets = null;
-                    _totalPlayerDamageTaken = _totalPlayerOrPetDamageTaken = null;
-                    _maxDamageDone = _maxDamageDonePlusPets = _maxPlayerDamageDone = _maxPlayerDamageDonePlusPets = null;
-                    _maxDamageTaken = _maxPlayerDamageTaken = _maxPlayerOrPetDamageTaken = null;
+                    ClearCachedDamageComputations();
                     break;
                 case HealEvent healEvent:
                     healEvent.Source.AddSourceHealEvent(healEvent);
@@ -150,6 +138,42 @@ namespace AODamageMeter
             }
         }
 
+        protected void ClearCachedDamageComputations()
+        {
+            _totalDamage = null;
+            _totalPlayerDamageDone = _totalPlayerDamageDonePlusPets = null;
+            _totalPlayerDamageTaken = _totalPlayerOrPetDamageTaken = null;
+            _maxDamageDone = _maxDamageDonePlusPets = _maxPlayerDamageDone = _maxPlayerDamageDonePlusPets = null;
+            _maxDamageTaken = _maxPlayerDamageTaken = _maxPlayerOrPetDamageTaken = null;
+        }
+
+        public bool TryRegisterFightPet(FightCharacter fightPet, FightCharacter fightPetMaster)
+        {
+            if (fightPet.Fight != this || fightPetMaster.Fight != this) return false;
+
+            if (fightPetMaster.TryRegisterFightPet(fightPet))
+            {
+                fightPetMaster.Character.IsPlayer = true;
+                ClearCachedDamageComputations();
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryDeregisterFightPet(FightCharacter fightPet)
+        {
+            if (fightPet.Fight != this || !fightPet.IsFightPet) return false;
+
+            if (fightPet.FightPetMaster.TryDeregisterFightPet(fightPet))
+            {
+                ClearCachedDamageComputations();
+                return true;
+            }
+
+            return false;
+        }
+
         public FightCharacter GetOrCreateFightCharacter(string name, DateTime enteredTime)
             => GetOrCreateFightCharacter(Character.GetOrCreateCharacter(name), enteredTime);
 
@@ -158,27 +182,15 @@ namespace AODamageMeter
             if (_fightCharacters.TryGetValue(character, out FightCharacter fightCharacter))
                 return fightCharacter;
 
-            if (character.IsPet)
+            fightCharacter = new FightCharacter(this, character, enteredTime);
+            _fightCharacters.Add(character, fightCharacter);
+
+            if (character.TryFitPetNamingConventions(out string petMasterName) && !Character.IsAmbiguousPetName(character.Name)
+                || (DamageMeter.PetRegistrations?.TryGetValue(character.Name, out petMasterName) ?? false))
             {
-                if (character.PetOwner == null && Character.TryFitPetNamingRequirements(character.Name, out string petOwnerName))
-                {
-                    Character.GetOrCreateCharacter(petOwnerName)
-                        .RegisterPet(character);
-                }
-
-                if (character.PetOwner == null)
-                    throw new ArgumentException($"{character} is a pet but doesn't have a pet owner and one can't be deduced."
-                        + " Pets need owners before being added to fights.");
-
-                var fightPetOwner = GetOrCreateFightCharacter(character.PetOwner, enteredTime);
-                fightCharacter = new FightCharacter(this, character, enteredTime, fightPetOwner);
+                var fightPetMaster = GetOrCreateFightCharacter(petMasterName, enteredTime);
+                TryRegisterFightPet(fightCharacter, fightPetMaster);
             }
-            else
-            {
-                fightCharacter = new FightCharacter(this, character, enteredTime);
-            }
-
-            _fightCharacters[character] = fightCharacter;
 
             return fightCharacter;
         }

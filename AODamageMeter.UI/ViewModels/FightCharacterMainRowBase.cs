@@ -1,6 +1,7 @@
 ﻿using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels
 {
@@ -30,6 +31,25 @@ namespace AODamageMeter.UI.ViewModels
             Color = FightCharacter.Profession.GetColor();
 
             base.Update(displayIndex);
+        }
+
+        protected void CleanUpOldPetDetailRowsIfNecessary(FightCharacter potentialFightPetMaster)
+        {
+            if (!potentialFightPetMaster.IsFightPetMaster && _detailRowMap.Any())
+            {
+                _detailRowMap.Clear();
+                DetailRows.Clear();
+                ShowDetails = false;
+            }
+            else if (_detailRowMap.Count > 1 + potentialFightPetMaster.FightPets.Count)
+            {
+                foreach (var deregisteredFightPet in _detailRowMap.Keys
+                    .Except(new[] { potentialFightPetMaster }.Concat(potentialFightPetMaster.FightPets)).ToArray())
+                {
+                    DetailRows.Remove(_detailRowMap[deregisteredFightPet]);
+                    _detailRowMap.Remove(deregisteredFightPet);
+                }
+            }
         }
     }
 }

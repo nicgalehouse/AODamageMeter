@@ -35,7 +35,7 @@ namespace AODamageMeter.AmbiguityHelper
                 .Select(n => string.Join(" ", n
                     .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(p => $"{char.ToUpperInvariant(p[0])}{p.Substring(1).ToLowerInvariant()}")))
-                .Where(Character.FitsPetNamingRequirements)
+                .Where(Character.FitsPetNamingConventions)
                 .Distinct()
                 .OrderBy(n => n)
                 .ToArray();

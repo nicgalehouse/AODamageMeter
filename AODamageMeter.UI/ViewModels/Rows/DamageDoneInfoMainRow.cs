@@ -51,7 +51,7 @@ $@"{DisplayIndex}. {Title}
             PercentOfMax = DamageDoneInfo.PercentPlusPetsOfSourcesMaxDamageDonePlusPets;
             RightText = $"{DamageDoneInfo.TotalDamagePlusPets.Format()} ({DisplayedPercent.FormatPercent()})";
 
-            if (Source.IsFightPetOwner)
+            if (Source.IsFightPetMaster)
             {
                 int detailRowDisplayIndex = 1;
                 foreach (var fightCharacter in new[] { Source }.Concat(Source.FightPets)
@@ -66,6 +66,8 @@ $@"{DisplayIndex}. {Title}
                     detailRow.Update(detailRowDisplayIndex++);
                 }
             }
+
+            CleanUpOldPetDetailRowsIfNecessary(Source);
 
             base.Update(displayIndex);
         }

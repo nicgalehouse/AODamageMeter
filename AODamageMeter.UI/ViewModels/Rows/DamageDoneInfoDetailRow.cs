@@ -27,9 +27,9 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {Title}
 
-{DamageDoneInfo?.TotalDamage.ToString("N0") ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}) total dmg
-{PercentOfTotal.FormatPercent()} of {Source.FightPetOwnerOrSelf.UncoloredName}'s total dmg
-{PercentOfMax.FormatPercent()} of {Source.FightPetOwnerOrSelf.UncoloredName}'s max dmg
+{DamageDoneInfo?.TotalDamage.ToString("N0") ?? EmDash} ({PercentOfMastersOrOwnTotalPlusPets.FormatPercent()}) total dmg
+{PercentOfTotal.FormatPercent()} of {Source.FightPetMasterOrSelf.UncoloredName}'s total dmg
+{PercentOfMax.FormatPercent()} of {Source.FightPetMasterOrSelf.UncoloredName}'s max dmg
 
 {((DamageDoneInfo?.HasIncompleteMissStats ?? false) ? "≤ " : "")}{DamageDoneInfo?.WeaponHitChance.FormatPercent() ?? EmDashPercent} weapon hit chance
   {DamageDoneInfo?.CritChance.FormatPercent() ?? EmDashPercent} crit chance
@@ -50,10 +50,10 @@ $@"{DisplayIndex}. {Title}
         public override void Update(int? displayIndex = null)
         {
             DamageDoneInfo = DamageDoneInfo ?? Source.DamageDoneInfosByTarget.GetValueOrFallback(Target);
-            PercentOfTotal = DamageDoneInfo?.PercentOfOwnersOrOwnTotalDamageDonePlusPets;
-            PercentOfMax = DamageDoneInfo?.PercentOfOwnersOrOwnMaxDamageDonePlusPets;
-            PercentOfOwnersOrOwnTotalPlusPets = DamageDoneInfo?.PercentOfOwnersOrOwnTotalDamagePlusPets;
-            RightText = $"{DamageDoneInfo?.TotalDamage.Format() ?? EmDash} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
+            PercentOfTotal = DamageDoneInfo?.PercentOfMastersOrOwnTotalDamageDonePlusPets;
+            PercentOfMax = DamageDoneInfo?.PercentOfMastersOrOwnMaxDamageDonePlusPets;
+            PercentOfMastersOrOwnTotalPlusPets = DamageDoneInfo?.PercentOfMastersOrOwnTotalDamagePlusPets;
+            RightText = $"{DamageDoneInfo?.TotalDamage.Format() ?? EmDash} ({PercentOfMastersOrOwnTotalPlusPets.FormatPercent() ?? EmDashPercent}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

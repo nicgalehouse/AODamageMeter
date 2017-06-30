@@ -25,7 +25,7 @@ namespace AODamageMeter.FightEvents.Attack
                 || TryMatch(Glance, out match, out glance))
             {
                 SetSource(match, 1);
-                Source.Character.CharacterType = CharacterType.Player;
+                Source.Character.IsPlayer = true;
                 SetAmount(match, 2);
                 SetDamageType(match, 3);
                 AttackModifier = crit ? AODamageMeter.AttackModifier.Crit

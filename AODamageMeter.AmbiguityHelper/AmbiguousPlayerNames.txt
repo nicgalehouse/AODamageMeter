@@ -129,6 +129,7 @@ Libra
 Lifebleeder
 Limnos
 Limu
+Looter
 Maar
 Mare
 Marissa
@@ -145,6 +146,7 @@ Minimammoth
 Molokh
 Mornitor
 Morty
+Mugger
 Mull
 Mykonos
 Nabur
@@ -232,6 +234,7 @@ Tchu
 Tdecin
 Technician
 Thapt
+Thief
 Tinos
 Tiny
 Tiunissik

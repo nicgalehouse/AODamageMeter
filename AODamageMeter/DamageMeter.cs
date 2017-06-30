@@ -14,7 +14,7 @@ namespace AODamageMeter
             _logStreamReader = new StreamReader(File.Open(LogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             Mode = mode;
             Owner = Character.GetOrCreateCharacter(characterName);
-            Owner.CharacterType = CharacterType.Player;
+            Owner.IsPlayer = true;
         }
 
         public string LogFilePath { get; }
@@ -22,6 +22,7 @@ namespace AODamageMeter
         public bool IsRealTimeMode => Mode == DamageMeterMode.RealTime;
         public bool IsParsedTimeMode => Mode == DamageMeterMode.ParsedTime;
         public Character Owner { get; protected set; }
+        public IReadOnlyDictionary<string, string> PetRegistrations { get; set; }
 
         protected readonly List<Fight> _previousFights = new List<Fight>();
         public IReadOnlyList<Fight> PreviousFights => _previousFights;

@@ -113,6 +113,9 @@
 
     <views:MainGridView Grid.Row="1" DataContext="{Binding DisplayedRows}"
                         views:MainRowView.ProgressViewRequested="MainRowView_ProgressViewRequested_TryProgressView"
+                        views:MainRowView.RegisterOwnersFightPetRequested="MainRowView_RegisterOwnersFightPetRequested_TryRegisterOwnersFightPet"
+                        views:MainRowView.RegisterFightPetRequested="MainRowView_RegisterFightPetRequested_TryRegisterFightPet"
+                        views:DetailRowView.DeregisterFightPetRequested="DetailRowView_DeregisterFightPetRequested_TryDeregisterFightPet"
                         MouseRightButtonDown="MainGridView_MouseRightButtonDown_TryRegressView"/>
   </Grid>
 </Window>

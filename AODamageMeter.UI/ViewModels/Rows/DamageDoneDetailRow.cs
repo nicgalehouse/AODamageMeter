@@ -20,7 +20,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
                     return
 $@"{DisplayIndex}. {Title}
 
-{FightCharacter.TotalDamageDone:N0} ({PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}) total dmg
+{FightCharacter.TotalDamageDone:N0} ({PercentOfMastersOrOwnTotalPlusPets.FormatPercent()}) total dmg
 {PercentOfTotal.FormatPercent()} of fight's total dmg
 {PercentOfMax.FormatPercent()} of fight's max dmg
 
@@ -61,8 +61,8 @@ $@"{DisplayIndex}. {Title}
             PercentOfMax = Settings.Default.IncludeTopLevelNPCRows
                 ? FightCharacter.PercentOfFightsMaxDamageDonePlusPets
                 : FightCharacter.PercentOfFightsMaxPlayerDamageDonePlusPets;
-            PercentOfOwnersOrOwnTotalPlusPets = FightCharacter.PercentOfOwnersOrOwnTotalDamageDonePlusPets;
-            RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {PercentOfOwnersOrOwnTotalPlusPets.FormatPercent()}, {DisplayedPercent.FormatPercent()})";
+            PercentOfMastersOrOwnTotalPlusPets = FightCharacter.PercentOfMastersOrOwnTotalDamageDonePlusPets;
+            RightText = $"{FightCharacter.TotalDamageDone.Format()} ({FightCharacter.TotalDamageDonePM.Format()}, {PercentOfMastersOrOwnTotalPlusPets.FormatPercent()}, {DisplayedPercent.FormatPercent()})";
 
             base.Update(displayIndex);
         }

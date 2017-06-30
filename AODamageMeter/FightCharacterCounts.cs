@@ -11,14 +11,13 @@ namespace AODamageMeter
         protected Dictionary<Profession, int> _professionTotalAlienLevels = Profession.All.ToDictionary(p => p, p => 0);
 
         public FightCharacterCounts(Fight fight,
-            bool includeNPCs = true,
-            bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
+            bool includeNPCs = true, bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
         {
             Fight = fight;
 
             foreach (var fightCharacter in fight.FightCharacters
                 .Where(c => (includeNPCs || !c.IsNPC)
-                    && (includeZeroDamageDones || c.OwnersOrOwnTotalDamageDonePlusPets != 0)
+                    && (includeZeroDamageDones || c.MastersOrOwnTotalDamageDonePlusPets != 0)
                     && (includeZeroDamageTakens || c.TotalDamageTaken != 0)))
             {
                 ++FightCharacterCount;
@@ -54,7 +53,7 @@ namespace AODamageMeter
                     TotalNeutralPlayerAlienLevel += fightCharacter.AlienLevel.Value;
                 }
                 if (fightCharacter.Faction == Faction.Unknown) ++UnknownPlayerCount;
-                if (fightCharacter.IsPet) ++PetCount;
+                if (fightCharacter.IsFightPet) ++FightPetCount;
                 if (fightCharacter.IsNPC) ++NPCCount;
 
                 if (fightCharacter.Profession != null)
@@ -78,7 +77,7 @@ namespace AODamageMeter
         public int ClanPlayerCount { get; }
         public int NeutralPlayerCount { get; }
         public int UnknownPlayerCount { get; }
-        public int PetCount { get; }
+        public int FightPetCount { get; }
         public int NPCCount { get; }
         public int TotalPlayerLevel { get; }
         public int TotalPlayerAlienLevel { get; }

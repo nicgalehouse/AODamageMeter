@@ -1,6 +1,6 @@
-﻿using AODamageMeter.UI.Helpers;
-using AODamageMeter.UI.Properties;
+﻿using AODamageMeter.UI.Properties;
 using AODamageMeter.UI.ViewModels;
+using AODamageMeter.UI.ViewModels.Rows;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -73,10 +73,46 @@ namespace AODamageMeter.UI.Views
         }
 
         private void MainRowView_ProgressViewRequested_TryProgressView(object sender, RoutedEventArgs e)
-            => _damageMeterViewModel.TryProgressView(((MainRowView)e.OriginalSource).MainRow);
+        {
+            if (_damageMeterViewModel.TryProgressView(((MainRowView)e.OriginalSource).MainRow))
+            {
+                _fightPetRow = null;
+            }
+        }
 
         private void MainGridView_MouseRightButtonDown_TryRegressView(object sender, MouseButtonEventArgs e)
-            => _damageMeterViewModel.TryRegressView();
+        {
+            if (_damageMeterViewModel.TryRegressView())
+            {
+                _fightPetRow = null;
+            }
+        }
+
+        private void MainRowView_RegisterOwnersFightPetRequested_TryRegisterOwnersFightPet(object sender, RoutedEventArgs e)
+            => _damageMeterViewModel.TryRegisterOwnersFightPet((DamageDoneMainRow)((MainRowView)e.OriginalSource).MainRow);
+
+        private DamageDoneMainRow _fightPetRow; // This gets set on first event, then we use it and unset on second event.
+
+        private void MainRowView_RegisterFightPetRequested_TryRegisterFightPet(object sender, RoutedEventArgs e)
+        {
+            var damageDoneRow = (DamageDoneMainRow)((MainRowView)e.OriginalSource).MainRow;
+
+            if (_fightPetRow == damageDoneRow)
+                return; // If you forget where you are in the 2-step chain, you can spam the on the pet row to make sure.
+
+            if (_fightPetRow == null)
+            {
+                _fightPetRow = damageDoneRow;
+            }
+            else
+            {
+                _damageMeterViewModel.TryRegisterFightPet(_fightPetRow, damageDoneRow);
+                _fightPetRow = null;
+            }
+        }
+
+        private void DetailRowView_DeregisterFightPetRequested_TryDeregisterFightPet(object sender, RoutedEventArgs e)
+            => _damageMeterViewModel.TryDeregisterFightPet((DamageDoneDetailRow)((DetailRowView)e.OriginalSource).DetailRow);
 
         private void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
             => Close();

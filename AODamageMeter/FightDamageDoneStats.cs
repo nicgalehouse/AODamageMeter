@@ -11,7 +11,7 @@ namespace AODamageMeter
             Fight = fight;
             FightCharacters = fight.FightCharacters
                 .Where(c => (includeNPCs || !c.IsNPC)
-                    && (includeZeroDamageDones || c.OwnersOrOwnTotalDamageDonePlusPets != 0))
+                    && (includeZeroDamageDones || c.MastersOrOwnTotalDamageDonePlusPets != 0))
                 .ToArray();
 
             foreach (var fightCharacter in FightCharacters)

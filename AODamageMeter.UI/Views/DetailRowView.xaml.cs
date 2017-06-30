@@ -1,5 +1,7 @@
 ﻿using AODamageMeter.UI.ViewModels;
+using AODamageMeter.UI.ViewModels.Rows;
 using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -33,6 +35,15 @@ namespace AODamageMeter.UI.Views
             };
         }
 
+        public static readonly RoutedEvent DeregisterFightPetRequestedEvent = EventManager.RegisterRoutedEvent(
+            "DeregisterFightPetRequested", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(DetailRowView));
+
+        public event RoutedEventHandler DeregisterFightPetRequested
+        {
+            add { AddHandler(DeregisterFightPetRequestedEvent, value); }
+            remove { RemoveHandler(DeregisterFightPetRequestedEvent, value); }
+        }
+
         public DetailRowBase DetailRow => (DetailRowBase)DataContext;
 
         private bool IsCtrlKeyDown
@@ -59,6 +70,14 @@ namespace AODamageMeter.UI.Views
             if (!IsCtrlKeyDown) return;
 
             DetailRow.CopyAndScriptRightTextTooltip();
+            e.Handled = true;
+        }
+
+        private void Canvas_RightMouseButtonDown_TryRaiseDeregisterFightPetRequested(object sender, MouseButtonEventArgs e)
+        {
+            if (!IsCtrlKeyDown || !(DetailRow is DamageDoneDetailRow)) return;
+
+            RaiseEvent(new RoutedEventArgs(DeregisterFightPetRequestedEvent));
             e.Handled = true;
         }
     }

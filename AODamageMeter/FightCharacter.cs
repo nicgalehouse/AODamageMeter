@@ -14,21 +14,7 @@ namespace AODamageMeter
             Fight = fight;
             Character = character;
             EnteredTime = enteredTime;
-            _stopwatch = DamageMeter.IsRealTimeMode ? Stopwatch.StartNew() : null;
-        }
-
-        // Making FightPetOwner readonly goes back to the discussion in Character. We know by convention pets are recognized immediately.
-        // If we guarantee the owner is in the fight if the pet is in the fight, then it simplifies things and offers better support for users
-        // who only use their pets w/o engaging in the fight themselves. The simplification is mainly being able to create source/target info
-        // pairs for the owner whenever we create one for the pet. Also allows us to simplify the ActiveDuration--the owner has been active
-        // for at least as long as his pets, since he has to be constructed before them. To fully support marking pets mid-fight, we'd have
-        // to propagate some side effects to the owner. Might become worth it to support bureaucrats who can't rename their charms?
-        public FightCharacter(Fight fight, Character pet, DateTime enteredTime, FightCharacter fightPetOwner)
-            : this(fight, pet, enteredTime)
-        {
-            fightPetOwner.Character.RegisterPet(pet); // We do this higher up in our own codebase, but here for completeness.
-            fightPetOwner._fightPets.Add(this);
-            FightPetOwner = fightPetOwner;
+            _stopwatch = _stopwatchPlusPets = DamageMeter.IsRealTimeMode ? Stopwatch.StartNew() : null;
         }
 
         public DamageMeter DamageMeter => Fight.DamageMeter;
@@ -37,10 +23,8 @@ namespace AODamageMeter
         public bool IsOwner => Character == DamageMeter.Owner;
         public string Name => Character.Name;
         public string UncoloredName => Character.UncoloredName;
-        public CharacterType CharacterType => Character.CharacterType;
         public bool IsPlayer => Character.IsPlayer;
-        public bool IsNPC => Character.IsNPC;
-        public bool IsPet => Character.IsPet;
+        public bool IsNPC => Character.IsNPC && !IsFightPet; // Yeah... more like IsN Player/Pet C.
         public string ID => Character.ID;
         public Profession Profession => Character.Profession;
         public Breed? Breed => Character.Breed;
@@ -56,7 +40,12 @@ namespace AODamageMeter
         public DateTime EnteredTime { get; }
 
         protected Stopwatch _stopwatch;
-        public TimeSpan ActiveDuration => DamageMeter.IsRealTimeMode ? _stopwatch.Elapsed : Fight.LatestEventTime.Value - EnteredTime;
+        protected Stopwatch _stopwatchPlusPets;
+        public TimeSpan ActiveDuration => DamageMeter.IsRealTimeMode
+            ? _stopwatch.Elapsed : Fight.LatestEventTime.Value - EnteredTime;
+        public TimeSpan ActiveDurationPlusPets => DamageMeter.IsRealTimeMode
+            // We maintain _stopwatchPlusPets for real time mode so we don't have to find the max active duration all the time.
+            ? _stopwatchPlusPets.Elapsed : new[] { ActiveDuration }.Concat(FightPets.Select(p => p.ActiveDuration)).Max();
 
         protected bool _isPaused;
         public bool IsPaused
@@ -75,12 +64,94 @@ namespace AODamageMeter
             }
         }
 
-        public FightCharacter FightPetOwner { get; }
+        // Notice we're keeping pet status scoped to a fight. This is to support a more abstract concept of pets. In some fights a character might be
+        // your pet, and in others it might not. In some fights you might even make a player your pet, like when measuring dual-logged/team performance.
+        public FightCharacter FightPetMaster { get; protected set; }
         protected readonly HashSet<FightCharacter> _fightPets = new HashSet<FightCharacter>();
         public IReadOnlyCollection<FightCharacter> FightPets => _fightPets;
-        public bool IsFightPetOwner => FightPets.Count != 0;
-        public bool IsFightPet => FightPetOwner != null;
-        public FightCharacter FightPetOwnerOrSelf => FightPetOwner ?? this;
+        public bool IsFightPetMaster => FightPets.Count != 0;
+        public bool IsFightPet => FightPetMaster != null;
+        public FightCharacter FightPetMasterOrSelf => FightPetMaster ?? this;
+
+        protected internal bool TryRegisterFightPet(FightCharacter fightPet)
+        {
+            if (fightPet == this) return false;
+            if (fightPet.FightPetMaster == this) return true;
+            if (fightPet.IsFightPet || fightPet.IsFightPetMaster || IsFightPet) return false;
+
+            _fightPets.Add(fightPet);
+            fightPet.FightPetMaster = this;
+
+            if (DamageMeter.IsRealTimeMode)
+            {
+                _stopwatchPlusPets = new[] { _stopwatch }.Concat(FightPets.Select(p => p._stopwatch))
+                    .OrderByDescending(s => s.Elapsed)
+                    .First();
+            }
+
+            _maxDamageDonePlusPets = null;
+            foreach (var damageTargetOfPetAndMaster in fightPet.DamageDoneInfos.Select(i => i.Target)
+                .Intersect(DamageDoneInfos.Select(i => i.Target)))
+            {
+                damageTargetOfPetAndMaster._maxDamagePlusPetsTaken = null;
+            }
+
+            _maxPotentialHealingDonePlusPets = null;
+            foreach (var healingTargetOfPetAndMaster in fightPet.HealingDoneInfos.Select(i => i.Target)
+                .Intersect(HealingDoneInfos.Select(i => i.Target)))
+            {
+                healingTargetOfPetAndMaster._maxPotentialHealingPlusPetsTaken = null;
+            }
+
+            foreach (var damageTargetOfPetButNotMaster in fightPet.DamageDoneInfos.Select(i => i.Target)
+                .Except(DamageDoneInfos.Select(i => i.Target)))
+            {
+                AddDamageDoneInfo(damageTargetOfPetButNotMaster);
+            }
+
+            foreach (var healingTargetOfPetButNotMaster in fightPet.HealingDoneInfos.Select(i => i.Target)
+                .Except(HealingDoneInfos.Select(i => i.Target)))
+            {
+                AddHealingDoneInfo(healingTargetOfPetButNotMaster);
+            }
+
+            return true;
+        }
+
+        protected internal bool TryDeregisterFightPet(FightCharacter fightPet)
+        {
+            if (fightPet.FightPetMaster != this) return false;
+
+            _fightPets.Remove(fightPet);
+            fightPet.FightPetMaster = null;
+
+            if (DamageMeter.IsRealTimeMode)
+            {
+                _stopwatchPlusPets = new[] { _stopwatch }.Concat(FightPets.Select(p => p._stopwatch))
+                    .OrderByDescending(s => s.Elapsed)
+                    .First();
+            }
+
+            _maxDamageDonePlusPets = null;
+            foreach (var damageTargetOfPetAndMaster in fightPet.DamageDoneInfos.Select(i => i.Target)
+                .Intersect(DamageDoneInfos.Select(i => i.Target)))
+            {
+                damageTargetOfPetAndMaster._maxDamagePlusPetsTaken = null;
+            }
+
+            _maxPotentialHealingDonePlusPets = null;
+            foreach (var healingTargetOfPetAndMaster in fightPet.HealingDoneInfos.Select(i => i.Target)
+                .Intersect(HealingDoneInfos.Select(i => i.Target)))
+            {
+                healingTargetOfPetAndMaster._maxPotentialHealingPlusPetsTaken = null;
+            }
+
+            // Don't bother checking for damage done or healing done infos and verifying they can be removed. The verification
+            // process would require checking that all other pets of master don't have the info, and that the master has never
+            // used the info directly either.
+
+            return true;
+        }
 
         public long WeaponDamageDone { get; protected set; }
         public long CritDamageDone { get; protected set; }
@@ -95,17 +166,17 @@ namespace AODamageMeter
         public long NanoDamageDonePlusPets => NanoDamageDone + FightPets.Sum(p => p.NanoDamageDone);
         public long IndirectDamageDonePlusPets => IndirectDamageDone + FightPets.Sum(p => p.IndirectDamageDone);
         public long TotalDamageDonePlusPets => TotalDamageDone + FightPets.Sum(p => p.TotalDamageDone);
-        public long OwnersOrOwnTotalDamageDonePlusPets => FightPetOwner?.TotalDamageDonePlusPets ?? TotalDamageDonePlusPets;
+        public long MastersOrOwnTotalDamageDonePlusPets => FightPetMaster?.TotalDamageDonePlusPets ?? TotalDamageDonePlusPets;
 
         public double WeaponDamageDonePM => WeaponDamageDone / ActiveDuration.TotalMinutes;
         public double NanoDamageDonePM => NanoDamageDone / ActiveDuration.TotalMinutes;
         public double IndirectDamageDonePM => IndirectDamageDone / ActiveDuration.TotalMinutes;
         public double TotalDamageDonePM => TotalDamageDone / ActiveDuration.TotalMinutes;
 
-        public double WeaponDamageDonePMPlusPets => WeaponDamageDonePlusPets / ActiveDuration.TotalMinutes;
-        public double NanoDamageDonePMPlusPets => NanoDamageDonePlusPets / ActiveDuration.TotalMinutes;
-        public double IndirectDamageDonePMPlusPets => IndirectDamageDonePlusPets / ActiveDuration.TotalMinutes;
-        public double TotalDamageDonePMPlusPets => TotalDamageDonePlusPets / ActiveDuration.TotalMinutes;
+        public double WeaponDamageDonePMPlusPets => WeaponDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double NanoDamageDonePMPlusPets => NanoDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double IndirectDamageDonePMPlusPets => IndirectDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double TotalDamageDonePMPlusPets => TotalDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
 
         public double? WeaponPercentOfTotalDamageDone => WeaponDamageDone / TotalDamageDone.NullIfZero();
         public double? NanoPercentOfTotalDamageDone => NanoDamageDone / TotalDamageDone.NullIfZero();
@@ -142,14 +213,14 @@ namespace AODamageMeter
         public double IndirectHitsDonePM => IndirectHitsDone / ActiveDuration.TotalMinutes;
         public double TotalHitsDonePM => TotalHitsDone / ActiveDuration.TotalMinutes;
 
-        public double WeaponHitsDonePMPlusPets => WeaponHitsDonePlusPets / ActiveDuration.TotalMinutes;
-        public double CritsDonePMPlusPets => CritsDonePlusPets / ActiveDuration.TotalMinutes;
-        public double GlancesDonePMPlusPets => GlancesDonePlusPets / ActiveDuration.TotalMinutes;
-        public double MissesDonePMPlusPets => MissesDonePlusPets / ActiveDuration.TotalMinutes;
-        public double WeaponHitAttemptsDonePMPlusPets => WeaponHitAttemptsDonePlusPets / ActiveDuration.TotalMinutes;
-        public double NanoHitsDonePMPlusPets => NanoHitsDonePlusPets / ActiveDuration.TotalMinutes;
-        public double IndirectHitsDonePMPlusPets => IndirectHitsDonePlusPets / ActiveDuration.TotalMinutes;
-        public double TotalHitsDonePMPlusPets => TotalHitsDonePlusPets / ActiveDuration.TotalMinutes;
+        public double WeaponHitsDonePMPlusPets => WeaponHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double CritsDonePMPlusPets => CritsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double GlancesDonePMPlusPets => GlancesDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double MissesDonePMPlusPets => MissesDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double WeaponHitAttemptsDonePMPlusPets => WeaponHitAttemptsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double NanoHitsDonePMPlusPets => NanoHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double IndirectHitsDonePMPlusPets => IndirectHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double TotalHitsDonePMPlusPets => TotalHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
 
         public double? WeaponHitDoneChance => WeaponHitsDone / WeaponHitAttemptsDone.NullIfZero();
         public double? CritDoneChance => CritsDone / WeaponHitsDone.NullIfZero();
@@ -173,7 +244,7 @@ namespace AODamageMeter
         public double? AverageNanoDamageDonePlusPets => NanoDamageDonePlusPets / NanoHitsDonePlusPets.NullIfZero();
         public double? AverageIndirectDamageDonePlusPets => IndirectDamageDonePlusPets / IndirectHitsDonePlusPets.NullIfZero();
 
-        public double? PercentOfOwnersOrOwnTotalDamageDonePlusPets => TotalDamageDone / OwnersOrOwnTotalDamageDonePlusPets.NullIfZero();
+        public double? PercentOfMastersOrOwnTotalDamageDonePlusPets => TotalDamageDone / MastersOrOwnTotalDamageDonePlusPets.NullIfZero();
 
         public double? PercentOfFightsTotalDamageDone => TotalDamageDone / Fight.TotalDamageDone.NullIfZero();
         public double? PercentOfFightsTotalPlayerDamageDonePlusPets => TotalDamageDone / Fight.TotalPlayerDamageDonePlusPets.NullIfZero();
@@ -191,6 +262,17 @@ namespace AODamageMeter
         protected readonly Dictionary<FightCharacter, DamageInfo> _damageDoneInfosByTarget = new Dictionary<FightCharacter, DamageInfo>();
         public IReadOnlyDictionary<FightCharacter, DamageInfo> DamageDoneInfosByTarget => _damageDoneInfosByTarget;
         public IReadOnlyCollection<DamageInfo> DamageDoneInfos => _damageDoneInfosByTarget.Values;
+        protected void AddDamageDoneInfo(FightCharacter target, AttackEvent attackEvent = null)
+        {
+            var damageInfo = new DamageInfo(this, target);
+            _damageDoneInfosByTarget.Add(target, damageInfo);
+            target._damageTakenInfosBySource.Add(this, damageInfo);
+
+            if (attackEvent != null)
+            {
+                damageInfo.AddAttackEvent(attackEvent);
+            }
+        }
 
         protected long? _maxDamageDone, _maxDamageDonePlusPets;
         public long? MaxDamageDone => _maxDamageDone ?? (_maxDamageDone = DamageDoneInfos.NullableMax(i => i.TotalDamage));
@@ -318,10 +400,10 @@ namespace AODamageMeter
         public double OverhealingDonePM => OverhealingDone / ActiveDuration.TotalMinutes;
         public double NanoHealingDonePM => NanoHealingDone / ActiveDuration.TotalMinutes;
 
-        public double PotentialHealingDonePMPlusPets => PotentialHealingDonePlusPets / ActiveDuration.TotalMinutes;
-        public double RealizedHealingDonePMPlusPets => RealizedHealingDonePlusPets / ActiveDuration.TotalMinutes;
-        public double OverhealingDonePMPlusPets => OverhealingDonePlusPets / ActiveDuration.TotalMinutes;
-        public double NanoHealingDonePMPlusPets => NanoHealingDonePlusPets / ActiveDuration.TotalMinutes;
+        public double PotentialHealingDonePMPlusPets => PotentialHealingDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double RealizedHealingDonePMPlusPets => RealizedHealingDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double OverhealingDonePMPlusPets => OverhealingDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double NanoHealingDonePMPlusPets => NanoHealingDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
 
         public double? PercentOfOverhealingDone => OverhealingDone / PotentialHealingDone.NullIfZero();
         public double? PercentOfOverhealingDonePlusPets => OverhealingDonePlusPets / PotentialHealingDonePlusPets.NullIfZero();
@@ -329,6 +411,17 @@ namespace AODamageMeter
         protected readonly Dictionary<FightCharacter, HealingInfo> _healingDoneInfosByTarget = new Dictionary<FightCharacter, HealingInfo>();
         public IReadOnlyDictionary<FightCharacter, HealingInfo> HealingDoneInfosByTarget => _healingDoneInfosByTarget;
         public IReadOnlyCollection<HealingInfo> HealingDoneInfos => _healingDoneInfosByTarget.Values;
+        protected void AddHealingDoneInfo(FightCharacter target, HealEvent healEvent = null)
+        {
+            var healingInfo = new HealingInfo(this, target);
+            _healingDoneInfosByTarget.Add(target, healingInfo);
+            target._healingTakenInfosBySource.Add(this, healingInfo);
+
+            if (healEvent != null)
+            {
+                healingInfo.AddHealEvent(healEvent);
+            }
+        }
 
         protected long? _maxPotentialHealingDone, _maxPotentialHealingDonePlusPets;
         public long? MaxPotentialHealingDone => _maxPotentialHealingDone ?? (_maxPotentialHealingDone = HealingDoneInfos.NullableMax(i => i.PotentialHealing));
@@ -435,23 +528,18 @@ namespace AODamageMeter
                 default: throw new NotImplementedException();
             }
 
-            if (_damageDoneInfosByTarget.TryGetValue(attackEvent.Target, out DamageInfo damageInfo))
+            if (DamageDoneInfosByTarget.TryGetValue(attackEvent.Target, out DamageInfo damageInfo))
             {
                 damageInfo.AddAttackEvent(attackEvent);
             }
             else
             {
-                if (IsFightPet && !FightPetOwner._damageDoneInfosByTarget.ContainsKey(attackEvent.Target))
+                if (IsFightPet && !FightPetMaster.DamageDoneInfosByTarget.ContainsKey(attackEvent.Target))
                 {
-                    var fightPetOwnerDamageInfo = new DamageInfo(FightPetOwner, attackEvent.Target);
-                    FightPetOwner._damageDoneInfosByTarget[attackEvent.Target] = fightPetOwnerDamageInfo;
-                    attackEvent.Target._damageTakenInfosBySource[FightPetOwner] = fightPetOwnerDamageInfo;
+                    FightPetMaster.AddDamageDoneInfo(attackEvent.Target);
                 }
 
-                damageInfo = new DamageInfo(this, attackEvent.Target);
-                damageInfo.AddAttackEvent(attackEvent);
-                this._damageDoneInfosByTarget[attackEvent.Target] = damageInfo;
-                attackEvent.Target._damageTakenInfosBySource[this] = damageInfo;
+                AddDamageDoneInfo(attackEvent.Target, attackEvent);
             }
 
             _maxDamageDone = _maxDamageDonePlusPets = null;
@@ -531,23 +619,18 @@ namespace AODamageMeter
                 default: throw new NotImplementedException();
             }
 
-            if (_healingDoneInfosByTarget.TryGetValue(healEvent.Target, out HealingInfo healingInfo))
+            if (HealingDoneInfosByTarget.TryGetValue(healEvent.Target, out HealingInfo healingInfo))
             {
                 healingInfo.AddHealEvent(healEvent);
             }
             else
             {
-                if (IsFightPet && !FightPetOwner._healingDoneInfosByTarget.ContainsKey(healEvent.Target))
+                if (IsFightPet && !FightPetMaster.HealingDoneInfosByTarget.ContainsKey(healEvent.Target))
                 {
-                    var fightPetOwnerHealingInfo = new HealingInfo(FightPetOwner, healEvent.Target);
-                    FightPetOwner._healingDoneInfosByTarget[healEvent.Target] = fightPetOwnerHealingInfo;
-                    healEvent.Target._healingTakenInfosBySource[FightPetOwner] = fightPetOwnerHealingInfo;
+                    FightPetMaster.AddHealingDoneInfo(healEvent.Target);
                 }
 
-                healingInfo = new HealingInfo(this, healEvent.Target);
-                healingInfo.AddHealEvent(healEvent);
-                this._healingDoneInfosByTarget[healEvent.Target] = healingInfo;
-                healEvent.Target._healingTakenInfosBySource[this] = healingInfo;
+                AddHealingDoneInfo(healEvent.Target, healEvent);
             }
 
             _maxPotentialHealingDone = _maxPotentialHealingDonePlusPets = null;
