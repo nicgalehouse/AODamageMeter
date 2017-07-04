@@ -669,7 +669,7 @@ namespace AODamageMeter
                 case LevelType.Normal: NormalXPGained += levelEvent.Amount.Value; break;
                 case LevelType.Shadow: ShadowXPGained += levelEvent.Amount.Value; break;
                 case LevelType.Alien: AlienXPGained += levelEvent.Amount.Value; break;
-                case LevelType.Research: ResearchXPGained += levelEvent.Amount.Value; break;
+                case LevelType.Research: ResearchXPGained += levelEvent.Amount ?? 0; break;
                 case LevelType.PvpDuel: PvpDuelXPGained += levelEvent.Amount.Value; break;
                 case LevelType.PvpSolo: PvpSoloXPGained += levelEvent.Amount.Value; break;
                 case LevelType.PvpTeam: PvpTeamXPGained += levelEvent.Amount.Value; break;

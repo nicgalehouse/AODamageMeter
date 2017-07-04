@@ -10,7 +10,8 @@ namespace AODamageMeter.FightEvents.Level
 
         public static readonly Regex
             Allocated = CreateRegex($"{AMOUNT} of your XP were allocated to your personal research.<br>", rightToLeft: true),
-            Completed = CreateRegex($"You have completed your research on \"(.+)\"");
+            Completed = CreateRegex($"You have completed your research on \"(.+)\"."),
+            NoGoal    = CreateRegex("You have assigned XP to research, but do not currently have a research goal.");
 
         public Research(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
@@ -24,11 +25,16 @@ namespace AODamageMeter.FightEvents.Level
             }
             else if (TryMatch(Completed, out match))
             {
-                Line = match.Groups[1].Value;
+                CompletedLine = match.Groups[1].Value;
+            }
+            else if (TryMatch(NoGoal, out match))
+            {
+                AssignedButNoGoal = true;
             }
             else IsUnmatched = true;
         }
 
-        public string Line { get; protected set; }
+        public string CompletedLine { get; protected set; }
+        public bool AssignedButNoGoal { get; protected set; }
     }
 }

@@ -51,7 +51,8 @@ namespace AODamageMeter.FightEvents
             Unable =      CreateRegex("Unable to execute nano program. You can't execute this nano on the target."),
             Unavailable = CreateRegex("Executing programs is currently unavailable."),
             Already =     CreateRegex("Nano program failed. Already executing nanoprogram."),
-            Nano =        CreateRegex($"You need at least {AMOUNT} remaining nano energy to execute this program."),
+            Energy =      CreateRegex($"You need at least {AMOUNT} remaining nano energy to execute this program."),
+            NotEnough =   CreateRegex("Not enough nano energy to execute nanoprogram."),
             Better =      CreateRegex("NCU error: Better nano program already running."),
             StandStill =  CreateRegex("Unable to execute nano program. You must stand still."),
             NotFound =    CreateRegex("Unable to execute nano program. Target not found."),
@@ -64,7 +65,9 @@ namespace AODamageMeter.FightEvents
             PleaseWait =  CreateRegex("Please wait."),
             NCU =         CreateRegex("Target does not have enough nano controlling units \\(NCU\\) left."),
             NotAllowed =  CreateRegex("You are not allowed to execute hostile nanoprogram on this target."),
-            StandUp =     CreateRegex("You must be standing up to execute a nano program.");
+            StandUp =     CreateRegex("You must be standing up to execute a nano program."),
+            CantUse =     CreateRegex("You can't use this nano program at the moment."),
+            Swimming =    CreateRegex("You can't execute nanoprograms while swimming!");
 
         public string NanoProgram { get; protected set; }
         public bool IsStartOfCast => EndEvent != null;
@@ -114,7 +117,8 @@ namespace AODamageMeter.FightEvents
                 || TryMatch(Unable, out match)
                 || TryMatch(Unavailable, out match)
                 || TryMatch(Already, out match)
-                || TryMatch(Nano, out match)
+                || TryMatch(Energy, out match)
+                || TryMatch(NotEnough, out match)
                 || TryMatch(Better, out match)
                 || TryMatch(StandStill, out match)
                 || TryMatch(NotFound, out match)
@@ -127,7 +131,9 @@ namespace AODamageMeter.FightEvents
                 || TryMatch(PleaseWait, out match)
                 || TryMatch(NCU, out match)
                 || TryMatch(NotAllowed, out match)
-                || TryMatch(StandUp, out match))
+                || TryMatch(StandUp, out match)
+                || TryMatch(CantUse, out match)
+                || TryMatch(Swimming, out match))
             {
                 IsCastUnavailable = true;
             }
