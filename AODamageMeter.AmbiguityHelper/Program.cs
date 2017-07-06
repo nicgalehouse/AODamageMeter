@@ -29,12 +29,9 @@ namespace AODamageMeter.AmbiguityHelper
 
             // A pet name is ambiguous when we know an NPC has it, and we know a conventional pet *could* have it (has a player name followed by "'s ").
             // When you find a name that isn't included yet, add it to AmbiguousPetNames.txt and use this program to generate well-formatted output.
-            string[] ambiguousPetNames = File.ReadAllLines("AmbiguousPetNames.txt") // Must be on different lines.
-                .Select(n => n.Trim()) 
+            string[] ambiguousPetNames = File.ReadAllLines("AmbiguousPetNames.txt") // Must be on different lines and capitalized properly.
+                .Select(n => n.Trim())
                 .Where(n => !string.IsNullOrEmpty(n))
-                .Select(n => string.Join(" ", n
-                    .Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(p => $"{char.ToUpperInvariant(p[0])}{p.Substring(1).ToLowerInvariant()}")))
                 .Where(Character.FitsPetNamingConventions)
                 .Distinct()
                 .OrderBy(n => n)

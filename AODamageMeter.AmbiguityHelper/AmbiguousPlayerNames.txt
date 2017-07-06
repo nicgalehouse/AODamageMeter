@@ -33,6 +33,7 @@ Belamorte
 Benacen
 Black
 Bloodcreeper
+Blorrg
 Bodyguard
 Bruiser
 Caal
@@ -59,7 +60,9 @@ Ding
 Direseeds
 Distral
 Dockworker
+Doombringer
 Duoco
+Eclipser
 Edimmu
 Egres
 Ehmat
@@ -76,6 +79,7 @@ Flea
 Floe
 Folegandros
 Forefather
+Frother
 Galvano
 Gargantula
 Gemini
@@ -100,6 +104,7 @@ Herne
 Hesosas
 Hine
 Humbada
+Hwall
 Ichiachich
 Igruana
 Ikaria
@@ -118,6 +123,7 @@ Kefallonia
 Keppur
 Khalum
 Kheferu
+Kizzermole
 Kolaana
 Kumpari
 Kumparimk
@@ -157,6 +163,7 @@ Narunkt
 Natsmaahpt
 Naxos
 Nebamun
+Necromancer
 Neferu
 Nesbaneb
 Neutralizer
@@ -212,6 +219,7 @@ Shadowmane
 Shet
 Sifnos
 Silvertails
+Skincrawler
 Skylight
 Skyros
 Slaugh
