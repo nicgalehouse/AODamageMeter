@@ -35,10 +35,11 @@ namespace AODamageMeter.UI.ViewModels
             // to do it there because it's less expensive than the unavoidable cost of updating the current fight.
             Settings.Default.PropertyChanged += (_, e) =>
                 _historicalFightRowsNeedUpdating = _historicalFightRowsNeedUpdating
-                    || e.PropertyName == nameof(Settings.Default.ShowRowNumbers)
+                    || e.PropertyName == nameof(Settings.Default.MaxNumberOfDetailRows)
                     || e.PropertyName == nameof(Settings.Default.ShowPercentOfTotal)
-                    || e.PropertyName == nameof(Settings.Default.IncludeTopLevelZeroDamageRows)
-                    || e.PropertyName == nameof(Settings.Default.IncludeTopLevelNPCRows);
+                    || e.PropertyName == nameof(Settings.Default.ShowRowNumbers)
+                    || e.PropertyName == nameof(Settings.Default.IncludeTopLevelNPCRows)
+                    || e.PropertyName == nameof(Settings.Default.IncludeTopLevelZeroDamageRows);
         }
 
         public DamageMeter DamageMeter { get; private set; }
