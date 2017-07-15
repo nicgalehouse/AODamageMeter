@@ -11,7 +11,7 @@ namespace AODamageMeter.FightEvents.Heal
         public override string Name => EventName;
 
         public static readonly Regex
-            Normal = CreateRegex($"You healed {TARGET} for {AMOUNT} points of health.");
+            Basic = CreateRegex($"You healed {TARGET} for {AMOUNT} points of health.");
 
         public YouGaveHealth(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
@@ -19,7 +19,7 @@ namespace AODamageMeter.FightEvents.Heal
             SetSourceToOwner();
             HealType = HealType.PotentialHealth;
 
-            if (TryMatch(Normal, out Match match))
+            if (TryMatch(Basic, out Match match))
             {
                 SetTarget(match, 1);
                 SetAmount(match, 2);

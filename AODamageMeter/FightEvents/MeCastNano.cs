@@ -5,7 +5,7 @@ namespace AODamageMeter.FightEvents
 {
     // Here are some different cases to consider:
 
-    // This is the normal case:
+    // This is the basic case:
     // [Me Cast Nano] Executing Nano Program: Improved Healing.
     // [Me Cast Nano] Nano program executed successfully.
 

@@ -15,6 +15,7 @@ namespace AODamageMeter.FightEvents
         public DamageType? DamageType { get; protected set; }
         public AttackModifier? AttackModifier { get; protected set; }
         public bool IsPVP => Source.IsPlayer && Target.IsPlayer;
+        public bool IsSpecialDamage => DamageType?.IsSpecialDamageType() ?? false;
 
         protected void SetDamageType(Match match, int index)
             => DamageType = DamageTypeHelpers.GetDamageType(match.Groups[index].Value);

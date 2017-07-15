@@ -9,7 +9,7 @@ namespace AODamageMeter.FightEvents.Attack
         public override string Name => EventName;
 
         public static readonly Regex
-            Normal =  CreateRegex($"You hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage."),
+            Basic =   CreateRegex($"You hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage."),
             Crit =    CreateRegex($"You hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage. Critical hit!", rightToLeft: true),
             Glance =  CreateRegex($"You hit {TARGET} for {AMOUNT} points of {DAMAGETYPE} damage. Glancing hit.", rightToLeft: true),
             Reflect = CreateRegex($"Your reflect shield hit {TARGET} for {AMOUNT} points of damage."),
@@ -21,7 +21,7 @@ namespace AODamageMeter.FightEvents.Attack
             SetSourceToOwner();
 
             bool crit = false, glance = false, reflect = false, shield = false;
-            if (TryMatch(Normal, out Match match, out bool normal)
+            if (TryMatch(Basic, out Match match, out bool basic)
                 || TryMatch(Crit, out match, out crit)
                 || TryMatch(Glance, out match, out glance))
             {

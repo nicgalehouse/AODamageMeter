@@ -9,7 +9,7 @@ namespace AODamageMeter.FightEvents.Attack
         public override string Name => EventName;
 
         public static readonly Regex
-            Normal = CreateRegex($"You hit {TARGET} with nanobots for {AMOUNT} points of {DAMAGETYPE} damage.");
+            Basic = CreateRegex($"You hit {TARGET} with nanobots for {AMOUNT} points of {DAMAGETYPE} damage.");
 
         public YouHitOtherWithNano(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
@@ -17,7 +17,7 @@ namespace AODamageMeter.FightEvents.Attack
             SetSourceToOwner();
             AttackResult = AttackResult.NanoHit;
 
-            if (TryMatch(Normal, out Match match))
+            if (TryMatch(Basic, out Match match))
             {
                 SetTarget(match, 1);
                 SetAmount(match, 2);

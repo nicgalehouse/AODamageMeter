@@ -125,10 +125,16 @@ namespace AODamageMeter
             .OrderBy(t => t)
             .ToArray();
 
-        public static readonly IReadOnlyList<DamageType> SpecialDamageTypes = new[]
+        private static HashSet<DamageType> _specialDamageTypes = new HashSet<DamageType>
         {
             DamageType.AimedShot, DamageType.Brawl, DamageType.Backstab, DamageType.Burst, DamageType.Dimach,
             DamageType.FastAttack, DamageType.FlingShot, DamageType.FullAuto, DamageType.SneakAttack
         };
+        public static readonly IReadOnlyList<DamageType> SpecialDamageTypes = _specialDamageTypes
+            .OrderBy(t => t)
+            .ToArray();
+
+        public static bool IsSpecialDamageType(this DamageType damageType)
+            => _specialDamageTypes.Contains(damageType);
     }
 }

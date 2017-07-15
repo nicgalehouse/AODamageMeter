@@ -23,6 +23,7 @@ namespace AODamageMeter
                 IndirectDamage += fightCharacter.IndirectDamageTaken;
 
                 WeaponHits += fightCharacter.WeaponHitsTaken;
+                NormalHits += fightCharacter.NormalHitsTaken;
                 Crits += fightCharacter.CritsTaken;
                 Glances += fightCharacter.GlancesTaken;
                 Misses += fightCharacter.MissesTaken;
@@ -51,6 +52,7 @@ namespace AODamageMeter
         public double? IndirectPercentOfTotalDamage => IndirectDamage / TotalDamage.NullIfZero();
 
         public int WeaponHits { get; }
+        public int NormalHits { get; }
         public int Crits { get; }
         public int Glances { get; }
         public int Misses { get; }
@@ -69,8 +71,8 @@ namespace AODamageMeter
         public double? TotalHitsPM => TotalHits / Fight.Duration?.TotalMinutes;
 
         public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
-        public double? CritChance => Crits / WeaponHits.NullIfZero();
-        public double? GlanceChance => Glances / WeaponHits.NullIfZero();
+        public double? CritChance => Crits / NormalHits.NullIfZero();
+        public double? GlanceChance => Glances / NormalHits.NullIfZero();
         public double? MissChance => Misses / WeaponHitAttempts.NullIfZero();
 
         public double? AverageWeaponDamage => WeaponDamage / WeaponHits.NullIfZero();
@@ -79,8 +81,8 @@ namespace AODamageMeter
         public double? AverageNanoDamage => NanoDamage / NanoHits.NullIfZero();
         public double? AverageIndirectDamage => IndirectDamage / IndirectHits.NullIfZero();
 
-        public bool HasDamageTypeDamage(DamageType damageType) => FightCharacters.Any(c => c.DamageTypeDamagesTaken.ContainsKey(damageType));
-        public bool HasSpecials => DamageTypeHelpers.SpecialDamageTypes.Any(HasDamageTypeDamage);
+        public bool HasDamageTypeDamage(DamageType damageType) => FightCharacters.Any(c => c.HasDamageTypeDamageTaken(damageType));
+        public bool HasSpecials => FightCharacters.Any(c => c.HasSpecialsTaken);
         public int? GetDamageTypeHits(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeHitsTaken(damageType));
         public long? GetDamageTypeDamage(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeDamageTaken(damageType));
         public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);

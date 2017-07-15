@@ -9,7 +9,7 @@ namespace AODamageMeter.FightEvents.Attack
         public override string Name => EventName;
 
         public static readonly Regex
-            Normal =  CreateRegex($"{SOURCE} tried to hit you, but missed!", rightToLeft: true),
+            Basic =   CreateRegex($"{SOURCE} tried to hit you, but missed!", rightToLeft: true),
             Special = CreateRegex($"{SOURCE} tries to attack you with {DAMAGETYPE}, but misses!", rightToLeft: true);
 
         public OtherMisses(Fight fight, DateTime timestamp, string description)
@@ -18,7 +18,7 @@ namespace AODamageMeter.FightEvents.Attack
             SetTargetToOwner();
             AttackResult = AttackResult.Missed;
 
-            if (TryMatch(Normal, out Match match))
+            if (TryMatch(Basic, out Match match))
             {
                 SetSource(match, 1);
             }

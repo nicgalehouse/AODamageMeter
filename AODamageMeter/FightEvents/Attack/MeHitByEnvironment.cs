@@ -9,7 +9,7 @@ namespace AODamageMeter.FightEvents.Attack
         public override string Name => EventName;
 
         public static readonly Regex
-            Normal = CreateRegex($"You were damaged by a toxic substance for {AMOUNT} points of damage.");
+            Basic = CreateRegex($"You were damaged by a toxic substance for {AMOUNT} points of damage.");
 
         public MeHitByEnvironment(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
@@ -19,7 +19,7 @@ namespace AODamageMeter.FightEvents.Attack
             AttackResult = AttackResult.IndirectHit;
             DamageType = AODamageMeter.DamageType.Environment;
 
-            if (TryMatch(Normal, out Match match))
+            if (TryMatch(Basic, out Match match))
             {
                 SetAmount(match, 1);
             }
