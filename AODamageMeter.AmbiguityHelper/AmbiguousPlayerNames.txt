@@ -14,6 +14,7 @@ Aquaan
 Aquarius
 Aquqa
 Arawn
+Arcorash
 Aries
 Asanon
 Asatix
@@ -46,6 +47,7 @@ Chirop
 Coah
 Confane
 Cool
+Creepos
 Crete
 Crisp
 Crusher
@@ -68,6 +70,7 @@ Egres
 Ehmat
 Ekibiogami
 Eleet
+Ercorash
 Ershkigal
 Esanell
 Eumenides
@@ -103,6 +106,7 @@ Hellhound
 Herne
 Hesosas
 Hine
+Hoathlan
 Humbada
 Hwall
 Ichiachich
@@ -192,6 +196,7 @@ Powa
 Protester
 Ptahmose
 Pyiininnik
+Python
 Qallyawi
 Ragerider
 Rauni
@@ -225,11 +230,13 @@ Skyros
 Slaugh
 Sleet
 Soleet
+Somphos
 Soulstepper
 Spetses
 Squasher
 Stalker
 Stark
+Stinger
 Stumpy
 Suppressor
 Sursunabu
@@ -258,6 +265,7 @@ Tumulten
 Turk
 Turris
 Uklesh
+Unionist
 Ushamaham
 Vadleany
 Valentyia
