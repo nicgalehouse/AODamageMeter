@@ -67,7 +67,8 @@ namespace AODamageMeter.FightEvents
             NotAllowed =  CreateRegex("You are not allowed to execute hostile nanoprogram on this target."),
             StandUp =     CreateRegex("You must be standing up to execute a nano program."),
             CantUse =     CreateRegex("You can't use this nano program at the moment."),
-            Swimming =    CreateRegex("You can't execute nanoprograms while swimming!");
+            Swimming =    CreateRegex("You can't execute nanoprograms while swimming!"),
+            Forbidden =   CreateRegex("Executing programs here is forbidden.");
 
         public string NanoProgram { get; protected set; }
         public bool IsStartOfCast => EndEvent != null;
@@ -133,7 +134,8 @@ namespace AODamageMeter.FightEvents
                 || TryMatch(NotAllowed, out match)
                 || TryMatch(StandUp, out match)
                 || TryMatch(CantUse, out match)
-                || TryMatch(Swimming, out match))
+                || TryMatch(Swimming, out match)
+                || TryMatch(Forbidden, out match))
             {
                 IsCastUnavailable = true;
             }
