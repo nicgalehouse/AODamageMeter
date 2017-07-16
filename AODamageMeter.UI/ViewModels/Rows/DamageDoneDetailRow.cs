@@ -48,7 +48,11 @@ $@"{DisplayIndex}. {Title}
 {FightCharacter.AverageIndirectDamageDone.Format()} indirect dmg / hit"
 + (!FightCharacter.HasSpecialsDone ? null : $@"
 
-{FightCharacter.GetSpecialsDoneInfo()}");
+{FightCharacter.GetSpecialsDoneInfo()}")
++ (FightCharacter.HealthDrained == 0 ? null : $@"
+
+{FightCharacter.HealthDrainedPM.Format()} health drained / min
+{FightCharacter.NanoDrainedPM.Format()} nano drained / min");
                 }
             }
         }

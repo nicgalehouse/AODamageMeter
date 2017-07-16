@@ -78,7 +78,11 @@ $@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}'s Dama
 {FightOwner?.AverageIndirectDamageDonePlusPets.Format() ?? EmDash} indirect dmg / hit"
 + (!(FightOwner?.HasSpecialsDone ?? false) ? null : $@"
 
-{FightOwner?.GetSpecialsDoneInfo()}");
+{FightOwner.GetSpecialsDoneInfo()}")
++ ((FightOwner?.HealthDrained ?? 0) == 0 ? null : $@"
+
+{FightOwner.HealthDrainedPM.Format()} health drained / min
+{FightOwner.NanoDrainedPM.Format()} nano drained / min");
                 }
             }
         }

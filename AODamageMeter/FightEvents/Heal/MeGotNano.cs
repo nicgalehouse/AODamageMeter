@@ -25,5 +25,13 @@ namespace AODamageMeter.FightEvents.Heal
             }
             else IsUnmatched = true;
         }
+
+        public MeGotNano(SystemEvent selfNanoHealEvent)
+            : base(selfNanoHealEvent.Fight, selfNanoHealEvent.Timestamp, selfNanoHealEvent.Description)
+        {
+            Source = Target = selfNanoHealEvent.Source;
+            HealType = HealType.Nano;
+            Amount = selfNanoHealEvent.Amount;
+        }
     }
 }

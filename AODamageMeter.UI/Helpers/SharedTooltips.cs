@@ -64,7 +64,11 @@
 {fightCharacter.AverageIndirectDamageDonePlusPets.Format()} indirect dmg / hit"
 + (!fightCharacter.HasSpecialsDone ? null : $@"
 
-{fightCharacter.GetSpecialsDoneInfo()}");
+{fightCharacter.GetSpecialsDoneInfo()}")
++ (fightCharacter.HealthDrained == 0 ? null : $@"
+
+{fightCharacter.HealthDrainedPM.Format()} health drained / min
+{fightCharacter.NanoDrainedPM.Format()} nano drained / min");
 
         public static string GetFightCharacterDamageTakenTooltip(this FightCharacter fightCharacter,
             string title, int displayIndex, double? percentOfTotal, double? percentOfMax)

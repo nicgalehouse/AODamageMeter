@@ -101,7 +101,7 @@ namespace AODamageMeter
             var fightEvent = FightEvent.Create(this, line);
 
             // We know these events can't cause any fight characters to enter, so don't let them start the fight.
-            if (fightEvent is SystemEvent || fightEvent is UnrecognizedEvent)
+            if (fightEvent is SystemEvent && fightEvent.IsUnmatched || fightEvent is UnrecognizedEvent)
                 return;
 
             if (!HasStarted)
@@ -155,6 +155,9 @@ namespace AODamageMeter
                     break;
                 case MeCastNano castEvent:
                     castEvent.Source.AddCastEvent(castEvent);
+                    break;
+                case SystemEvent systemEvent:
+                    systemEvent.Source.AddSystemEvent(systemEvent);
                     break;
                 default: throw new NotImplementedException();
             }

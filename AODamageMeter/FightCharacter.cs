@@ -1,4 +1,5 @@
 ﻿using AODamageMeter.FightEvents;
+using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.Helpers;
 using System;
 using System.Collections.Generic;
@@ -292,6 +293,12 @@ namespace AODamageMeter
         public long? GetDamageTypeDamageDone(DamageType damageType) => DamageTypeDamagesDone.TryGetValue(damageType, out long damageTypeDamageDone) ? damageTypeDamageDone : (long?)null;
         public double? GetAverageDamageTypeDamageDone(DamageType damageType) => GetDamageTypeDamageDone(damageType) / (double?)GetDamageTypeHitsDone(damageType);
         public double? GetSecondsPerDamageTypeHitDone(DamageType damageType) => ActiveDuration.TotalSeconds / GetDamageTypeHitsDone(damageType);
+
+        public long HealthDrained { get; protected set; }
+        public long NanoDrained { get; protected set; }
+
+        public double HealthDrainedPM => HealthDrained / ActiveDuration.TotalMinutes;
+        public double NanoDrainedPM => NanoDrained / ActiveDuration.TotalMinutes;
 
         public long WeaponDamageTaken { get; protected set; }
         public long CritDamageTaken { get; protected set; }
@@ -722,6 +729,25 @@ namespace AODamageMeter
             else if (!castEvent.IsStartOfCast && !castEvent.IsEndOfCast)
             {
                 // Nothing to do here, this is how events that may eventually become start events comes in.
+            }
+            else throw new NotImplementedException();
+        }
+
+        public void AddSystemEvent(SystemEvent systemEvent)
+        {
+            if (systemEvent.IsSelfNanoHeal)
+            {
+                var healEvent = new MeGotNano(systemEvent);
+                AddSourceHealEvent(healEvent);
+                AddTargetHealEvent(healEvent);
+            }
+            else if (systemEvent.IsHealthDrain)
+            {
+                HealthDrained += systemEvent.Amount.Value;
+            }
+            else if (systemEvent.IsNanoDrain)
+            {
+                NanoDrained += systemEvent.Amount.Value;
             }
             else throw new NotImplementedException();
         }
