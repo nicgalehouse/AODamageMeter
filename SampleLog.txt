@@ -1,0 +1,645 @@
+["#0000000042000008#","You hit other","",1498459203]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459203]You hit Humongous Baraton for 1700 points of Fling Shot damage.
+["#0000000042000009#","Your pet hit by other","",1498459203]Reimagine's robo hit Humongous Baraton for 3221 points of melee damage.
+["#0000000042000008#","You hit other","",1498459204]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459204]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459204]Humongous Baraton hit you for 239 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459204]Reimagine's doggo hit Humongous Baraton for 1910 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1498459204]Executing Nano Program: Coherent Polarized Screening.
+["#0000000042000018#","Me Cast Nano","",1498459204]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1498459204]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1498459204]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1498459204]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1498459204]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000005#","You hit other with nano","",1498459204]You hit Humongous Baraton with nanobots for 3238 points of chemical damage.
+["#0000000042000018#","Me Cast Nano","",1498459204]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1498459204]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000013#","Other misses","",1498459205]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459205]Reimagine's robo hit Humongous Baraton for 2701 points of melee damage.
+["#0000000042000008#","You hit other","",1498459205]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459206]You were healed for 142 points.
+["#0000000042000005#","You hit other with nano","",1498459206]You hit Humongous Baraton with nanobots for 1854 points of chemical damage.
+["#0000000042000018#","Me Cast Nano","",1498459206]Nano program executed successfully.
+["#0000000042000005#","You hit other with nano","",1498459206]You hit Humongous Baraton with nanobots for 500 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459207]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459207]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459207]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459207]Humongous Baraton hit you for 246 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459208]Reimagine's robo hit Humongous Baraton for 2882 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459208]Getownednerd hit Humongous Baraton for 285 points of Burst damage.
+["#0000000042000009#","Your pet hit by other","",1498459208]Reimagine's doggo hit Humongous Baraton for 1734 points of melee damage.
+["#0000000042000013#","Other misses","",1498459208]Humongous Baraton tried to hit you, but missed!
+["#000000004200000a#","Other hit by other","",1498459209]Getownednerd hit Humongous Baraton for 619 points of radiation damage.
+["#0000000042000015#","Me got health","",1498459209]You got healed by Getownednerd for 330 points of health.
+["#0000000042000015#","Me got health","",1498459209]You were healed for 330 points.
+["#0000000042000009#","Your pet hit by other","",1498459209]Reimagine's robo hit Humongous Baraton for 1921 points of melee damage.
+["#0000000042000015#","Me got health","",1498459210]You were healed for 13 points.
+["#0000000042000005#","You hit other with nano","",1498459210]You hit Humongous Baraton with nanobots for 3206 points of fire damage.
+["#0000000042000008#","You hit other","",1498459210]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459210]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459210]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459210]Humongous Baraton hit you for 246 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459210]Reimagine's doggo hit Humongous Baraton for 1155 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459211]Getownednerd hit Humongous Baraton for 781 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1498459211]You hit Humongous Baraton with nanobots for 500 points of chemical damage.
+["#0000000042000013#","Other misses","",1498459211]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459212]Reimagine's robo hit Humongous Baraton for 4407 points of melee damage. Critical hit!
+["#0000000042000005#","You hit other with nano","",1498459212]You hit Humongous Baraton with nanobots for 1402 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459212]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459213]Reimagine's doggo hit Humongous Baraton for 1827 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459213]Getownednerd hit Humongous Baraton for 579 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459213]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459213]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459213]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000008#","You hit other","",1498459214]You hit Humongous Baraton for 1700 points of Fling Shot damage.
+["#0000000042000015#","Me got health","",1498459214]You were healed for 142 points.
+["#0000000042000013#","Other misses","",1498459214]Humongous Baraton tried to hit you, but missed!
+["#000000004200000a#","Other hit by other","",1498459215]Getownednerd hit Humongous Baraton for 290 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459215]Reimagine's robo hit Humongous Baraton for 2048 points of melee damage.
+["#0000000042000005#","You hit other with nano","",1498459215]You hit Humongous Baraton with nanobots for 12340 points of fire damage.
+["#0000000042000005#","You hit other with nano","",1498459215]You hit Humongous Baraton with nanobots for 420 points of fire damage.
+["#0000000042000005#","You hit other with nano","",1498459216]You hit Humongous Baraton with nanobots for 500 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459216]Reimagine's doggo hit Humongous Baraton for 1439 points of melee damage.
+["#0000000042000008#","You hit other","",1498459216]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459216]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459216]Humongous Baraton hit you for 252 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459217]Getownednerd hit Humongous Baraton for 341 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459217]Reimagine's robo hit Humongous Baraton for 1919 points of melee damage.
+["#0000000042000005#","You hit other with nano","",1498459217]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#0000000042000008#","You hit other","",1498459217]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459217]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459217]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000015#","Me got health","",1498459218]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459218]You hit Humongous Baraton for 1700 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459219]Getownednerd hit Humongous Baraton for 609 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1498459219]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#0000000042000015#","Me got health","",1498459219]You got healed by Getownednerd for 331 points of health.
+["#0000000042000015#","Me got health","",1498459219]You were healed for 331 points.
+["#0000000042000008#","You hit other","",1498459219]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459219]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459219]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459220]Reimagine's robo hit Humongous Baraton for 2438 points of melee damage.
+["#0000000042000008#","You hit other","",1498459220]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459220]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459220]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459221]Reimagine's doggo hit Humongous Baraton for 868 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459221]Getownednerd hit Humongous Baraton for 622 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459221]You hit Humongous Baraton for 3865 points of chemical damage. Critical hit!
+["#0000000042000005#","You hit other with nano","",1498459221]You hit Humongous Baraton with nanobots for 500 points of chemical damage.
+["#0000000042000005#","You hit other with nano","",1498459221]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#0000000042000009#","Your pet hit by other","",1498459222]Reimagine's robo hit Humongous Baraton for 2870 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459222]Getownednerd hit Humongous Baraton for 507 points of radiation damage.
+["#0000000042000015#","Me got health","",1498459222]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459222]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459222]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459222]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1498459223]Executing Nano Program: Sympathetic Entropy Infusion.
+["#0000000042000018#","Me Cast Nano","",1498459223]Nano program executed successfully.
+["#0000000042000005#","You hit other with nano","",1498459223]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#0000000042000013#","Other misses","",1498459223]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459224]Reimagine's robo hit Humongous Baraton for 1381 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459224]Reimagine's doggo hit Humongous Baraton for 1448 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459224]Getownednerd hit Humongous Baraton for 398 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459225]You hit Humongous Baraton for 850 points of chemical damage. Glancing hit.
+["#0000000042000008#","You hit other","",1498459225]You hit Humongous Baraton for 1700 points of Fling Shot damage.
+["#0000000042000005#","You hit other with nano","",1498459225]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#0000000042000008#","You hit other","",1498459226]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459226]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459226]Humongous Baraton hit you for 252 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459226]Getownednerd hit Humongous Baraton for 493 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1498459226]You hit Humongous Baraton with nanobots for 500 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459226]You were healed for 142 points.
+["#0000000042000013#","Other misses","",1498459227]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459227]You hit Humongous Baraton for 3865 points of chemical damage. Critical hit!
+["#0000000042000005#","You hit other with nano","",1498459227]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#0000000042000009#","Your pet hit by other","",1498459228]Reimagine's robo hit Humongous Baraton for 2629 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459228]Reimagine's doggo hit Humongous Baraton for 2592 points of melee damage. Critical hit!
+["#000000004200000a#","Other hit by other","",1498459228]Getownednerd hit Humongous Baraton for 336 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459229]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459229]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459229]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000008#","You hit other","",1498459229]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459229]You got healed by Getownednerd for 332 points of health.
+["#0000000042000015#","Me got health","",1498459229]You were healed for 332 points.
+["#000000004200000a#","Other hit by other","",1498459230]Getownednerd hit Humongous Baraton for 565 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459230]Reimagine's robo hit Humongous Baraton for 1383 points of melee damage.
+["#0000000042000008#","You hit other","",1498459230]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459230]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459230]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000015#","Me got health","",1498459230]You were healed for 142 points.
+["#0000000042000009#","Your pet hit by other","",1498459231]Reimagine's doggo hit Humongous Baraton for 1697 points of melee damage.
+["#0000000042000008#","You hit other","",1498459231]You hit Humongous Baraton for 3865 points of chemical damage. Critical hit!
+["#0000000042000013#","Other misses","",1498459232]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459232]Reimagine's robo hit Humongous Baraton for 2493 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459232]Getownednerd hit Humongous Baraton for 279 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459233]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459233]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459233]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000008#","You hit other","",1498459233]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000018#","Me Cast Nano","",1498459233]Executing Nano Program: Disruptive Void Projector.
+["#0000000042000018#","Me Cast Nano","",1498459233]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1498459233]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1498459233]Unable to execute nano program. You can't execute this nano on the target.
+["#000000004200000a#","Other hit by other","",1498459233]Getownednerd hit Humongous Baraton for 351 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459234]You hit Humongous Baraton for 3865 points of Fling Shot damage.
+["#0000000042000009#","Your pet hit by other","",1498459234]Reimagine's doggo hit Humongous Baraton for 1902 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459234]Reimagine's robo hit Humongous Baraton for 2466 points of melee damage.
+["#0000000042000015#","Me got health","",1498459235]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459235]Your reflect shield hit Humongous Baraton for 8 points of damage.
+["#0000000042000008#","You hit other","",1498459235]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459235]Humongous Baraton hit you for 24 points of melee damage.
+["#0000000042000008#","You hit other","",1498459235]You hit Humongous Baraton for 1700 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459236]Getownednerd hit Humongous Baraton for 722 points of radiation damage.
+["#0000000042000013#","Other misses","",1498459236]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459237]Reimagine's robo hit Humongous Baraton for 4407 points of melee damage. Critical hit!
+["#0000000042000008#","You hit other","",1498459237]You hit Humongous Baraton for 1700 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459237]Getownednerd hit Humongous Baraton for 475 points of radiation damage.
+["#0000000042000013#","Other misses","",1498459238]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459238]Reimagine's doggo hit Humongous Baraton for 1880 points of melee damage.
+["#0000000042000015#","Me got health","",1498459239]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459239]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459239]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459239]Humongous Baraton hit you for 252 points of melee damage.
+["#0000000042000008#","You hit other","",1498459239]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459239]You got healed by Getownednerd for 326 points of health.
+["#0000000042000015#","Me got health","",1498459239]You were healed for 326 points.
+["#000000004200000a#","Other hit by other","",1498459239]Getownednerd hit Humongous Baraton for 353 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459240]Reimagine's robo hit Humongous Baraton for 4407 points of melee damage. Critical hit!
+["#0000000042000015#","Me got health","",1498459243]You were healed for 142 points.
+["#0000000042000015#","Me got health","",1498459247]You were healed for 142 points.
+["#0000000042000015#","Me got health","",1498459249]You got healed by Getownednerd for 326 points of health.
+["#0000000042000015#","Me got health","",1498459249]You were healed for 326 points.
+["#0000000042000015#","Me got health","",1498459251]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459254]You hit Humongous Baraton for 1700 points of Fling Shot damage.
+["#0000000042000015#","Me got health","",1498459255]You were healed for 142 points.
+["#0000000042000005#","You hit other with nano","",1498459256]You hit Humongous Baraton with nanobots for 654 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459256]Reimagine's doggo hit Humongous Baraton for 2544 points of melee damage. Critical hit!
+["#0000000042000008#","You hit other","",1498459257]You hit Humongous Baraton for 1700 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459257]Reimagine's robo hit Humongous Baraton for 2136 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459258]Reimagine's doggo's reflect shield hit Humongous Baraton for 20 points of damage.
+["#000000004200000a#","Other hit by other","",1498459258]Reimagine's doggo's damage shield hit Humongous Baraton for 60 points of damage.
+["#0000000042000009#","Your pet hit by other","",1498459258]Humongous Baraton hit Reimagine's doggo for 81 points of melee damage.
+["#0000000042000015#","Me got health","",1498459259]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459259]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459259]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459259]Humongous Baraton hit you for 78 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459259]Reimagine's doggo hit Humongous Baraton for 1645 points of melee damage.
+["#0000000042000015#","Me got health","",1498459259]You were healed for 101 points.
+["#0000000042000008#","You hit other","",1498459260]You hit Humongous Baraton for 867 points of chemical damage. Glancing hit.
+["#0000000042000009#","Your pet hit by other","",1498459260]Reimagine's robo hit Humongous Baraton for 2981 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459262]Reimagine's doggo hit Humongous Baraton for 866 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459262]Reimagine's robo hit Humongous Baraton for 2126 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459262]Reimagine's robo's reflect shield hit Humongous Baraton for 20 points of damage.
+["#000000004200000a#","Other hit by other","",1498459262]Reimagine's robo's damage shield hit Humongous Baraton for 60 points of damage.
+["#0000000042000009#","Your pet hit by other","",1498459262]Humongous Baraton hit Reimagine's robo for 277 points of melee damage.
+["#0000000042000008#","You hit other","",1498459264]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459264]You hit Humongous Baraton for 1735 points of Fling Shot damage.
+["#000000004200000a#","Other hit by other","",1498459264]Reimagine's robo's reflect shield hit Humongous Baraton for 20 points of damage.
+["#000000004200000a#","Other hit by other","",1498459264]Reimagine's robo's damage shield hit Humongous Baraton for 60 points of damage.
+["#0000000042000009#","Your pet hit by other","",1498459264]Humongous Baraton hit Reimagine's robo for 277 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459264]Reimagine's doggo hit Humongous Baraton for 1830 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459265]Reimagine's robo hit Humongous Baraton for 2782 points of melee damage.
+["#0000000042000008#","You hit other","",1498459265]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000005#","You hit other with nano","",1498459265]You hit Humongous Baraton with nanobots for 712 points of projectile damage.
+["#0000000042000008#","You hit other","",1498459267]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459267]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459267]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000008#","You hit other","",1498459267]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459267]Reimagine's robo hit Humongous Baraton for 4359 points of melee damage. Critical hit!
+["#0000000042000009#","Your pet hit by other","",1498459268]Reimagine's doggo hit Humongous Baraton for 1248 points of melee damage.
+["#0000000042000008#","You hit other","",1498459268]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459268]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459268]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000015#","Me got health","",1498459269]You got healed by Getownednerd for 333 points of health.
+["#0000000042000015#","Me got health","",1498459269]You were healed for 333 points.
+["#0000000042000008#","You hit other","",1498459270]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459271]Reimagine's robo hit Humongous Baraton for 1408 points of melee damage.
+["#0000000042000015#","Me got health","",1498459271]You were healed for 142 points.
+["#000000004200000a#","Other hit by other","",1498459271]Reimagine's robo's reflect shield hit Humongous Baraton for 20 points of damage.
+["#000000004200000a#","Other hit by other","",1498459271]Reimagine's robo's damage shield hit Humongous Baraton for 60 points of damage.
+["#0000000042000009#","Your pet hit by other","",1498459271]Humongous Baraton hit Reimagine's robo for 277 points of melee damage.
+["#0000000042000008#","You hit other","",1498459272]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459272]Reimagine's doggo hit Humongous Baraton for 1209 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459273]Getownednerd hit Humongous Baraton for 940 points of Burst damage.
+["#0000000042000009#","Your pet hit by other","",1498459273]Reimagine's robo hit Humongous Baraton for 2845 points of melee damage.
+["#0000000042000008#","You hit other","",1498459274]You hit Humongous Baraton for 3900 points of chemical damage. Critical hit!
+["#000000004200000a#","Other hit by other","",1498459274]Getownednerd hit Humongous Baraton for 648 points of radiation damage.
+["#000000004200000a#","Other hit by other","",1498459275]Getownednerd hit Humongous Baraton for 514 points of radiation damage.
+["#0000000042000015#","Me got health","",1498459275]You were healed for 57 points.
+["#0000000042000009#","Your pet hit by other","",1498459276]Reimagine's robo hit Humongous Baraton for 2004 points of melee damage.
+["#0000000042000008#","You hit other","",1498459276]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459276]Reimagine's doggo hit Humongous Baraton for 1055 points of melee damage.
+["#0000000042000008#","You hit other","",1498459276]You hit Humongous Baraton for 1735 points of Fling Shot damage.
+["#0000000042000005#","You hit other with nano","",1498459276]You hit Humongous Baraton with nanobots for 712 points of projectile damage.
+["#0000000042000013#","Other misses","",1498459277]Humongous Baraton tried to hit you, but missed!
+["#0000000042000005#","You hit other with nano","",1498459277]You hit Humongous Baraton with nanobots for 3324 points of chemical damage.
+["#0000000042000013#","Other misses","",1498459278]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459278]You hit Humongous Baraton for 867 points of chemical damage. Glancing hit.
+["#0000000042000009#","Your pet hit by other","",1498459278]Reimagine's robo hit Humongous Baraton for 4359 points of melee damage. Critical hit!
+["#000000004200000a#","Other hit by other","",1498459278]Getownednerd hit Humongous Baraton for 988 points of radiation damage. Critical hit!
+["#0000000042000009#","Your pet hit by other","",1498459279]Reimagine's doggo hit Humongous Baraton for 1335 points of melee damage.
+["#0000000042000008#","You hit other","",1498459280]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459280]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459280]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000008#","You hit other","",1498459280]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459280]Reimagine's robo hit Humongous Baraton for 4359 points of melee damage. Critical hit!
+["#0000000042000008#","You hit other","",1498459281]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459281]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459281]Humongous Baraton hit you for 266 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459281]Getownednerd hit Humongous Baraton for 502 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459282]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459282]Reimagine's doggo hit Humongous Baraton for 1643 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459283]Getownednerd hit Humongous Baraton for 513 points of radiation damage.
+["#0000000042000013#","Other misses","",1498459283]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459283]Reimagine's robo hit Humongous Baraton for 1822 points of melee damage.
+["#0000000042000015#","Me got health","",1498459284]You were healed for 142 points.
+["#0000000042000013#","Other misses","",1498459284]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459284]You hit Humongous Baraton for 1735 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459285]Getownednerd hit Humongous Baraton for 657 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459286]Reimagine's robo hit Humongous Baraton for 2206 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459286]Reimagine's doggo hit Humongous Baraton for 2544 points of melee damage. Critical hit!
+["#0000000042000013#","Other misses","",1498459286]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459286]You hit Humongous Baraton for 1735 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459286]Getownednerd hit Humongous Baraton for 572 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459287]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459287]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459287]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000015#","Me got health","",1498459288]You were healed for 142 points.
+["#0000000042000009#","Your pet hit by other","",1498459288]Reimagine's robo hit Humongous Baraton for 2594 points of melee damage.
+["#0000000042000008#","You hit other","",1498459288]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459289]You got healed by Getownednerd for 326 points of health.
+["#0000000042000015#","Me got health","",1498459289]You were healed for 326 points.
+["#0000000042000008#","You hit other","",1498459290]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459290]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459290]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459290]Reimagine's doggo hit Humongous Baraton for 2544 points of melee damage. Critical hit!
+["#0000000042000009#","Your pet hit by other","",1498459290]Reimagine's robo hit Humongous Baraton for 3029 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459291]Getownednerd hit Humongous Baraton for 390 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459291]You hit Humongous Baraton for 3900 points of chemical damage. Critical hit!
+["#0000000042000015#","Me got health","",1498459292]You were healed for 142 points.
+["#0000000042000013#","Other misses","",1498459292]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459292]Reimagine's robo hit Humongous Baraton for 1644 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459293]Getownednerd hit Humongous Baraton for 572 points of radiation damage.
+["#0000000042000013#","Other misses","",1498459293]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459293]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000005#","You hit other with nano","",1498459293]You hit Humongous Baraton with nanobots for 712 points of projectile damage.
+["#0000000042000009#","Your pet hit by other","",1498459293]Reimagine's doggo hit Humongous Baraton for 1296 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459294]Getownednerd hit Humongous Baraton for 369 points of radiation damage.
+["#0000000042000013#","Other misses","",1498459295]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459295]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459296]You were healed for 142 points.
+["#0000000042000009#","Your pet hit by other","",1498459296]Reimagine's robo hit Humongous Baraton for 4359 points of melee damage. Critical hit!
+["#0000000042000008#","You hit other","",1498459296]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459296]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459296]Humongous Baraton hit you for 266 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459296]Getownednerd hit Humongous Baraton for 431 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459297]Reimagine's doggo hit Humongous Baraton for 1819 points of melee damage.
+["#0000000042000008#","You hit other","",1498459297]You hit Humongous Baraton for 1735 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459298]Getownednerd hit Humongous Baraton for 519 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459298]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459298]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459298]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459298]Reimagine's robo hit Humongous Baraton for 2365 points of melee damage.
+["#0000000042000013#","Other misses","",1498459299]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459299]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459300]You got healed by Getownednerd for 327 points of health.
+["#0000000042000015#","Me got health","",1498459300]You were healed for 327 points.
+["#0000000042000015#","Me got health","",1498459300]You were healed for 142 points.
+["#000000004200000a#","Other hit by other","",1498459300]Getownednerd hit Humongous Baraton for 409 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459300]Reimagine's doggo hit Humongous Baraton for 566 points of melee damage. Glancing hit.
+["#0000000042000009#","Your pet hit by other","",1498459300]Reimagine's robo hit Humongous Baraton for 1356 points of melee damage.
+["#0000000042000013#","Other misses","",1498459301]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459301]You hit Humongous Baraton for 1735 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459301]Getownednerd hit Humongous Baraton for 329 points of radiation damage.
+["#0000000042000013#","Other misses","",1498459302]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459303]Reimagine's robo hit Humongous Baraton for 1955 points of melee damage.
+["#0000000042000008#","You hit other","",1498459303]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459304]Reimagine's doggo hit Humongous Baraton for 1982 points of melee damage.
+["#0000000042000015#","Me got health","",1498459304]You were healed for 142 points.
+["#0000000042000013#","Other misses","",1498459304]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459305]You hit Humongous Baraton for 1735 points of Fling Shot damage.
+["#0000000042000009#","Your pet hit by other","",1498459305]Reimagine's robo hit Humongous Baraton for 2456 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459305]Getownednerd hit Humongous Baraton for 389 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459305]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459305]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459305]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000008#","You hit other","",1498459305]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459307]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459307]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459307]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000008#","You hit other","",1498459307]You hit Humongous Baraton for 1735 points of chemical damage.
+["#000000004200000a#","Other hit by other","",1498459308]Getownednerd hit Humongous Baraton for 347 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1498459308]You hit Humongous Baraton with nanobots for 1430 points of fire damage.
+["#0000000042000009#","Your pet hit by other","",1498459308]Reimagine's doggo hit Humongous Baraton for 1407 points of melee damage.
+["#0000000042000015#","Me got health","",1498459308]You were healed for 142 points.
+["#0000000042000009#","Your pet hit by other","",1498459308]Reimagine's robo hit Humongous Baraton for 1766 points of melee damage.
+["#0000000042000008#","You hit other","",1498459308]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459308]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459308]Humongous Baraton hit you for 266 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459309]Getownednerd hit Humongous Baraton for 301 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459309]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459309]You got healed by Getownednerd for 326 points of health.
+["#0000000042000015#","Me got health","",1498459309]You were healed for 326 points.
+["#0000000042000005#","You hit other with nano","",1498459310]You hit Humongous Baraton with nanobots for 442 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459310]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459310]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459310]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459311]Reimagine's robo hit Humongous Baraton for 2002 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459311]Reimagine's doggo hit Humongous Baraton for 1838 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459311]Getownednerd hit Humongous Baraton for 485 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459311]Your reflect shield hit Humongous Baraton for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459311]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459311]Humongous Baraton hit you for 266 points of melee damage.
+["#0000000042000008#","You hit other","",1498459311]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459312]You were healed for 142 points.
+["#000000004200000a#","Other hit by other","",1498459313]Getownednerd hit Humongous Baraton for 293 points of radiation damage. Glancing hit.
+["#0000000042000005#","You hit other with nano","",1498459313]You hit Humongous Baraton with nanobots for 9323 points of fire damage.
+["#0000000042000005#","You hit other with nano","",1498459313]You hit Humongous Baraton with nanobots for 455 points of fire damage.
+["#0000000042000009#","Your pet hit by other","",1498459313]Reimagine's robo hit Humongous Baraton for 2579 points of melee damage.
+["#0000000042000008#","You hit other","",1498459313]Your reflect shield hit Humongous Baraton for 10 points of damage.
+["#0000000042000008#","You hit other","",1498459313]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459313]Humongous Baraton hit you for 32 points of melee damage.
+["#0000000042000008#","You hit other","",1498459314]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459314]You hit Humongous Baraton for 1735 points of Fling Shot damage.
+["#0000000042000013#","Other misses","",1498459314]Humongous Baraton tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459315]Reimagine's doggo hit Humongous Baraton for 1838 points of melee damage.
+["#0000000042000005#","You hit other with nano","",1498459315]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#000000004200000a#","Other hit by other","",1498459315]Getownednerd hit Humongous Baraton for 415 points of radiation damage.
+["#0000000042000009#","Your pet hit by other","",1498459315]Reimagine's robo hit Humongous Baraton for 1460 points of melee damage.
+["#0000000042000008#","You hit other","",1498459316]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459316]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459316]Your reflect shield hit Humongous Baraton for 10 points of damage.
+["#0000000042000008#","You hit other","",1498459316]Your damage shield hit Humongous Baraton for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459316]Humongous Baraton hit you for 32 points of melee damage.
+["#0000000042000005#","You hit other with nano","",1498459317]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#0000000042000009#","Your pet hit by other","",1498459317]Reimagine's robo hit Humongous Baraton for 808 points of melee damage. Glancing hit.
+["#0000000042000013#","Other misses","",1498459317]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459318]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000009#","Your pet hit by other","",1498459318]Reimagine's doggo hit Humongous Baraton for 1496 points of melee damage.
+["#0000000042000005#","You hit other with nano","",1498459319]You hit Humongous Baraton with nanobots for 240 points of fire damage.
+["#000000004200000a#","Other hit by other","",1498459319]Getownednerd hit Humongous Baraton for 645 points of radiation damage.
+["#0000000042000015#","Me got health","",1498459320]You got healed by Getownednerd for 332 points of health.
+["#0000000042000015#","Me got health","",1498459320]You were healed for 332 points.
+["#0000000042000013#","Other misses","",1498459320]Humongous Baraton tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459320]You hit Humongous Baraton for 1735 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459320]You were healed for 142 points.
+["#0000000042000015#","Me got health","",1498459324]You were healed for 142 points.
+["#0000000042000015#","Me got health","",1498459328]You were healed for 117 points.
+["#0000000042000012#","Your misses","",1498459343]You try to attack General Vivyan with FlingShot, but you miss!
+["#0000000042000012#","Your misses","",1498459344]You tried to hit General Vivyan, but missed!
+["#0000000042000013#","Other misses","",1498459344]General Vivyan tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459346]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459346]Your damage shield hit General Vivyan for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459346]General Vivyan hit you for 331 points of energy damage.
+["#0000000042000005#","You hit other with nano","",1498459346]You hit General Vivyan with nanobots for 442 points of radiation damage.
+["#0000000042000008#","You hit other","",1498459347]You hit General Vivyan for 1735 points of chemical damage.
+["#0000000042000005#","You hit other with nano","",1498459347]You hit General Vivyan with nanobots for 712 points of projectile damage.
+["#0000000042000013#","Other misses","",1498459347]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459348]General Vivyan tried to hit you, but missed!
+["#0000000042000015#","Me got health","",1498459349]You were healed for 142 points.
+["#0000000042000013#","Other misses","",1498459349]General Vivyan tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459349]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459349]Your damage shield hit Masked Commando Elite for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459349]Masked Commando Elite hit you for 879 points of cold damage.
+["#0000000042000008#","You hit other","",1498459349]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459349]Your damage shield hit Masked Commando Elite for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459349]Masked Commando Elite hit you for 1134 points of cold damage.
+["#0000000042000015#","Me got health","",1498459350]You were healed for 330 points.
+["#0000000042000008#","You hit other","",1498459350]You hit General Vivyan for 1626 points of chemical damage.
+["#0000000042000013#","Other misses","",1498459350]General Vivyan tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459351]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459352]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000012#","Your misses","",1498459352]You tried to hit General Vivyan, but missed!
+["#0000000042000008#","You hit other","",1498459352]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459352]Your damage shield hit General Vivyan for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459352]General Vivyan hit you for 475 points of energy damage.
+["#0000000042000008#","You hit other","",1498459353]You hit General Vivyan for 1626 points of Fling Shot damage.
+["#0000000042000015#","Me got health","",1498459353]You were healed for 142 points.
+["#0000000042000013#","Other misses","",1498459354]General Vivyan tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459354]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459354]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459354]You hit General Vivyan for 1626 points of chemical damage.
+["#0000000042000008#","You hit other","",1498459355]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459355]Your damage shield hit General Vivyan for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459355]General Vivyan hit you for 4719 points of chemical damage.
+["#0000000042000013#","Other misses","",1498459356]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459356]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459356]Reimagine's robo hit General Vivyan for 1624 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459356]Reimagine's doggo hit General Vivyan for 1624 points of melee damage.
+["#0000000042000008#","You hit other","",1498459356]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459356]Your damage shield hit General Vivyan for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459356]General Vivyan hit you for 625 points of melee damage.
+["#0000000042000015#","Me got health","",1498459357]You were healed for 500 points.
+["#0000000042000015#","Me got health","",1498459357]You were healed for 500 points.
+["#0000000042000012#","Your misses","",1498459357]You tried to hit General Vivyan, but missed!
+["#0000000042000015#","Me got health","",1498459357]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459357]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459357]Your damage shield hit General Vivyan for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459357]General Vivyan hit you for 2031 points of energy damage.
+["#0000000042000015#","Me got health","",1498459357]You were healed for 500 points.
+["#0000000042000009#","Your pet hit by other","",1498459357]Reimagine's robo hit General Vivyan for 1626 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1498459358]Executing Nano Program: Disruptive Void Projector.
+["#0000000042000013#","Other misses","",1498459358]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000018#","Me Cast Nano","",1498459358]Executing Nano Program: Disruptive Void Projector.
+["#0000000042000018#","Me Cast Nano","",1498459358]Nano program executed successfully.
+["#0000000042000013#","Other misses","",1498459358]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000018#","Me Cast Nano","",1498459358]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1498459358]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1498459358]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000015#","Me got health","",1498459358]You were healed for 500 points.
+["#0000000042000008#","You hit other","",1498459359]You hit General Vivyan for 1626 points of chemical damage.
+["#0000000042000005#","You hit other with nano","",1498459359]You hit General Vivyan with nanobots for 612 points of projectile damage.
+["#0000000042000009#","Your pet hit by other","",1498459359]Reimagine's robo hit General Vivyan for 2015 points of melee damage.
+["#0000000042000015#","Me got health","",1498459359]You were healed for 880 points.
+["#0000000042000009#","Your pet hit by other","",1498459359]Reimagine's doggo hit General Vivyan for 1337 points of melee damage.
+["#0000000042000008#","You hit other","",1498459359]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459359]Your damage shield hit General Vivyan for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459359]General Vivyan hit you for 98 points of energy damage.
+["#0000000042000015#","Me got health","",1498459360]You were healed for 500 points.
+["#0000000042000015#","Me got health","",1498459360]You were healed for 330 points.
+["#0000000042000013#","Other misses","",1498459360]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459360]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459361]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459361]Your damage shield hit General Vivyan for 90 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459361]You absorbed 1153 points of energy damage.
+["#0000000042000015#","Me got health","",1498459361]You were healed for 500 points.
+["#0000000042000012#","Your misses","",1498459361]You tried to hit General Vivyan, but missed!
+["#0000000042000015#","Me got health","",1498459361]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459361]You hit General Vivyan for 1626 points of Fling Shot damage.
+["#0000000042000005#","You hit other with nano","",1498459361]You hit General Vivyan with nanobots for 612 points of projectile damage.
+["#0000000042000015#","Me got health","",1498459362]You were healed for 500 points.
+["#0000000042000009#","Your pet hit by other","",1498459362]Reimagine's robo hit General Vivyan for 2571 points of melee damage.
+["#0000000042000013#","Other misses","",1498459362]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459362]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459362]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459362]You absorbed 261 points of cold damage.
+["#0000000042000008#","You hit other","",1498459362]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459362]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459362]You absorbed 4711 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459363]You were healed for 500 points.
+["#0000000042000009#","Your pet hit by other","",1498459363]Reimagine's doggo hit General Vivyan for 929 points of melee damage.
+["#0000000042000012#","Your misses","",1498459363]You tried to hit General Vivyan, but missed!
+["#0000000042000008#","You hit other","",1498459363]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459363]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459363]You absorbed 554 points of melee damage.
+["#0000000042000015#","Me got health","",1498459363]You were healed for 500 points.
+["#0000000042000013#","Other misses","",1498459364]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459364]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000018#","Me Cast Nano","",1498459364]Nano program executed successfully.
+["#0000000042000009#","Your pet hit by other","",1498459364]Reimagine's robo hit General Vivyan for 2726 points of melee damage.
+["#0000000042000008#","You hit other","",1498459364]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459364]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459364]You absorbed 2085 points of energy damage.
+["#0000000042000015#","Me got health","",1498459365]You were healed for 500 points.
+["#0000000042000008#","You hit other","",1498459365]You hit General Vivyan for 1626 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459365]You were healed for 142 points.
+["#0000000042000009#","Your pet hit by other","",1498459365]Reimagine's doggo hit General Vivyan for 1045 points of melee damage.
+["#0000000042000015#","Me got health","",1498459366]You were healed for 500 points.
+["#0000000042000013#","Other misses","",1498459366]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459366]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459366]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459366]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459366]You absorbed 318 points of energy damage.
+["#0000000042000015#","Me got health","",1498459367]You were healed for 500 points.
+["#0000000042000008#","You hit other","",1498459367]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459367]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459367]You absorbed 2433 points of energy damage.
+["#0000000042000009#","Your pet hit by other","",1498459367]Reimagine's robo hit General Vivyan for 2723 points of melee damage.
+["#0000000042000015#","Me got health","",1498459368]You were healed for 500 points.
+["#0000000042000008#","You hit other","",1498459368]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459368]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459368]You absorbed 300 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459368]Reimagine's doggo's reflect shield hit General Vivyan for 20 points of damage.
+["#000000004200000a#","Other hit by other","",1498459368]Reimagine's doggo's damage shield hit General Vivyan for 60 points of damage.
+["#0000000042000003#","Your pet hit by nano","",1498459368]Reimagine's doggo was attacked with nanobots from General Vivyan for 312 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459368]Reimagine's robo's reflect shield hit General Vivyan for 20 points of damage.
+["#000000004200000a#","Other hit by other","",1498459368]Reimagine's robo's damage shield hit General Vivyan for 60 points of damage.
+["#0000000042000003#","Your pet hit by nano","",1498459368]Reimagine's robo was attacked with nanobots from General Vivyan for 312 points of melee damage.
+["#0000000042000013#","Other misses","",1498459368]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459368]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459368]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459368]You absorbed 901 points of cold damage.
+["#0000000042000015#","Me got health","",1498459368]You were healed for 500 points.
+["#0000000042000015#","Me got health","",1498459369]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459369]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459369]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459369]You absorbed 4501 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459370]You were healed for 500 points.
+["#0000000042000015#","Me got health","",1498459370]You were healed for 326 points.
+["#0000000042000013#","Other misses","",1498459370]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459370]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459370]General Vivyan tried to hit you, but missed!
+["#0000000042000015#","Me got health","",1498459371]You were healed for 74 points.
+["#0000000042000008#","You hit other","",1498459371]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459371]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459371]You absorbed 1814 points of energy damage.
+["#0000000042000013#","Other misses","",1498459372]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459372]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459374]Reimagine's doggo hit General Vivyan for 1537 points of melee damage.
+["#0000000042000008#","You hit other","",1498459374]You hit General Vivyan for 1591 points of chemical damage.
+["#0000000042000005#","You hit other with nano","",1498459374]You hit General Vivyan with nanobots for 577 points of projectile damage.
+["#0000000042000013#","Other misses","",1498459374]General Vivyan tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459374]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459374]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459374]You absorbed 917 points of cold damage.
+["#0000000042000013#","Other misses","",1498459374]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459374]General Vivyan tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459375]Reimagine's robo hit General Vivyan for 1701 points of melee damage.
+["#0000000042000008#","You hit other","",1498459376]You hit General Vivyan for 1591 points of chemical damage.
+["#0000000042000013#","Other misses","",1498459376]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459376]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459376]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459376]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459376]You absorbed 788 points of chemical damage.
+["#0000000042000006#","Me hit by monster","",1498459376]General Vivyan hit you for 3630 points of chemical damage.
+["#0000000042000015#","Me got health","",1498459377]You were healed for 500 points.
+["#0000000042000009#","Your pet hit by other","",1498459377]Reimagine's robo hit General Vivyan for 1711 points of melee damage.
+["#0000000042000008#","You hit other","",1498459377]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459377]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459377]You absorbed 174 points of melee damage.
+["#0000000042000015#","Me got health","",1498459378]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459378]You hit General Vivyan for 795 points of chemical damage. Glancing hit.
+["#0000000042000015#","Me got health","",1498459378]You were healed for 500 points.
+["#0000000042000009#","Your pet hit by other","",1498459378]Reimagine's doggo hit General Vivyan for 956 points of melee damage.
+["#0000000042000008#","You hit other","",1498459378]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459378]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459378]You absorbed 882 points of cold damage.
+["#0000000042000008#","You hit other","",1498459378]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459378]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459378]You absorbed 887 points of cold damage.
+["#0000000042000013#","Other misses","",1498459378]General Vivyan tried to hit you, but missed!
+["#0000000042000015#","Me got health","",1498459379]You were healed for 500 points.
+["#0000000042000009#","Your pet hit by other","",1498459379]Reimagine's robo hit General Vivyan for 2135 points of melee damage.
+["#0000000042000015#","Me got health","",1498459380]You were healed for 328 points.
+["#0000000042000012#","Your misses","",1498459380]You try to attack General Vivyan with FlingShot, but you miss!
+["#0000000042000012#","Your misses","",1498459380]You tried to hit General Vivyan, but missed!
+["#0000000042000015#","Me got health","",1498459380]You were healed for 500 points.
+["#0000000042000008#","You hit other","",1498459380]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459380]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459380]You absorbed 893 points of cold damage.
+["#0000000042000008#","You hit other","",1498459380]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459380]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459380]You absorbed 884 points of cold damage.
+["#0000000042000008#","You hit other","",1498459380]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459380]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459380]You absorbed 411 points of energy damage.
+["#0000000042000015#","Me got health","",1498459381]You were healed for 500 points.
+["#0000000042000009#","Your pet hit by other","",1498459381]Reimagine's doggo hit General Vivyan for 1356 points of melee damage.
+["#0000000042000008#","You hit other","",1498459381]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459381]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459381]You absorbed 1786 points of energy damage.
+["#0000000042000006#","Me hit by monster","",1498459381]General Vivyan hit you for 305 points of energy damage.
+["#0000000042000015#","Me got health","",1498459382]You were healed for 142 points.
+["#0000000042000009#","Your pet hit by other","",1498459382]Reimagine's robo hit General Vivyan for 1855 points of melee damage.
+["#0000000042000015#","Me got health","",1498459382]You were healed for 500 points.
+["#0000000042000008#","You hit other","",1498459382]You hit General Vivyan for 3743 points of chemical damage. Critical hit!
+["#0000000042000013#","Other misses","",1498459382]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459382]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000005#","You hit other with nano","",1498459383]You hit General Vivyan with nanobots for 307 points of radiation damage.
+["#0000000042000015#","Me got health","",1498459383]You were healed for 323 points.
+["#0000000042000013#","Other misses","",1498459383]General Vivyan tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459384]You hit General Vivyan for 1591 points of chemical damage.
+["#0000000042000013#","Other misses","",1498459384]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459384]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459384]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459384]You absorbed 918 points of cold damage.
+["#0000000042000008#","You hit other","",1498459384]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459384]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459384]You absorbed 115 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459384]Reimagine's doggo hit General Vivyan for 1004 points of melee damage.
+["#0000000042000009#","Your pet hit by other","",1498459385]Reimagine's robo hit General Vivyan for 2211 points of melee damage.
+["#0000000042000008#","You hit other","",1498459385]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459385]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459385]General Vivyan hit you for 2314 points of energy damage.
+["#0000000042000015#","Me got health","",1498459386]You were healed for 142 points.
+["#0000000042000008#","You hit other","",1498459386]You hit General Vivyan for 3743 points of chemical damage. Critical hit!
+["#0000000042000008#","You hit other","",1498459386]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459386]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459386]You absorbed 915 points of cold damage.
+["#0000000042000013#","Other misses","",1498459386]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000009#","Your pet hit by other","",1498459387]Reimagine's robo hit General Vivyan for 1663 points of melee damage.
+["#0000000042000008#","You hit other","",1498459387]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459387]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459387]General Vivyan hit you for 510 points of energy damage.
+["#0000000042000009#","Your pet hit by other","",1498459388]Reimagine's doggo hit General Vivyan for 1364 points of melee damage.
+["#0000000042000008#","You hit other","",1498459388]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459388]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459388]You absorbed 300 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459388]Reimagine's doggo's reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000003#","Your pet hit by nano","",1498459388]Reimagine's doggo was attacked with nanobots from General Vivyan for 312 points of melee damage.
+["#000000004200000a#","Other hit by other","",1498459388]Reimagine's robo's reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000003#","Your pet hit by nano","",1498459388]Reimagine's robo was attacked with nanobots from General Vivyan for 312 points of melee damage.
+["#0000000042000013#","Other misses","",1498459388]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459388]Your reflect shield hit Masked Commando Elite for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459388]Your damage shield hit Masked Commando Elite for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459388]You absorbed 874 points of cold damage.
+["#0000000042000008#","You hit other","",1498459389]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459389]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459389]General Vivyan hit you for 2594 points of energy damage.
+["#0000000042000015#","Me got health","",1498459390]You were healed for 142 points.
+["#0000000042000015#","Me got health","",1498459390]You were healed for 326 points.
+["#0000000042000013#","Other misses","",1498459390]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000013#","Other misses","",1498459390]Masked Commando Elite tried to hit you, but missed!
+["#0000000042000008#","You hit other","",1498459391]Your reflect shield hit General Vivyan for 20 points of damage.
+["#0000000042000008#","You hit other","",1498459391]Your damage shield hit General Vivyan for 210 points of damage.
+["#0000000042000006#","Me hit by monster","",1498459391]General Vivyan hit you for 4576 points of chemical damage.
