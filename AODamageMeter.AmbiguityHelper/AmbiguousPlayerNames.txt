@@ -2,6 +2,7 @@
 Absuum
 Agrama
 Ahomac
+Ahpta
 Ahwere
 Akapan
 Alonissos
@@ -13,6 +14,8 @@ Aniuchach
 Aquaan
 Aquarius
 Aquqa
+Arachnis
+Arachnobot
 Arawn
 Arcorash
 Aries
@@ -74,6 +77,7 @@ Ercorash
 Ershkigal
 Esanell
 Eumenides
+Fanatic
 Fatestealer
 Fearplanter
 Fearspinner
@@ -97,6 +101,7 @@ Grimwolf
 Guard
 Guardbot
 Gunbeetle
+Haqa
 Hatskiri
 Hawilli
 Hawqana
@@ -120,6 +125,7 @@ Irespouter
 Isham
 Ithaki
 Jealousy
+Jikininki
 Jukes
 Jumeaux
 Kalymnos
@@ -175,6 +181,7 @@ Nightcrawler
 Nighthowler
 Numiel
 Nyrckes
+Odqan
 Omathon
 Oscar
 Otacustes
@@ -251,6 +258,7 @@ Tcheser
 Tchu
 Tdecin
 Technician
+Tentacle
 Thapt
 Thief
 Tinos
@@ -267,12 +275,14 @@ Turris
 Uklesh
 Unionist
 Ushamaham
+Ushqa
 Vadleany
 Valentyia
 Valirash
 Vilesprout
 Vinstur
 Virgo
+Vortexoid
 Wakhent
 Waqamawi
 Warbot
