@@ -3,7 +3,7 @@ AO Damage Meter
 
 Real-time graphical damage meter for the sci-fi MMORPG Anarchy Online.
 
-Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.1.1) (built for W10, but I think it works on W7 too).
+Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.1.2) (built for W10, but I think it works on W7 too).
 
 Video demonstration [here](https://youtu.be/K4iU7KronOg).
 
