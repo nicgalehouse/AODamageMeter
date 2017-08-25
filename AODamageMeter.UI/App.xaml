@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AODamageMeter.UI"
              xmlns:converters="clr-namespace:AODamageMeter.UI.Converters"
              xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
-             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+             xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
              StartupUri="Views/DamageMeterView.xaml">
   <Application.Resources>
     <converters:RowWidthConverter x:Key="RowWidthConverter"/>
