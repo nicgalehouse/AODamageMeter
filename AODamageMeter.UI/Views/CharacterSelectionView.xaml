@@ -25,7 +25,7 @@
           MouseDown="HeaderRow_MouseDown_Drag">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="26"/>
+        <ColumnDefinition Width="24"/>
       </Grid.ColumnDefinitions>
 
       <TextBlock Grid.Column="0" Margin="5 0 0 0" VerticalAlignment="Center"
