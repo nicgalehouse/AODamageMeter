@@ -17,7 +17,7 @@ namespace AODamageMeter
         protected readonly Dictionary<Character, FightCharacter> _fightCharacters = new Dictionary<Character, FightCharacter>();
         public IReadOnlyCollection<FightCharacter> FightCharacters => _fightCharacters.Values;
         public IEnumerable<FightCharacter> PlayerFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayer);
-        public IEnumerable<FightCharacter> PlayerOrPetFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayer || c.IsFightPet);
+        public IEnumerable<FightCharacter> PlayerOrPetFightCharacters => _fightCharacters.Values.Where(c => c.IsPlayerOrFightPet);
 
         public FightCharacterCounts GetFightCharacterCounts(
             bool includeNPCs = true, bool includeZeroDamageDones = true, bool includeZeroDamageTakens = true)
@@ -179,6 +179,7 @@ namespace AODamageMeter
             if (fightPetMaster.TryRegisterFightPet(fightPet))
             {
                 fightPetMaster.Character.IsPlayer = true;
+                fightPet.Character.IsPlayer = false;
                 ClearCachedDamageComputations();
                 return true;
             }

@@ -16,7 +16,7 @@ namespace AODamageMeter
             Fight = fight;
 
             foreach (var fightCharacter in fight.FightCharacters
-                .Where(c => (includeNPCs || !c.IsNPC)
+                .Where(c => (includeNPCs || c.IsPlayerOrFightPet)
                     && (includeZeroDamageDones || c.MastersOrOwnTotalDamageDonePlusPets != 0)
                     && (includeZeroDamageTakens || c.TotalDamageTaken != 0)))
             {
@@ -54,7 +54,7 @@ namespace AODamageMeter
                 }
                 if (fightCharacter.Faction == Faction.Unknown) ++UnknownPlayerCount;
                 if (fightCharacter.IsFightPet) ++FightPetCount;
-                if (fightCharacter.IsNPC) ++NPCCount;
+                if (!fightCharacter.IsPlayerOrFightPet) ++NPCCount;
 
                 if (fightCharacter.Profession != null)
                 {

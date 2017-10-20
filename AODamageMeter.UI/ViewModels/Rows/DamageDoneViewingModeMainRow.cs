@@ -82,7 +82,7 @@ $@"{Title}
                 : $"{Fight.TotalPlayerDamageDonePlusPets.Format()} ({Fight.TotalPlayerDamageDonePMPlusPets.Format()})";
 
             var topFightCharacters = Fight.FightCharacters
-                .Where(c => (Settings.Default.IncludeTopLevelNPCRows || !c.IsNPC)
+                .Where(c => (Settings.Default.IncludeTopLevelNPCRows || c.IsPlayerOrFightPet)
                     && (Settings.Default.IncludeTopLevelZeroDamageRows || c.TotalDamageDonePlusPets != 0))
                 .Where(c => !c.IsFightPet)
                 .OrderByDescending(c => c.TotalDamageDonePlusPets)

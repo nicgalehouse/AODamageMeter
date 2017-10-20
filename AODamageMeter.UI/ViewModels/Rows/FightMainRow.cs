@@ -106,7 +106,7 @@ $@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}'s Dama
             }
 
             var fightCharacters = Fight.FightCharacters
-                .Where(c => (Settings.Default.IncludeTopLevelNPCRows || !c.IsNPC)
+                .Where(c => (Settings.Default.IncludeTopLevelNPCRows || c.IsPlayerOrFightPet)
                     && (Settings.Default.IncludeTopLevelZeroDamageRows || c.TotalDamageDonePlusPets != 0))
                 .Where(c => !c.IsFightPet)
                 .OrderByDescending(c => c.TotalDamageDonePlusPets)

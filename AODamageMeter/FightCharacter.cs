@@ -25,7 +25,7 @@ namespace AODamageMeter
         public string Name => Character.Name;
         public string UncoloredName => Character.UncoloredName;
         public bool IsPlayer => Character.IsPlayer;
-        public bool IsNPC => Character.IsNPC && !IsFightPet; // Yeah... more like IsN Player/Pet C.
+        public bool IsPlayerOrFightPet => Character.IsPlayer || IsFightPet;
         public string ID => Character.ID;
         public Profession Profession => Character.Profession;
         public Breed? Breed => Character.Breed;
@@ -67,6 +67,8 @@ namespace AODamageMeter
 
         // Notice we're keeping pet status scoped to a fight. This is to support a more abstract concept of pets. In some fights a character might be
         // your pet, and in others it might not. In some fights you might even make a player your pet, like when measuring dual-logged/team performance.
+        // Using it this way is possible, but pets are still always marked as non-players. Usually when a character marked as a player is added as
+        // a pet, it's because you're using an actual pet that happens to meet the player naming requirements, rather than an actual player.
         public FightCharacter FightPetMaster { get; protected set; }
         protected readonly HashSet<FightCharacter> _fightPets = new HashSet<FightCharacter>();
         public IReadOnlyCollection<FightCharacter> FightPets => _fightPets;

@@ -10,7 +10,7 @@ namespace AODamageMeter
         {
             Fight = fight;
             FightCharacters = fight.FightCharacters
-                .Where(c => (includeNPCs || !c.IsNPC)
+                .Where(c => (includeNPCs || c.IsPlayerOrFightPet)
                     && (includeZeroDamageTakens || c.TotalDamageTaken != 0))
                 .ToArray();
 
