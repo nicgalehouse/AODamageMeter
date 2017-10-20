@@ -1,8 +1,12 @@
 ﻿Anansi's Abettor
+Anansi's Acolyte
+Anansi's Cosset
 Anansi's Disciple
 Anansi's Favorite
 Anansi's Left Hand
 Anansi's Right Hand
+Anansi's Seer
+Anansi's Warden
 Aniitap's Shadow
 Asase's Child
 Asase's Drudge
@@ -11,6 +15,7 @@ Cerubin's Lazy Tentacle
 Cerubin's Tentacle of Burning Truth
 Cerubin's Tentacle of Cure
 Cerubin's Tentacle of Shock
+Ghasap's Minion
 Nyame's Abettor
 Nyame's Drudge
 Pyiininnik's Shadow

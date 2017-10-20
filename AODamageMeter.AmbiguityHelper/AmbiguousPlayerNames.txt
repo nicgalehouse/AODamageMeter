@@ -21,6 +21,7 @@ Arcorash
 Aries
 Asanon
 Asatix
+Assembler
 Astypalia
 Atakirh
 Atezac
@@ -48,6 +49,7 @@ Cemetiere
 Chiit
 Chirop
 Coah
+Collector
 Confane
 Cool
 Creepos
@@ -110,6 +112,7 @@ Hebiel
 Hellhound
 Herne
 Hesosas
+Hiathlin
 Hine
 Hoathlan
 Humbada
@@ -279,9 +282,11 @@ Ushqa
 Vadleany
 Valentyia
 Valirash
+Vicar
 Vilesprout
 Vinstur
 Virgo
+Voidling
 Vortexoid
 Wakhent
 Waqamawi
