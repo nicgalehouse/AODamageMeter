@@ -3,7 +3,7 @@ AO Damage Meter
 
 Real-time graphical damage meter for the sci-fi MMORPG Anarchy Online.
 
-Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.1.3) (built for W10, but I think it works on W7 too).
+Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.2.0) (built for W10, but I think it works on W7 too).
 
 Video demonstration [here](https://youtu.be/K4iU7KronOg).
 
@@ -19,6 +19,7 @@ Features
 + And the basics like pausing fights, viewing historical fights, scripts, and detailed stats for pretty much everything.
 + Update 1.1: Supports dynamically adding pets to yourself or others.
 + Update 1.1: Includes special handling to make the damage done by/taken from crat charms more accurate.
++ Update 1.2: Adds damage type breakdown to tooltips to help you determine the optimal reflect bracer/ShieldAC/AC choices for a given encounter.
 
 Instructions
 ------------
