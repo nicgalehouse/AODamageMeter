@@ -524,18 +524,21 @@ namespace AODamageMeter
         public double PvpTeamXPGainedPM => PvpTeamXPGained / ActiveDuration.TotalMinutes;
 
         // We only know about cast events where the source is the owner (there's no target).
-        public int CastAttempts => CastSuccesses + CastCountereds + CastAborteds;
+        public int CastAttempts => CastSuccesses + CastCountereds + CastResisteds + CastAborteds;
         public int CastSuccesses { get; protected set; }
         public int CastCountereds { get; protected set; }
+        public int CastResisteds { get; protected set; }
         public int CastAborteds { get; protected set; }
 
         public double CastAttemptsPM => CastAttempts / ActiveDuration.TotalMinutes;
         public double CastSuccessesPM => CastSuccesses / ActiveDuration.TotalMinutes;
         public double CastCounteredsPM => CastCountereds / ActiveDuration.TotalMinutes;
+        public double CastResistedsPM => CastResisteds / ActiveDuration.TotalMinutes;
         public double CastAbortedsPM => CastAborteds / ActiveDuration.TotalMinutes;
 
         public double? CastSuccessChance => CastSuccesses / CastAttempts.NullIfZero();
         public double? CastCounteredChance => CastCountereds / CastAttempts.NullIfZero();
+        public double? CastResistedChance => CastResisteds / CastAttempts.NullIfZero();
         public double? CastAbortedChance => CastAborteds / CastAttempts.NullIfZero();
 
         public int CastUnavailables { get; protected set; }
@@ -752,6 +755,7 @@ namespace AODamageMeter
                 {
                     case CastResult.Success: ++CastSuccesses; break;
                     case CastResult.Countered: ++CastCountereds; break;
+                    case CastResult.Resisted: ++CastResisteds; break;
                     case CastResult.Aborted: ++CastAborteds; break;
                     default: throw new NotImplementedException();
                 }

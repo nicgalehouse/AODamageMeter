@@ -4,6 +4,7 @@
     {
         Success,
         Countered,
+        Resisted,
         Aborted
     }
 }

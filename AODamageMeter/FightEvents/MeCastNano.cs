@@ -44,8 +44,8 @@ namespace AODamageMeter.FightEvents
         public static readonly Regex
             Executing =   CreateRegex("Executing Nano Program: (.+)."),
             Success =     CreateRegex("Nano program executed successfully."),
-            Resisted =    CreateRegex("Target resisted."),
             Countered =   CreateRegex("Your target countered the nano program."),
+            Resisted =    CreateRegex("Target resisted."),
             Aborted =     CreateRegex("Nano program aborted."),
             Wait =        CreateRegex("Wait for current nano program execution to finish."),
             Unable =      CreateRegex("Unable to execute nano program. You can't execute this nano on the target."),
@@ -99,8 +99,8 @@ namespace AODamageMeter.FightEvents
                 || TryMatch(Aborted, out match, out aborted))
             {
                 CastResult = success ? AODamageMeter.CastResult.Success
-                    : resisted ? AODamageMeter.CastResult.Countered // I guess resist and counter are the same?
                     : countered ? AODamageMeter.CastResult.Countered
+                    : resisted ? AODamageMeter.CastResult.Resisted
                     : AODamageMeter.CastResult.Aborted;
 
                 if (_latestPotentialStartEvent != null && _latestPotentialStartEvent.Fight == fight)

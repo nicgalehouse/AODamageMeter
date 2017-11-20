@@ -125,11 +125,13 @@
 
 {castInfo.CastSuccesses:N0} ({castInfo.CastSuccessChance.FormatPercent()}) succeeded
 {castInfo.CastCountereds:N0} ({castInfo.CastCounteredChance.FormatPercent()}) countered
+{castInfo.CastResisteds:N0} ({castInfo.CastResistedChance.FormatPercent()}) resisted
 {castInfo.CastAborteds:N0} ({castInfo.CastAbortedChance.FormatPercent()}) aborted
 {castInfo.CastAttempts:N0} attempted
 
 {castInfo.CastSuccessesPM.Format()} succeeded / min
 {castInfo.CastCounteredsPM.Format()} countered / min
+{castInfo.CastResistedsPM.Format()} resisted / min
 {castInfo.CastAbortedsPM.Format()} aborted / min
 {castInfo.CastAttemptsPM.Format()} attempted / min";
 
