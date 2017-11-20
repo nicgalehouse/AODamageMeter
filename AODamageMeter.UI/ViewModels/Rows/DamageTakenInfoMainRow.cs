@@ -30,7 +30,12 @@ $@"{DisplayIndex}. {Title}
 {PercentOfTotal.FormatPercent()} of {Target.UncoloredName}'s total dmg
 {PercentOfMax.FormatPercent()} of {Target.UncoloredName}'s max dmg
 
-{(DamageTakenInfo.HasIncompleteMissStatsPlusPets ? "≤ " : "")}{DamageTakenInfo.WeaponHitChancePlusPets.FormatPercent()} weapon hit chance
+{DamageTakenInfo.WeaponPercentOfTotalDamagePlusPets.FormatPercent()} weapon dmg
+{DamageTakenInfo.NanoPercentOfTotalDamagePlusPets.FormatPercent()} nano dmg
+{DamageTakenInfo.IndirectPercentOfTotalDamagePlusPets.FormatPercent()} indirect dmg
+{(!DamageTakenInfo.HasCompleteAbsorbedDamageStats ? "≥ " : "")}{DamageTakenInfo.AbsorbedPercentOfTotalDamagePlusPets.FormatPercent()} absorbed dmg
+
+{(!DamageTakenInfo.HasCompleteMissStatsPlusPets ? "≤ " : "")}{DamageTakenInfo.WeaponHitChancePlusPets.FormatPercent()} weapon hit chance
   {DamageTakenInfo.CritChancePlusPets.FormatPercent()} crit chance
   {DamageTakenInfo.GlanceChancePlusPets.FormatPercent()} glance chance
 
@@ -38,10 +43,14 @@ $@"{DisplayIndex}. {Title}
   {DamageTakenInfo.AverageCritDamagePlusPets.Format()} crit dmg / hit
   {DamageTakenInfo.AverageGlanceDamagePlusPets.Format()} glance dmg / hit
 {DamageTakenInfo.AverageNanoDamagePlusPets.Format()} nano dmg / hit
-{DamageTakenInfo.AverageIndirectDamagePlusPets.Format()} indirect dmg / hit"
-+ (!DamageTakenInfo.HasSpecials ? null : $@"
+{DamageTakenInfo.AverageIndirectDamagePlusPets.Format()} indirect dmg / hit
+{DamageTakenInfo.AverageAbsorbedDamagePlusPets.Format()} absorbed dmg / hit"
++ (!DamageTakenInfo.HasSpecialsPlusPets ? null : $@"
 
-{DamageTakenInfo.GetSpecialsInfo()}");
+{DamageTakenInfo.GetSpecialsPlusPetsInfo()}")
++ (DamageTakenInfo.TotalDamagePlusPets == 0 ? null : $@"
+
+{DamageTakenInfo.GetDamageTypesPlusPetsInfo()}");
                 }
             }
         }

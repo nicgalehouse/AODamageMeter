@@ -49,6 +49,7 @@ $@"{Title}
 {stats.WeaponDamagePM.Format()} ({stats.WeaponPercentOfTotalDamage.FormatPercent()}) weapon dmg / min
 {stats.NanoDamagePM.Format()} ({stats.NanoPercentOfTotalDamage.FormatPercent()}) nano dmg / min
 {stats.IndirectDamagePM.Format()} ({stats.IndirectPercentOfTotalDamage.FormatPercent()}) indirect dmg / min
+{stats.AbsorbedDamagePM.Format()} ({stats.AbsorbedPercentOfTotalDamage.FormatPercent()}) absorbed dmg / min
 {stats.TotalDamagePM.Format()} total dmg / min
 
 ≤ {stats.WeaponHitChance.FormatPercent()} weapon hit chance
@@ -61,16 +62,21 @@ $@"{Title}
   {stats.GlancesPM.Format()} glances / min
 {stats.NanoHitsPM.Format()} nano hits / min
 {stats.IndirectHitsPM.Format()} indirect hits / min
+{stats.AbsorbedHitsPM.Format()} absorbed hits / min
 {stats.TotalHitsPM.Format()} total hits / min
 
 {stats.AverageWeaponDamage.Format()} weapon dmg / hit
   {stats.AverageCritDamage.Format()} crit dmg / hit
   {stats.AverageGlanceDamage.Format()} glance dmg / hit
 {stats.AverageNanoDamage.Format()} nano dmg / hit
-{stats.AverageIndirectDamage.Format()} indirect dmg / hit"
+{stats.AverageIndirectDamage.Format()} indirect dmg / hit
+{stats.AverageAbsorbedDamage.Format()} absorbed dmg / hit"
 + (!stats.HasSpecials ? null : $@"
 
-{stats.GetSpecialsDoneInfo()}");
+{stats.GetSpecialsDoneInfo()}")
++ (stats.TotalDamage == 0 ? null : $@"
+
+{stats.GetDamageTypesDoneInfo()}");
                 }
             }
         }

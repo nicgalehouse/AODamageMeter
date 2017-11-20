@@ -21,6 +21,7 @@ namespace AODamageMeter
                 GlanceDamage += fightCharacter.GlanceDamageDone;
                 NanoDamage += fightCharacter.NanoDamageDone;
                 IndirectDamage += fightCharacter.IndirectDamageDone;
+                AbsorbedDamage += fightCharacter.AbsorbedDamageDone;
 
                 WeaponHits += fightCharacter.WeaponHitsDone;
                 NormalHits += fightCharacter.NormalHitsDone;
@@ -29,6 +30,16 @@ namespace AODamageMeter
                 Misses += fightCharacter.MissesDone;
                 NanoHits += fightCharacter.NanoHitsDone;
                 IndirectHits += fightCharacter.IndirectHitsDone;
+                AbsorbedHits += fightCharacter.AbsorbedHitsDone;
+
+                foreach (var damageTypeHitsDone in fightCharacter.DamageTypeHitsDone)
+                {
+                    _damageTypeHits.Increment(damageTypeHitsDone.Key, damageTypeHitsDone.Value);
+                }
+                foreach (var damageTypeDamageDone in fightCharacter.DamageTypeDamagesDone)
+                {
+                    _damageTypeDamages.Increment(damageTypeDamageDone.Key, damageTypeDamageDone.Value);
+                }
             }
         }
 
@@ -40,16 +51,19 @@ namespace AODamageMeter
         public long GlanceDamage { get; }
         public long NanoDamage { get; }
         public long IndirectDamage { get; }
-        public long TotalDamage => WeaponDamage + NanoDamage + IndirectDamage;
+        public long AbsorbedDamage { get; }
+        public long TotalDamage => WeaponDamage + NanoDamage + IndirectDamage + AbsorbedDamage;
 
         public double? WeaponDamagePM => WeaponDamage / Fight.Duration?.TotalMinutes;
         public double? NanoDamagePM => NanoDamage / Fight.Duration?.TotalMinutes;
         public double? IndirectDamagePM => IndirectDamage / Fight.Duration?.TotalMinutes;
+        public double? AbsorbedDamagePM => AbsorbedDamage / Fight.Duration?.TotalMinutes;
         public double? TotalDamagePM => TotalDamage / Fight.Duration?.TotalMinutes;
 
         public double? WeaponPercentOfTotalDamage => WeaponDamage / TotalDamage.NullIfZero();
         public double? NanoPercentOfTotalDamage => NanoDamage / TotalDamage.NullIfZero();
         public double? IndirectPercentOfTotalDamage => IndirectDamage / TotalDamage.NullIfZero();
+        public double? AbsorbedPercentOfTotalDamage => AbsorbedDamage / TotalDamage.NullIfZero();
 
         public int WeaponHits { get; }
         public int NormalHits { get; }
@@ -59,7 +73,8 @@ namespace AODamageMeter
         public int WeaponHitAttempts => WeaponHits + Misses;
         public int NanoHits { get; }
         public int IndirectHits { get; }
-        public int TotalHits => WeaponHits + NanoHits + IndirectHits;
+        public int AbsorbedHits { get; }
+        public int TotalHits => WeaponHits + NanoHits + IndirectHits + AbsorbedHits;
 
         public double? WeaponHitsPM => WeaponHits / Fight.Duration?.TotalMinutes;
         public double? CritsPM => Crits / Fight.Duration?.TotalMinutes;
@@ -68,6 +83,7 @@ namespace AODamageMeter
         public double? WeaponHitAttemptsPM => WeaponHitAttempts / Fight.Duration?.TotalMinutes;
         public double? NanoHitsPM => NanoHits / Fight.Duration?.TotalMinutes;
         public double? IndirectHitsPM => IndirectHits / Fight.Duration?.TotalMinutes;
+        public double? AbsorbedHitsPM => AbsorbedHits / Fight.Duration?.TotalMinutes;
         public double? TotalHitsPM => TotalHits / Fight.Duration?.TotalMinutes;
 
         public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
@@ -80,12 +96,20 @@ namespace AODamageMeter
         public double? AverageGlanceDamage => GlanceDamage / Glances.NullIfZero();
         public double? AverageNanoDamage => NanoDamage / NanoHits.NullIfZero();
         public double? AverageIndirectDamage => IndirectDamage / IndirectHits.NullIfZero();
+        public double? AverageAbsorbedDamage => AbsorbedDamage / AbsorbedHits.NullIfZero();
 
-        public bool HasDamageTypeDamage(DamageType damageType) => FightCharacters.Any(c => c.HasDamageTypeDamageDone(damageType));
-        public bool HasSpecials => FightCharacters.Any(c => c.HasSpecialsDone);
-        public int? GetDamageTypeHits(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeHitsDone(damageType));
-        public long? GetDamageTypeDamage(DamageType damageType) => FightCharacters.NullableSum(c => c.GetDamageTypeDamageDone(damageType));
+        protected readonly Dictionary<DamageType, int> _damageTypeHits = new Dictionary<DamageType, int>();
+        protected readonly Dictionary<DamageType, long> _damageTypeDamages = new Dictionary<DamageType, long>();
+        public IReadOnlyDictionary<DamageType, int> DamageTypeHits => _damageTypeHits;
+        public IReadOnlyDictionary<DamageType, long> DamageTypeDamages => _damageTypeDamages;
+
+        public bool HasDamageTypeDamage(DamageType damageType) => DamageTypeDamages.ContainsKey(damageType);
+        public bool HasSpecials => DamageTypeDamages.Keys.Any(DamageTypeHelpers.IsSpecialDamageType);
+        public int? GetDamageTypeHits(DamageType damageType) => DamageTypeHits.TryGetValue(damageType, out int damageTypeHits) ? damageTypeHits : (int?)null;
+        public long? GetDamageTypeDamage(DamageType damageType) => DamageTypeDamages.TryGetValue(damageType, out long damageTypeDamage) ? damageTypeDamage : (long?)null;
         public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);
         public double? GetSecondsPerDamageTypeHit(DamageType damageType) => Fight.Duration?.TotalSeconds / GetDamageTypeHits(damageType);
+        public double? GetPercentDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)TotalDamage;
+        public double? GetPercentDamageTypeHits(DamageType damageType) => GetDamageTypeHits(damageType) / (double?)TotalHits;
     }
 }

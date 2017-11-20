@@ -10,6 +10,8 @@ namespace AODamageMeter
 {
     public class FightCharacter
     {
+        public const string UnknownCharacterName = "〈Unknown〉";
+
         public FightCharacter(Fight fight, Character character, DateTime enteredTime)
         {
             Fight = fight;
@@ -46,7 +48,7 @@ namespace AODamageMeter
             ? _stopwatch.Elapsed : Fight.LatestEventTime.Value - EnteredTime;
         public TimeSpan ActiveDurationPlusPets => DamageMeter.IsRealTimeMode
             // We maintain _stopwatchPlusPets for real time mode so we don't have to find the max active duration all the time.
-            ? _stopwatchPlusPets.Elapsed : new[] { ActiveDuration }.Concat(FightPets.Select(p => p.ActiveDuration)).Max();
+            ? _stopwatchPlusPets.Elapsed : SelfAndFightPets.Select(c => c.ActiveDuration).Max();
 
         protected bool _isPaused;
         public bool IsPaused
@@ -75,6 +77,16 @@ namespace AODamageMeter
         public bool IsFightPetMaster => FightPets.Count != 0;
         public bool IsFightPet => FightPetMaster != null;
         public FightCharacter FightPetMasterOrSelf => FightPetMaster ?? this;
+        public IEnumerable<FightCharacter> SelfAndFightPets
+        {
+            get
+            {
+                yield return this;
+
+                foreach (var fightPet in FightPets)
+                    yield return fightPet;
+            }
+        }
 
         protected internal bool TryRegisterFightPet(FightCharacter fightPet)
         {
@@ -87,7 +99,7 @@ namespace AODamageMeter
 
             if (DamageMeter.IsRealTimeMode)
             {
-                _stopwatchPlusPets = new[] { _stopwatch }.Concat(FightPets.Select(p => p._stopwatch))
+                _stopwatchPlusPets = SelfAndFightPets.Select(c => c._stopwatch)
                     .OrderByDescending(s => s.Elapsed)
                     .First();
             }
@@ -130,7 +142,7 @@ namespace AODamageMeter
 
             if (DamageMeter.IsRealTimeMode)
             {
-                _stopwatchPlusPets = new[] { _stopwatch }.Concat(FightPets.Select(p => p._stopwatch))
+                _stopwatchPlusPets = SelfAndFightPets.Select(c => c._stopwatch)
                     .OrderByDescending(s => s.Elapsed)
                     .First();
             }
@@ -161,33 +173,41 @@ namespace AODamageMeter
         public long GlanceDamageDone { get; protected set; }
         public long NanoDamageDone { get; protected set; }
         public long IndirectDamageDone { get; protected set; }
-        public long TotalDamageDone => WeaponDamageDone + NanoDamageDone + IndirectDamageDone;
+        // Absorbed sucks, only have the target when it's the owner, and the source is always unknown. We also don't know
+        // what's being absorbed--weapon, nano, or indirect--so it hurts the accuracy of our hit chance stats.
+        public long AbsorbedDamageDone { get; protected set; }
+        public long TotalDamageDone => WeaponDamageDone + NanoDamageDone + IndirectDamageDone + AbsorbedDamageDone;
 
         public long WeaponDamageDonePlusPets => WeaponDamageDone + FightPets.Sum(p => p.WeaponDamageDone);
         public long CritDamageDonePlusPets => CritDamageDone + FightPets.Sum(p => p.CritDamageDone);
         public long GlanceDamageDonePlusPets => GlanceDamageDone + FightPets.Sum(p => p.GlanceDamageDone);
         public long NanoDamageDonePlusPets => NanoDamageDone + FightPets.Sum(p => p.NanoDamageDone);
         public long IndirectDamageDonePlusPets => IndirectDamageDone + FightPets.Sum(p => p.IndirectDamageDone);
+        public long AbsorbedDamageDonePlusPets => AbsorbedDamageDone + FightPets.Sum(p => p.AbsorbedDamageDone);
         public long TotalDamageDonePlusPets => TotalDamageDone + FightPets.Sum(p => p.TotalDamageDone);
         public long MastersOrOwnTotalDamageDonePlusPets => FightPetMaster?.TotalDamageDonePlusPets ?? TotalDamageDonePlusPets;
 
         public double WeaponDamageDonePM => WeaponDamageDone / ActiveDuration.TotalMinutes;
         public double NanoDamageDonePM => NanoDamageDone / ActiveDuration.TotalMinutes;
         public double IndirectDamageDonePM => IndirectDamageDone / ActiveDuration.TotalMinutes;
+        public double AbsorbedDamageDonePM => AbsorbedDamageDone / ActiveDuration.TotalMinutes;
         public double TotalDamageDonePM => TotalDamageDone / ActiveDuration.TotalMinutes;
 
         public double WeaponDamageDonePMPlusPets => WeaponDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double NanoDamageDonePMPlusPets => NanoDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double IndirectDamageDonePMPlusPets => IndirectDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double AbsorbedDamageDonePMPlusPets => AbsorbedDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double TotalDamageDonePMPlusPets => TotalDamageDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
 
         public double? WeaponPercentOfTotalDamageDone => WeaponDamageDone / TotalDamageDone.NullIfZero();
         public double? NanoPercentOfTotalDamageDone => NanoDamageDone / TotalDamageDone.NullIfZero();
         public double? IndirectPercentOfTotalDamageDone => IndirectDamageDone / TotalDamageDone.NullIfZero();
+        public double? AbsorbedPercentOfTotalDamageDone => AbsorbedDamageDone / TotalDamageDone.NullIfZero();
 
         public double? WeaponPercentOfTotalDamageDonePlusPets => WeaponDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
         public double? NanoPercentOfTotalDamageDonePlusPets => NanoDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
         public double? IndirectPercentOfTotalDamageDonePlusPets => IndirectDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
+        public double? AbsorbedPercentOfTotalDamageDonePlusPets => AbsorbedDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
 
         public int WeaponHitsDone { get; protected set; }
         public int NormalHitsDone { get; protected set; }
@@ -197,7 +217,8 @@ namespace AODamageMeter
         public int WeaponHitAttemptsDone => WeaponHitsDone + MissesDone;
         public int NanoHitsDone { get; protected set; }
         public int IndirectHitsDone { get; protected set; }
-        public int TotalHitsDone => WeaponHitsDone + NanoHitsDone + IndirectHitsDone;
+        public int AbsorbedHitsDone { get; protected set; }
+        public int TotalHitsDone => WeaponHitsDone + NanoHitsDone + IndirectHitsDone + AbsorbedHitsDone;
 
         public int WeaponHitsDonePlusPets => WeaponHitsDone + FightPets.Sum(p => p.WeaponHitsDone);
         public int NormalHitsDonePlusPets => NormalHitsDone + FightPets.Sum(p => p.NormalHitsDone);
@@ -207,6 +228,7 @@ namespace AODamageMeter
         public int WeaponHitAttemptsDonePlusPets => WeaponHitAttemptsDone + FightPets.Sum(p => p.WeaponHitAttemptsDone);
         public int NanoHitsDonePlusPets => NanoHitsDone + FightPets.Sum(p => p.NanoHitsDone); 
         public int IndirectHitsDonePlusPets => IndirectHitsDone + FightPets.Sum(p => p.IndirectHitsDone);
+        public int AbsorbedHitsDonePlusPets => AbsorbedHitsDone + FightPets.Sum(p => p.AbsorbedHitsDone);
         public int TotalHitsDonePlusPets => TotalHitsDone + FightPets.Sum(p => p.TotalHitsDone);
 
         public double WeaponHitsDonePM => WeaponHitsDone / ActiveDuration.TotalMinutes;
@@ -216,6 +238,7 @@ namespace AODamageMeter
         public double WeaponHitAttemptsDonePM => WeaponHitAttemptsDone / ActiveDuration.TotalMinutes;
         public double NanoHitsDonePM => NanoHitsDone / ActiveDuration.TotalMinutes;
         public double IndirectHitsDonePM => IndirectHitsDone / ActiveDuration.TotalMinutes;
+        public double AbsorbedHitsDonePM => AbsorbedHitsDone / ActiveDuration.TotalMinutes;
         public double TotalHitsDonePM => TotalHitsDone / ActiveDuration.TotalMinutes;
 
         public double WeaponHitsDonePMPlusPets => WeaponHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
@@ -225,6 +248,7 @@ namespace AODamageMeter
         public double WeaponHitAttemptsDonePMPlusPets => WeaponHitAttemptsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double NanoHitsDonePMPlusPets => NanoHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double IndirectHitsDonePMPlusPets => IndirectHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double AbsorbedHitsDonePMPlusPets => AbsorbedHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double TotalHitsDonePMPlusPets => TotalHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
 
         public double? WeaponHitDoneChance => WeaponHitsDone / WeaponHitAttemptsDone.NullIfZero();
@@ -242,12 +266,14 @@ namespace AODamageMeter
         public double? AverageGlanceDamageDone => GlanceDamageDone / GlancesDone.NullIfZero();
         public double? AverageNanoDamageDone => NanoDamageDone / NanoHitsDone.NullIfZero();
         public double? AverageIndirectDamageDone => IndirectDamageDone / IndirectHitsDone.NullIfZero();
+        public double? AverageAbsorbedDamageDone => AbsorbedDamageDone / AbsorbedHitsDone.NullIfZero();
 
         public double? AverageWeaponDamageDonePlusPets => WeaponDamageDonePlusPets / WeaponHitsDonePlusPets.NullIfZero();
         public double? AverageCritDamageDonePlusPets => CritDamageDonePlusPets / CritsDonePlusPets.NullIfZero();
         public double? AverageGlanceDamageDonePlusPets => GlanceDamageDonePlusPets / GlancesDonePlusPets.NullIfZero();
         public double? AverageNanoDamageDonePlusPets => NanoDamageDonePlusPets / NanoHitsDonePlusPets.NullIfZero();
         public double? AverageIndirectDamageDonePlusPets => IndirectDamageDonePlusPets / IndirectHitsDonePlusPets.NullIfZero();
+        public double? AverageAbsorbedDamageDonePlusPets => AbsorbedDamageDonePlusPets / AbsorbedHitsDonePlusPets.NullIfZero();
 
         public double? PercentOfMastersOrOwnTotalDamageDonePlusPets => TotalDamageDone / MastersOrOwnTotalDamageDonePlusPets.NullIfZero();
 
@@ -288,13 +314,23 @@ namespace AODamageMeter
         public IReadOnlyDictionary<DamageType, int> DamageTypeHitsDone => _damageTypeHitsDone;
         public IReadOnlyDictionary<DamageType, long> DamageTypeDamagesDone => _damageTypeDamagesDone;
 
-        // Only interested in specials right now, and I'm pretty sure pets don't do those, so don't need pet versions of these methods.
         public bool HasDamageTypeDamageDone(DamageType damageType) => DamageTypeDamagesDone.ContainsKey(damageType);
         public bool HasSpecialsDone => DamageTypeDamagesDone.Keys.Any(DamageTypeHelpers.IsSpecialDamageType);
         public int? GetDamageTypeHitsDone(DamageType damageType) => DamageTypeHitsDone.TryGetValue(damageType, out int damageTypeHitsDone) ? damageTypeHitsDone : (int?)null;
         public long? GetDamageTypeDamageDone(DamageType damageType) => DamageTypeDamagesDone.TryGetValue(damageType, out long damageTypeDamageDone) ? damageTypeDamageDone : (long?)null;
         public double? GetAverageDamageTypeDamageDone(DamageType damageType) => GetDamageTypeDamageDone(damageType) / (double?)GetDamageTypeHitsDone(damageType);
         public double? GetSecondsPerDamageTypeHitDone(DamageType damageType) => ActiveDuration.TotalSeconds / GetDamageTypeHitsDone(damageType);
+        public double? GetPercentDamageTypeDamageDone(DamageType damageType) => GetDamageTypeDamageDone(damageType) / (double?)TotalDamageDone;
+        public double? GetPercentDamageTypeHitsDone(DamageType damageType) => GetDamageTypeHitsDone(damageType) / (double?)TotalHitsDone;
+
+        public bool HasDamageTypeDamageDonePlusPets(DamageType damageType) => SelfAndFightPets.Any(c => c.HasDamageTypeDamageDone(damageType));
+        public bool HasSpecialsDonePlusPets => SelfAndFightPets.Any(c => c.HasSpecialsDone);
+        public int? GetDamageTypeHitsDonePlusPets(DamageType damageType) => SelfAndFightPets.NullableSum(c => c.GetDamageTypeHitsDone(damageType));
+        public long? GetDamageTypeDamageDonePlusPets(DamageType damageType) => SelfAndFightPets.NullableSum(c => c.GetDamageTypeDamageDone(damageType));
+        public double? GetAverageDamageTypeDamageDonePlusPets(DamageType damageType) => GetDamageTypeDamageDonePlusPets(damageType) / (double?)GetDamageTypeHitsDonePlusPets(damageType);
+        public double? GetSecondsPerDamageTypeHitDonePlusPets(DamageType damageType) => ActiveDurationPlusPets.TotalSeconds / GetDamageTypeHitsDonePlusPets(damageType);
+        public double? GetPercentDamageTypeDamageDonePlusPets(DamageType damageType) => GetDamageTypeDamageDonePlusPets(damageType) / (double?)TotalDamageDonePlusPets;
+        public double? GetPercentDamageTypeHitsDonePlusPets(DamageType damageType) => GetDamageTypeHitsDonePlusPets(damageType) / (double?)TotalHitsDonePlusPets;
 
         public long HealthDrained { get; protected set; }
         public long NanoDrained { get; protected set; }
@@ -307,19 +343,21 @@ namespace AODamageMeter
         public long GlanceDamageTaken { get; protected set; }
         public long NanoDamageTaken { get; protected set; }
         public long IndirectDamageTaken { get; protected set; }
-        public long TotalDamageTaken => WeaponDamageTaken + NanoDamageTaken + IndirectDamageTaken;
-        // Absorbed sucks, only have it for the owner and don't have a source along with it. Keeping it independent of damage taken.
-        public long DamageAbsorbed { get; protected set; }
+        // Absorbed sucks, only have the target when it's the owner, and the source is always unknown. We also don't know
+        // what's being absorbed--weapon, nano, or indirect--so it hurts the accuracy of our hit chance stats.
+        public long AbsorbedDamageTaken { get; protected set; }
+        public long TotalDamageTaken => WeaponDamageTaken + NanoDamageTaken + IndirectDamageTaken + AbsorbedDamageTaken;
 
         public double WeaponDamageTakenPM => WeaponDamageTaken / ActiveDuration.TotalMinutes;
         public double NanoDamageTakenPM => NanoDamageTaken / ActiveDuration.TotalMinutes;
         public double IndirectDamageTakenPM => IndirectDamageTaken / ActiveDuration.TotalMinutes;
+        public double AbsorbedDamageTakenPM => AbsorbedDamageTaken / ActiveDuration.TotalMinutes;
         public double TotalDamageTakenPM => TotalDamageTaken / ActiveDuration.TotalMinutes;
-        public double DamageAbsorbedPM => DamageAbsorbed / ActiveDuration.TotalMinutes;
 
         public double? WeaponPercentOfTotalDamageTaken => WeaponDamageTaken / TotalDamageTaken.NullIfZero();
         public double? NanoPercentOfTotalDamageTaken => NanoDamageTaken / TotalDamageTaken.NullIfZero();
         public double? IndirectPercentOfTotalDamageTaken => IndirectDamageTaken / TotalDamageTaken.NullIfZero();
+        public double? AbsorbedPercentOfTotalDamageTaken => AbsorbedDamageTaken / TotalDamageTaken.NullIfZero();
 
         public int WeaponHitsTaken { get; protected set; }
         public int NormalHitsTaken { get; protected set; }
@@ -329,8 +367,8 @@ namespace AODamageMeter
         public int WeaponHitAttemptsTaken => WeaponHitsTaken + MissesTaken;
         public int NanoHitsTaken { get; protected set; }
         public int IndirectHitsTaken { get; protected set; }
-        public int TotalHitsTaken => WeaponHitsTaken + NanoHitsTaken + IndirectHitsTaken;
-        public int HitsAbsorbed { get; protected set; }
+        public int AbsorbedHitsTaken { get; protected set; }
+        public int TotalHitsTaken => WeaponHitsTaken + NanoHitsTaken + IndirectHitsTaken + AbsorbedHitsTaken;
 
         public double WeaponHitsTakenPM => WeaponHitsTaken / ActiveDuration.TotalMinutes;
         public double CritsTakenPM => CritsTaken / ActiveDuration.TotalMinutes;
@@ -339,8 +377,8 @@ namespace AODamageMeter
         public double WeaponHitAttemptsTakenPM => WeaponHitAttemptsTaken / ActiveDuration.TotalMinutes;
         public double NanoHitsTakenPM => NanoHitsTaken / ActiveDuration.TotalMinutes;
         public double IndirectHitsTakenPM => IndirectHitsTaken / ActiveDuration.TotalMinutes;
+        public double AbsorbedHitsTakenPM => AbsorbedHitsTaken / ActiveDuration.TotalMinutes;
         public double TotalHitsTakenPM => TotalHitsTaken / ActiveDuration.TotalMinutes;
-        public double HitsAbsorbedPM => HitsAbsorbed / ActiveDuration.TotalMinutes;
 
         public double? WeaponHitTakenChance => WeaponHitsTaken / WeaponHitAttemptsTaken.NullIfZero();
         public double? CritTakenChance => CritsTaken / NormalHitsTaken.NullIfZero();
@@ -352,7 +390,7 @@ namespace AODamageMeter
         public double? AverageGlanceDamageTaken => GlanceDamageTaken / GlancesTaken.NullIfZero();
         public double? AverageNanoDamageTaken => NanoDamageTaken / NanoHitsTaken.NullIfZero();
         public double? AverageIndirectDamageTaken => IndirectDamageTaken / IndirectHitsTaken.NullIfZero();
-        public double? AverageDamageAbsorbed => DamageAbsorbed / HitsAbsorbed.NullIfZero();
+        public double? AverageAbsorbedDamageTaken => AbsorbedDamageTaken / AbsorbedHitsTaken.NullIfZero();
 
         public double? PercentOfFightsTotalDamageTaken => TotalDamageTaken / Fight.TotalDamageTaken.NullIfZero();
         public double? PercentOfFightsTotalPlayerOrPetDamageTaken => TotalDamageTaken / Fight.TotalPlayerOrPetDamageTaken.NullIfZero();
@@ -371,7 +409,7 @@ namespace AODamageMeter
 
         protected readonly Dictionary<DamageType, int> _damageTypeHitsTaken = new Dictionary<DamageType, int>();
         protected readonly Dictionary<DamageType, long> _damageTypeDamagesTaken = new Dictionary<DamageType, long>();
-        public IReadOnlyDictionary<DamageType, int> DamageTypeHitsTaken => _damageTypeHitsTaken;
+        public IReadOnlyDictionary<DamageType, int> DamageTypeHitsTaken=> _damageTypeHitsTaken;
         public IReadOnlyDictionary<DamageType, long> DamageTypeDamagesTaken => _damageTypeDamagesTaken;
 
         public bool HasDamageTypeDamageTaken(DamageType damageType) => DamageTypeDamagesTaken.ContainsKey(damageType);
@@ -380,10 +418,16 @@ namespace AODamageMeter
         public long? GetDamageTypeDamageTaken(DamageType damageType) => DamageTypeDamagesTaken.TryGetValue(damageType, out long damageTypeDamageTaken) ? damageTypeDamageTaken : (long?)null;
         public double? GetAverageDamageTypeDamageTaken(DamageType damageType) => GetDamageTypeDamageTaken(damageType) / (double?)GetDamageTypeHitsTaken(damageType);
         public double? GetSecondsPerDamageTypeHitTaken(DamageType damageType) => ActiveDuration.TotalSeconds / GetDamageTypeHitsTaken(damageType);
+        public double? GetPercentDamageTypeDamageTaken(DamageType damageType) => GetDamageTypeDamageTaken(damageType) / (double?)TotalDamageTaken;
+        public double? GetPercentDamageTypeHitsTaken(DamageType damageType) => GetDamageTypeHitsTaken(damageType) / (double?)TotalHitsTaken;
 
         // We only know about misses where the owner is a source or target.
-        public bool HasIncompleteMissStats => !IsOwner;
-        public bool HasIncompleteMissStatsPlusPets => !IsOwner || FightPets.Any();
+        public bool HasCompleteMissStats => IsOwner;
+        public bool HasCompleteMissStatsPlusPets => IsOwner && !FightPets.Any();
+
+        // We only know about the target of absorbed damage when it's the owner, and we never know the source.
+        public bool HasCompleteAbsorbedDamageDoneStats => Name == UnknownCharacterName;
+        public bool HasCompleteAbsorbedDamageTakenStats => IsOwner || Name == UnknownCharacterName;
 
         //                    1                    2                3
         // Potential healing: owner --> non-owner, owner -/> owner, non-owner --> owner
@@ -540,7 +584,8 @@ namespace AODamageMeter
                     ++IndirectHitsDone;
                     break;
                 case AttackResult.Absorbed:
-                    // Only an 〈Unknown〉 source for events where the attack results in an absorb, so don't bother.
+                    AbsorbedDamageDone += attackEvent.Amount.Value;
+                    ++AbsorbedHitsDone;
                     break;
                 default: throw new NotImplementedException();
             }
@@ -604,8 +649,8 @@ namespace AODamageMeter
                     ++IndirectHitsTaken;
                     break;
                 case AttackResult.Absorbed:
-                    DamageAbsorbed += attackEvent.Amount.Value;
-                    ++HitsAbsorbed;
+                    AbsorbedDamageTaken += attackEvent.Amount.Value;
+                    ++AbsorbedHitsTaken;
                     break;
                 default: throw new NotImplementedException();
             }

@@ -43,28 +43,34 @@
 {fightCharacter.WeaponDamageDonePMPlusPets.Format()} ({fightCharacter.WeaponPercentOfTotalDamageDonePlusPets.FormatPercent()}) weapon dmg / min
 {fightCharacter.NanoDamageDonePMPlusPets.Format()} ({fightCharacter.NanoPercentOfTotalDamageDonePlusPets.FormatPercent()}) nano dmg / min
 {fightCharacter.IndirectDamageDonePMPlusPets.Format()} ({fightCharacter.IndirectPercentOfTotalDamageDonePlusPets.FormatPercent()}) indirect dmg / min
+{(!fightCharacter.HasCompleteAbsorbedDamageDoneStats ? "≥ " : "")}{fightCharacter.AbsorbedDamageDonePMPlusPets.Format()} ({fightCharacter.AbsorbedPercentOfTotalDamageDonePlusPets.FormatPercent()}) absorbed dmg / min
 {fightCharacter.TotalDamageDonePMPlusPets.Format()} total dmg / min
 
-{(fightCharacter.HasIncompleteMissStatsPlusPets ? "≤ " : "")}{fightCharacter.WeaponHitDoneChancePlusPets.FormatPercent()} weapon hit chance
+{(!fightCharacter.HasCompleteMissStatsPlusPets ? "≤ " : "")}{fightCharacter.WeaponHitDoneChancePlusPets.FormatPercent()} weapon hit chance
   {fightCharacter.CritDoneChancePlusPets.FormatPercent()} crit chance
   {fightCharacter.GlanceDoneChancePlusPets.FormatPercent()} glance chance
 
-{(fightCharacter.HasIncompleteMissStatsPlusPets ? "≥ " : "")}{fightCharacter.WeaponHitAttemptsDonePMPlusPets.Format()} weapon hit attempts / min
+{(!fightCharacter.HasCompleteMissStatsPlusPets ? "≥ " : "")}{fightCharacter.WeaponHitAttemptsDonePMPlusPets.Format()} weapon hit attempts / min
 {fightCharacter.WeaponHitsDonePMPlusPets.Format()} weapon hits / min
   {fightCharacter.CritsDonePMPlusPets.Format()} crits / min
   {fightCharacter.GlancesDonePMPlusPets.Format()} glances / min
 {fightCharacter.NanoHitsDonePMPlusPets.Format()} nano hits / min
 {fightCharacter.IndirectHitsDonePMPlusPets.Format()} indirect hits / min
+{(!fightCharacter.HasCompleteAbsorbedDamageDoneStats ? "≥ " : "")}{fightCharacter.AbsorbedHitsDonePMPlusPets.Format()} absorbed hits / min
 {fightCharacter.TotalHitsDonePMPlusPets.Format()} total hits / min
 
 {fightCharacter.AverageWeaponDamageDonePlusPets.Format()} weapon dmg / hit
   {fightCharacter.AverageCritDamageDonePlusPets.Format()} crit dmg / hit
   {fightCharacter.AverageGlanceDamageDonePlusPets.Format()} glance dmg / hit
 {fightCharacter.AverageNanoDamageDonePlusPets.Format()} nano dmg / hit
-{fightCharacter.AverageIndirectDamageDonePlusPets.Format()} indirect dmg / hit"
-+ (!fightCharacter.HasSpecialsDone ? null : $@"
+{fightCharacter.AverageIndirectDamageDonePlusPets.Format()} indirect dmg / hit
+{fightCharacter.AverageAbsorbedDamageDonePlusPets.Format()} absorbed dmg / hit"
++ (!fightCharacter.HasSpecialsDonePlusPets ? null : $@"
 
-{fightCharacter.GetSpecialsDoneInfo()}")
+{fightCharacter.GetSpecialsDonePlusPetsInfo()}")
++ (fightCharacter.TotalDamageDonePlusPets == 0 ? null : $@"
+
+{fightCharacter.GetDamageTypesDonePlusPetsInfo()}")
 + (fightCharacter.HealthDrained == 0 ? null : $@"
 
 {fightCharacter.HealthDrainedPM.Format()} health drained / min
@@ -81,34 +87,34 @@
 {fightCharacter.WeaponDamageTakenPM.Format()} ({fightCharacter.WeaponPercentOfTotalDamageTaken.FormatPercent()}) weapon dmg / min
 {fightCharacter.NanoDamageTakenPM.Format()} ({fightCharacter.NanoPercentOfTotalDamageTaken.FormatPercent()}) nano dmg / min
 {fightCharacter.IndirectDamageTakenPM.Format()} ({fightCharacter.IndirectPercentOfTotalDamageTaken.FormatPercent()}) indirect dmg / min
+{(!fightCharacter.HasCompleteAbsorbedDamageTakenStats ? "≥ " : "")}{fightCharacter.AbsorbedDamageTakenPM.Format()} ({fightCharacter.AbsorbedPercentOfTotalDamageTaken.FormatPercent()}) absorbed dmg / min
 {fightCharacter.TotalDamageTakenPM.Format()} total dmg / min
 
-{(fightCharacter.HasIncompleteMissStats ? "≤ " : "")}{fightCharacter.WeaponHitTakenChance.FormatPercent()} weapon hit chance
+{(!fightCharacter.HasCompleteMissStats ? "≤ " : "")}{fightCharacter.WeaponHitTakenChance.FormatPercent()} weapon hit chance
   {fightCharacter.CritTakenChance.FormatPercent()} crit chance
   {fightCharacter.GlanceTakenChance.FormatPercent()} glance chance
 
-{(fightCharacter.HasIncompleteMissStats ? "≤ " : "")}{fightCharacter.WeaponHitAttemptsTakenPM.Format()} weapon hit attempts / min
+{(!fightCharacter.HasCompleteMissStats ? "≤ " : "")}{fightCharacter.WeaponHitAttemptsTakenPM.Format()} weapon hit attempts / min
 {fightCharacter.WeaponHitsTakenPM.Format()} weapon hits / min
   {fightCharacter.CritsTakenPM.Format()} crits / min
   {fightCharacter.GlancesTakenPM.Format()} glances / min
 {fightCharacter.NanoHitsTakenPM.Format()} nano hits / min
 {fightCharacter.IndirectHitsTakenPM.Format()} indirect hits / min
+{(!fightCharacter.HasCompleteAbsorbedDamageTakenStats ? "≥ " : "")}{fightCharacter.AbsorbedHitsTakenPM.Format()} absorbed hits / min
 {fightCharacter.TotalHitsTakenPM.Format()} total hits / min
 
 {fightCharacter.AverageWeaponDamageTaken.Format()} weapon dmg / hit
   {fightCharacter.AverageCritDamageTaken.Format()} crit dmg / hit
   {fightCharacter.AverageGlanceDamageTaken.Format()} glance dmg / hit
 {fightCharacter.AverageNanoDamageTaken.Format()} nano dmg / hit
-{fightCharacter.AverageIndirectDamageTaken.Format()} indirect dmg / hit"
+{fightCharacter.AverageIndirectDamageTaken.Format()} indirect dmg / hit
+{fightCharacter.AverageAbsorbedDamageTaken.Format()} absorbed dmg / hit"
 + (!fightCharacter.HasSpecialsTaken ? null : $@"
 
 {fightCharacter.GetSpecialsTakenInfo()}")
-+ (fightCharacter.HitsAbsorbed == 0 ? null : $@"
++ (fightCharacter.TotalDamageTaken == 0 ? null : $@"
 
-{fightCharacter.DamageAbsorbed:N0} dmg absorbed
-{fightCharacter.HitsAbsorbedPM.Format()} hits absorbed / min
-{fightCharacter.DamageAbsorbedPM.Format()} dmg absorbed / min
-{fightCharacter.AverageDamageAbsorbed.Format()} dmg absorbed / hit");
+{fightCharacter.GetDamageTypesTakenInfo()}");
 
         public static string GetOwnersCastsTooltip(this CastInfo castInfo,
             string title, int displayIndex, double? percentOfTotal, double? percentOfMax)

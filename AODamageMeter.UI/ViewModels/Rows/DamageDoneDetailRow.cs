@@ -27,28 +27,34 @@ $@"{DisplayIndex}. {Title}
 {FightCharacter.WeaponDamageDonePM.Format()} ({FightCharacter.WeaponPercentOfTotalDamageDone.FormatPercent()}) weapon dmg / min
 {FightCharacter.NanoDamageDonePM.Format()} ({FightCharacter.NanoPercentOfTotalDamageDone.FormatPercent()}) nano dmg / min
 {FightCharacter.IndirectDamageDonePM.Format()} ({FightCharacter.IndirectPercentOfTotalDamageDone.FormatPercent()}) indirect dmg / min
+{(!FightCharacter.HasCompleteAbsorbedDamageDoneStats ? "≥ " : "")}{FightCharacter.AbsorbedDamageDonePM.Format()} ({FightCharacter.AbsorbedPercentOfTotalDamageDone.FormatPercent()}) absorbed dmg / min
 {FightCharacter.TotalDamageDonePM.Format()} total dmg / min
 
-{(FightCharacter.HasIncompleteMissStats ? "≤ " : "")}{FightCharacter.WeaponHitDoneChance.FormatPercent()} weapon hit chance
+{(!FightCharacter.HasCompleteMissStats ? "≤ " : "")}{FightCharacter.WeaponHitDoneChance.FormatPercent()} weapon hit chance
   {FightCharacter.CritDoneChance.FormatPercent()} crit chance
   {FightCharacter.GlanceDoneChance.FormatPercent()} glance chance
 
-{(FightCharacter.HasIncompleteMissStats ? "≥ " : "")}{FightCharacter.WeaponHitAttemptsDonePM.Format()} weapon hit attempts / min
+{(!FightCharacter.HasCompleteMissStats ? "≥ " : "")}{FightCharacter.WeaponHitAttemptsDonePM.Format()} weapon hit attempts / min
 {FightCharacter.WeaponHitsDonePM.Format()} weapon hits / min
   {FightCharacter.CritsDonePM.Format()} crits / min
   {FightCharacter.GlancesDonePM.Format()} glances / min
 {FightCharacter.NanoHitsDonePM.Format()} nano hits / min
 {FightCharacter.IndirectHitsDonePM.Format()} indirect hits / min
+{(!FightCharacter.HasCompleteAbsorbedDamageDoneStats ? "≥ " : "")}{FightCharacter.AbsorbedHitsDonePM.Format()} absorbed hits / min
 {FightCharacter.TotalHitsDonePM.Format()} total hits / min
 
 {FightCharacter.AverageWeaponDamageDone.Format()} weapon dmg / hit
   {FightCharacter.AverageCritDamageDone.Format()} crit dmg / hit
   {FightCharacter.AverageGlanceDamageDone.Format()} glance dmg / hit
 {FightCharacter.AverageNanoDamageDone.Format()} nano dmg / hit
-{FightCharacter.AverageIndirectDamageDone.Format()} indirect dmg / hit"
+{FightCharacter.AverageIndirectDamageDone.Format()} indirect dmg / hit
+{FightCharacter.AverageAbsorbedDamageDone.Format()} absorbed dmg / hit"
 + (!FightCharacter.HasSpecialsDone ? null : $@"
 
 {FightCharacter.GetSpecialsDoneInfo()}")
++ (FightCharacter.TotalDamageDone == 0 ? null : $@"
+
+{FightCharacter.GetDamageTypesDoneInfo()}")
 + (FightCharacter.HealthDrained == 0 ? null : $@"
 
 {FightCharacter.HealthDrainedPM.Format()} health drained / min

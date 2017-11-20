@@ -31,7 +31,12 @@ $@"{DisplayIndex}. {Title}
 {PercentOfTotal.FormatPercent()} of {Target.UncoloredName}'s total dmg
 {PercentOfMax.FormatPercent()} of {Target.UncoloredName}'s max dmg
 
-{((DamageTakenInfo?.HasIncompleteMissStats ?? false) ? "≤ " : "")}{DamageTakenInfo?.WeaponHitChance.FormatPercent() ?? EmDashPercent} weapon hit chance
+{DamageTakenInfo?.WeaponPercentOfTotalDamage.FormatPercent() ?? EmDashPercent} weapon dmg
+{DamageTakenInfo?.NanoPercentOfTotalDamage.FormatPercent() ?? EmDashPercent} nano dmg
+{DamageTakenInfo?.IndirectPercentOfTotalDamage.FormatPercent() ?? EmDashPercent} indirect dmg
+{(!DamageTakenInfo?.HasCompleteAbsorbedDamageStats ?? false ? "≥ " : "")}{DamageTakenInfo?.AbsorbedPercentOfTotalDamage.FormatPercent() ?? EmDashPercent} absorbed dmg
+
+{((!DamageTakenInfo?.HasCompleteMissStats ?? false) ? "≤ " : "")}{DamageTakenInfo?.WeaponHitChance.FormatPercent() ?? EmDashPercent} weapon hit chance
   {DamageTakenInfo?.CritChance.FormatPercent() ?? EmDashPercent} crit chance
   {DamageTakenInfo?.GlanceChance.FormatPercent() ?? EmDashPercent} glance chance
 
@@ -39,10 +44,14 @@ $@"{DisplayIndex}. {Title}
   {DamageTakenInfo?.AverageCritDamage.Format() ?? EmDash} crit dmg / hit
   {DamageTakenInfo?.AverageGlanceDamage.Format() ?? EmDash} glance dmg / hit
 {DamageTakenInfo?.AverageNanoDamage.Format() ?? EmDash} nano dmg / hit
-{DamageTakenInfo?.AverageIndirectDamage.Format() ?? EmDash} indirect dmg / hit"
+{DamageTakenInfo?.AverageIndirectDamage.Format() ?? EmDash} indirect dmg / hit
+{DamageTakenInfo?.AverageAbsorbedDamage.Format() ?? EmDash} absorbed dmg / hit"
 + (!(DamageTakenInfo?.HasSpecials ?? false) ? null : $@"
 
-{DamageTakenInfo.GetSpecialsInfo()}");
+{DamageTakenInfo.GetSpecialsInfo()}")
++ ((DamageTakenInfo?.TotalDamage ?? 0) == 0 ? null : $@"
+
+{DamageTakenInfo.GetDamageTypesInfo()}");
                 }
             }
         }

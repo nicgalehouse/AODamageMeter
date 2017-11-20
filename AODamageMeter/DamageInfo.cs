@@ -22,19 +22,31 @@ namespace AODamageMeter
         public DamageMeter DamageMeter => Source.DamageMeter;
         public FightCharacter Source { get; }
         public FightCharacter Target { get; }
+        public IEnumerable<FightCharacter> SourceAndFightPets
+        {
+            get
+            {
+                yield return Source;
+
+                foreach (var fightPet in Source.FightPets)
+                    yield return fightPet;
+            }
+        }
 
         public long WeaponDamage { get; protected set; }
         public long CritDamage { get; protected set; }
         public long GlanceDamage { get; protected set; }
         public long NanoDamage { get; protected set; }
         public long IndirectDamage { get; protected set; }
-        public long TotalDamage => WeaponDamage + NanoDamage + IndirectDamage;
+        public long AbsorbedDamage { get; protected set; }
+        public long TotalDamage => WeaponDamage + NanoDamage + IndirectDamage + AbsorbedDamage;
 
         public long WeaponDamagePlusPets => WeaponDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.WeaponDamage ?? 0);
         public long CritDamagePlusPets => CritDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.CritDamage ?? 0);
         public long GlanceDamagePlusPets => GlanceDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.GlanceDamage ?? 0);
         public long NanoDamagePlusPets => NanoDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.NanoDamage ?? 0);
         public long IndirectDamagePlusPets => IndirectDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.IndirectDamage ?? 0);
+        public long AbsorbedDamagePlusPets => AbsorbedDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.AbsorbedDamage ?? 0);
         public long TotalDamagePlusPets => TotalDamage + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalDamage ?? 0);
         // FightPet registration handling guarantees if source has a fight pet master, that master has a damage info for Target.
         public long MastersOrOwnTotalDamagePlusPets => Source.FightPetMaster?.DamageDoneInfosByTarget[Target].TotalDamagePlusPets ?? TotalDamagePlusPets;
@@ -42,10 +54,12 @@ namespace AODamageMeter
         public double? WeaponPercentOfTotalDamage => WeaponDamage / TotalDamage.NullIfZero();
         public double? NanoPercentOfTotalDamage => NanoDamage / TotalDamage.NullIfZero();
         public double? IndirectPercentOfTotalDamage => IndirectDamage / TotalDamage.NullIfZero();
+        public double? AbsorbedPercentOfTotalDamage => AbsorbedDamage / TotalDamage.NullIfZero();
 
         public double? WeaponPercentOfTotalDamagePlusPets => WeaponDamagePlusPets / TotalDamagePlusPets.NullIfZero();
         public double? NanoPercentOfTotalDamagePlusPets => NanoDamagePlusPets / TotalDamagePlusPets.NullIfZero();
         public double? IndirectPercentOfTotalDamagePlusPets => IndirectDamagePlusPets / TotalDamagePlusPets.NullIfZero();
+        public double? AbsorbedPercentOfTotalDamagePlusPets => AbsorbedDamagePlusPets / TotalDamagePlusPets.NullIfZero();
 
         public int WeaponHits { get; protected set; }
         public int NormalHits { get; protected set; }
@@ -55,7 +69,8 @@ namespace AODamageMeter
         public int WeaponHitAttempts => WeaponHits + Misses;
         public int NanoHits { get; protected set; }
         public int IndirectHits { get; protected set; }
-        public int TotalHits => WeaponHits + NanoHits + IndirectHits;
+        public int AbsorbedHits { get; protected set; }
+        public int TotalHits => WeaponHits + NanoHits + IndirectHits + AbsorbedHits;
 
         public int WeaponHitsPlusPets => WeaponHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.WeaponHits ?? 0);
         public int NormalHitsPlusPets => NormalHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.NormalHits ?? 0);
@@ -65,6 +80,7 @@ namespace AODamageMeter
         public int WeaponHitAttemptsPlusPets => WeaponHitAttempts + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.WeaponHitAttempts ?? 0);
         public int NanoHitsPlusPets => NanoHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.NanoHits ?? 0);
         public int IndirectHitsPlusPets => IndirectHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.IndirectHits ?? 0);
+        public int AbsorbedHitsPlusPets => AbsorbedHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.AbsorbedHits ?? 0);
         public int TotalHitsPlusPets => TotalHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalHits ?? 0);
 
         public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
@@ -82,12 +98,14 @@ namespace AODamageMeter
         public double? AverageGlanceDamage => GlanceDamage / Glances.NullIfZero();
         public double? AverageNanoDamage => NanoDamage / NanoHits.NullIfZero();
         public double? AverageIndirectDamage => IndirectDamage / IndirectHits.NullIfZero();
+        public double? AverageAbsorbedDamage => AbsorbedDamage / AbsorbedHits.NullIfZero();
 
         public double? AverageWeaponDamagePlusPets => WeaponDamagePlusPets / WeaponHitsPlusPets.NullIfZero();
         public double? AverageCritDamagePlusPets => CritDamagePlusPets / CritsPlusPets.NullIfZero();
         public double? AverageGlanceDamagePlusPets => GlanceDamagePlusPets / GlancesPlusPets.NullIfZero();
         public double? AverageNanoDamagePlusPets => NanoDamagePlusPets / NanoHitsPlusPets.NullIfZero();
         public double? AverageIndirectDamagePlusPets => IndirectDamagePlusPets / IndirectHitsPlusPets.NullIfZero();
+        public double? AverageAbsorbedDamagePlusPets => AbsorbedDamagePlusPets / AbsorbedHitsPlusPets.NullIfZero();
 
         public double? PercentOfMastersOrOwnTotalDamagePlusPets => TotalDamage / MastersOrOwnTotalDamagePlusPets.NullIfZero();
 
@@ -125,9 +143,21 @@ namespace AODamageMeter
         public int? GetDamageTypeHits(DamageType damageType) => DamageTypeHits.TryGetValue(damageType, out int damageTypeHits) ? damageTypeHits : (int?)null;
         public long? GetDamageTypeDamage(DamageType damageType) => DamageTypeDamages.TryGetValue(damageType, out long damageTypeDamage) ? damageTypeDamage : (long?)null;
         public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);
+        public double? GetPercentDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)TotalDamage;
+        public double? GetPercentDamageTypeHits(DamageType damageType) => GetDamageTypeHits(damageType) / (double?)TotalHits;
 
-        public bool HasIncompleteMissStats => !Source.IsOwner && !Target.IsOwner;
-        public bool HasIncompleteMissStatsPlusPets => (!Source.IsOwner || Source.FightPets.Any()) && !Target.IsOwner;
+        public bool HasDamageTypeDamagePlusPets(DamageType damageType) => SourceAndFightPets.Any(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.HasDamageTypeDamage(damageType) ?? false);
+        public bool HasSpecialsPlusPets => SourceAndFightPets.Any(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.HasSpecials ?? false);
+        public int? GetDamageTypeHitsPlusPets(DamageType damageType) => SourceAndFightPets.NullableSum(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.GetDamageTypeHits(damageType));
+        public long? GetDamageTypeDamagePlusPets(DamageType damageType) => SourceAndFightPets.NullableSum(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.GetDamageTypeDamage(damageType));
+        public double? GetAverageDamageTypeDamagePlusPets(DamageType damageType) => GetDamageTypeDamagePlusPets(damageType) / (double?)GetDamageTypeHitsPlusPets(damageType);
+        public double? GetPercentDamageTypeDamagePlusPets(DamageType damageType) => GetDamageTypeDamagePlusPets(damageType) / (double?)TotalDamagePlusPets;
+        public double? GetPercentDamageTypeHitsPlusPets(DamageType damageType) => GetDamageTypeHitsPlusPets(damageType) / (double?)TotalHitsPlusPets;
+
+        public bool HasCompleteMissStats => Source.IsOwner || Target.IsOwner;
+        public bool HasCompleteMissStatsPlusPets => (Source.IsOwner && !Source.FightPets.Any()) || Target.IsOwner;
+
+        public bool HasCompleteAbsorbedDamageStats => (Target.IsOwner || Target.Name == FightCharacter.UnknownCharacterName) && Source.Name == FightCharacter.UnknownCharacterName;
 
         public void AddAttackEvent(AttackEvent attackEvent)
         {
@@ -168,7 +198,8 @@ namespace AODamageMeter
                     ++IndirectHits;
                     break;
                 case AttackResult.Absorbed:
-                    // Only an 〈Unknown〉 source for events where the attack results in an absorb, so don't bother.
+                    AbsorbedDamage += attackEvent.Amount.Value;
+                    ++AbsorbedHits;
                     break;
                 default: throw new NotImplementedException();
             }
