@@ -169,8 +169,11 @@ namespace AODamageMeter
         }
 
         public long WeaponDamageDone { get; protected set; }
+        public long RegularDamageDone { get; protected set; }
+        public long NormalDamageDone { get; protected set; }
         public long CritDamageDone { get; protected set; }
         public long GlanceDamageDone { get; protected set; }
+        public long SpecialDamageDone { get; protected set; }
         public long NanoDamageDone { get; protected set; }
         public long IndirectDamageDone { get; protected set; }
         // Absorbed sucks, only have the target when it's the owner, and the source is always unknown. We also don't know
@@ -179,8 +182,11 @@ namespace AODamageMeter
         public long TotalDamageDone => WeaponDamageDone + NanoDamageDone + IndirectDamageDone + AbsorbedDamageDone;
 
         public long WeaponDamageDonePlusPets => WeaponDamageDone + FightPets.Sum(p => p.WeaponDamageDone);
+        public long RegularDamageDonePlusPets => RegularDamageDone + FightPets.Sum(p => p.RegularDamageDone);
+        public long NormalDamageDonePlusPets => NormalDamageDone + FightPets.Sum(p => p.NormalDamageDone);
         public long CritDamageDonePlusPets => CritDamageDone + FightPets.Sum(p => p.CritDamageDone);
         public long GlanceDamageDonePlusPets => GlanceDamageDone + FightPets.Sum(p => p.GlanceDamageDone);
+        public long SpecialDamageDonePlusPets => SpecialDamageDone + FightPets.Sum(p => p.SpecialDamageDone);
         public long NanoDamageDonePlusPets => NanoDamageDone + FightPets.Sum(p => p.NanoDamageDone);
         public long IndirectDamageDonePlusPets => IndirectDamageDone + FightPets.Sum(p => p.IndirectDamageDone);
         public long AbsorbedDamageDonePlusPets => AbsorbedDamageDone + FightPets.Sum(p => p.AbsorbedDamageDone);
@@ -210,9 +216,11 @@ namespace AODamageMeter
         public double? AbsorbedPercentOfTotalDamageDonePlusPets => AbsorbedDamageDonePlusPets / TotalDamageDonePlusPets.NullIfZero();
 
         public int WeaponHitsDone { get; protected set; }
-        public int NormalHitsDone { get; protected set; }
+        public int RegularsDone { get; protected set; }
+        public int NormalsDone { get; protected set; }
         public int CritsDone { get; protected set; }
         public int GlancesDone { get; protected set; }
+        public int SpecialsDone { get; protected set; }
         public int MissesDone { get; protected set; } // We only know about misses where the owner is a source or target.
         public int WeaponHitAttemptsDone => WeaponHitsDone + MissesDone;
         public int NanoHitsDone { get; protected set; }
@@ -221,9 +229,11 @@ namespace AODamageMeter
         public int TotalHitsDone => WeaponHitsDone + NanoHitsDone + IndirectHitsDone + AbsorbedHitsDone;
 
         public int WeaponHitsDonePlusPets => WeaponHitsDone + FightPets.Sum(p => p.WeaponHitsDone);
-        public int NormalHitsDonePlusPets => NormalHitsDone + FightPets.Sum(p => p.NormalHitsDone);
+        public int RegularsDonePlusPets => RegularsDone + FightPets.Sum(p => p.RegularsDone);
+        public int NormalsDonePlusPets => NormalsDone + FightPets.Sum(p => p.NormalsDone);
         public int CritsDonePlusPets => CritsDone + FightPets.Sum(p => p.CritsDone);
         public int GlancesDonePlusPets => GlancesDone + FightPets.Sum(p => p.GlancesDone);
+        public int SpecialsDonePlusPets => SpecialsDone + FightPets.Sum(p => p.SpecialsDone);
         public int MissesDonePlusPets => MissesDone + FightPets.Sum(p => p.MissesDone);
         public int WeaponHitAttemptsDonePlusPets => WeaponHitAttemptsDone + FightPets.Sum(p => p.WeaponHitAttemptsDone);
         public int NanoHitsDonePlusPets => NanoHitsDone + FightPets.Sum(p => p.NanoHitsDone); 
@@ -232,8 +242,11 @@ namespace AODamageMeter
         public int TotalHitsDonePlusPets => TotalHitsDone + FightPets.Sum(p => p.TotalHitsDone);
 
         public double WeaponHitsDonePM => WeaponHitsDone / ActiveDuration.TotalMinutes;
+        public double RegularsDonePM => RegularsDone / ActiveDuration.TotalMinutes;
+        public double NormalsDonePM => NormalsDone / ActiveDuration.TotalMinutes;
         public double CritsDonePM => CritsDone / ActiveDuration.TotalMinutes;
         public double GlancesDonePM => GlancesDone / ActiveDuration.TotalMinutes;
+        public double SpecialsDonePM => SpecialsDone / ActiveDuration.TotalMinutes;
         public double MissesDonePM => MissesDone / ActiveDuration.TotalMinutes;
         public double WeaponHitAttemptsDonePM => WeaponHitAttemptsDone / ActiveDuration.TotalMinutes;
         public double NanoHitsDonePM => NanoHitsDone / ActiveDuration.TotalMinutes;
@@ -242,8 +255,11 @@ namespace AODamageMeter
         public double TotalHitsDonePM => TotalHitsDone / ActiveDuration.TotalMinutes;
 
         public double WeaponHitsDonePMPlusPets => WeaponHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double RegularsDonePMPlusPets => RegularsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double NormalsDonePMPlusPets => NormalsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double CritsDonePMPlusPets => CritsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double GlancesDonePMPlusPets => GlancesDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
+        public double SpecialsDonePMPlusPets => SpecialsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double MissesDonePMPlusPets => MissesDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double WeaponHitAttemptsDonePMPlusPets => WeaponHitAttemptsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
         public double NanoHitsDonePMPlusPets => NanoHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
@@ -252,25 +268,31 @@ namespace AODamageMeter
         public double TotalHitsDonePMPlusPets => TotalHitsDonePlusPets / ActiveDurationPlusPets.TotalMinutes;
 
         public double? WeaponHitDoneChance => WeaponHitsDone / WeaponHitAttemptsDone.NullIfZero();
-        public double? CritDoneChance => CritsDone / NormalHitsDone.NullIfZero();
-        public double? GlanceDoneChance => GlancesDone / NormalHitsDone.NullIfZero();
+        public double? CritDoneChance => CritsDone / RegularsDone.NullIfZero();
+        public double? GlanceDoneChance => GlancesDone / RegularsDone.NullIfZero();
         public double? MissDoneChance => MissesDone / WeaponHitAttemptsDone.NullIfZero();
 
         public double? WeaponHitDoneChancePlusPets => WeaponHitsDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
-        public double? CritDoneChancePlusPets => CritsDonePlusPets / NormalHitsDonePlusPets.NullIfZero();
-        public double? GlanceDoneChancePlusPets => GlancesDonePlusPets / NormalHitsDonePlusPets.NullIfZero();
+        public double? CritDoneChancePlusPets => CritsDonePlusPets / RegularsDonePlusPets.NullIfZero();
+        public double? GlanceDoneChancePlusPets => GlancesDonePlusPets / RegularsDonePlusPets.NullIfZero();
         public double? MissDoneChancePlusPets => MissesDonePlusPets / WeaponHitAttemptsDonePlusPets.NullIfZero();
 
         public double? AverageWeaponDamageDone => WeaponDamageDone / WeaponHitsDone.NullIfZero();
+        public double? AverageRegularDamageDone => RegularDamageDone / RegularsDone.NullIfZero();
+        public double? AverageNormalDamageDone => NormalDamageDone / NormalsDone.NullIfZero();
         public double? AverageCritDamageDone => CritDamageDone / CritsDone.NullIfZero();
         public double? AverageGlanceDamageDone => GlanceDamageDone / GlancesDone.NullIfZero();
+        public double? AverageSpecialDamageDone => SpecialDamageDone / SpecialsDone.NullIfZero();
         public double? AverageNanoDamageDone => NanoDamageDone / NanoHitsDone.NullIfZero();
         public double? AverageIndirectDamageDone => IndirectDamageDone / IndirectHitsDone.NullIfZero();
         public double? AverageAbsorbedDamageDone => AbsorbedDamageDone / AbsorbedHitsDone.NullIfZero();
 
         public double? AverageWeaponDamageDonePlusPets => WeaponDamageDonePlusPets / WeaponHitsDonePlusPets.NullIfZero();
+        public double? AverageRegularDamageDonePlusPets => RegularDamageDonePlusPets / RegularsDonePlusPets.NullIfZero();
+        public double? AverageNormalDamageDonePlusPets => NormalDamageDonePlusPets / NormalsDonePlusPets.NullIfZero();
         public double? AverageCritDamageDonePlusPets => CritDamageDonePlusPets / CritsDonePlusPets.NullIfZero();
         public double? AverageGlanceDamageDonePlusPets => GlanceDamageDonePlusPets / GlancesDonePlusPets.NullIfZero();
+        public double? AverageSpecialDamageDonePlusPets => SpecialDamageDonePlusPets / SpecialsDonePlusPets.NullIfZero();
         public double? AverageNanoDamageDonePlusPets => NanoDamageDonePlusPets / NanoHitsDonePlusPets.NullIfZero();
         public double? AverageIndirectDamageDonePlusPets => IndirectDamageDonePlusPets / IndirectHitsDonePlusPets.NullIfZero();
         public double? AverageAbsorbedDamageDonePlusPets => AbsorbedDamageDonePlusPets / AbsorbedHitsDonePlusPets.NullIfZero();
@@ -339,8 +361,11 @@ namespace AODamageMeter
         public double NanoDrainedPM => NanoDrained / ActiveDuration.TotalMinutes;
 
         public long WeaponDamageTaken { get; protected set; }
+        public long RegularDamageTaken { get; protected set; }
+        public long NormalDamageTaken { get; protected set; }
         public long CritDamageTaken { get; protected set; }
         public long GlanceDamageTaken { get; protected set; }
+        public long SpecialDamageTaken { get; protected set; }
         public long NanoDamageTaken { get; protected set; }
         public long IndirectDamageTaken { get; protected set; }
         // Absorbed sucks, only have the target when it's the owner, and the source is always unknown. We also don't know
@@ -360,9 +385,11 @@ namespace AODamageMeter
         public double? AbsorbedPercentOfTotalDamageTaken => AbsorbedDamageTaken / TotalDamageTaken.NullIfZero();
 
         public int WeaponHitsTaken { get; protected set; }
-        public int NormalHitsTaken { get; protected set; }
+        public int RegularsTaken { get; protected set; }
+        public int NormalsTaken { get; protected set; }
         public int CritsTaken { get; protected set; }
         public int GlancesTaken { get; protected set; }
+        public int SpecialsTaken { get; protected set; }
         public int MissesTaken { get; protected set; } // We only know about misses where the owner is a source or target.
         public int WeaponHitAttemptsTaken => WeaponHitsTaken + MissesTaken;
         public int NanoHitsTaken { get; protected set; }
@@ -371,8 +398,11 @@ namespace AODamageMeter
         public int TotalHitsTaken => WeaponHitsTaken + NanoHitsTaken + IndirectHitsTaken + AbsorbedHitsTaken;
 
         public double WeaponHitsTakenPM => WeaponHitsTaken / ActiveDuration.TotalMinutes;
+        public double RegularsTakenPM => RegularsTaken / ActiveDuration.TotalMinutes;
+        public double NormalsTakenPM => NormalsTaken / ActiveDuration.TotalMinutes;
         public double CritsTakenPM => CritsTaken / ActiveDuration.TotalMinutes;
         public double GlancesTakenPM => GlancesTaken / ActiveDuration.TotalMinutes;
+        public double SpecialsTakenPM => SpecialsTaken / ActiveDuration.TotalMinutes;
         public double MissesTakenPM => MissesTaken / ActiveDuration.TotalMinutes;
         public double WeaponHitAttemptsTakenPM => WeaponHitAttemptsTaken / ActiveDuration.TotalMinutes;
         public double NanoHitsTakenPM => NanoHitsTaken / ActiveDuration.TotalMinutes;
@@ -381,13 +411,16 @@ namespace AODamageMeter
         public double TotalHitsTakenPM => TotalHitsTaken / ActiveDuration.TotalMinutes;
 
         public double? WeaponHitTakenChance => WeaponHitsTaken / WeaponHitAttemptsTaken.NullIfZero();
-        public double? CritTakenChance => CritsTaken / NormalHitsTaken.NullIfZero();
-        public double? GlanceTakenChance => GlancesTaken / NormalHitsTaken.NullIfZero();
+        public double? CritTakenChance => CritsTaken / RegularsTaken.NullIfZero();
+        public double? GlanceTakenChance => GlancesTaken / RegularsTaken.NullIfZero();
         public double? MissTakenChance => MissesTaken / WeaponHitAttemptsTaken.NullIfZero();
 
         public double? AverageWeaponDamageTaken => WeaponDamageTaken / WeaponHitsTaken.NullIfZero();
+        public double? AverageRegularDamageTaken => RegularDamageTaken / RegularsTaken.NullIfZero();
+        public double? AverageNormalDamageTaken => NormalDamageTaken / NormalsTaken.NullIfZero();
         public double? AverageCritDamageTaken => CritDamageTaken / CritsTaken.NullIfZero();
         public double? AverageGlanceDamageTaken => GlanceDamageTaken / GlancesTaken.NullIfZero();
+        public double? AverageSpecialDamageTaken => SpecialDamageTaken / SpecialsTaken.NullIfZero();
         public double? AverageNanoDamageTaken => NanoDamageTaken / NanoHitsTaken.NullIfZero();
         public double? AverageIndirectDamageTaken => IndirectDamageTaken / IndirectHitsTaken.NullIfZero();
         public double? AverageAbsorbedDamageTaken => AbsorbedDamageTaken / AbsorbedHitsTaken.NullIfZero();
@@ -559,11 +592,16 @@ namespace AODamageMeter
                 case AttackResult.WeaponHit:
                     WeaponDamageDone += attackEvent.Amount.Value;
                     ++WeaponHitsDone;
-                    // Logs don't report crits/glances for specials. Track normal hits so we can better approximate crit/glance chance.
                     if (!attackEvent.IsSpecialDamage)
                     {
-                        ++NormalHitsDone;
-                        if (attackEvent.AttackModifier == AttackModifier.Crit)
+                        RegularDamageDone += attackEvent.Amount.Value;
+                        ++RegularsDone;
+                        if (!attackEvent.AttackModifier.HasValue)
+                        {
+                            NormalDamageDone += attackEvent.Amount.Value;
+                            ++NormalsDone;
+                        }
+                        else if (attackEvent.AttackModifier == AttackModifier.Crit)
                         {
                             CritDamageDone += attackEvent.Amount.Value;
                             ++CritsDone;
@@ -573,6 +611,12 @@ namespace AODamageMeter
                             GlanceDamageDone += attackEvent.Amount.Value;
                             ++GlancesDone;
                         }
+                        else throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        SpecialDamageDone += attackEvent.Amount.Value;
+                        ++SpecialsDone;
                     }
                     break;
                 case AttackResult.Missed:
@@ -624,11 +668,16 @@ namespace AODamageMeter
                 case AttackResult.WeaponHit:
                     WeaponDamageTaken += attackEvent.Amount.Value;
                     ++WeaponHitsTaken;
-                    // Logs don't report crits/glances for specials. Track normal hits so we can better approximate crit/glance chance.
                     if (!attackEvent.IsSpecialDamage)
                     {
-                        ++NormalHitsTaken;
-                        if (attackEvent.AttackModifier == AttackModifier.Crit)
+                        RegularDamageTaken += attackEvent.Amount.Value;
+                        ++RegularsTaken;
+                        if (!attackEvent.AttackModifier.HasValue)
+                        {
+                            NormalDamageTaken += attackEvent.Amount.Value;
+                            ++NormalsTaken;
+                        }
+                        else if (attackEvent.AttackModifier == AttackModifier.Crit)
                         {
                             CritDamageTaken += attackEvent.Amount.Value;
                             ++CritsTaken;
@@ -638,6 +687,12 @@ namespace AODamageMeter
                             GlanceDamageTaken += attackEvent.Amount.Value;
                             ++GlancesTaken;
                         }
+                        else throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        SpecialDamageTaken += attackEvent.Amount.Value;
+                        ++SpecialsTaken;
                     }
                     break;
                 case AttackResult.Missed:

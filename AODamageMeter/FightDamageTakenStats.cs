@@ -17,16 +17,21 @@ namespace AODamageMeter
             foreach (var fightCharacter in FightCharacters)
             {
                 WeaponDamage += fightCharacter.WeaponDamageTaken;
+                RegularDamage += fightCharacter.RegularDamageTaken;
+                NormalDamage += fightCharacter.NormalDamageTaken;
                 CritDamage += fightCharacter.CritDamageTaken;
                 GlanceDamage += fightCharacter.GlanceDamageTaken;
+                SpecialDamage += fightCharacter.SpecialDamageTaken;
                 NanoDamage += fightCharacter.NanoDamageTaken;
                 IndirectDamage += fightCharacter.IndirectDamageTaken;
                 AbsorbedDamage += fightCharacter.AbsorbedDamageTaken;
 
                 WeaponHits += fightCharacter.WeaponHitsTaken;
-                NormalHits += fightCharacter.NormalHitsTaken;
+                Regulars += fightCharacter.RegularsTaken;
+                Normals += fightCharacter.NormalsTaken;
                 Crits += fightCharacter.CritsTaken;
                 Glances += fightCharacter.GlancesTaken;
+                Specials += fightCharacter.SpecialsTaken;
                 Misses += fightCharacter.MissesTaken;
                 NanoHits += fightCharacter.NanoHitsTaken;
                 IndirectHits += fightCharacter.IndirectHitsTaken;
@@ -47,8 +52,11 @@ namespace AODamageMeter
         public IReadOnlyList<FightCharacter> FightCharacters { get; }
         public int FightCharacterCount => FightCharacters.Count;
         public long WeaponDamage { get; }
+        public long RegularDamage { get; }
+        public long NormalDamage { get; }
         public long CritDamage { get; }
         public long GlanceDamage { get; }
+        public long SpecialDamage { get; }
         public long NanoDamage { get; }
         public long IndirectDamage { get; }
         public long AbsorbedDamage { get; }
@@ -66,9 +74,11 @@ namespace AODamageMeter
         public double? AbsorbedPercentOfTotalDamage => AbsorbedDamage / TotalDamage.NullIfZero();
 
         public int WeaponHits { get; }
-        public int NormalHits { get; }
+        public int Regulars { get; }
+        public int Normals { get; }
         public int Crits { get; }
         public int Glances { get; }
+        public int Specials { get; }
         public int Misses { get; }
         public int WeaponHitAttempts => WeaponHits + Misses;
         public int NanoHits { get; }
@@ -77,8 +87,11 @@ namespace AODamageMeter
         public int TotalHits => WeaponHits + NanoHits + IndirectHits + AbsorbedHits;
 
         public double? WeaponHitsPM => WeaponHits / Fight.Duration?.TotalMinutes;
+        public double? RegularsPM => Regulars / Fight.Duration?.TotalMinutes;
+        public double? NormalsPM => Normals / Fight.Duration?.TotalMinutes;
         public double? CritsPM => Crits / Fight.Duration?.TotalMinutes;
         public double? GlancesPM => Glances / Fight.Duration?.TotalMinutes;
+        public double? SpecialsPM => Specials / Fight.Duration?.TotalMinutes;
         public double? MissesPM => Misses / Fight.Duration?.TotalMinutes;
         public double? WeaponHitAttemptsPM => WeaponHitAttempts / Fight.Duration?.TotalMinutes;
         public double? NanoHitsPM => NanoHits / Fight.Duration?.TotalMinutes;
@@ -87,13 +100,16 @@ namespace AODamageMeter
         public double? TotalHitsPM => TotalHits / Fight.Duration?.TotalMinutes;
 
         public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
-        public double? CritChance => Crits / NormalHits.NullIfZero();
-        public double? GlanceChance => Glances / NormalHits.NullIfZero();
+        public double? CritChance => Crits / Regulars.NullIfZero();
+        public double? GlanceChance => Glances / Regulars.NullIfZero();
         public double? MissChance => Misses / WeaponHitAttempts.NullIfZero();
 
         public double? AverageWeaponDamage => WeaponDamage / WeaponHits.NullIfZero();
+        public double? AverageRegularDamage => RegularDamage / Regulars.NullIfZero();
+        public double? AverageNormalDamage => NormalDamage / Normals.NullIfZero();
         public double? AverageCritDamage => CritDamage / Crits.NullIfZero();
         public double? AverageGlanceDamage => GlanceDamage / Glances.NullIfZero();
+        public double? AverageSpecialDamage => SpecialDamage / Specials.NullIfZero();
         public double? AverageNanoDamage => NanoDamage / NanoHits.NullIfZero();
         public double? AverageIndirectDamage => IndirectDamage / IndirectHits.NullIfZero();
         public double? AverageAbsorbedDamage => AbsorbedDamage / AbsorbedHits.NullIfZero();

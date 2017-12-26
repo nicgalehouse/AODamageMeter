@@ -39,8 +39,11 @@ $@"{DisplayIndex}. {Title}
   {DamageDoneInfo.GlanceChancePlusPets.FormatPercent()} glance chance
 
 {DamageDoneInfo.AverageWeaponDamagePlusPets.Format()} weapon dmg / hit
-  {DamageDoneInfo.AverageCritDamagePlusPets.Format()} crit dmg / hit
-  {DamageDoneInfo.AverageGlanceDamagePlusPets.Format()} glance dmg / hit
+  {DamageDoneInfo.AverageRegularDamagePlusPets.Format()} regular dmg / hit
+    {DamageDoneInfo.AverageNormalDamagePlusPets.Format()} normal dmg / hit
+    {DamageDoneInfo.AverageCritDamagePlusPets.Format()} crit dmg / hit
+    {DamageDoneInfo.AverageGlanceDamagePlusPets.Format()} glance dmg / hit
+  {DamageDoneInfo.AverageSpecialDamagePlusPets.Format()} special dmg / hit
 {DamageDoneInfo.AverageNanoDamagePlusPets.Format()} nano dmg / hit
 {DamageDoneInfo.AverageIndirectDamagePlusPets.Format()} indirect dmg / hit
 {DamageDoneInfo.AverageAbsorbedDamagePlusPets.Format()} absorbed dmg / hit"

@@ -66,16 +66,22 @@ $@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}'s Dama
 
 {(!FightOwner?.HasCompleteMissStatsPlusPets ?? false ? "≥ " : "")}{FightOwner?.WeaponHitAttemptsDonePMPlusPets.Format() ?? EmDash} weapon hit attempts / min
 {FightOwner?.WeaponHitsDonePMPlusPets.Format() ?? EmDash} weapon hits / min
-  {FightOwner?.CritsDonePMPlusPets.Format() ?? EmDash} crits / min
-  {FightOwner?.GlancesDonePMPlusPets.Format() ?? EmDash} glances / min
+  {FightOwner?.RegularsDonePMPlusPets.Format() ?? EmDash} regulars / min
+    {FightOwner?.NormalsDonePMPlusPets.Format() ?? EmDash} normals / min
+    {FightOwner?.CritsDonePMPlusPets.Format() ?? EmDash} crits / min
+    {FightOwner?.GlancesDonePMPlusPets.Format() ?? EmDash} glances / min
+  {FightOwner?.SpecialsDonePMPlusPets.Format() ?? EmDash} specials / min
 {FightOwner?.NanoHitsDonePMPlusPets.Format() ?? EmDash} nano hits / min
 {FightOwner?.IndirectHitsDonePMPlusPets.Format() ?? EmDash} indirect hits / min
 {(!FightOwner?.HasCompleteAbsorbedDamageDoneStats ?? false ? "≥ " : "")}{FightOwner?.AbsorbedHitsDonePMPlusPets.Format() ?? EmDash} absorbed hits / min
 {FightOwner?.TotalHitsDonePMPlusPets.Format() ?? EmDash} total hits / min
 
 {FightOwner?.AverageWeaponDamageDonePlusPets.Format() ?? EmDash} weapon dmg / hit
-  {FightOwner?.AverageCritDamageDonePlusPets.Format() ?? EmDash} crit dmg / hit
-  {FightOwner?.AverageGlanceDamageDonePlusPets.Format() ?? EmDash} glance dmg / hit
+  {FightOwner?.AverageRegularDamageDonePlusPets.Format() ?? EmDash} regular dmg / hit
+    {FightOwner?.AverageNormalDamageDonePlusPets.Format() ?? EmDash} normal dmg / hit
+    {FightOwner?.AverageCritDamageDonePlusPets.Format() ?? EmDash} crit dmg / hit
+    {FightOwner?.AverageGlanceDamageDonePlusPets.Format() ?? EmDash} glance dmg / hit
+  {FightOwner?.AverageSpecialDamageDonePlusPets.Format() ?? EmDash} special dmg / hit
 {FightOwner?.AverageNanoDamageDonePlusPets.Format()} nano dmg / hit
 {FightOwner?.AverageIndirectDamageDonePlusPets.Format() ?? EmDash} indirect dmg / hit
 {FightOwner?.AverageAbsorbedDamageDonePlusPets.Format() ?? EmDash} absorbed dmg / hit"

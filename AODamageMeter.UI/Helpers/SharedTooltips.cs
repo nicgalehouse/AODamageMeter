@@ -52,16 +52,22 @@
 
 {(!fightCharacter.HasCompleteMissStatsPlusPets ? "≥ " : "")}{fightCharacter.WeaponHitAttemptsDonePMPlusPets.Format()} weapon hit attempts / min
 {fightCharacter.WeaponHitsDonePMPlusPets.Format()} weapon hits / min
-  {fightCharacter.CritsDonePMPlusPets.Format()} crits / min
-  {fightCharacter.GlancesDonePMPlusPets.Format()} glances / min
+  {fightCharacter.RegularsDonePMPlusPets.Format()} regulars / min
+    {fightCharacter.NormalsDonePMPlusPets.Format()} normals / min
+    {fightCharacter.CritsDonePMPlusPets.Format()} crits / min
+    {fightCharacter.GlancesDonePMPlusPets.Format()} glances / min
+  {fightCharacter.SpecialsDonePMPlusPets.Format()} specials / min
 {fightCharacter.NanoHitsDonePMPlusPets.Format()} nano hits / min
 {fightCharacter.IndirectHitsDonePMPlusPets.Format()} indirect hits / min
 {(!fightCharacter.HasCompleteAbsorbedDamageDoneStats ? "≥ " : "")}{fightCharacter.AbsorbedHitsDonePMPlusPets.Format()} absorbed hits / min
 {fightCharacter.TotalHitsDonePMPlusPets.Format()} total hits / min
 
 {fightCharacter.AverageWeaponDamageDonePlusPets.Format()} weapon dmg / hit
-  {fightCharacter.AverageCritDamageDonePlusPets.Format()} crit dmg / hit
-  {fightCharacter.AverageGlanceDamageDonePlusPets.Format()} glance dmg / hit
+  {fightCharacter.AverageRegularDamageDonePlusPets.Format()} regular dmg / hit
+    {fightCharacter.AverageNormalDamageDonePlusPets.Format()} normal dmg / hit
+    {fightCharacter.AverageCritDamageDonePlusPets.Format()} crit dmg / hit
+    {fightCharacter.AverageGlanceDamageDonePlusPets.Format()} glance dmg / hit
+  {fightCharacter.AverageSpecialDamageDonePlusPets.Format()} special dmg / hit
 {fightCharacter.AverageNanoDamageDonePlusPets.Format()} nano dmg / hit
 {fightCharacter.AverageIndirectDamageDonePlusPets.Format()} indirect dmg / hit
 {fightCharacter.AverageAbsorbedDamageDonePlusPets.Format()} absorbed dmg / hit"
@@ -96,16 +102,22 @@
 
 {(!fightCharacter.HasCompleteMissStats ? "≤ " : "")}{fightCharacter.WeaponHitAttemptsTakenPM.Format()} weapon hit attempts / min
 {fightCharacter.WeaponHitsTakenPM.Format()} weapon hits / min
-  {fightCharacter.CritsTakenPM.Format()} crits / min
-  {fightCharacter.GlancesTakenPM.Format()} glances / min
+  {fightCharacter.RegularsTakenPM.Format()} regulars / min
+    {fightCharacter.NormalsTakenPM.Format()} normals / min
+    {fightCharacter.CritsTakenPM.Format()} crits / min
+    {fightCharacter.GlancesTakenPM.Format()} glances / min
+  {fightCharacter.SpecialsTakenPM.Format()} specials / min
 {fightCharacter.NanoHitsTakenPM.Format()} nano hits / min
 {fightCharacter.IndirectHitsTakenPM.Format()} indirect hits / min
 {(!fightCharacter.HasCompleteAbsorbedDamageTakenStats ? "≥ " : "")}{fightCharacter.AbsorbedHitsTakenPM.Format()} absorbed hits / min
 {fightCharacter.TotalHitsTakenPM.Format()} total hits / min
 
 {fightCharacter.AverageWeaponDamageTaken.Format()} weapon dmg / hit
-  {fightCharacter.AverageCritDamageTaken.Format()} crit dmg / hit
-  {fightCharacter.AverageGlanceDamageTaken.Format()} glance dmg / hit
+  {fightCharacter.AverageRegularDamageTaken.Format()} regular dmg / hit
+    {fightCharacter.AverageNormalDamageTaken.Format()} normal dmg / hit
+    {fightCharacter.AverageCritDamageTaken.Format()} crit dmg / hit
+    {fightCharacter.AverageGlanceDamageTaken.Format()} glance dmg / hit
+  {fightCharacter.AverageSpecialDamageTaken.Format()} special dmg / hit
 {fightCharacter.AverageNanoDamageTaken.Format()} nano dmg / hit
 {fightCharacter.AverageIndirectDamageTaken.Format()} indirect dmg / hit
 {fightCharacter.AverageAbsorbedDamageTaken.Format()} absorbed dmg / hit"

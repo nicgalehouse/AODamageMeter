@@ -58,16 +58,22 @@ $@"{Title}
 
 ≥ {stats.WeaponHitAttemptsPM.Format()} weapon hit attempts / min
 {stats.WeaponHitsPM.Format()} weapon hits / min
-  {stats.CritsPM.Format()} crits / min
-  {stats.GlancesPM.Format()} glances / min
+  {stats.RegularsPM.Format()} regulars / min
+    {stats.NormalsPM.Format()} normals / min
+    {stats.CritsPM.Format()} crits / min
+    {stats.GlancesPM.Format()} glances / min
+  {stats.SpecialsPM.Format()} specials / min
 {stats.NanoHitsPM.Format()} nano hits / min
 {stats.IndirectHitsPM.Format()} indirect hits / min
 {stats.AbsorbedHitsPM.Format()} absorbed hits / min
 {stats.TotalHitsPM.Format()} total hits / min
 
 {stats.AverageWeaponDamage.Format()} weapon dmg / hit
-  {stats.AverageCritDamage.Format()} crit dmg / hit
-  {stats.AverageGlanceDamage.Format()} glance dmg / hit
+  {stats.AverageRegularDamage.Format()} regular dmg / hit
+    {stats.AverageNormalDamage.Format()} normal dmg / hit
+    {stats.AverageCritDamage.Format()} crit dmg / hit
+    {stats.AverageGlanceDamage.Format()} glance dmg / hit
+  {stats.AverageSpecialDamage.Format()} special dmg / hit
 {stats.AverageNanoDamage.Format()} nano dmg / hit
 {stats.AverageIndirectDamage.Format()} indirect dmg / hit
 {stats.AverageAbsorbedDamage.Format()} absorbed dmg / hit"

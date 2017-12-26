@@ -41,8 +41,11 @@ $@"{DisplayIndex}. {Title}
   {DamageTakenInfo?.GlanceChance.FormatPercent() ?? EmDashPercent} glance chance
 
 {DamageTakenInfo?.AverageWeaponDamage.Format() ?? EmDash} weapon dmg / hit
-  {DamageTakenInfo?.AverageCritDamage.Format() ?? EmDash} crit dmg / hit
-  {DamageTakenInfo?.AverageGlanceDamage.Format() ?? EmDash} glance dmg / hit
+  {DamageTakenInfo?.AverageRegularDamage.Format() ?? EmDash} regular dmg / hit
+    {DamageTakenInfo?.AverageNormalDamage.Format() ?? EmDash} normal dmg / hit
+    {DamageTakenInfo?.AverageCritDamage.Format() ?? EmDash} crit dmg / hit
+    {DamageTakenInfo?.AverageGlanceDamage.Format() ?? EmDash} glance dmg / hit
+  {DamageTakenInfo?.AverageSpecialDamage.Format() ?? EmDash} special dmg / hit
 {DamageTakenInfo?.AverageNanoDamage.Format() ?? EmDash} nano dmg / hit
 {DamageTakenInfo?.AverageIndirectDamage.Format() ?? EmDash} indirect dmg / hit
 {DamageTakenInfo?.AverageAbsorbedDamage.Format() ?? EmDash} absorbed dmg / hit"
