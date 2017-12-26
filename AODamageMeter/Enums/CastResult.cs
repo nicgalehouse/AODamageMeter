@@ -5,6 +5,7 @@
         Success,
         Countered,
         Resisted,
-        Aborted
+        Aborted,
+        Interrupted
     }
 }

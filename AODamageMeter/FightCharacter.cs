@@ -557,22 +557,25 @@ namespace AODamageMeter
         public double PvpTeamXPGainedPM => PvpTeamXPGained / ActiveDuration.TotalMinutes;
 
         // We only know about cast events where the source is the owner (there's no target).
-        public int CastAttempts => CastSuccesses + CastCountereds + CastResisteds + CastAborteds;
+        public int CastAttempts => CastSuccesses + CastCountereds + CastResisteds + CastAborteds + CastInterrupteds;
         public int CastSuccesses { get; protected set; }
         public int CastCountereds { get; protected set; }
         public int CastResisteds { get; protected set; }
         public int CastAborteds { get; protected set; }
+        public int CastInterrupteds { get; protected set; }
 
         public double CastAttemptsPM => CastAttempts / ActiveDuration.TotalMinutes;
         public double CastSuccessesPM => CastSuccesses / ActiveDuration.TotalMinutes;
         public double CastCounteredsPM => CastCountereds / ActiveDuration.TotalMinutes;
         public double CastResistedsPM => CastResisteds / ActiveDuration.TotalMinutes;
         public double CastAbortedsPM => CastAborteds / ActiveDuration.TotalMinutes;
+        public double CastInterruptedsPM => CastInterrupteds / ActiveDuration.TotalMinutes;
 
         public double? CastSuccessChance => CastSuccesses / CastAttempts.NullIfZero();
         public double? CastCounteredChance => CastCountereds / CastAttempts.NullIfZero();
         public double? CastResistedChance => CastResisteds / CastAttempts.NullIfZero();
         public double? CastAbortedChance => CastAborteds / CastAttempts.NullIfZero();
+        public double? CastInterruptedChance => CastInterrupteds / CastAttempts.NullIfZero();
 
         public int CastUnavailables { get; protected set; }
         // A measure of how much useless button spamming you're doing, I guess?
@@ -812,6 +815,7 @@ namespace AODamageMeter
                     case CastResult.Countered: ++CastCountereds; break;
                     case CastResult.Resisted: ++CastResisteds; break;
                     case CastResult.Aborted: ++CastAborteds; break;
+                    case CastResult.Interrupted: ++CastInterrupteds; break;
                     default: throw new NotImplementedException();
                 }
 
@@ -854,6 +858,11 @@ namespace AODamageMeter
             else if (systemEvent.IsNanoDrain)
             {
                 NanoDrained += systemEvent.Amount.Value;
+            }
+            else if (systemEvent.IsNanoInterrupt)
+            {
+                var castEvent = new MeCastNano(systemEvent);
+                castEvent.Source.AddCastEvent(castEvent);
             }
             else throw new NotImplementedException();
         }

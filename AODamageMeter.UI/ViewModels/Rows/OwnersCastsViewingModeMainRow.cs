@@ -29,12 +29,14 @@ $@"{Title}
 {FightOwner?.CastCountereds.ToString("N0") ?? EmDash} ({FightOwner?.CastCounteredChance.FormatPercent() ?? EmDashPercent}) countered
 {FightOwner?.CastResisteds.ToString("N0") ?? EmDash} ({FightOwner?.CastResistedChance.FormatPercent() ?? EmDashPercent}) resisted
 {FightOwner?.CastAborteds.ToString("N0") ?? EmDash} ({FightOwner?.CastAbortedChance.FormatPercent() ?? EmDashPercent}) aborted
+{FightOwner?.CastInterrupteds.ToString("N0") ?? EmDash} ({FightOwner?.CastInterruptedChance.FormatPercent() ?? EmDashPercent}) interrupted
 {FightOwner?.CastAttempts.ToString("N0") ?? EmDash} attempted
 
 {FightOwner?.CastSuccessesPM.Format() ?? EmDash} succeeded / min
 {FightOwner?.CastCounteredsPM.Format() ?? EmDash} countered / min
 {FightOwner?.CastResistedsPM.Format() ?? EmDash} resisted / min
 {FightOwner?.CastAbortedsPM.Format() ?? EmDash} aborted / min
+{FightOwner?.CastInterruptedsPM.Format() ?? EmDash} interrupted / min
 {FightOwner?.CastAttemptsPM.Format() ?? EmDash} attempted / min";
                 }
             }

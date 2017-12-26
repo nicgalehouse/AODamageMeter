@@ -144,5 +144,22 @@ namespace AODamageMeter.FightEvents
             else IsCastUnavailable = true;
 #endif
         }
+
+        public MeCastNano(SystemEvent nanoInterruptEvent)
+            : base(nanoInterruptEvent.Fight, nanoInterruptEvent.Timestamp, nanoInterruptEvent.Description)
+        {
+            SetSourceToOwner();
+            CastResult = AODamageMeter.CastResult.Interrupted;
+
+            if (_latestPotentialStartEvent != null && _latestPotentialStartEvent.Fight == nanoInterruptEvent.Fight)
+            {
+                _latestPotentialStartEvent.CastResult = CastResult;
+                NanoProgram = _latestPotentialStartEvent.NanoProgram;
+
+                StartEvent = _latestPotentialStartEvent;
+                _latestPotentialStartEvent.EndEvent = this;
+                _latestPotentialStartEvent = null;
+            }
+        }
     }
 }
