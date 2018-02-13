@@ -48,6 +48,7 @@ Capricorn
 Cemetiere
 Chiit
 Chirop
+Chontamenti
 Coah
 Collector
 Confane
@@ -62,6 +63,7 @@ Cuty
 Dasyatis
 Degei
 Demenus
+Demisedope
 Demon
 Ding
 Direseeds
@@ -75,6 +77,7 @@ Egres
 Ehmat
 Ekibiogami
 Eleet
+Eradicus
 Ercorash
 Ershkigal
 Esanell
@@ -186,6 +189,7 @@ Numiel
 Nyrckes
 Odqan
 Omathon
+Ormazd
 Oscar
 Otacustes
 Ownz
@@ -209,6 +213,8 @@ Pyiininnik
 Python
 Qallyawi
 Ragerider
+Rashk
+Rashnu
 Rauni
 Razor
 Restite
@@ -226,6 +232,7 @@ Sandcrawler
 Sandworm
 Sanoo
 Sashuqa
+Scorchid
 Scorpio
 Sebtitis
 Shadow
@@ -244,6 +251,7 @@ Somphos
 Soulstepper
 Spetses
 Squasher
+Sraosha
 Stalker
 Stark
 Stinger
@@ -280,12 +288,14 @@ Unionist
 Ushamaham
 Ushqa
 Vadleany
+Vahman
 Valentyia
 Valirash
 Vicar
 Vilesprout
 Vinstur
 Virgo
+Vizaresh
 Voidling
 Vortexoid
 Wakhent
@@ -298,10 +308,11 @@ Wataptu
 Waychaw
 Waywaqa
 Webensenu
-Whire
+Whiro
 Windlegs
 Wrathspouter
 Xark
+Xeshm
 Yidira
 Zakynthos
 Zias

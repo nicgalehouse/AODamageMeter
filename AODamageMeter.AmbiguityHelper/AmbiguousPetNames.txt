@@ -1,5 +1,6 @@
 ﻿Anansi's Abettor
 Anansi's Acolyte
+Anansi's Child
 Anansi's Cosset
 Anansi's Disciple
 Anansi's Favorite
@@ -20,4 +21,5 @@ Nyame's Abettor
 Nyame's Drudge
 Pyiininnik's Shadow
 Sanity's Edge
+Smug's Control Tower
 Tiunissik's Shadow
