@@ -31,6 +31,7 @@ namespace AODamageMeter
                 Normals += fightCharacter.NormalsDone;
                 Crits += fightCharacter.CritsDone;
                 Glances += fightCharacter.GlancesDone;
+                BlockedHits += fightCharacter.BlockedHitsDone;
                 Specials += fightCharacter.SpecialsDone;
                 Misses += fightCharacter.MissesDone;
                 NanoHits += fightCharacter.NanoHitsDone;
@@ -78,6 +79,8 @@ namespace AODamageMeter
         public int Normals { get; }
         public int Crits { get; }
         public int Glances { get; }
+        public int BlockedHits { get; }
+        public int NonBlockedRegulars => Regulars - BlockedHits;
         public int Specials { get; }
         public int Misses { get; }
         public int WeaponHitAttempts => WeaponHits + Misses;
@@ -85,12 +88,15 @@ namespace AODamageMeter
         public int IndirectHits { get; }
         public int AbsorbedHits { get; }
         public int TotalHits => WeaponHits + NanoHits + IndirectHits + AbsorbedHits;
+        public int TotalNonBlockedHits => TotalHits - BlockedHits;
 
         public double? WeaponHitsPM => WeaponHits / Fight.Duration?.TotalMinutes;
         public double? RegularsPM => Regulars / Fight.Duration?.TotalMinutes;
         public double? NormalsPM => Normals / Fight.Duration?.TotalMinutes;
         public double? CritsPM => Crits / Fight.Duration?.TotalMinutes;
         public double? GlancesPM => Glances / Fight.Duration?.TotalMinutes;
+        public double? BlockedHitsPM => BlockedHits / Fight.Duration?.TotalMinutes;
+        public double? NonBlockedRegularsPM => NonBlockedRegulars / Fight.Duration?.TotalMinutes;
         public double? SpecialsPM => Specials / Fight.Duration?.TotalMinutes;
         public double? MissesPM => Misses / Fight.Duration?.TotalMinutes;
         public double? WeaponHitAttemptsPM => WeaponHitAttempts / Fight.Duration?.TotalMinutes;
@@ -98,10 +104,12 @@ namespace AODamageMeter
         public double? IndirectHitsPM => IndirectHits / Fight.Duration?.TotalMinutes;
         public double? AbsorbedHitsPM => AbsorbedHits / Fight.Duration?.TotalMinutes;
         public double? TotalHitsPM => TotalHits / Fight.Duration?.TotalMinutes;
+        public double? TotalNonBlockedHitsPM => TotalNonBlockedHits / Fight.Duration?.TotalMinutes;
 
         public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
-        public double? CritChance => Crits / Regulars.NullIfZero();
-        public double? GlanceChance => Glances / Regulars.NullIfZero();
+        public double? CritChance => Crits / NonBlockedRegulars.NullIfZero();
+        public double? GlanceChance => Glances / NonBlockedRegulars.NullIfZero();
+        public double? BlockedHitChance => BlockedHits / Regulars.NullIfZero();
         public double? MissChance => Misses / WeaponHitAttempts.NullIfZero();
 
         public double? AverageWeaponDamage => WeaponDamage / WeaponHits.NullIfZero();
@@ -126,6 +134,6 @@ namespace AODamageMeter
         public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);
         public double? GetSecondsPerDamageTypeHit(DamageType damageType) => Fight.Duration?.TotalSeconds / GetDamageTypeHits(damageType);
         public double? GetPercentDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)TotalDamage;
-        public double? GetPercentDamageTypeHits(DamageType damageType) => GetDamageTypeHits(damageType) / (double?)TotalHits;
+        public double? GetPercentDamageTypeHits(DamageType damageType) => GetDamageTypeHits(damageType) / (double?)TotalNonBlockedHits;
     }
 }

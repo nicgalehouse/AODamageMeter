@@ -37,7 +37,10 @@ $@"{DisplayIndex}. {Title}
 
 {(!DamageTakenInfo.HasCompleteMissStatsPlusPets ? "≤ " : "")}{DamageTakenInfo.WeaponHitChancePlusPets.FormatPercent()} weapon hit chance
   {DamageTakenInfo.CritChancePlusPets.FormatPercent()} crit chance
-  {DamageTakenInfo.GlanceChancePlusPets.FormatPercent()} glance chance
+  {DamageTakenInfo.GlanceChancePlusPets.FormatPercent()} glance chance"
++ (!Fight.HasObservedBlockedHits ? null : $@"
+  {(!DamageTakenInfo.HasCompleteBlockedHitStatsPlusPets ? "≥ " : "")}{DamageTakenInfo.BlockedHitChancePlusPets.FormatPercent()} blocked hit chance")
++ $@"
 
 {DamageTakenInfo.AverageWeaponDamagePlusPets.Format()} weapon dmg / hit
   {DamageTakenInfo.AverageRegularDamagePlusPets.Format()} regular dmg / hit

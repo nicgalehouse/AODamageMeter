@@ -61,15 +61,21 @@ $@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}'s Dama
 {FightOwner?.TotalDamageDonePMPlusPets.Format() ?? EmDash} total dmg / min
 
 {(!FightOwner?.HasCompleteMissStatsPlusPets ?? false ? "≤ " : "")}{FightOwner?.WeaponHitDoneChancePlusPets.FormatPercent() ?? EmDashPercent} weapon hit chance
-  {FightOwner?.CritDoneChancePlusPets.FormatPercent()} crit chance
-  {FightOwner?.GlanceDoneChancePlusPets.FormatPercent()} glance chance
+  {FightOwner?.CritDoneChancePlusPets.FormatPercent() ?? EmDashPercent} crit chance
+  {FightOwner?.GlanceDoneChancePlusPets.FormatPercent() ?? EmDashPercent} glance chance"
++ (!Fight.HasObservedBlockedHits ? null : $@"
+  {(!FightOwner?.HasCompleteBlockedHitStatsPlusPets ?? false ? "≥ " : "")}{FightOwner?.BlockedHitDoneChancePlusPets.FormatPercent() ?? EmDashPercent} blocked hit chance")
++ $@"
 
 {(!FightOwner?.HasCompleteMissStatsPlusPets ?? false ? "≥ " : "")}{FightOwner?.WeaponHitAttemptsDonePMPlusPets.Format() ?? EmDash} weapon hit attempts / min
 {FightOwner?.WeaponHitsDonePMPlusPets.Format() ?? EmDash} weapon hits / min
   {FightOwner?.RegularsDonePMPlusPets.Format() ?? EmDash} regulars / min
     {FightOwner?.NormalsDonePMPlusPets.Format() ?? EmDash} normals / min
     {FightOwner?.CritsDonePMPlusPets.Format() ?? EmDash} crits / min
-    {FightOwner?.GlancesDonePMPlusPets.Format() ?? EmDash} glances / min
+    {FightOwner?.GlancesDonePMPlusPets.Format() ?? EmDash} glances / min"
+ + (!Fight.HasObservedBlockedHits ? null : $@"
+    {(!FightOwner?.HasCompleteBlockedHitStatsPlusPets ?? false ? "≥ " : "")}{FightOwner?.BlockedHitsDonePMPlusPets.Format() ?? EmDash} blocked hits / min")
++ $@"
   {FightOwner?.SpecialsDonePMPlusPets.Format() ?? EmDash} specials / min
 {FightOwner?.NanoHitsDonePMPlusPets.Format() ?? EmDash} nano hits / min
 {FightOwner?.IndirectHitsDonePMPlusPets.Format() ?? EmDash} indirect hits / min
@@ -82,10 +88,10 @@ $@"{FightOwnersDisplayIndex?.ToString() ?? EmDash}. {Owner.UncoloredName}'s Dama
     {FightOwner?.AverageCritDamageDonePlusPets.Format() ?? EmDash} crit dmg / hit
     {FightOwner?.AverageGlanceDamageDonePlusPets.Format() ?? EmDash} glance dmg / hit
   {FightOwner?.AverageSpecialDamageDonePlusPets.Format() ?? EmDash} special dmg / hit
-{FightOwner?.AverageNanoDamageDonePlusPets.Format()} nano dmg / hit
+{FightOwner?.AverageNanoDamageDonePlusPets.Format() ?? EmDash} nano dmg / hit
 {FightOwner?.AverageIndirectDamageDonePlusPets.Format() ?? EmDash} indirect dmg / hit
 {FightOwner?.AverageAbsorbedDamageDonePlusPets.Format() ?? EmDash} absorbed dmg / hit"
-+ (!(FightOwner?.HasSpecialsDonePlusPets ?? false) ? null : $@"
++ (!FightOwner?.HasSpecialsDonePlusPets ?? true ? null : $@"
 
 {FightOwner.GetSpecialsDonePlusPetsInfo()}")
 + ((FightOwner?.TotalDamageDonePlusPets ?? 0) == 0 ? null : $@"

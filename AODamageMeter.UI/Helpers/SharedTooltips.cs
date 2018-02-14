@@ -48,14 +48,20 @@
 
 {(!fightCharacter.HasCompleteMissStatsPlusPets ? "≤ " : "")}{fightCharacter.WeaponHitDoneChancePlusPets.FormatPercent()} weapon hit chance
   {fightCharacter.CritDoneChancePlusPets.FormatPercent()} crit chance
-  {fightCharacter.GlanceDoneChancePlusPets.FormatPercent()} glance chance
+  {fightCharacter.GlanceDoneChancePlusPets.FormatPercent()} glance chance"
++ (!fightCharacter.Fight.HasObservedBlockedHits ? null : $@"
+  {(!fightCharacter.HasCompleteBlockedHitStatsPlusPets ? "≥ " : "")}{fightCharacter.BlockedHitDoneChancePlusPets.FormatPercent()} blocked hit chance")
++ $@"
 
 {(!fightCharacter.HasCompleteMissStatsPlusPets ? "≥ " : "")}{fightCharacter.WeaponHitAttemptsDonePMPlusPets.Format()} weapon hit attempts / min
 {fightCharacter.WeaponHitsDonePMPlusPets.Format()} weapon hits / min
   {fightCharacter.RegularsDonePMPlusPets.Format()} regulars / min
     {fightCharacter.NormalsDonePMPlusPets.Format()} normals / min
     {fightCharacter.CritsDonePMPlusPets.Format()} crits / min
-    {fightCharacter.GlancesDonePMPlusPets.Format()} glances / min
+    {fightCharacter.GlancesDonePMPlusPets.Format()} glances / min"
+ + (!fightCharacter.Fight.HasObservedBlockedHits ? null : $@"
+    {(!fightCharacter.HasCompleteBlockedHitStatsPlusPets ? "≥ " : "")}{fightCharacter.BlockedHitsDonePMPlusPets.Format()} blocked hits / min")
++ $@"
   {fightCharacter.SpecialsDonePMPlusPets.Format()} specials / min
 {fightCharacter.NanoHitsDonePMPlusPets.Format()} nano hits / min
 {fightCharacter.IndirectHitsDonePMPlusPets.Format()} indirect hits / min
@@ -98,14 +104,20 @@
 
 {(!fightCharacter.HasCompleteMissStats ? "≤ " : "")}{fightCharacter.WeaponHitTakenChance.FormatPercent()} weapon hit chance
   {fightCharacter.CritTakenChance.FormatPercent()} crit chance
-  {fightCharacter.GlanceTakenChance.FormatPercent()} glance chance
+  {fightCharacter.GlanceTakenChance.FormatPercent()} glance chance"
++ (!fightCharacter.Fight.HasObservedBlockedHits ? null : $@"
+  {(!fightCharacter.HasCompleteBlockedHitStats ? "≥ " : "")}{fightCharacter.BlockedHitTakenChance.FormatPercent()} blocked hit chance")
++ $@"
 
 {(!fightCharacter.HasCompleteMissStats ? "≤ " : "")}{fightCharacter.WeaponHitAttemptsTakenPM.Format()} weapon hit attempts / min
 {fightCharacter.WeaponHitsTakenPM.Format()} weapon hits / min
   {fightCharacter.RegularsTakenPM.Format()} regulars / min
     {fightCharacter.NormalsTakenPM.Format()} normals / min
     {fightCharacter.CritsTakenPM.Format()} crits / min
-    {fightCharacter.GlancesTakenPM.Format()} glances / min
+    {fightCharacter.GlancesTakenPM.Format()} glances / min"
+ + (!fightCharacter.Fight.HasObservedBlockedHits ? null : $@"
+    {(!fightCharacter.HasCompleteBlockedHitStats ? "≥ " : "")}{fightCharacter.BlockedHitsTakenPM.Format()} blocked hits / min")
++ $@"
   {fightCharacter.SpecialsTakenPM.Format()} specials / min
 {fightCharacter.NanoHitsTakenPM.Format()} nano hits / min
 {fightCharacter.IndirectHitsTakenPM.Format()} indirect hits / min

@@ -72,6 +72,8 @@ namespace AODamageMeter
         public int Normals { get; protected set; }
         public int Crits { get; protected set; }
         public int Glances { get; protected set; }
+        public int BlockedHits { get; protected set; }
+        public int NonBlockedRegulars => Regulars - BlockedHits;
         public int Specials { get; protected set; }
         public int Misses { get; protected set; }
         public int WeaponHitAttempts => WeaponHits + Misses;
@@ -79,12 +81,15 @@ namespace AODamageMeter
         public int IndirectHits { get; protected set; }
         public int AbsorbedHits { get; protected set; }
         public int TotalHits => WeaponHits + NanoHits + IndirectHits + AbsorbedHits;
+        public int TotalNonBlockedHits => TotalHits - BlockedHits;
 
         public int WeaponHitsPlusPets => WeaponHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.WeaponHits ?? 0);
         public int RegularsPlusPets => Regulars + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.Regulars ?? 0);
         public int NormalsPlusPets => Normals + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.Normals ?? 0);
         public int CritsPlusPets => Crits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.Crits ?? 0);
         public int GlancesPlusPets => Glances + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.Glances ?? 0);
+        public int BlockedHitsPlusPets => BlockedHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.BlockedHits ?? 0);
+        public int NonBlockedRegularsPlusPets => NonBlockedRegulars + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.NonBlockedRegulars ?? 0);
         public int SpecialsPlusPets => Specials + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.Specials ?? 0);
         public int MissesPlusPets => Misses + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.Misses ?? 0);
         public int WeaponHitAttemptsPlusPets => WeaponHitAttempts + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.WeaponHitAttempts ?? 0);
@@ -92,15 +97,18 @@ namespace AODamageMeter
         public int IndirectHitsPlusPets => IndirectHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.IndirectHits ?? 0);
         public int AbsorbedHitsPlusPets => AbsorbedHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.AbsorbedHits ?? 0);
         public int TotalHitsPlusPets => TotalHits + Source.FightPets.Sum(p => p.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.TotalHits ?? 0);
+        public int TotalNonBlockedHitsPlusPets => TotalHitsPlusPets - BlockedHitsPlusPets;
 
         public double? WeaponHitChance => WeaponHits / WeaponHitAttempts.NullIfZero();
-        public double? CritChance => Crits / Regulars.NullIfZero();
-        public double? GlanceChance => Glances / Regulars.NullIfZero();
+        public double? CritChance => Crits / NonBlockedRegulars.NullIfZero();
+        public double? GlanceChance => Glances / NonBlockedRegulars.NullIfZero();
+        public double? BlockedHitChance => BlockedHits / Regulars.NullIfZero();
         public double? MissChance => Misses / WeaponHitAttempts.NullIfZero();
 
         public double? WeaponHitChancePlusPets => WeaponHitsPlusPets / WeaponHitAttemptsPlusPets.NullIfZero();
-        public double? CritChancePlusPets => CritsPlusPets / RegularsPlusPets.NullIfZero();
-        public double? GlanceChancePlusPets => GlancesPlusPets / RegularsPlusPets.NullIfZero();
+        public double? CritChancePlusPets => CritsPlusPets / NonBlockedRegularsPlusPets.NullIfZero();
+        public double? GlanceChancePlusPets => GlancesPlusPets / NonBlockedRegularsPlusPets.NullIfZero();
+        public double? BlockedHitChancePlusPets => BlockedHitsPlusPets / RegularsPlusPets.NullIfZero();
         public double? MissChancePlusPets => MissesPlusPets / WeaponHitAttemptsPlusPets.NullIfZero();
 
         public double? AverageWeaponDamage => WeaponDamage / WeaponHits.NullIfZero();
@@ -160,7 +168,7 @@ namespace AODamageMeter
         public long? GetDamageTypeDamage(DamageType damageType) => DamageTypeDamages.TryGetValue(damageType, out long damageTypeDamage) ? damageTypeDamage : (long?)null;
         public double? GetAverageDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)GetDamageTypeHits(damageType);
         public double? GetPercentDamageTypeDamage(DamageType damageType) => GetDamageTypeDamage(damageType) / (double?)TotalDamage;
-        public double? GetPercentDamageTypeHits(DamageType damageType) => GetDamageTypeHits(damageType) / (double?)TotalHits;
+        public double? GetPercentDamageTypeHits(DamageType damageType) => GetDamageTypeHits(damageType) / (double?)TotalNonBlockedHits;
 
         public bool HasDamageTypeDamagePlusPets(DamageType damageType) => SourceAndFightPets.Any(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.HasDamageTypeDamage(damageType) ?? false);
         public bool HasSpecialsPlusPets => SourceAndFightPets.Any(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.HasSpecials ?? false);
@@ -168,12 +176,15 @@ namespace AODamageMeter
         public long? GetDamageTypeDamagePlusPets(DamageType damageType) => SourceAndFightPets.NullableSum(c => c.DamageDoneInfosByTarget.GetValueOrFallback(Target)?.GetDamageTypeDamage(damageType));
         public double? GetAverageDamageTypeDamagePlusPets(DamageType damageType) => GetDamageTypeDamagePlusPets(damageType) / (double?)GetDamageTypeHitsPlusPets(damageType);
         public double? GetPercentDamageTypeDamagePlusPets(DamageType damageType) => GetDamageTypeDamagePlusPets(damageType) / (double?)TotalDamagePlusPets;
-        public double? GetPercentDamageTypeHitsPlusPets(DamageType damageType) => GetDamageTypeHitsPlusPets(damageType) / (double?)TotalHitsPlusPets;
+        public double? GetPercentDamageTypeHitsPlusPets(DamageType damageType) => GetDamageTypeHitsPlusPets(damageType) / (double?)TotalNonBlockedHitsPlusPets;
+
+        public bool HasCompleteBlockedHitStats => Source.IsOwner && Target.IsUnknown || Target.IsOwner && Source.IsUnknown;
+        public bool HasCompleteBlockedHitStatsPlusPets => (Source.IsOwner && !Source.FightPets.Any() && Target.IsUnknown) || Target.IsOwner && Source.IsUnknown;
 
         public bool HasCompleteMissStats => Source.IsOwner || Target.IsOwner;
         public bool HasCompleteMissStatsPlusPets => (Source.IsOwner && !Source.FightPets.Any()) || Target.IsOwner;
 
-        public bool HasCompleteAbsorbedDamageStats => (Target.IsOwner || Target.Name == FightCharacter.UnknownCharacterName) && Source.Name == FightCharacter.UnknownCharacterName;
+        public bool HasCompleteAbsorbedDamageStats => (Target.IsOwner || Target.IsUnknown) && Source.IsUnknown;
 
         public void AddAttackEvent(AttackEvent attackEvent)
         {
@@ -184,12 +195,12 @@ namespace AODamageMeter
             switch (attackEvent.AttackResult)
             {
                 case AttackResult.WeaponHit:
-                    WeaponDamage += attackEvent.Amount.Value;
+                    WeaponDamage += attackEvent.Amount ?? 0;
                     ++WeaponHits;
                     // Logs don't report crits/glances for specials. Track normal hits so we can better approximate crit/glance chance.
                     if (!attackEvent.IsSpecialDamage)
                     {
-                        RegularDamage += attackEvent.Amount.Value;
+                        RegularDamage += attackEvent.Amount ?? 0;
                         ++Regulars;
                         if (!attackEvent.AttackModifier.HasValue)
                         {
@@ -205,6 +216,10 @@ namespace AODamageMeter
                         {
                             GlanceDamage += attackEvent.Amount.Value;
                             ++Glances;
+                        }
+                        else if (attackEvent.AttackModifier == AttackModifier.Block)
+                        {
+                            ++BlockedHits;
                         }
                         else throw new NotImplementedException();
                     }

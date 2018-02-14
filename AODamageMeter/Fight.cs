@@ -54,6 +54,7 @@ namespace AODamageMeter
         }
 
         public bool HasObservedPVP { get; protected set; }
+        public bool HasObservedBlockedHits { get; protected set; }
 
         public FightDamageDoneStats GetDamageDoneStats(bool includeNPCs = true, bool includeZeroDamageDones = true)
             => new FightDamageDoneStats(this, includeNPCs, includeZeroDamageDones);
@@ -127,7 +128,10 @@ namespace AODamageMeter
                     // we're misrecognizing the damage as belonging to our pet. No way to deal w/ the other case, where
                     // an uncharmed version attacks an NPC, because it looks just like a charmed version attacking an NPC.
                     // As a way to maintain a little more accurracy for the crat's DPM, switch the source. Similar for taken.
-                    if (attackEvent.IsPVP) { HasObservedPVP = true; }
+                    if (attackEvent.IsPVP)
+                    {
+                        HasObservedPVP = true;
+                    }
                     if (!HasObservedPVP
                         && attackEvent.Source.FightPetMaster?.Profession == Profession.Bureaucrat
                         && !attackEvent.Source.Character.FitsPetNamingConventions() // Because if we do fit, we're definitely not a charm.
@@ -157,7 +161,12 @@ namespace AODamageMeter
                     castEvent.Source.AddCastEvent(castEvent);
                     break;
                 case SystemEvent systemEvent:
-                    systemEvent.Source.AddSystemEvent(systemEvent);
+                    var owner = GetOrCreateFightCharacter(DamageMeter.Owner, systemEvent.Timestamp);
+                    owner.AddSystemEvent(systemEvent);
+                    if (systemEvent.IsYouBlockedRegular || systemEvent.IsYourRegularBlocked)
+                    {
+                        HasObservedBlockedHits = true;
+                    }
                     break;
                 default: throw new NotImplementedException();
             }

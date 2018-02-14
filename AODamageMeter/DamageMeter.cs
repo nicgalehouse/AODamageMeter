@@ -21,7 +21,7 @@ namespace AODamageMeter
         public DamageMeterMode Mode { get; }
         public bool IsRealTimeMode => Mode == DamageMeterMode.RealTime;
         public bool IsParsedTimeMode => Mode == DamageMeterMode.ParsedTime;
-        public Character Owner { get; protected set; }
+        public Character Owner { get; }
         public IReadOnlyDictionary<string, string> PetRegistrations { get; set; }
 
         protected readonly List<Fight> _previousFights = new List<Fight>();

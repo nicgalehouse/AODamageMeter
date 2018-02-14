@@ -36,9 +36,12 @@ $@"{DisplayIndex}. {Title}
 {DamageDoneInfo?.IndirectPercentOfTotalDamage.FormatPercent() ?? EmDashPercent} indirect dmg
 {(!DamageDoneInfo?.HasCompleteAbsorbedDamageStats ?? false ? "≥ " : "")}{DamageDoneInfo?.AbsorbedPercentOfTotalDamage.FormatPercent() ?? EmDashPercent} absorbed dmg
 
-{((!DamageDoneInfo?.HasCompleteMissStats ?? false) ? "≤ " : "")}{DamageDoneInfo?.WeaponHitChance.FormatPercent() ?? EmDashPercent} weapon hit chance
+{(!DamageDoneInfo?.HasCompleteMissStats ?? false ? "≤ " : "")}{DamageDoneInfo?.WeaponHitChance.FormatPercent() ?? EmDashPercent} weapon hit chance
   {DamageDoneInfo?.CritChance.FormatPercent() ?? EmDashPercent} crit chance
-  {DamageDoneInfo?.GlanceChance.FormatPercent() ?? EmDashPercent} glance chance
+  {DamageDoneInfo?.GlanceChance.FormatPercent() ?? EmDashPercent} glance chance"
++ (!Fight.HasObservedBlockedHits ? null : $@"
+  {(!DamageDoneInfo?.HasCompleteBlockedHitStats ?? false ? "≥ " : "")}{DamageDoneInfo?.BlockedHitChance.FormatPercent() ?? EmDashPercent} blocked hit chance")
++ $@"
 
 {DamageDoneInfo?.AverageWeaponDamage.Format() ?? EmDash} weapon dmg / hit
   {DamageDoneInfo?.AverageRegularDamage.Format() ?? EmDash} regular dmg / hit
@@ -49,7 +52,7 @@ $@"{DisplayIndex}. {Title}
 {DamageDoneInfo?.AverageNanoDamage.Format() ?? EmDash} nano dmg / hit
 {DamageDoneInfo?.AverageIndirectDamage.Format() ?? EmDash} indirect dmg / hit
 {DamageDoneInfo?.AverageAbsorbedDamage.Format() ?? EmDash} absorbed dmg / hit"
-+ (!(DamageDoneInfo?.HasSpecials ?? false) ? null : $@"
++ (!DamageDoneInfo?.HasSpecials ?? true ? null : $@"
 
 {DamageDoneInfo.GetSpecialsInfo()}")
 + ((DamageDoneInfo?.TotalDamage ?? 0) == 0 ? null : $@"

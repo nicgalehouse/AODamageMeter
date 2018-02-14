@@ -54,14 +54,20 @@ $@"{Title}
 
 ≤ {stats.WeaponHitChance.FormatPercent()} weapon hit chance
   {stats.CritChance.FormatPercent()} crit chance
-  {stats.GlanceChance.FormatPercent()} glance chance
+  {stats.GlanceChance.FormatPercent()} glance chance"
++ (!Fight.HasObservedBlockedHits ? null : $@"
+  ≥ {stats.BlockedHitChance.FormatPercent()} blocked hit chance")
++ $@"
 
 ≥ {stats.WeaponHitAttemptsPM.Format()} weapon hit attempts / min
 {stats.WeaponHitsPM.Format()} weapon hits / min
   {stats.RegularsPM.Format()} regulars / min
     {stats.NormalsPM.Format()} normals / min
     {stats.CritsPM.Format()} crits / min
-    {stats.GlancesPM.Format()} glances / min
+    {stats.GlancesPM.Format()} glances / min"
+ + (!Fight.HasObservedBlockedHits ? null : $@"
+    ≥ {stats.BlockedHitsPM.Format()} blocked hits / min")
++ $@"
   {stats.SpecialsPM.Format()} specials / min
 {stats.NanoHitsPM.Format()} nano hits / min
 {stats.IndirectHitsPM.Format()} indirect hits / min

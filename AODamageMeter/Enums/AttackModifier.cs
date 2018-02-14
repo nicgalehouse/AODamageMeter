@@ -3,6 +3,7 @@
     public enum AttackModifier
     {
         Crit,
-        Glance
+        Glance,
+        Block
     }
 }

@@ -43,5 +43,14 @@ namespace AODamageMeter.FightEvents.Attack
             }
             else IsUnmatched = true;
         }
+
+        public YouHitOther(SystemEvent yourRegularBlockedEvent)
+            : base(yourRegularBlockedEvent.Fight, yourRegularBlockedEvent.Timestamp, yourRegularBlockedEvent.Description)
+        {
+            SetSourceToOwner();
+            SetTargetToUnknown();
+            AttackResult = AttackResult.WeaponHit;
+            AttackModifier = AODamageMeter.AttackModifier.Block;
+        }
     }
 }

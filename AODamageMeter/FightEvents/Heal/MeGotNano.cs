@@ -29,7 +29,7 @@ namespace AODamageMeter.FightEvents.Heal
         public MeGotNano(SystemEvent selfNanoHealEvent)
             : base(selfNanoHealEvent.Fight, selfNanoHealEvent.Timestamp, selfNanoHealEvent.Description)
         {
-            Source = Target = selfNanoHealEvent.Source;
+            SetSourceAndTargetToOwner();
             HealType = HealType.Nano;
             Amount = selfNanoHealEvent.Amount;
         }
