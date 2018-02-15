@@ -21,7 +21,8 @@ Features
 + Update 1.1: Includes special handling to make the damage done by/taken from crat charms more accurate.
 + Update 1.2: Adds damage type breakdown to tooltips to help you determine the optimal reflect bracer/ShieldAC/AC choices for a given encounter.
 + Update 1.3: Separates regulars (normals, crits, glances) and specials in weapon damage %-breakdown to help evaluate the benefit of crit increase/decrease.
-+ Update 1.3: Tracks nano interrupts (but this requires manually turning on logging for the System channel).
++ Update 1.3: Tracks nano interrupts (requires System channel).
++ Update 1.4: Tracks regular blockers from Keeper Ward nanos, improving accuracy of hit chance and hit attempt statistics (requires System channel).
 
 Instructions
 ------------
