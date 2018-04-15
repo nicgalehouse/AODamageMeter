@@ -3,7 +3,7 @@ AO Damage Meter
 
 Real-time graphical damage meter for the sci-fi MMORPG Anarchy Online.
 
-Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.4.0) (built for W10, but I think it works on W7 too).
+Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.4.0) (built for W10, but it probably works on W7 too).
 
 Video demonstration [here](https://youtu.be/K4iU7KronOg).
 
@@ -27,7 +27,7 @@ Features
 Instructions
 ------------
 Left-clicking on a row navigates down a level into its sub-rows and right-clicking anywhere navigates in reverse.
-Left-clicking on row icons is used to expand detail rows, like the individualized pet/master rows I mentioned above, or a preview of the rows that would be revealed by left-clicking on the row itself (in certain contexts).
+Left-clicking on row icons is used to expand detail rows, like the individualized pet/master rows mentioned above, or a preview of the rows that would be revealed by left-clicking on the row itself (in certain contexts).
 
 Hover over the left text or the right text of any row to reveal relevant informational tooltips.
 All data is exposable through a single script, /aodm.
