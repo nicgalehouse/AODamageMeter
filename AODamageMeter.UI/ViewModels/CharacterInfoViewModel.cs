@@ -162,7 +162,7 @@ namespace AODamageMeter.UI.ViewModels
                     .Where(p => File.Exists($@"{p}\Config.xml")))
                 {
                     string configText = File.ReadAllText($@"{path}\Config.xml");
-                    if (RequiredConfigGroupNames.All(n => configText.Contains(n))
+                    if (_requiredConfigGroupNames.All(n => configText.Contains(n))
                         && configText.Contains("name=\"is_logged\" value=\"true\""))
                     {
                         LogFilePath = $@"{path}\Log.txt";
@@ -213,7 +213,7 @@ namespace AODamageMeter.UI.ViewModels
         }
 
         // Doesn't include all the events that AODamageMeter logs, just the ones that seem important enough.
-        private static IReadOnlyList<string> RequiredConfigGroupNames = new string[]
+        private static IReadOnlyList<string> _requiredConfigGroupNames = new string[]
         {
             MeHitByEnvironment.EventName, MeHitByMonster.EventName, MeHitByNano.EventName, MeHitByPlayer.EventName, OtherHitByNano.EventName,
             OtherHitByOther.EventName, OtherMisses.EventName, YouHitOther.EventName, YouHitOtherWithNano.EventName, YourMisses.EventName,
