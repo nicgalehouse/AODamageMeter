@@ -2,11 +2,11 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("AODamageMeter.UI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("AO Damage Meter")]
+[assembly: AssemblyDescription("AO Damage Meter")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AODamageMeter.UI")]
+[assembly: AssemblyProduct("AO Damage Meter")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
