@@ -7,8 +7,6 @@ Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag
 
 Video demonstration [here](https://youtu.be/K4iU7KronOg).
 
-Forum post [here](https://forums.anarchy-online.com/showthread.php?616901-Try-out-the-new-AO-Damage-Meter-(like-those-used-in-WoW)).
-
 Features
 --------
 
