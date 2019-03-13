@@ -7,6 +7,8 @@ Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag
 
 Video demonstration [here](https://youtu.be/K4iU7KronOg).
 
+Manual log window configuration process [here](https://www.youtube.com/watch?v=gdknGvEJjPs). There's an auto-configure option, but it's currently broken on the new Rubi-Ka 2019 server.
+
 Features
 --------
 
