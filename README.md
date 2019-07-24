@@ -3,11 +3,11 @@ AO Damage Meter
 
 Real-time graphical damage meter for the sci-fi MMORPG Anarchy Online.
 
-Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.4.0) (built for W10, but it probably works on W7 too).
+Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.4.1) (built for W10, but it probably works on W7 too).
 
 Video demonstration [here](https://youtu.be/K4iU7KronOg).
 
-Manual log window configuration process [here](https://www.youtube.com/watch?v=gdknGvEJjPs). There's an auto-configure option, but it's currently broken on the new Rubi-Ka 2019 server.
+Manual log window configuration process [here](https://www.youtube.com/watch?v=gdknGvEJjPs), in case auto-configure doesn't work.
 
 Features
 --------
@@ -23,6 +23,7 @@ Features
 + Update 1.3: Separates regulars (normals, crits, glances) and specials in weapon damage %-breakdown to help evaluate the benefit of crit increase/decrease.
 + Update 1.3: Tracks nano interrupts (requires System channel).
 + Update 1.4: Tracks regular blockers from Keeper Ward nanos, improving accuracy of hit chance and hit attempt statistics (requires System channel).
++ Update 1.4.1: Fixed character info and auto-configure problems when playing on Rubi-Ka 2019.
 
 Instructions
 ------------

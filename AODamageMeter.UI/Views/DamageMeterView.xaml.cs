@@ -56,7 +56,7 @@ namespace AODamageMeter.UI.Views
                 else
                 {
                     _damageMeterViewModel.TryInitializeDamageMeter(
-                        Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
+                        Settings.Default.SelectedCharacterName, Settings.Default.SelectedDimension, Settings.Default.SelectedLogFilePath);
                 }
             }
         }

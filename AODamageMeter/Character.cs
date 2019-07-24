@@ -15,14 +15,17 @@ namespace AODamageMeter
         protected static readonly Dictionary<Character, Task> _characterBioRetrievers = new Dictionary<Character, Task>();
         protected readonly object _lock = new object(); // Just using a single object for convenience; see comments/links below.
 
-        protected Character(string name)
+        protected Character(string name, Dimension dimension)
         {
             Name = name;
             UncoloredName = UncolorName(name);
+            Dimension = dimension;
         }
 
         public string Name { get; }
         public string UncoloredName { get; }
+
+        public Dimension Dimension { get; }
 
         protected bool _isPlayer;
         public bool IsPlayer
@@ -117,14 +120,15 @@ namespace AODamageMeter
         // in of the bio, after the HTTP request comes in, that can happen in parallel. When it does happen in parallel we
         // have to worry about locking and volatility and so on, which is why we use locks above. See:
         // http://stackoverflow.com/q/33528408, http://stackoverflow.com/q/434890, http://jonskeet.uk/csharp/threads/volatility.shtml.
-        public static Character GetOrCreateCharacter(string name) => GetOrCreateCharacterAndBioRetriever(name).character;
-        public static (Character character, Task bioRetriever) GetOrCreateCharacterAndBioRetriever(string name)
+        public static Character GetOrCreateCharacter(string name, Dimension dimension)
+            => GetOrCreateCharacterAndBioRetriever(name, dimension).character;
+        public static (Character character, Task bioRetriever) GetOrCreateCharacterAndBioRetriever(string name, Dimension dimension)
         {
-            if (_characters.TryGetValue(name, out Character character))
+            if (_characters.TryGetValue($"{name} ({dimension.GetName()})", out Character character))
                 return (character, _characterBioRetrievers[character]);
 
-            character = new Character(name);
-            _characters.Add(name, character);
+            character = new Character(name, dimension);
+            _characters.Add($"{name} ({dimension.GetName()})", character);
 
             Task characterBioRetriever = RetrieveCharacterBio(character);
             _characterBioRetrievers.Add(character, characterBioRetriever);
@@ -148,7 +152,8 @@ namespace AODamageMeter
                 character.IsPlayer = !IsAmbiguousPlayerName(character.Name);
 
                 var response = await _httpClient
-                    .GetAsync($"http://people.anarchy-online.com/character/bio/d/5/name/{character.Name}/bio.xml?data_type=json").ConfigureAwait(false);
+                    .GetAsync($"http://people.anarchy-online.com/character/bio/d/{character.Dimension.GetDimensionID()}/name/{character.Name}/bio.xml?data_type=json")
+                    .ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     var characterBio = await response.Content.ReadAsAsync<dynamic>().ConfigureAwait(false);
@@ -170,8 +175,8 @@ namespace AODamageMeter
             }
         }
 
-        public static bool TryGetCharacter(string name, out Character character)
-            => _characters.TryGetValue(name, out character);
+        public static bool TryGetCharacter(string name, Dimension dimension, out Character character)
+            => _characters.TryGetValue($"{name} ({dimension.GetName()})", out character);
 
         private static bool IsUppercase(char c) => c >= 'A' && c <= 'Z';
         private static bool IsLowercaseOrDigit(char c) => c >= 'a' && c <= 'z' || c >= '0' && c <= '9';

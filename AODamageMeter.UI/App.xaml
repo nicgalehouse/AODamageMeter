@@ -16,6 +16,7 @@
     <converters:BoolToNegationConverter x:Key="BoolToNegationConverter"/>
     <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter"/>
     <converters:SelectedCharacterDescriptionConverter x:Key="SelectedCharacterDescriptionConverter"/>
+    <converters:DimensionNameConverter x:Key="DimensionNameConverter"/>
     <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
     <Color x:Key="LightBlueColor">#73CBD3</Color>

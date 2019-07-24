@@ -79,25 +79,35 @@ namespace AODamageMeter.UI.ViewModels
         private void Load()
         {
             var characterNames = Settings.Default.CharacterNames.Cast<string>().ToArray();
+            var dimensions = Settings.Default.Dimensions.Cast<string>().ToArray();
             var logFilePaths = Settings.Default.LogFilePaths.Cast<string>().ToArray();
             for (int i = 0; i < characterNames.Length; ++i)
             {
-                CharacterInfoViewModels.Add(new CharacterInfoViewModel(this, characterNames[i], logFilePaths[i]));
+                CharacterInfoViewModels.Add(new CharacterInfoViewModel(this,
+                    characterNames[i],
+                    DimensionHelpers.GetDimensionOrDefault(dimensions.ElementAtOrDefault(i)),
+                    logFilePaths[i]));
             }
 
             string selectedCharacterName = Settings.Default.SelectedCharacterName;
+            Dimension selectedDimension = Settings.Default.SelectedDimension;
             string selectedLogFilePath = Settings.Default.SelectedLogFilePath;
             SelectedCharacterInfoViewModel = CharacterInfoViewModels
-                .FirstOrDefault(c => c.CharacterName == selectedCharacterName && c.LogFilePath == selectedLogFilePath);
+                .FirstOrDefault(c => c.CharacterName == selectedCharacterName
+                    && c.Dimension == selectedDimension
+                    && c.LogFilePath == selectedLogFilePath);
         }
 
         public void Save()
         {
             Settings.Default.CharacterNames.Clear();
             Settings.Default.CharacterNames.AddRange(CharacterInfoViewModels.Select(c => c.CharacterName).ToArray());
+            Settings.Default.Dimensions.Clear();
+            Settings.Default.Dimensions.AddRange(CharacterInfoViewModels.Select(c => DimensionHelpers.GetName(c.Dimension)).ToArray());
             Settings.Default.LogFilePaths.Clear();
             Settings.Default.LogFilePaths.AddRange(CharacterInfoViewModels.Select(c => c.LogFilePath).ToArray());
             Settings.Default.SelectedCharacterName = SelectedCharacterInfoViewModel?.CharacterName;
+            Settings.Default.SelectedDimension = SelectedCharacterInfoViewModel?.Dimension ?? Dimension.RubiKa;
             Settings.Default.SelectedLogFilePath = SelectedCharacterInfoViewModel?.LogFilePath;
             Settings.Default.Save();
         }

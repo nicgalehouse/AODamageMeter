@@ -15,10 +15,11 @@ namespace AODamageMeter.UI.ViewModels
         private CharacterSelectionViewModel _characterSelectionViewModel;
 
         public CharacterInfoViewModel(CharacterSelectionViewModel characterSelectionViewModel,
-            string characterName = null, string logFilePath = null)
+            string characterName = null, Dimension dimension = Dimension.RubiKa, string logFilePath = null)
         {
             _characterSelectionViewModel = characterSelectionViewModel;
             CharacterName = characterName;
+            Dimension = dimension;
             LogFilePath = logFilePath;
             AutoConfigureCommand = new RelayCommand(ExecuteAutoConfigureCommand);
         }
@@ -31,6 +32,23 @@ namespace AODamageMeter.UI.ViewModels
             {
                 if (Set(ref _characterName, string.IsNullOrWhiteSpace(value)
                     ? value : char.ToUpperInvariant(value[0]) + value.Substring(1).ToLowerInvariant()))
+                {
+                    AutoConfigureResult = null;
+                }
+            }
+        }
+
+        public static IReadOnlyList<string> Dimensions { get; } = DimensionHelpers.AllDimensions
+            .Select(d => d.GetName())
+            .ToArray();
+
+        private Dimension _dimension;
+        public Dimension Dimension
+        {
+            get => _dimension;
+            set
+            {
+                if (Set(ref _dimension, value))
                 {
                     AutoConfigureResult = null;
                 }
@@ -120,7 +138,7 @@ namespace AODamageMeter.UI.ViewModels
                     return;
                 }
 
-                var characterAndBioRetriever = Character.GetOrCreateCharacterAndBioRetriever(CharacterName);
+                var characterAndBioRetriever = Character.GetOrCreateCharacterAndBioRetriever(CharacterName, Dimension);
                 var character = characterAndBioRetriever.character;
                 characterAndBioRetriever.bioRetriever.Wait(); // Not worth using await and binding IsEnableds.
                 if (!character.HasPlayerInfo)

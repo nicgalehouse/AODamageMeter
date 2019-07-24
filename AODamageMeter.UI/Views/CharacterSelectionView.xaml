@@ -51,6 +51,8 @@
           <GridView AllowsColumnReorder="False">
             <GridViewColumn Header="Name" DisplayMemberBinding="{Binding CharacterName}"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=NameColumnWidth, Mode=TwoWay}"/>
+            <GridViewColumn Header="Dimension" DisplayMemberBinding="{Binding Dimension, Converter={StaticResource DimensionNameConverter}}"
+                            Width="{Binding Source={x:Static properties:Settings.Default}, Path=DimensionColumnWidth, Mode=TwoWay}"/>
             <GridViewColumn Header="Log File" DisplayMemberBinding="{Binding LogFilePath}"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=LogFileColumnWidth, Mode=TwoWay}"/>
             <GridViewColumn Header="File Size" DisplayMemberBinding="{Binding LogFileSize}"

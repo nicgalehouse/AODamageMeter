@@ -48,6 +48,12 @@
         <TextBlock Text="Name:"/>
         <TextBox Margin="0 2 0 10" x:Name="NameTextBox"
                  Text="{Binding CharacterName, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="Dimension:"/>
+        <ComboBox Margin="0 2 0 10"
+                  ItemsSource="{Binding Dimensions}"
+                  SelectedValue="{Binding Dimension, Converter={StaticResource DimensionNameConverter}}"/>
+
         <TextBlock Text="Log file:"/>
         <TextBox Margin="0 2 0 5"
                  Text="{Binding LogFilePath, UpdateSourceTrigger=PropertyChanged}"/>

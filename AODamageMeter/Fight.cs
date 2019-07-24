@@ -210,7 +210,7 @@ namespace AODamageMeter
         }
 
         public FightCharacter GetOrCreateFightCharacter(string name, DateTime enteredTime)
-            => GetOrCreateFightCharacter(Character.GetOrCreateCharacter(name), enteredTime);
+            => GetOrCreateFightCharacter(Character.GetOrCreateCharacter(name, DamageMeter.Dimension), enteredTime);
 
         public FightCharacter GetOrCreateFightCharacter(Character character, DateTime enteredTime)
         {
@@ -232,7 +232,7 @@ namespace AODamageMeter
 
         public bool TryGetFightCharacter(string name, out FightCharacter fightCharacter)
         {
-            if (Character.TryGetCharacter(name, out Character character))
+            if (Character.TryGetCharacter(name, DamageMeter.Dimension, out Character character))
                 return TryGetFightCharacter(character, out fightCharacter);
 
             fightCharacter = null;

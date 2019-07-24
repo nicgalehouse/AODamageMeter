@@ -15,6 +15,7 @@ namespace AODamageMeter.UI.ViewModels
     {
         private readonly IProgress<object> _rowUpdater;
         private string _characterName;
+        private Dimension _dimension;
         private string _logFilePath;
         private CancellationTokenSource _damageMeterUpdaterCTS;
         private Task _damageMeterUpdater;
@@ -29,7 +30,10 @@ namespace AODamageMeter.UI.ViewModels
             ToggleIsPausedCommand = new RelayCommand(ExecuteToggleIsPausedCommand);
             ResetAndSaveFightCommand = new RelayCommand(ExecuteResetAndSaveFightCommand);
             ResetFightCommand = new RelayCommand(ExecuteResetFightCommand);
-            TryInitializeDamageMeter(Settings.Default.SelectedCharacterName, Settings.Default.SelectedLogFilePath);
+            TryInitializeDamageMeter(
+                Settings.Default.SelectedCharacterName,
+                Settings.Default.SelectedDimension,
+                Settings.Default.SelectedLogFilePath);
             // Performance optimization: don't let performance degrade as the # of fights in the fight history increase.
             // Would be more complicated to extend this to views within a historical fight, but possible. But don't need
             // to do it there because it's less expensive than the unavoidable cost of updating the current fight.
@@ -78,12 +82,14 @@ namespace AODamageMeter.UI.ViewModels
             private set => Set(ref _displayedRows, value);
         }
 
-        public bool TryInitializeDamageMeter(string characterName, string logFilePath)
+        public bool TryInitializeDamageMeter(string characterName, Dimension dimension, string logFilePath)
         {
             if (string.IsNullOrWhiteSpace(characterName) || string.IsNullOrWhiteSpace(logFilePath))
                 return false;
 
-            if (characterName == _characterName && logFilePath == _logFilePath)
+            if (characterName == _characterName
+                && dimension == _dimension
+                && logFilePath == _logFilePath)
                 return true;
 
             if (!File.Exists(logFilePath))
@@ -95,8 +101,9 @@ namespace AODamageMeter.UI.ViewModels
             DisposeDamageMeter();
 
             _characterName = characterName;
+            _dimension = dimension;
             _logFilePath = logFilePath;
-            DamageMeter = new DamageMeter(characterName, logFilePath)
+            DamageMeter = new DamageMeter(characterName, dimension, logFilePath)
             {
                 IsPaused = IsPaused,
                 PetRegistrations = PetRegistrationRepository.PetRegistrations

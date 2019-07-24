@@ -8,15 +8,18 @@ namespace AODamageMeter
     {
         protected readonly StreamReader _logStreamReader;
 
-        public DamageMeter(string characterName, string logFilePath, DamageMeterMode mode = DamageMeterMode.RealTime)
+        public DamageMeter(string characterName, Dimension dimension, string logFilePath,
+            DamageMeterMode mode = DamageMeterMode.RealTime)
         {
+            Dimension = dimension;
             LogFilePath = logFilePath;
             _logStreamReader = new StreamReader(File.Open(LogFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             Mode = mode;
-            Owner = Character.GetOrCreateCharacter(characterName);
+            Owner = Character.GetOrCreateCharacter(characterName, dimension);
             Owner.IsPlayer = true;
         }
 
+        public Dimension Dimension { get; }
         public string LogFilePath { get; }
         public DamageMeterMode Mode { get; }
         public bool IsRealTimeMode => Mode == DamageMeterMode.RealTime;

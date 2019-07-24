@@ -90,6 +90,7 @@
     </ApplicationDefinition>
     <Compile Include="Converters\BoolToNegationConverter.cs" />
     <Compile Include="Converters\ColorToRowBrushConverter.cs" />
+    <Compile Include="Converters\DimensionNameConverter.cs" />
     <Compile Include="Converters\IconPathToBitmapImageConverter.cs" />
     <Compile Include="Converters\ObjectToBoolConverter.cs" />
     <Compile Include="Converters\SelectedCharacterDescriptionConverter.cs" />
