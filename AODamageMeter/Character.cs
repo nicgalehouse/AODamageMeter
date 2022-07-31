@@ -184,7 +184,7 @@ namespace AODamageMeter
             => name != null && name.Length > 3 && name.Length < 13
             && IsUppercase(name[0])
             && (name.Skip(1).All(IsLowercaseOrDigit)
-                || name.EndsWith("-1") && name.Skip(1).Take(name.Length - 3).All(IsLowercaseOrDigit));
+                || (name.EndsWith("-1")|| name.EndsWith("-2")) && name.Skip(1).Take(name.Length - 3).All(IsLowercaseOrDigit));
 
         public bool FitsPetNamingConventions() => FitsPetNamingConventions(Name);
         public static bool FitsPetNamingConventions(string name)
