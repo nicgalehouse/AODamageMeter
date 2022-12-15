@@ -3,7 +3,7 @@ AO Damage Meter
 
 Real-time graphical damage meter for the sci-fi MMORPG Anarchy Online.
 
-Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.4.1) (built for W10, but it probably works on W7 too).
+Latest release [here](https://github.com/nicgalehouse/AODamageMeter/releases/tag/v1.5.0) (built for W10, but it probably works on W7 too).
 
 Video demonstration [here](https://youtu.be/K4iU7KronOg).
 
@@ -24,6 +24,7 @@ Features
 + Update 1.3: Tracks nano interrupts (requires System channel).
 + Update 1.4: Tracks regular blockers from Keeper Ward nanos, improving accuracy of hit chance and hit attempt statistics (requires System channel).
 + Update 1.4.1: Fixed character info and auto-configure problems when playing on Rubi-Ka 2019.
++ Update 1.5: Fixed damage meter scrolling down when new rows are added, and added a minimize button.
 
 Instructions
 ------------
