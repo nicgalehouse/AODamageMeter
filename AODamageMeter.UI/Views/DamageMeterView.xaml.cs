@@ -114,6 +114,9 @@ namespace AODamageMeter.UI.Views
         private void DetailRowView_DeregisterFightPetRequested_TryDeregisterFightPet(object sender, RoutedEventArgs e)
             => _damageMeterViewModel.TryDeregisterFightPet((DamageDoneDetailRow)((DetailRowView)e.OriginalSource).DetailRow);
 
+        private void MinimizeButton_Click_MinimizeApplication(object sender, RoutedEventArgs e)
+            => WindowState = WindowState.Minimized;
+
         private void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
             => Close();
 
