@@ -11,6 +11,7 @@ Amatsu
 Android
 Aniitap
 Aniuchach
+Anvian
 Aquaan
 Aquarius
 Aquqa
@@ -36,6 +37,7 @@ Beast
 Beit
 Belamorte
 Benacen
+Biledrinker
 Black
 Bloodcreeper
 Blorrg
@@ -108,6 +110,7 @@ Guardbot
 Gunbeetle
 Haqa
 Hatskiri
+Havaris
 Hawilli
 Hawqana
 Haxxor
@@ -155,6 +158,7 @@ Limnos
 Limu
 Looter
 Maar
+Malah
 Mare
 Marissa
 Maychwaham
@@ -175,6 +179,7 @@ Mull
 Mykonos
 Nabur
 Nanomutant
+Nanovoider
 Narunkt
 Natsmaahpt
 Naxos
@@ -191,6 +196,7 @@ Odqan
 Omathon
 Ormazd
 Oscar
+Ossuz
 Otacustes
 Ownz
 Ozzus
@@ -204,6 +210,7 @@ Phatmos
 Pisces
 Pixie
 Plainrider
+Plainscale
 Polly
 Poros
 Powa
@@ -246,6 +253,8 @@ Skylight
 Skyros
 Slaugh
 Sleet
+Slimebather
+Snaamehiel
 Soleet
 Somphos
 Soulstepper
@@ -256,6 +265,7 @@ Stalker
 Stark
 Stinger
 Stumpy
+Suininnik
 Suppressor
 Sursunabu
 Swiftwind
