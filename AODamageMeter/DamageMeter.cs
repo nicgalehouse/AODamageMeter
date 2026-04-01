@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -31,7 +31,7 @@ namespace AODamageMeter
         public IReadOnlyList<Fight> PreviousFights => _previousFights;
         public Fight CurrentFight { get; protected set; }
 
-        public void InitializeNewFight(bool skipToEndOfLog = true, bool saveCurrentFight = false)
+        public void InitializeNewFight(bool saveCurrentFight = false)
         {
             if (CurrentFight != null)
             {
@@ -44,7 +44,7 @@ namespace AODamageMeter
                 }
             }
 
-            if (skipToEndOfLog)
+            if (IsLiveMode)
             {
                 SkipToEndOfLog();
             }

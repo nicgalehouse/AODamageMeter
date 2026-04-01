@@ -126,11 +126,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             StopDamageMeterUpdater();
 
-#if DEBUG
-            DamageMeter.InitializeNewFight(skipToEndOfLog: false, saveCurrentFight: saveCurrentFight);
-#else
             DamageMeter.InitializeNewFight(saveCurrentFight: saveCurrentFight);
-#endif
             if (CurrentFightViewModel != null)
             {
                 if (saveCurrentFight)
