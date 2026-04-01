@@ -18,7 +18,7 @@ namespace AODamageMeter
             Fight = fight;
             Character = character;
             EnteredTime = enteredTime;
-            _stopwatch = _stopwatchPlusPets = DamageMeter.IsRealTimeMode ? Stopwatch.StartNew() : null;
+            _stopwatch = _stopwatchPlusPets = DamageMeter.IsLiveMode ? Stopwatch.StartNew() : null;
         }
 
         public DamageMeter DamageMeter => Fight.DamageMeter;
@@ -46,10 +46,10 @@ namespace AODamageMeter
 
         protected Stopwatch _stopwatch;
         protected Stopwatch _stopwatchPlusPets;
-        public TimeSpan ActiveDuration => DamageMeter.IsRealTimeMode
+        public TimeSpan ActiveDuration => DamageMeter.IsLiveMode
             ? _stopwatch.Elapsed : Fight.LatestEventTime.Value - EnteredTime;
-        public TimeSpan ActiveDurationPlusPets => DamageMeter.IsRealTimeMode
-            // We maintain _stopwatchPlusPets for real time mode so we don't have to find the max active duration all the time.
+        public TimeSpan ActiveDurationPlusPets => DamageMeter.IsLiveMode
+            // We maintain _stopwatchPlusPets for live mode so we don't have to find the max active duration all the time.
             ? _stopwatchPlusPets.Elapsed : SelfAndFightPets.Select(c => c.ActiveDuration).Max();
 
         protected bool _isPaused;
@@ -58,8 +58,8 @@ namespace AODamageMeter
             get => _isPaused;
             set
             {
-                if (DamageMeter.IsParsedTimeMode && !value) return;
-                if (DamageMeter.IsParsedTimeMode) throw new NotSupportedException("Pausing for parsed-time meters isn't supported yet.");
+                if (DamageMeter.IsSummaryMode && !value) return;
+                if (DamageMeter.IsSummaryMode) throw new NotSupportedException("Pausing is not supported in summary mode.");
                 if (!Fight.IsPaused && value) throw new NotSupportedException("Pausing a character while the fight is unpaused isn't supported yet.");
                 if (Fight.IsPaused && !value) throw new InvalidOperationException("Unpausing a character while the fight is paused doesn't make sense.");
 
@@ -99,7 +99,7 @@ namespace AODamageMeter
             _fightPets.Add(fightPet);
             fightPet.FightPetMaster = this;
 
-            if (DamageMeter.IsRealTimeMode)
+            if (DamageMeter.IsLiveMode)
             {
                 _stopwatchPlusPets = SelfAndFightPets.Select(c => c._stopwatch)
                     .OrderByDescending(s => s.Elapsed)
@@ -142,7 +142,7 @@ namespace AODamageMeter
             _fightPets.Remove(fightPet);
             fightPet.FightPetMaster = null;
 
-            if (DamageMeter.IsRealTimeMode)
+            if (DamageMeter.IsLiveMode)
             {
                 _stopwatchPlusPets = SelfAndFightPets.Select(c => c._stopwatch)
                     .OrderByDescending(s => s.Elapsed)

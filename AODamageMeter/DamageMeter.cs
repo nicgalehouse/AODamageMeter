@@ -9,7 +9,7 @@ namespace AODamageMeter
         protected readonly StreamReader _logStreamReader;
 
         public DamageMeter(string characterName, Dimension dimension, string logFilePath,
-            DamageMeterMode mode = DamageMeterMode.RealTime)
+            DamageMeterMode mode = DamageMeterMode.Live)
         {
             Dimension = dimension;
             LogFilePath = logFilePath;
@@ -22,8 +22,8 @@ namespace AODamageMeter
         public Dimension Dimension { get; }
         public string LogFilePath { get; }
         public DamageMeterMode Mode { get; }
-        public bool IsRealTimeMode => Mode == DamageMeterMode.RealTime;
-        public bool IsParsedTimeMode => Mode == DamageMeterMode.ParsedTime;
+        public bool IsLiveMode => Mode == DamageMeterMode.Live;
+        public bool IsSummaryMode => Mode == DamageMeterMode.Summary;
         public Character Owner { get; }
         public IReadOnlyDictionary<string, string> PetRegistrations { get; set; }
 
@@ -35,8 +35,8 @@ namespace AODamageMeter
         {
             if (CurrentFight != null)
             {
-                CurrentFight.IsPaused = IsRealTimeMode;
-                CurrentFight.EndTime = IsRealTimeMode ? DateTime.Now : CurrentFight.LatestEventTime;
+                CurrentFight.IsPaused = IsLiveMode;
+                CurrentFight.EndTime = IsLiveMode ? DateTime.Now : CurrentFight.LatestEventTime;
 
                 if (saveCurrentFight)
                 {
@@ -58,8 +58,8 @@ namespace AODamageMeter
             get => _isPaused;
             set
             {
-                if (IsParsedTimeMode && !value) return;
-                if (IsParsedTimeMode) throw new NotSupportedException("Pausing for parsed-time meters isn't supported yet.");
+                if (IsSummaryMode && !value) return;
+                if (IsSummaryMode) throw new NotSupportedException("Pausing is not supported in summary mode.");
 
                 _isPaused = value;
 

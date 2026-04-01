@@ -30,7 +30,7 @@ namespace AODamageMeter
         public bool HasEnded => EndTime.HasValue;
 
         protected Stopwatch _stopwatch;
-        public TimeSpan? Duration => DamageMeter.IsRealTimeMode ? _stopwatch?.Elapsed : LatestEventTime - StartTime;
+        public TimeSpan? Duration => DamageMeter.IsLiveMode ? _stopwatch?.Elapsed : LatestEventTime - StartTime;
 
         protected bool _isPaused;
         public bool IsPaused
@@ -38,8 +38,8 @@ namespace AODamageMeter
             get => _isPaused;
             set
             {
-                if (DamageMeter.IsParsedTimeMode && !value) return;
-                if (DamageMeter.IsParsedTimeMode) throw new NotSupportedException("Pausing for parsed-time meters isn't supported yet.");
+                if (DamageMeter.IsSummaryMode && !value) return;
+                if (DamageMeter.IsSummaryMode) throw new NotSupportedException("Pausing is not supported in summary mode.");
 
                 _isPaused = value;
                 if (!HasStarted) return;
@@ -108,7 +108,7 @@ namespace AODamageMeter
             if (!HasStarted)
             {
                 StartTime = fightEvent.Timestamp;
-                _stopwatch = DamageMeter.IsRealTimeMode ? Stopwatch.StartNew() : null;
+                _stopwatch = DamageMeter.IsLiveMode ? Stopwatch.StartNew() : null;
             }
             LatestEventTime = fightEvent.Timestamp;
 

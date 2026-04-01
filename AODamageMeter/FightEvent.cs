@@ -29,7 +29,7 @@ namespace AODamageMeter
                 .Select(p => p.Trim('"'))
                 .ToArray();
             string eventName = arrayPart[1];
-            DateTime timestamp = fight.DamageMeter.IsRealTimeMode ? DateTime.Now
+            DateTime timestamp = fight.DamageMeter.IsLiveMode ? DateTime.Now
                 : DateTimeHelper.DateTimeLocalFromUnixSeconds(long.Parse(arrayPart[3]));
             string description = line.Substring(lastIndexOfArrayPart + 1);
 

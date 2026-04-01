@@ -2,7 +2,7 @@
 {
     public enum DamageMeterMode
     {
-        RealTime,
-        ParsedTime
+        Live,
+        Summary
     }
 }
