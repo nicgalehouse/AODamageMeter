@@ -72,10 +72,10 @@ namespace AODamageMeter
 
         public void Update()
         {
-            string line;
-            while ((line = _logStreamReader.ReadLine()) != null)
+            string logLine;
+            while ((logLine = _logStreamReader.ReadLine()) != null)
             {
-                CurrentFight.AddFightEvent(line);
+                CurrentFight.AddFightEvent(logLine);
             }
         }
 

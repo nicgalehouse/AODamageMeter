@@ -95,12 +95,20 @@ namespace AODamageMeter
         public long? MaxPlayerDamageTaken => _maxPlayerDamageTaken ?? (_maxPlayerDamageTaken = PlayerFightCharacters.NullableMax(c => c.TotalDamageTaken));
         public long? MaxPlayerOrPetDamageTaken => _maxPlayerOrPetDamageTaken ?? (_maxPlayerOrPetDamageTaken = PlayerOrPetFightCharacters.NullableMax(c => c.TotalDamageTaken));
 
-        public void AddFightEvent(string line)
+        public void AddFightEvent(string logLine)
         {
             if (IsPaused) return;
+            AddFightEvent(new LogEntry(logLine));
+        }
 
-            var fightEvent = FightEvent.Create(this, line);
+        public void AddFightEvent(LogEntry logEntry)
+        {
+            if (IsPaused) return;
+            AddFightEvent(FightEvent.Create(this, logEntry));
+        }
 
+        private void AddFightEvent(FightEvent fightEvent)
+        {
             // We know these events can't cause any fight characters to enter, so don't let them start the fight.
             if (fightEvent is SystemEvent && fightEvent.IsUnmatched || fightEvent is UnrecognizedEvent)
                 return;
