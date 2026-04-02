@@ -20,7 +20,7 @@ namespace AODamageMeter
 
         public static FightEvent Create(Fight fight, LogEntry logEntry)
         {
-            DateTime timestamp = fight.DamageMeter.IsLiveMode ? DateTime.Now : logEntry.Timestamp;
+            DateTime timestamp = !fight.DamageMeter.IsSummaryMode ? DateTime.Now : logEntry.Timestamp;
 
             switch (logEntry.EventName)
             {

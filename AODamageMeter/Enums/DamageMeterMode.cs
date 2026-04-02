@@ -3,6 +3,7 @@
     public enum DamageMeterMode
     {
         Live,
-        Summary
+        Summary,
+        Playback
     }
 }

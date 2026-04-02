@@ -30,7 +30,7 @@ namespace AODamageMeter
         public bool HasEnded => EndTime.HasValue;
 
         protected Stopwatch _stopwatch;
-        public TimeSpan? Duration => DamageMeter.IsLiveMode ? _stopwatch?.Elapsed : LatestEventTime - StartTime;
+        public TimeSpan? Duration => !DamageMeter.IsSummaryMode ? _stopwatch?.Elapsed : LatestEventTime - StartTime;
 
         protected bool _isPaused;
         public bool IsPaused
@@ -116,7 +116,7 @@ namespace AODamageMeter
             if (!HasStarted)
             {
                 StartTime = fightEvent.Timestamp;
-                _stopwatch = DamageMeter.IsLiveMode ? Stopwatch.StartNew() : null;
+                _stopwatch = !DamageMeter.IsSummaryMode ? Stopwatch.StartNew() : null;
             }
             LatestEventTime = fightEvent.Timestamp;
 

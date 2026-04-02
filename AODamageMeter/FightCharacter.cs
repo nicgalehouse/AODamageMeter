@@ -18,7 +18,7 @@ namespace AODamageMeter
             Fight = fight;
             Character = character;
             EnteredTime = enteredTime;
-            _stopwatch = _stopwatchPlusPets = DamageMeter.IsLiveMode ? Stopwatch.StartNew() : null;
+            _stopwatch = _stopwatchPlusPets = !DamageMeter.IsSummaryMode ? Stopwatch.StartNew() : null;
         }
 
         public DamageMeter DamageMeter => Fight.DamageMeter;
@@ -46,9 +46,9 @@ namespace AODamageMeter
 
         protected Stopwatch _stopwatch;
         protected Stopwatch _stopwatchPlusPets;
-        public TimeSpan ActiveDuration => DamageMeter.IsLiveMode
+        public TimeSpan ActiveDuration => !DamageMeter.IsSummaryMode
             ? _stopwatch.Elapsed : Fight.LatestEventTime.Value - EnteredTime;
-        public TimeSpan ActiveDurationPlusPets => DamageMeter.IsLiveMode
+        public TimeSpan ActiveDurationPlusPets => !DamageMeter.IsSummaryMode
             // We maintain _stopwatchPlusPets for live mode so we don't have to find the max active duration all the time.
             ? _stopwatchPlusPets.Elapsed : SelfAndFightPets.Select(c => c.ActiveDuration).Max();
 
@@ -99,7 +99,7 @@ namespace AODamageMeter
             _fightPets.Add(fightPet);
             fightPet.FightPetMaster = this;
 
-            if (DamageMeter.IsLiveMode)
+            if (!DamageMeter.IsSummaryMode)
             {
                 _stopwatchPlusPets = SelfAndFightPets.Select(c => c._stopwatch)
                     .OrderByDescending(s => s.Elapsed)
@@ -142,7 +142,7 @@ namespace AODamageMeter
             _fightPets.Remove(fightPet);
             fightPet.FightPetMaster = null;
 
-            if (DamageMeter.IsLiveMode)
+            if (!DamageMeter.IsSummaryMode)
             {
                 _stopwatchPlusPets = SelfAndFightPets.Select(c => c._stopwatch)
                     .OrderByDescending(s => s.Elapsed)

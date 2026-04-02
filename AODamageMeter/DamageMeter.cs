@@ -7,9 +7,13 @@ namespace AODamageMeter
     public class DamageMeter : IDisposable
     {
         protected readonly StreamReader _logStreamReader;
+        protected readonly List<LogEntry> _playbackLogEntries = new List<LogEntry>();
+        protected readonly double _playbackSpeed;
+        protected int _playbackStartIndex;
+        protected int _playbackIndex;
 
         public DamageMeter(string characterName, Dimension dimension, string logFilePath,
-            DamageMeterMode mode = DamageMeterMode.Live)
+            DamageMeterMode mode = DamageMeterMode.Live, double? playbackSpeed = null)
         {
             Dimension = dimension;
             LogFilePath = logFilePath;
@@ -17,6 +21,17 @@ namespace AODamageMeter
             Mode = mode;
             Owner = Character.GetOrCreateCharacter(characterName, dimension);
             Owner.IsPlayer = true;
+
+            if (IsPlaybackMode)
+            {
+                string logLine;
+                while ((logLine = _logStreamReader.ReadLine()) != null)
+                {
+                    _playbackLogEntries.Add(new LogEntry(logLine));
+                }
+
+                _playbackSpeed = playbackSpeed ?? 1.0;
+            }
         }
 
         public Dimension Dimension { get; }
@@ -24,6 +39,7 @@ namespace AODamageMeter
         public DamageMeterMode Mode { get; }
         public bool IsLiveMode => Mode == DamageMeterMode.Live;
         public bool IsSummaryMode => Mode == DamageMeterMode.Summary;
+        public bool IsPlaybackMode => Mode == DamageMeterMode.Playback;
         public Character Owner { get; }
         public IReadOnlyDictionary<string, string> PetRegistrations { get; set; }
 
@@ -35,8 +51,8 @@ namespace AODamageMeter
         {
             if (CurrentFight != null)
             {
-                CurrentFight.IsPaused = IsLiveMode;
-                CurrentFight.EndTime = IsLiveMode ? DateTime.Now : CurrentFight.LatestEventTime;
+                CurrentFight.IsPaused = !IsSummaryMode;
+                CurrentFight.EndTime = !IsSummaryMode ? DateTime.Now : CurrentFight.LatestEventTime;
 
                 if (saveCurrentFight)
                 {
@@ -47,6 +63,10 @@ namespace AODamageMeter
             if (IsLiveMode)
             {
                 SkipToEndOfLog();
+            }
+            else if (IsPlaybackMode)
+            {
+                _playbackStartIndex = _playbackIndex;
             }
 
             CurrentFight = new Fight(this) { IsPaused = IsPaused };
@@ -72,10 +92,32 @@ namespace AODamageMeter
 
         public void Update()
         {
-            string logLine;
-            while ((logLine = _logStreamReader.ReadLine()) != null)
+            if (IsPlaybackMode)
             {
-                CurrentFight.AddFightEvent(logLine);
+                if (IsPaused || _playbackIndex >= _playbackLogEntries.Count) return;
+
+                long baseUnixSeconds = _playbackLogEntries[_playbackStartIndex].UnixSeconds;
+                long targetUnixSeconds = baseUnixSeconds + (long)((CurrentFight.Duration?.TotalSeconds ?? 0) * _playbackSpeed);
+
+                while (_playbackIndex < _playbackLogEntries.Count
+                    && _playbackLogEntries[_playbackIndex].UnixSeconds <= targetUnixSeconds)
+                {
+                    CurrentFight.AddFightEvent(_playbackLogEntries[_playbackIndex]);
+                    _playbackIndex++;
+                }
+
+                if (_playbackIndex >= _playbackLogEntries.Count)
+                {
+                    IsPaused = true;
+                }
+            }
+            else
+            {
+                string logLine;
+                while ((logLine = _logStreamReader.ReadLine()) != null)
+                {
+                    CurrentFight.AddFightEvent(logLine);
+                }
             }
         }
 
