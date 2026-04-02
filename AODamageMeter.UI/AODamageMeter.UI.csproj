@@ -158,8 +158,8 @@
     <Compile Include="Views\BossModuleView.xaml.cs">
       <DependentUpon>BossModuleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BossModules\TheBeastControl.xaml.cs">
-      <DependentUpon>TheBeastControl.xaml</DependentUpon>
+    <Compile Include="Views\BossModules\TheBeastModuleView.xaml.cs">
+      <DependentUpon>TheBeastModuleView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\CharacterInfoView.xaml">
       <SubType>Designer</SubType>
@@ -214,7 +214,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BossModules\TheBeastControl.xaml">
+    <Page Include="Views\BossModules\TheBeastModuleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

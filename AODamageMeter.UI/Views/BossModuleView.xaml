@@ -40,7 +40,7 @@
 
     <Grid Grid.Row="1" Margin="1"
           Background="{StaticResource DarkBlueBrush85}">
-      <ContentControl x:Name="BossModuleContent"/>
+      <ContentControl x:Name="BossModuleViewContent"/>
     </Grid>
 
     <Border Grid.Row="1" Margin="0"

@@ -17,7 +17,7 @@ namespace AODamageMeter.UI.Views
             switch (bossModuleName)
             {
                 case "The Beast":
-                    BossModuleContent.Content = new TheBeastControl();
+                    BossModuleViewContent.Content = new TheBeastModuleView();
                     break;
             }
         }
