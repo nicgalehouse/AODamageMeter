@@ -50,6 +50,17 @@
       </Grid.RowDefinitions>
 
       <StackPanel Grid.Row="0" Margin="10">
+        <TextBlock Text="Boss module:"/>
+        <ComboBox x:Name="BossModuleComboBox" Margin="0 2 0 10"
+                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=BossModule}">
+          <ComboBox.ItemsSource>
+            <x:Array Type="{x:Type System:String}">
+              <x:Static Member="System:String.Empty"/>
+              <System:String>The Beast</System:String>
+            </x:Array>
+          </ComboBox.ItemsSource>
+        </ComboBox>
+
         <TextBlock Text="Font:"/>
         <ComboBox x:Name="FontFamilyComboBox" Margin="0 2 0 10"
                   ItemsSource="{Binding Source={StaticResource FontFamiliesViewSource}}"

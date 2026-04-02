@@ -7,6 +7,7 @@ namespace AODamageMeter.UI.Views
 {
     public partial class OptionsView : Window
     {
+        private string _previousBossModule = Settings.Default.BossModule;
         private string _previousFontFamily = Settings.Default.FontFamily;
         private double _previousFontSize = Settings.Default.FontSize;
         private int _previousRefreshInterval = Settings.Default.RefreshInterval;
@@ -44,6 +45,7 @@ namespace AODamageMeter.UI.Views
         {
             if (DialogResult != true)
             {
+                Settings.Default.BossModule = _previousBossModule;
                 Settings.Default.FontFamily = _previousFontFamily;
                 Settings.Default.FontSize = _previousFontSize;
                 Settings.Default.RefreshInterval = _previousRefreshInterval;

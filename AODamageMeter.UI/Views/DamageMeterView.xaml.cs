@@ -11,6 +11,7 @@ namespace AODamageMeter.UI.Views
     public partial class DamageMeterView : Window
     {
         private readonly DamageMeterViewModel _damageMeterViewModel;
+        private BossModuleView _bossModuleView;
 
         public DamageMeterView()
         {
@@ -21,6 +22,8 @@ namespace AODamageMeter.UI.Views
             {
                 Loaded += (_, __) => ShowCharacterSelection();
             }
+
+            Loaded += (_, __) => ShowOrCloseBossModuleView();
         }
 
         private void FileButton_Click_ShowCharacterSelection(object sender, RoutedEventArgs e)
@@ -62,7 +65,10 @@ namespace AODamageMeter.UI.Views
         }
 
         private void OptionsButton_Click_ShowOptions(object sender, RoutedEventArgs e)
-            => new OptionsView { Owner = this }.ShowDialog();
+        {
+            new OptionsView { Owner = this }.ShowDialog();
+            ShowOrCloseBossModuleView();
+        }
 
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)
         {
@@ -120,8 +126,37 @@ namespace AODamageMeter.UI.Views
         private void CloseButton_Click_CloseApplication(object sender, RoutedEventArgs e)
             => Close();
 
+        private void ShowOrCloseBossModuleView()
+        {
+            bool hasSelectedBossModule = !string.IsNullOrEmpty(Settings.Default.BossModule);
+
+            if (hasSelectedBossModule && _bossModuleView == null)
+            {
+                _bossModuleView = new BossModuleView(Settings.Default.BossModule) { Owner = this };
+                _bossModuleView.Closing += BossModuleView_Closing;
+                _bossModuleView.Show();
+            }
+            else if (!hasSelectedBossModule && _bossModuleView != null)
+            {
+                _bossModuleView.Closing -= BossModuleView_Closing;
+                _bossModuleView.Close();
+                _bossModuleView = null;
+            }
+        }
+
+        private void BossModuleView_Closing(object sender, CancelEventArgs e)
+            => _bossModuleView = null;
+
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (_bossModuleView != null)
+            {
+                _bossModuleView.PreserveSelectedBossModuleOnClose = true;
+                _bossModuleView.Closing -= BossModuleView_Closing;
+                _bossModuleView.Close();
+                _bossModuleView = null;
+            }
+
             Settings.Default.Save();
             _damageMeterViewModel.DisposeDamageMeter();
 

@@ -1,0 +1,51 @@
+<Window x:Class="AODamageMeter.UI.Views.BossModuleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
+        Style="{StaticResource WindowStyle}" Background="Transparent"
+        BorderBrush="{StaticResource LightBlueBrush50}" BorderThickness="1"
+        Height="{Binding Source={x:Static properties:Settings.Default}, Path=BossModuleViewHeight, Mode=TwoWay}"
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=BossModuleViewWidth, Mode=TwoWay}"
+        Top="{Binding Source={x:Static properties:Settings.Default}, Path=BossModuleViewTop, Mode=TwoWay}"
+        Left="{Binding Source={x:Static properties:Settings.Default}, Path=BossModuleViewLeft, Mode=TwoWay}">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="24"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0"
+          Background="{StaticResource Black40}"
+          MouseDown="HeaderRow_MouseDown_Drag">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="24"/>
+        <ColumnDefinition Width="24"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Grid.Column="0" Margin="5 0 0 0" VerticalAlignment="Center"
+                 Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"/>
+      <Button Grid.Column="1"
+              Click="MinimizeButton_Click_Minimize"
+              ToolTip="Minimize">
+        <fa:ImageAwesome Icon="WindowMinimize"/>
+      </Button>
+      <Button Grid.Column="2"
+              Click="CloseButton_Click_Close"
+              ToolTip="Close">
+        <fa:ImageAwesome Icon="Close"/>
+      </Button>
+    </Grid>
+
+    <Grid Grid.Row="1" Margin="1"
+          Background="{StaticResource DarkBlueBrush85}">
+      <ContentControl x:Name="BossModuleContent"/>
+    </Grid>
+
+    <Border Grid.Row="1" Margin="0"
+            BorderBrush="{StaticResource Black40}" BorderThickness="1"/>
+    <Border Grid.Row="1" Margin="2 0 2 2"
+            BorderBrush="{StaticResource LightBlueBrush}" BorderThickness="1"/>
+  </Grid>
+</Window>
