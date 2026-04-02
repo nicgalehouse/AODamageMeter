@@ -14,6 +14,7 @@ namespace AODamageMeter.UI.ViewModels
     public sealed class DamageMeterViewModel : ViewModelBase
     {
         private readonly IProgress<object> _rowUpdater;
+        private readonly IProgress<object> _bossModuleUpdater;
         private string _characterName;
         private Dimension _dimension;
         private string _logFilePath;
@@ -26,6 +27,7 @@ namespace AODamageMeter.UI.ViewModels
         public DamageMeterViewModel()
         {
             _rowUpdater = new Progress<object>(_ => UpdateDisplayedRows());
+            _bossModuleUpdater = new Progress<object>(_ => BossModuleViewModel?.UpdateView());
             ClearFightHistoryCommand = new RelayCommand(CanExecuteClearFightHistoryCommand, ExecuteClearFightHistoryCommand);
             ToggleIsPausedCommand = new RelayCommand(ExecuteToggleIsPausedCommand);
             ResetAndSaveFightCommand = new RelayCommand(ExecuteResetAndSaveFightCommand);
@@ -82,6 +84,26 @@ namespace AODamageMeter.UI.ViewModels
             private set => Set(ref _displayedRows, value);
         }
 
+        private IBossModuleViewModel _bossModuleViewModel;
+        public IBossModuleViewModel BossModuleViewModel
+        {
+            get => _bossModuleViewModel;
+            set
+            {
+                if (_bossModuleViewModel != null && CurrentFight != null)
+                {
+                    CurrentFight.FightEventAdded -= _bossModuleViewModel.OnFightEventAdded;
+                }
+
+                _bossModuleViewModel = value;
+
+                if (_bossModuleViewModel != null && CurrentFight != null)
+                {
+                    CurrentFight.FightEventAdded += _bossModuleViewModel.OnFightEventAdded;
+                }
+            }
+        }
+
         public bool TryInitializeDamageMeter(string characterName, Dimension dimension, string logFilePath)
         {
             if (string.IsNullOrWhiteSpace(characterName) || string.IsNullOrWhiteSpace(logFilePath))
@@ -126,6 +148,11 @@ namespace AODamageMeter.UI.ViewModels
         {
             StopDamageMeterUpdater();
 
+            if (BossModuleViewModel != null && CurrentFight != null)
+            {
+                CurrentFight.FightEventAdded -= BossModuleViewModel.OnFightEventAdded;
+            }
+
             DamageMeter.InitializeNewFight(saveCurrentFight: saveCurrentFight);
             if (CurrentFightViewModel != null)
             {
@@ -144,6 +171,11 @@ namespace AODamageMeter.UI.ViewModels
             CurrentFightViewModel = new FightViewModel(CurrentFight);
             SelectedFightViewModel = SelectedViewingMode != ViewingMode.Fights ? CurrentFightViewModel : null;
             _fightRows.Add(new FightMainRow(CurrentFightViewModel, displayIndex: _fightRows.Count + 1));
+
+            if (BossModuleViewModel != null)
+            {
+                CurrentFight.FightEventAdded += BossModuleViewModel.OnFightEventAdded;
+            }
 
             StartDamageMeterUpdater();
         }
@@ -173,6 +205,7 @@ namespace AODamageMeter.UI.ViewModels
                     }
                     if (_damageMeterUpdaterCTS.IsCancellationRequested) return;
                     _rowUpdater.Report(null);
+                    _bossModuleUpdater.Report(null);
                 } while (!_damageMeterUpdaterCTS.Token.WaitHandle.WaitOne(Settings.Default.RefreshInterval));
             }, _damageMeterUpdaterCTS.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
             _isDamageMeterUpdaterStarted = true;

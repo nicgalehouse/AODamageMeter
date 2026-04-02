@@ -191,6 +191,8 @@
     <Compile Include="RelayCommandParameterized.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneMainRow.cs" />
     <Compile Include="ViewModels\RowBase.cs" />
+    <Compile Include="ViewModels\IBossModuleViewModel.cs" />
+    <Compile Include="ViewModels\BossModules\TheBeastModuleViewModel.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Converters\RowWidthConverter.cs" />

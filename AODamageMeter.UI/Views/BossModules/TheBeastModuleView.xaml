@@ -2,6 +2,18 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Grid>
-    <TextBlock Text="The Beast" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+      <TextBlock.Style>
+        <Style TargetType="TextBlock">
+          <Setter Property="Text" Value="Reflect: DOWN"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsReflectActive}" Value="True">
+              <Setter Property="Text" Value="Reflect: UP"/>
+              <Setter Property="Foreground" Value="Red"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBlock.Style>
+    </TextBlock>
   </Grid>
 </UserControl>

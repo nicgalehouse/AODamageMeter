@@ -1,7 +1,10 @@
 using AODamageMeter.UI.Properties;
+using AODamageMeter.UI.ViewModels;
+using AODamageMeter.UI.ViewModels.BossModules;
 using AODamageMeter.UI.Views.BossModules;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace AODamageMeter.UI.Views
@@ -14,13 +17,24 @@ namespace AODamageMeter.UI.Views
 
             Title = bossModuleName;
 
+            IBossModuleViewModel viewModel;
+            UserControl view;
+
             switch (bossModuleName)
             {
                 case "The Beast":
-                    BossModuleViewContent.Content = new TheBeastModuleView();
+                    viewModel = new TheBeastModuleViewModel();
+                    view = new TheBeastModuleView();
                     break;
+                default: throw new System.ArgumentException($"Unknown boss module: {bossModuleName}");
             }
+
+            view.DataContext = viewModel;
+            BossModuleViewModel = viewModel;
+            BossModuleViewContent.Content = view;
         }
+
+        public IBossModuleViewModel BossModuleViewModel { get; private set; }
 
         public bool PreserveSelectedBossModuleOnClose { get; set; } = false;
 

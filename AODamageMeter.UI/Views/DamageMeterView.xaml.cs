@@ -133,11 +133,13 @@ namespace AODamageMeter.UI.Views
             if (hasSelectedBossModule && _bossModuleView == null)
             {
                 _bossModuleView = new BossModuleView(Settings.Default.BossModule) { Owner = this };
+                _damageMeterViewModel.BossModuleViewModel = _bossModuleView.BossModuleViewModel;
                 _bossModuleView.Closing += BossModuleView_Closing;
                 _bossModuleView.Show();
             }
             else if (!hasSelectedBossModule && _bossModuleView != null)
             {
+                _damageMeterViewModel.BossModuleViewModel = null;
                 _bossModuleView.Closing -= BossModuleView_Closing;
                 _bossModuleView.Close();
                 _bossModuleView = null;
@@ -145,12 +147,16 @@ namespace AODamageMeter.UI.Views
         }
 
         private void BossModuleView_Closing(object sender, CancelEventArgs e)
-            => _bossModuleView = null;
+        {
+            _damageMeterViewModel.BossModuleViewModel = null;
+            _bossModuleView = null;
+        }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             if (_bossModuleView != null)
             {
+                _damageMeterViewModel.BossModuleViewModel = null;
                 _bossModuleView.PreserveSelectedBossModuleOnClose = true;
                 _bossModuleView.Closing -= BossModuleView_Closing;
                 _bossModuleView.Close();

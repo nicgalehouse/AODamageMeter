@@ -95,6 +95,8 @@ namespace AODamageMeter
         public long? MaxPlayerDamageTaken => _maxPlayerDamageTaken ?? (_maxPlayerDamageTaken = PlayerFightCharacters.NullableMax(c => c.TotalDamageTaken));
         public long? MaxPlayerOrPetDamageTaken => _maxPlayerOrPetDamageTaken ?? (_maxPlayerOrPetDamageTaken = PlayerOrPetFightCharacters.NullableMax(c => c.TotalDamageTaken));
 
+        public event Action<FightEvent> FightEventAdded;
+
         public void AddFightEvent(string logLine)
         {
             if (IsPaused) return;
@@ -178,6 +180,8 @@ namespace AODamageMeter
                     break;
                 default: throw new NotImplementedException();
             }
+
+            FightEventAdded?.Invoke(fightEvent);
         }
 
         protected void ClearCachedDamageComputations()
