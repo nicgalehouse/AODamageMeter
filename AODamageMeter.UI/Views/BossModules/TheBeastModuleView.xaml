@@ -1,19 +1,39 @@
 <UserControl x:Class="AODamageMeter.UI.Views.BossModules.TheBeastModuleView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-  <Grid>
-    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
-      <TextBlock.Style>
-        <Style TargetType="TextBlock">
-          <Setter Property="Text" Value="Reflect: DOWN"/>
+  <Grid TextBlock.FontSize="16" TextBlock.FontWeight="Bold">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <Border Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 1 1">
+      <TextBlock Text="NCU Wipe" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
+
+    <Border Grid.Row="0" Grid.Column="1" BorderBrush="Gray" BorderThickness="0 0 0 1">
+      <Border.Style>
+        <Style TargetType="Border">
           <Style.Triggers>
             <DataTrigger Binding="{Binding IsReflectActive}" Value="True">
-              <Setter Property="Text" Value="Reflect: UP"/>
-              <Setter Property="Foreground" Value="Red"/>
+              <Setter Property="Background" Value="DarkRed"/>
             </DataTrigger>
           </Style.Triggers>
         </Style>
-      </TextBlock.Style>
-    </TextBlock>
+      </Border.Style>
+      <TextBlock Text="Reflects" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
+
+    <Border Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 1 0">
+      <TextBlock Text="Casting" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
+
+    <Border Grid.Row="1" Grid.Column="1">
+      <TextBlock Text="Adds" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Border>
   </Grid>
 </UserControl>
