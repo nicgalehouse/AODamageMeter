@@ -8,12 +8,13 @@ namespace AODamageMeter
     {
         protected readonly StreamReader _logStreamReader;
         protected readonly List<LogEntry> _playbackLogEntries = new List<LogEntry>();
-        protected readonly double _playbackSpeed;
         protected int _playbackStartIndex;
         protected int _playbackIndex;
+        protected long _playbackBaseUnixSeconds;
+        protected int _playbackSkipAheadSeconds;
 
         public DamageMeter(string characterName, Dimension dimension, string logFilePath,
-            DamageMeterMode mode = DamageMeterMode.Live, double? playbackSpeed = null)
+            DamageMeterMode mode = DamageMeterMode.Live)
         {
             Dimension = dimension;
             LogFilePath = logFilePath;
@@ -29,8 +30,6 @@ namespace AODamageMeter
                 {
                     _playbackLogEntries.Add(new LogEntry(logLine));
                 }
-
-                _playbackSpeed = playbackSpeed ?? 1.0;
             }
         }
 
@@ -46,6 +45,10 @@ namespace AODamageMeter
         protected readonly List<Fight> _previousFights = new List<Fight>();
         public IReadOnlyList<Fight> PreviousFights => _previousFights;
         public Fight CurrentFight { get; protected set; }
+
+        public TimeSpan? PlaybackDuration
+            => !IsPlaybackMode ? (TimeSpan?)null
+            : TimeSpan.FromSeconds(_playbackSkipAheadSeconds + (CurrentFight.Duration?.TotalSeconds ?? 0));
 
         public void InitializeNewFight(bool saveCurrentFight = false)
         {
@@ -67,6 +70,8 @@ namespace AODamageMeter
             else if (IsPlaybackMode)
             {
                 _playbackStartIndex = _playbackIndex;
+                _playbackBaseUnixSeconds = _playbackLogEntries[_playbackStartIndex].UnixSeconds;
+                _playbackSkipAheadSeconds = 0;
             }
 
             CurrentFight = new Fight(this) { IsPaused = IsPaused };
@@ -90,17 +95,19 @@ namespace AODamageMeter
             }
         }
 
+        public void SkipAheadPlayback(int seconds)
+            => _playbackSkipAheadSeconds += seconds;
+
         public void Update()
         {
             if (IsPlaybackMode)
             {
                 if (IsPaused || _playbackIndex >= _playbackLogEntries.Count) return;
 
-                long baseUnixSeconds = _playbackLogEntries[_playbackStartIndex].UnixSeconds;
-                long targetUnixSeconds = baseUnixSeconds + (long)((CurrentFight.Duration?.TotalSeconds ?? 0) * _playbackSpeed);
+                long _playbackTargetUnixSeconds = _playbackBaseUnixSeconds + (int)PlaybackDuration.Value.TotalSeconds;
 
                 while (_playbackIndex < _playbackLogEntries.Count
-                    && _playbackLogEntries[_playbackIndex].UnixSeconds <= targetUnixSeconds)
+                    && _playbackLogEntries[_playbackIndex].UnixSeconds <= _playbackTargetUnixSeconds)
                 {
                     CurrentFight.AddFightEvent(_playbackLogEntries[_playbackIndex]);
                     _playbackIndex++;

@@ -7,7 +7,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
     public class TheBeastModuleViewModel : ViewModelBase, IBossModuleViewModel
     {
         private const string BossName = "The Beast";
-        private const double HitMeHitYouReflectDurationSeconds = 20;
+        private const int HitMeHitYouReflectDurationSeconds = 20;
 
         private DateTime? _reflectDetectedTimestamp;
 

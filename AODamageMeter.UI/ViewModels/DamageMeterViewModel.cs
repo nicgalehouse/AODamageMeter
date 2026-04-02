@@ -28,6 +28,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             _rowUpdater = new Progress<object>(_ => UpdateDisplayedRows());
             _bossModuleUpdater = new Progress<object>(_ => BossModuleViewModel?.UpdateView());
+            SkipAheadCommand = new RelayCommand(CanExecuteSkipAheadCommand, ExecuteSkipAheadCommand);
             ClearFightHistoryCommand = new RelayCommand(CanExecuteClearFightHistoryCommand, ExecuteClearFightHistoryCommand);
             ToggleIsPausedCommand = new RelayCommand(ExecuteToggleIsPausedCommand);
             ResetAndSaveFightCommand = new RelayCommand(ExecuteResetAndSaveFightCommand);
@@ -343,6 +344,12 @@ namespace AODamageMeter.UI.ViewModels
                 return _fightRows;
             }
         }
+
+        public ICommand SkipAheadCommand { get; }
+        private bool CanExecuteSkipAheadCommand()
+            => DamageMeter?.IsPlaybackMode ?? false;
+        private void ExecuteSkipAheadCommand()
+            => DamageMeter?.SkipAheadPlayback(10);
 
         public ICommand ClearFightHistoryCommand { get; }
         private bool CanExecuteClearFightHistoryCommand()
