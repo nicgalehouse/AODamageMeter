@@ -20,7 +20,7 @@
         <Style TargetType="Border">
           <Style.Triggers>
             <DataTrigger Binding="{Binding IsReflectActive}" Value="True">
-              <Setter Property="Background" Value="DarkRed"/>
+              <Setter Property="Background" Value="#CC0000"/>
             </DataTrigger>
           </Style.Triggers>
         </Style>
@@ -32,8 +32,66 @@
       <TextBlock Text="Casting" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Border>
 
-    <Border Grid.Row="1" Grid.Column="1">
-      <TextBlock Text="Adds" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </Border>
+    <Grid Grid.Row="1" Grid.Column="1">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Border Grid.Row="0" Grid.Column="0">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding AddTrackers[Corrupted Xan-Kuir].IsActive}" Value="True">
+                <Setter Property="Background" Value="#8B6914"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+      </Border>
+
+      <Border Grid.Row="0" Grid.Column="1">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding AddTrackers[Corrupted Xan-Len].IsActive}" Value="True">
+                <Setter Property="Background" Value="#DB7093"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="0">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding AddTrackers[Corrupted Hiisi Berserker].IsActive}" Value="True">
+                <Setter Property="Background" Value="#D44500"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+      </Border>
+
+      <Border Grid.Row="1" Grid.Column="1">
+        <Border.Style>
+          <Style TargetType="Border">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding AddTrackers[Corrupted Xan-Cur].IsActive}" Value="True">
+                <Setter Property="Background" Value="#4A90C4"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+      </Border>
+
+      <TextBlock Grid.RowSpan="2" Grid.ColumnSpan="2"
+                 Text="Adds" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Grid>
   </Grid>
 </UserControl>
