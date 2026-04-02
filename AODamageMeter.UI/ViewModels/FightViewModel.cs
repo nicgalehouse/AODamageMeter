@@ -38,10 +38,20 @@ namespace AODamageMeter.UI.ViewModels
         public string PlaybackDuration => (DamageMeter.PlaybackDuration ?? TimeSpan.Zero).WithoutMilliseconds().ToString("g");
 
         public string FightTitle
-            => DamageMeter.IsPlaybackMode ? $"Fight ({PlaybackDuration})"
-            : Fight.HasEnded ? $"Fight ({Fight.StartTime:hh:mm}{NumberFormatter.EnDash}{Fight.EndTime:hh:mm}, {FightDuration})"
-            : Fight.HasStarted ? $"Fight ({Fight.StartTime:hh:mm}{NumberFormatter.EnDash}{DateTime.Now:hh:mm}, {FightDuration})"
-            : "Fight (unstarted)";
+            => !Fight.HasStarted ? "Fight (unstarted)"
+            : DamageMeter.IsPlaybackMode ? $"Fight {PlaybackDuration}"
+            : Fight.HasEnded ? $"Fight {Fight.StartTime:hh:mm}{NumberFormatter.EnDash}{Fight.EndTime:hh:mm}, {FightDuration}"
+            : $"Fight {Fight.StartTime:hh:mm}{NumberFormatter.EnDash}{DateTime.Now:hh:mm}, {FightDuration}";
+
+        public string DamageDoneTitle
+            => !Fight.HasStarted ? "Damage Done"
+            : DamageMeter.IsPlaybackMode ? $"Damage Done {PlaybackDuration}"
+            : $"Damage Done {FightDuration}";
+
+        public string DamageTakenTitle
+            => !Fight.HasStarted ? "Damage Taken"
+            : DamageMeter.IsPlaybackMode ? $"Damage Taken {PlaybackDuration}"
+            : $"Damage Taken {FightDuration}";
 
         private FightCharacter _fightOwner;
         public FightCharacter FightOwner

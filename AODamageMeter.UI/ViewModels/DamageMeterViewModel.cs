@@ -66,9 +66,9 @@ namespace AODamageMeter.UI.ViewModels
                 {
                     case ViewingMode.Fights: return "Fights";
                     case ViewingMode.Fight: return SelectedFightViewModel?.FightTitle ?? "Fight";
-                    case ViewingMode.DamageDone: return "Damage Done";
+                    case ViewingMode.DamageDone: return SelectedFightViewModel?.DamageDoneTitle ?? "Damage Done";
                     case ViewingMode.DamageDoneInfo: return $"{SelectedCharacter.UncoloredName}'s Damage Done";
-                    case ViewingMode.DamageTaken: return "Damage Taken";
+                    case ViewingMode.DamageTaken: return SelectedFightViewModel?.DamageTakenTitle ?? "Damage Taken";
                     case ViewingMode.DamageTakenInfo: return $"{SelectedCharacter.UncoloredName}'s Damage Taken";
                     case ViewingMode.OwnersHealingDone: return $"{SelectedCharacter.UncoloredName}'s Healing Done";
                     case ViewingMode.OwnersHealingTaken: return $"{SelectedCharacter.UncoloredName}'s Healing Taken";
@@ -307,9 +307,21 @@ namespace AODamageMeter.UI.ViewModels
                         RaisePropertyChanged(nameof(Title));
                     }
                     break;
-                case ViewingMode.DamageDone: updatedRows = SelectedFightViewModel.GetUpdatedDamageDoneRows(); break;
+                case ViewingMode.DamageDone:
+                    updatedRows = SelectedFightViewModel.GetUpdatedDamageDoneRows();
+                    if (SelectedFightViewModel == CurrentFightViewModel)
+                    {
+                        RaisePropertyChanged(nameof(Title));
+                    }
+                    break;
                 case ViewingMode.DamageDoneInfo: updatedRows = SelectedFightViewModel.GetUpdatedDamageDoneInfoRows(SelectedCharacter); break;
-                case ViewingMode.DamageTaken: updatedRows = SelectedFightViewModel.GetUpdatedDamageTakenRows(); break;
+                case ViewingMode.DamageTaken:
+                    updatedRows = SelectedFightViewModel.GetUpdatedDamageTakenRows();
+                    if (SelectedFightViewModel == CurrentFightViewModel)
+                    {
+                        RaisePropertyChanged(nameof(Title));
+                    }
+                    break;
                 case ViewingMode.DamageTakenInfo: updatedRows = SelectedFightViewModel.GetUpdatedDamageTakenInfoRows(SelectedCharacter); break;
                 case ViewingMode.OwnersHealingDone: updatedRows = SelectedFightViewModel.GetUpdatedOwnersHealingDoneRows(); break;
                 case ViewingMode.OwnersHealingTaken: updatedRows = SelectedFightViewModel.GetUpdatedOwnersHealingTakenRows(); break;
