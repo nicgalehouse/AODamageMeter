@@ -292,6 +292,10 @@
     <Resource Include="Icons\NcuWipe.png" />
     <Resource Include="Icons\ReflectShield.png" />
     <Resource Include="Icons\Casting.png" />
+    <Resource Include="Icons\XanKuir.png" />
+    <Resource Include="Icons\XanLen.png" />
+    <Resource Include="Icons\HiisiBerserker.png" />
+    <Resource Include="Icons\XanKur.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AODamageMeter\AODamageMeter.csproj">

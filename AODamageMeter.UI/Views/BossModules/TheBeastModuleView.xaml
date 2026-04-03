@@ -115,7 +115,11 @@
           <Style TargetType="Border">
             <Style.Triggers>
               <DataTrigger Binding="{Binding AddTrackers[Corrupted Xan-Kuir].IsActive}" Value="True">
-                <Setter Property="Background" Value="#8B6914"/>
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/XanKuir.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
               </DataTrigger>
             </Style.Triggers>
           </Style>
@@ -127,7 +131,11 @@
           <Style TargetType="Border">
             <Style.Triggers>
               <DataTrigger Binding="{Binding AddTrackers[Corrupted Xan-Len].IsActive}" Value="True">
-                <Setter Property="Background" Value="#DB7093"/>
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/XanLen.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
               </DataTrigger>
             </Style.Triggers>
           </Style>
@@ -139,7 +147,11 @@
           <Style TargetType="Border">
             <Style.Triggers>
               <DataTrigger Binding="{Binding AddTrackers[Corrupted Hiisi Berserker].IsActive}" Value="True">
-                <Setter Property="Background" Value="#D44500"/>
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/HiisiBerserker.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
               </DataTrigger>
             </Style.Triggers>
           </Style>
@@ -151,7 +163,11 @@
           <Style TargetType="Border">
             <Style.Triggers>
               <DataTrigger Binding="{Binding AddTrackers[Corrupted Xan-Cur].IsActive}" Value="True">
-                <Setter Property="Background" Value="#4A90C4"/>
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/XanKur.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
               </DataTrigger>
             </Style.Triggers>
           </Style>
