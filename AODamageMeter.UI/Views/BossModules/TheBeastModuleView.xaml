@@ -28,9 +28,40 @@
       <TextBlock Text="Reflects" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Border>
 
-    <Border Grid.Row="1" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 1 0">
+    <Grid Grid.Row="1" Grid.Column="0">
+      <Border>
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsCasting}" Value="True">
+                <Setter Property="Background" Value="#FFAA00"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+        <Border.Opacity>
+          <Binding Path="CastingOpacity" FallbackValue="0"/>
+        </Border.Opacity>
+      </Border>
+      <Border BorderBrush="Gray" BorderThickness="0 0 1 0"/>
       <TextBlock Text="Casting" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </Border>
+      <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 36 0 0">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsCasting}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+        <TextBlock.Text>
+          <Binding Path="CastingDurationSeconds" StringFormat="{}{0}s"/>
+        </TextBlock.Text>
+      </TextBlock>
+    </Grid>
 
     <Grid Grid.Row="1" Grid.Column="1">
       <Grid.RowDefinitions>

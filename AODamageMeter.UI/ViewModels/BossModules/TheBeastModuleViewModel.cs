@@ -2,6 +2,8 @@ using AODamageMeter.FightEvents;
 using AODamageMeter.FightEvents.Attack;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.BossModules
 {
@@ -10,11 +12,17 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private const string TheBeast = "The Beast";
         private const int HitMeHitYouReflectDurationSeconds = 20;
         private const int AddsAreProbablyDeadSeconds = 5;
+        private const int CastingDetectionThresholdSeconds = 3;
+        private const int CastingFullConfidenceSeconds = 7;
 
-        private DateTime? _reflectDetectedTimestamp;
+        private readonly Stopwatch _timeSinceReflectDetected = new Stopwatch();
+        private readonly Stopwatch _timeSinceBeastLastHitSomeone = new Stopwatch();
 
         public bool IsReflectActive { get; private set; }
         public Dictionary<string, AddTracker> AddTrackers { get; }
+        public bool IsCasting { get; private set; }
+        public int CastingDurationSeconds { get; private set; }
+        public double CastingOpacity { get; private set; }
 
         public TheBeastModuleViewModel()
             => AddTrackers = new Dictionary<string, AddTracker>
@@ -27,8 +35,17 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public void OnFightEventAdded(FightEvent fightEvent)
         {
+            // Catch the edge case where the fight begins with The Beast casting something.
+            if (!_timeSinceBeastLastHitSomeone.IsRunning
+                && fightEvent is AttackEvent attackEvent
+                && (attackEvent.Source.Name == TheBeast || attackEvent.Target.Name == TheBeast))
+            {
+                _timeSinceBeastLastHitSomeone.Start();
+            }
+
             CheckReflectShield(fightEvent);
             CheckAdds(fightEvent);
+            CheckCasting(fightEvent);
         }
 
         private void CheckReflectShield(FightEvent fightEvent)
@@ -37,25 +54,19 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             {
                 if (!IsReflectActive
                     && attackEvent.DamageType == DamageType.Reflect
+                    // The player themselves only sees "Someone's reflect shield hit you"--assume it's from The Beast.
                     && (attackEvent.Source.Name == TheBeast || attackEvent is MeHitByMonster))
                 {
                     IsReflectActive = true;
-                    _reflectDetectedTimestamp = fightEvent.Timestamp;
+                    _timeSinceReflectDetected.Restart();
                 }
                 else if (IsReflectActive
                     && attackEvent.Target.Name == TheBeast
                     && attackEvent.AttackResult == AttackResult.WeaponHit)
                 {
                     IsReflectActive = false;
-                    _reflectDetectedTimestamp = null;
+                    _timeSinceReflectDetected.Reset();
                 }
-            }
-
-            if (IsReflectActive && _reflectDetectedTimestamp.HasValue
-                && (fightEvent.Timestamp - _reflectDetectedTimestamp.Value).TotalSeconds >= HitMeHitYouReflectDurationSeconds)
-            {
-                IsReflectActive = false;
-                _reflectDetectedTimestamp = null;
             }
         }
 
@@ -65,7 +76,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 && (attackEvent.AttackResult == AttackResult.WeaponHit
                     || attackEvent.AttackResult == AttackResult.NanoHit
                     || attackEvent.AttackResult == AttackResult.Missed)
-                // Account for crat charms.
+                // Don't let crat charms count as adds.
                 && attackEvent.Source.Name != TheBeast
                 && attackEvent.Target.Name != TheBeast)
             {
@@ -90,10 +101,51 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
+        private bool AreAnyAddsActive
+            => AddTrackers.Values.Any(t => t.IsActive);
+
+        private void CheckCasting(FightEvent fightEvent)
+        {
+            if (fightEvent is AttackEvent attackEvent
+                && (attackEvent.Source.Name == TheBeast && attackEvent.AttackResult == AttackResult.WeaponHit
+                    // We don't know the source or target of absorbed hits--when adds are up, ignore them as a signal.
+                    || attackEvent.AttackResult == AttackResult.Absorbed && !AreAnyAddsActive))
+            {
+                IsCasting = false;
+                CastingDurationSeconds = 0;
+                CastingOpacity = 0;
+                _timeSinceBeastLastHitSomeone.Restart();
+            }
+        }
+
         public void UpdateView()
         {
+            if (IsReflectActive
+                && _timeSinceReflectDetected.Elapsed.TotalSeconds >= HitMeHitYouReflectDurationSeconds)
+            {
+                IsReflectActive = false;
+                _timeSinceReflectDetected.Reset();
+            }
+
+            if (_timeSinceBeastLastHitSomeone.IsRunning)
+            {
+                double secondsSinceLastHit = _timeSinceBeastLastHitSomeone.Elapsed.TotalSeconds;
+
+                if (secondsSinceLastHit >= CastingDetectionThresholdSeconds)
+                {
+                    IsCasting = true;
+                    CastingDurationSeconds = (int)secondsSinceLastHit;
+                    double progress = Math.Min(1.0, (secondsSinceLastHit - CastingDetectionThresholdSeconds)
+                        / (CastingFullConfidenceSeconds - CastingDetectionThresholdSeconds));
+                    CastingOpacity = 0.1 + (0.9 * progress);
+                }
+            }
+
             RaisePropertyChanged(nameof(IsReflectActive));
             RaisePropertyChanged(nameof(AddTrackers));
+            RaisePropertyChanged(nameof(IsCasting));
+            RaisePropertyChanged(nameof(CastingDurationSeconds));
+            RaisePropertyChanged(nameof(CastingOpacity));
         }
     }
 }
