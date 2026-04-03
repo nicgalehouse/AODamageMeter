@@ -16,7 +16,11 @@
         <Style TargetType="Border">
           <Style.Triggers>
             <DataTrigger Binding="{Binding HasWipedNanoPrograms}" Value="True">
-              <Setter Property="Background" Value="#366FEE"/>
+              <Setter Property="Background">
+                <Setter.Value>
+                  <ImageBrush ImageSource="/Icons/NcuWipe.png" Stretch="UniformToFill"/>
+                </Setter.Value>
+              </Setter>
             </DataTrigger>
           </Style.Triggers>
         </Style>
@@ -38,7 +42,11 @@
         <Style TargetType="Border">
           <Style.Triggers>
             <DataTrigger Binding="{Binding IsReflectActive}" Value="True">
-              <Setter Property="Background" Value="#CC0000"/>
+              <Setter Property="Background">
+                <Setter.Value>
+                  <ImageBrush ImageSource="/Icons/ReflectShield.png" Stretch="UniformToFill"/>
+                </Setter.Value>
+              </Setter>
             </DataTrigger>
           </Style.Triggers>
         </Style>
@@ -53,7 +61,11 @@
             <Setter Property="Background" Value="Transparent"/>
             <Style.Triggers>
               <DataTrigger Binding="{Binding IsCasting}" Value="True">
-                <Setter Property="Background" Value="#FFAA00"/>
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/Casting.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
               </DataTrigger>
             </Style.Triggers>
           </Style>

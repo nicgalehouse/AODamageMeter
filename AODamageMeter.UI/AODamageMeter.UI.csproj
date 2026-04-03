@@ -288,6 +288,12 @@
     <Resource Include="Icons\EyeOfLight.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\TheBeast.png" />
+    <Resource Include="Icons\NcuWipe.png" />
+    <Resource Include="Icons\ReflectShield.png" />
+    <Resource Include="Icons\Casting.png" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\AODamageMeter\AODamageMeter.csproj">
       <Project>{d55d5daf-e8cc-4f4e-a30f-d1358f89d934}</Project>
       <Name>AODamageMeter</Name>
