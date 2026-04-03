@@ -25,7 +25,7 @@
           </Style.Triggers>
         </Style>
       </Border.Style>
-      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="2 0">
         <TextBlock Text="NCU Wipes" Foreground="White" HorizontalAlignment="Center"/>
         <ItemsControl ItemsSource="{Binding WipedNanoPrograms}" Margin="0 4 0 0">
           <ItemsControl.ItemTemplate>
@@ -75,7 +75,11 @@
         </Border.Opacity>
       </Border>
       <Border BorderBrush="Gray" BorderThickness="0 0 1 0"/>
-      <TextBlock Text="Casting" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      <TextBlock Text="Casting" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
+        </TextBlock.Effect>
+      </TextBlock>
       <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 36 0 0">
         <TextBlock.Style>
           <Style TargetType="TextBlock">
@@ -87,6 +91,9 @@
             </Style.Triggers>
           </Style>
         </TextBlock.Style>
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
+        </TextBlock.Effect>
         <TextBlock.Text>
           <Binding Path="CastingDurationSeconds" StringFormat="{}{0}s"/>
         </TextBlock.Text>
