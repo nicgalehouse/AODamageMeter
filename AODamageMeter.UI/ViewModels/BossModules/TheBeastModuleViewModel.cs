@@ -56,7 +56,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         }
 
         // We add nano programs that get cancelled as part of a recast, but then immediately remove
-        // them, once the recast is proven. So it should be okay. There shouldn't be any UI flicker.
+        // them once the recast is proven. So it should be okay--there shouldn't be any UI flicker.
+        // One thing we can't easily do is recognize when nanoprograms are terminated by being
+        // overwritten by a better nanoprogram. Ideally we wouldn't show those terminations.
         private void CheckNcuWipe(FightEvent fightEvent)
         {
             if (fightEvent is SystemEvent systemEvent)
