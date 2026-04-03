@@ -19,6 +19,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private const int HitMeHitYouReflectDurationSeconds = 20;
         private readonly Stopwatch _timeSinceReflectDetected = new Stopwatch();
         public bool IsReflectActive { get; private set; }
+        public string ReflectCountdown { get; private set; }
 
         private const int AddsAreProbablyDeadSeconds = 5;
         public Dictionary<string, AddTracker> AddTrackers { get; }
@@ -102,6 +103,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                     && (attackEvent.Source.Name == TheBeast || attackEvent is MeHitByMonster))
                 {
                     IsReflectActive = true;
+                    ReflectCountdown = $"{HitMeHitYouReflectDurationSeconds}s";
                     _timeSinceReflectDetected.Restart();
                 }
                 else if (IsReflectActive
@@ -109,6 +111,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                     && attackEvent.AttackResult == AttackResult.WeaponHit)
                 {
                     IsReflectActive = false;
+                    ReflectCountdown = null;
                     _timeSinceReflectDetected.Reset();
                 }
             }
@@ -164,11 +167,21 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public void UpdateView()
         {
-            if (IsReflectActive
-                && _timeSinceReflectDetected.Elapsed.TotalSeconds >= HitMeHitYouReflectDurationSeconds)
+            if (IsReflectActive)
             {
-                IsReflectActive = false;
-                _timeSinceReflectDetected.Reset();
+                int remainingReflectDuration = HitMeHitYouReflectDurationSeconds
+                    - (int)_timeSinceReflectDetected.Elapsed.TotalSeconds;
+
+                if (remainingReflectDuration <= 0)
+                {
+                    IsReflectActive = false;
+                    ReflectCountdown = null;
+                    _timeSinceReflectDetected.Reset();
+                }
+                else
+                {
+                    ReflectCountdown = $"<{remainingReflectDuration}s";
+                }
             }
 
             if (_timeSinceBeastLastHitSomeone.IsRunning)
@@ -188,6 +201,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(WipedNanoPrograms));
             RaisePropertyChanged(nameof(HasWipedNanoPrograms));
             RaisePropertyChanged(nameof(IsReflectActive));
+            RaisePropertyChanged(nameof(ReflectCountdown));
             RaisePropertyChanged(nameof(AddTrackers));
             RaisePropertyChanged(nameof(IsCasting));
             RaisePropertyChanged(nameof(CastingDurationSeconds));
@@ -222,6 +236,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
             _timeSinceReflectDetected.Reset();
             IsReflectActive = false;
+            ReflectCountdown = null;
 
             foreach (var tracker in AddTrackers.Values)
             {
