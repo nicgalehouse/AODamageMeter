@@ -53,6 +53,7 @@ namespace AODamageMeter
         public DamageMeter DamageMeter => Fight.DamageMeter;
         public Fight Fight { get; }
         public abstract string Name { get; }
+        public virtual bool CanStartFight => true;
         public DateTime Timestamp { get; }
         public string Description { get; }
         public bool IsUnmatched { get; protected set; }

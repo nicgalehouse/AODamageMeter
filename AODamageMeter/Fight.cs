@@ -111,11 +111,7 @@ namespace AODamageMeter
 
         private void AddFightEvent(FightEvent fightEvent)
         {
-            // We know these events can't cause any fight characters to enter, so don't let them start the fight.
-            if (fightEvent is SystemEvent && fightEvent.IsUnmatched || fightEvent is UnrecognizedEvent)
-                return;
-
-            if (!HasStarted)
+            if (!HasStarted && fightEvent.CanStartFight)
             {
                 StartTime = fightEvent.Timestamp;
                 _stopwatch = !DamageMeter.IsSummaryMode ? Stopwatch.StartNew() : null;

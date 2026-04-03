@@ -12,7 +12,25 @@
     </Grid.ColumnDefinitions>
 
     <Border Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 1 1">
-      <TextBlock Text="NCU Wipe" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+      <Border.Style>
+        <Style TargetType="Border">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding HasWipedNanoPrograms}" Value="True">
+              <Setter Property="Background" Value="#366FEE"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Border.Style>
+      <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="NCU Wipes" Foreground="White" HorizontalAlignment="Center"/>
+        <ItemsControl ItemsSource="{Binding WipedNanoPrograms}" Margin="0 4 0 0">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding}" Foreground="White" FontSize="10" TextTrimming="CharacterEllipsis" HorizontalAlignment="Center"/>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
     </Border>
 
     <Border Grid.Row="0" Grid.Column="1" BorderBrush="Gray" BorderThickness="0 0 0 1">

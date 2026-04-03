@@ -7,14 +7,19 @@ namespace AODamageMeter.FightEvents
     {
         public const string EventName = "System";
         public override string Name => EventName;
+        public override bool CanStartFight
+            => !IsUnmatched && !IsNanoDeactivated && !IsNanoTerminated && !IsNanoExecutedByOther;
 
         public static readonly Regex
-            SelfNanoHeal =       CreateRegex($"You increased your nanopool with {AMOUNT} points."),
-            HealthDrain =        CreateRegex($"You drained {AMOUNT} points of health from the target."),
-            NanoDrain =          CreateRegex($"You drained {AMOUNT} points of nano from the target."),
-            NanoInterrupt =      CreateRegex($"Your nano execution got interrupted by (.+).."),
-            YouBlockedRegular =  CreateRegex($"Your attack shield blocked the attack! \\(.\\) left."),
-            YourRegularBlocked = CreateRegex($"Your attack was blocked by an attack shield!");
+            SelfNanoHeal =         CreateRegex($"You increased your nanopool with {AMOUNT} points."),
+            HealthDrain =          CreateRegex($"You drained {AMOUNT} points of health from the target."),
+            NanoDrain =            CreateRegex($"You drained {AMOUNT} points of nano from the target."),
+            NanoInterrupt =        CreateRegex($"Your nano execution got interrupted by (.+).."),
+            YouBlockedRegular =    CreateRegex($"Your attack shield blocked the attack! \\(.\\) left."),
+            YourRegularBlocked =   CreateRegex($"Your attack was blocked by an attack shield!"),
+            NanoDeactivated =      CreateRegex($"Deactivating friendly timed nanoprogram."),
+            NanoTerminated =       CreateRegex($"Nanoprogram (.+) terminated..."),
+            NanoExecutedByOther =  CreateRegex($"(.+) executes (.+) within your NCU...");
 
         public bool IsSelfNanoHeal { get; protected set; }
         public bool IsHealthDrain { get; protected set; }
@@ -22,6 +27,10 @@ namespace AODamageMeter.FightEvents
         public bool IsNanoInterrupt { get; protected set; }
         public bool IsYouBlockedRegular { get; protected set; }
         public bool IsYourRegularBlocked { get; protected set; }
+        public bool IsNanoDeactivated { get; protected set; }
+        public bool IsNanoTerminated { get; protected set; }
+        public bool IsNanoExecutedByOther { get; protected set; }
+        public string NanoProgram { get; protected set; }
 
         public SystemEvent(Fight fight, DateTime timestamp, string description)
             : base(fight, timestamp, description)
@@ -52,6 +61,20 @@ namespace AODamageMeter.FightEvents
             else if (TryMatch(YourRegularBlocked, out match))
             {
                 IsYourRegularBlocked = true;
+            }
+            else if (TryMatch(NanoDeactivated, out match))
+            {
+                IsNanoDeactivated = true;
+            }
+            else if (TryMatch(NanoTerminated, out match))
+            {
+                IsNanoTerminated = true;
+                NanoProgram = match.Groups[1].Value;
+            }
+            else if (TryMatch(NanoExecutedByOther, out match))
+            {
+                IsNanoExecutedByOther = true;
+                NanoProgram = match.Groups[2].Value;
             }
             else IsUnmatched = true;
         }

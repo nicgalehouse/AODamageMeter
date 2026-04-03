@@ -911,6 +911,12 @@ namespace AODamageMeter
                 AddSourceAttackEvent(attackEvent);
                 attackEvent.Target.AddTargetAttackEvent(attackEvent);
             }
+            else if (systemEvent.IsNanoDeactivated
+                || systemEvent.IsNanoTerminated
+                || systemEvent.IsNanoExecutedByOther)
+            {
+                // No fight character tracking needed--just here for boss modules.
+            }
             else throw new NotImplementedException();
         }
 

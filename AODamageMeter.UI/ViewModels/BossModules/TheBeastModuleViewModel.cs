@@ -11,13 +11,16 @@ namespace AODamageMeter.UI.ViewModels.BossModules
     {
         private const string TheBeast = "The Beast";
         private const int HitMeHitYouReflectDurationSeconds = 20;
-        private const int AddsAreProbablyDeadSeconds = 5;
+        private const int AddsAreProbablyDeadSeconds = 7;
         private const int CastingDetectionThresholdSeconds = 3;
         private const int CastingFullConfidenceSeconds = 7;
-
         private readonly Stopwatch _timeSinceReflectDetected = new Stopwatch();
         private readonly Stopwatch _timeSinceBeastLastHitSomeone = new Stopwatch();
+        private DateTime? _lastManualNanoProgramDeactivationTimestamp;
 
+        private readonly List<string> _wipedNanoPrograms = new List<string>();
+        public List<string> WipedNanoPrograms => new List<string>(_wipedNanoPrograms);
+        public bool HasWipedNanoPrograms => _wipedNanoPrograms.Count > 0;
         public bool IsReflectActive { get; private set; }
         public Dictionary<string, AddTracker> AddTrackers { get; }
         public bool IsCasting { get; private set; }
@@ -43,9 +46,43 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 _timeSinceBeastLastHitSomeone.Start();
             }
 
+            CheckNcuWipe(fightEvent);
             CheckReflectShield(fightEvent);
             CheckAdds(fightEvent);
             CheckCasting(fightEvent);
+        }
+
+        // We add nano programs that get cancelled as part of a recast, but then immediately remove
+        // them, once the recast is proven. So it should be okay. There shouldn't be any UI flicker.
+        private void CheckNcuWipe(FightEvent fightEvent)
+        {
+            if (fightEvent is SystemEvent systemEvent)
+            {
+                if (systemEvent.IsNanoDeactivated)
+                {
+                    _lastManualNanoProgramDeactivationTimestamp = fightEvent.Timestamp;
+                }
+                else if (systemEvent.IsNanoTerminated)
+                {
+                    bool isPurposeful = _lastManualNanoProgramDeactivationTimestamp == fightEvent.Timestamp;
+                    _lastManualNanoProgramDeactivationTimestamp = null;
+
+                    if (!isPurposeful && !_wipedNanoPrograms.Contains(systemEvent.NanoProgram))
+                    {
+                        _wipedNanoPrograms.Add(systemEvent.NanoProgram);
+                    }
+                }
+                else if (systemEvent.IsNanoExecutedByOther)
+                {
+                    _wipedNanoPrograms.Remove(systemEvent.NanoProgram);
+                }
+            }
+            else if (fightEvent is MeCastNano castEvent
+                && castEvent.CastResult == CastResult.Success
+                && castEvent.NanoProgram != null)
+            {
+                _wipedNanoPrograms.Remove(castEvent.NanoProgram);
+            }
         }
 
         private void CheckReflectShield(FightEvent fightEvent)
@@ -141,6 +178,8 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 }
             }
 
+            RaisePropertyChanged(nameof(WipedNanoPrograms));
+            RaisePropertyChanged(nameof(HasWipedNanoPrograms));
             RaisePropertyChanged(nameof(IsReflectActive));
             RaisePropertyChanged(nameof(AddTrackers));
             RaisePropertyChanged(nameof(IsCasting));
