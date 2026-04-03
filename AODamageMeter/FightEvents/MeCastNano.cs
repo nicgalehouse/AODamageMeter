@@ -22,14 +22,14 @@ namespace AODamageMeter.FightEvents
     // [Me Cast Nano] Nano program executed successfully.
     // [Me Cast Nano] Wait for current nano program execution to finish.
 
-    // In the last case, LE is what succeeded, IH was never actually executing. I consider it a bug in AO's
-    // logs that IH was shown there at all. But it means we could interpret the 'wait' as an end event of IH.
-    // Waits aren't always end events though, as the middle case shows. There, the wait isn't associated with
-    // any start event. The most important metric to get right is how many actual casts there were (no weird
-    // fake casts like in the last case), and if they ended in a success, resist, counter, or abort. To achieve
-    // that, we remember the latest potential start event, and mark it with one of the 4 real cast results
-    // when the end event comes in. The details can get muddled when the last case happens. There, we'll log
-    // it as IH succeeding, when in reality it was LE succeeding. But scenario is rare and the %s remain true.
+    // In the last case (one key bound to multiple nanos for automatic fallbacks when debuffed), LE is
+    // what succeeded, IH was never actually executing. I consider it a bug in AO's logs that IH was shown
+    // there at all. But it means we could interpret the 'wait' as an end event of IH. Waits aren't always
+    // end events though, as the middle case shows. There, the wait isn't associated with any start event.
+    // The most important metric to get right is how many actual casts there were (no weird fake casts like
+    // in the last case), and if they ended in a success, resist, counter, or abort. To achieve that, we
+    // remember the potential start event, and mark it with one of the 4 real cast results when the end event
+    // comes in.
 
     // Here's another one I recently found. Freak Shield is a perk, but creates a Me Cast Nano success...
     // [System] You successfully perform Freak Shield.
@@ -39,7 +39,7 @@ namespace AODamageMeter.FightEvents
         public const string EventName = "Me Cast Nano";
         public override string Name => EventName;
 
-        protected static MeCastNano _latestPotentialStartEvent;
+        protected static MeCastNano _potentialStartEvent;
 
         public static readonly Regex
             Executing =   CreateRegex("Executing Nano Program: (.+)."),
@@ -91,7 +91,13 @@ namespace AODamageMeter.FightEvents
             if (TryMatch(Executing, out Match match))
             {
                 NanoProgram = match.Groups[1].Value;
-                _latestPotentialStartEvent = this;
+                if (_potentialStartEvent == null
+                    // Try to handle the multi-bind scenario mentioned above by preferring the
+                    // first nano that we see is executing for a given timestamp.
+                    || _potentialStartEvent.Timestamp < timestamp)
+                {
+                    _potentialStartEvent = this;
+                }
             }
             else if (TryMatch(Success, out match, out bool success)
                 || TryMatch(Resisted, out match, out resisted)
@@ -103,14 +109,14 @@ namespace AODamageMeter.FightEvents
                     : resisted ? AODamageMeter.CastResult.Resisted
                     : AODamageMeter.CastResult.Aborted;
 
-                if (_latestPotentialStartEvent != null && _latestPotentialStartEvent.Fight == fight)
+                if (_potentialStartEvent != null && _potentialStartEvent.Fight == fight)
                 {
-                    _latestPotentialStartEvent.CastResult = CastResult;
-                    NanoProgram = _latestPotentialStartEvent.NanoProgram;
+                    _potentialStartEvent.CastResult = CastResult;
+                    NanoProgram = _potentialStartEvent.NanoProgram;
 
-                    StartEvent = _latestPotentialStartEvent;
-                    _latestPotentialStartEvent.EndEvent = this;
-                    _latestPotentialStartEvent = null;
+                    StartEvent = _potentialStartEvent;
+                    _potentialStartEvent.EndEvent = this;
+                    _potentialStartEvent = null;
                 }
             }
 #if DEBUG
@@ -151,14 +157,14 @@ namespace AODamageMeter.FightEvents
             SetSourceToOwner();
             CastResult = AODamageMeter.CastResult.Interrupted;
 
-            if (_latestPotentialStartEvent != null && _latestPotentialStartEvent.Fight == nanoInterruptEvent.Fight)
+            if (_potentialStartEvent != null && _potentialStartEvent.Fight == nanoInterruptEvent.Fight)
             {
-                _latestPotentialStartEvent.CastResult = CastResult;
-                NanoProgram = _latestPotentialStartEvent.NanoProgram;
+                _potentialStartEvent.CastResult = CastResult;
+                NanoProgram = _potentialStartEvent.NanoProgram;
 
-                StartEvent = _latestPotentialStartEvent;
-                _latestPotentialStartEvent.EndEvent = this;
-                _latestPotentialStartEvent = null;
+                StartEvent = _potentialStartEvent;
+                _potentialStartEvent.EndEvent = this;
+                _potentialStartEvent = null;
             }
         }
     }

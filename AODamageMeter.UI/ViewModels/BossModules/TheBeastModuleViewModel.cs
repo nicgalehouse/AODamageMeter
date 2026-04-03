@@ -69,7 +69,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 }
                 else if (systemEvent.IsNanoTerminated)
                 {
-                    bool isPurposeful = _lastManualNanoProgramDeactivationTimestamp == fightEvent.Timestamp;
+                    // Manual deactivations can come in a second before the actual termination.
+                    bool isPurposeful = _lastManualNanoProgramDeactivationTimestamp
+                        ?.AddSeconds(1) >= fightEvent.Timestamp;
                     _lastManualNanoProgramDeactivationTimestamp = null;
 
                     if (!isPurposeful && !_wipedNanoPrograms.Contains(systemEvent.NanoProgram))
