@@ -399,6 +399,11 @@ namespace AODamageMeter.UI.ViewModels
                 lock (CurrentFight)
                 {
                     DamageMeter.IsPaused = IsPaused;
+
+                    if (BossModuleViewModel != null)
+                    {
+                        BossModuleViewModel.IsPaused = IsPaused;
+                    }
                 }
             }
         }

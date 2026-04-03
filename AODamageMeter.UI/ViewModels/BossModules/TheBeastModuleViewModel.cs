@@ -190,6 +190,27 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(CastingOpacity));
         }
 
+        private bool _isPaused;
+        public bool IsPaused
+        {
+            get => _isPaused;
+            set
+            {
+                _isPaused = value;
+
+                if (IsPaused)
+                {
+                    _timeSinceReflectDetected.Stop();
+                    _timeSinceBeastLastHitSomeone.Stop();
+                }
+                else
+                {
+                    if (_timeSinceReflectDetected.ElapsedTicks > 0) _timeSinceReflectDetected.Start();
+                    if (_timeSinceBeastLastHitSomeone.ElapsedTicks > 0) _timeSinceBeastLastHitSomeone.Start();
+                }
+            }
+        }
+
         public void Reset()
         {
             _lastManualNanoProgramDeactivationTimestamp = null;
