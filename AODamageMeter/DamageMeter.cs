@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace AODamageMeter
@@ -7,10 +8,10 @@ namespace AODamageMeter
     public class DamageMeter : IDisposable
     {
         protected readonly StreamReader _logStreamReader;
+        protected readonly Stopwatch _playbackStopwatch = new Stopwatch();
         protected readonly List<LogEntry> _playbackLogEntries = new List<LogEntry>();
-        protected int _playbackStartIndex;
-        protected int _playbackIndex;
-        protected long _playbackBaseUnixSeconds;
+        protected int _playbackLogIndex;
+        protected long _playbackLogStartUnixSeconds;
         protected int _playbackSkipAheadSeconds;
 
         public DamageMeter(string characterName, Dimension dimension, string logFilePath,
@@ -48,7 +49,7 @@ namespace AODamageMeter
 
         public TimeSpan? PlaybackDuration
             => !IsPlaybackMode ? (TimeSpan?)null
-            : TimeSpan.FromSeconds(_playbackSkipAheadSeconds + (CurrentFight.Duration?.TotalSeconds ?? 0));
+            : TimeSpan.FromSeconds(_playbackSkipAheadSeconds + _playbackStopwatch.Elapsed.TotalSeconds);
 
         public void InitializeNewFight(bool saveCurrentFight = false)
         {
@@ -69,9 +70,10 @@ namespace AODamageMeter
             }
             else if (IsPlaybackMode)
             {
-                _playbackStartIndex = _playbackIndex;
-                _playbackBaseUnixSeconds = _playbackLogEntries[_playbackStartIndex].UnixSeconds;
+                _playbackLogStartUnixSeconds = _playbackLogEntries[_playbackLogIndex].UnixSeconds;
                 _playbackSkipAheadSeconds = 0;
+                if (IsPaused) _playbackStopwatch.Reset();
+                else _playbackStopwatch.Restart();
             }
 
             CurrentFight = new Fight(this) { IsPaused = IsPaused };
@@ -92,6 +94,12 @@ namespace AODamageMeter
                 {
                     CurrentFight.IsPaused = IsPaused;
                 }
+
+                if (IsPlaybackMode)
+                {
+                    if (IsPaused) _playbackStopwatch.Stop();
+                    else _playbackStopwatch.Start();
+                }
             }
         }
 
@@ -100,25 +108,7 @@ namespace AODamageMeter
 
         public void Update()
         {
-            if (IsPlaybackMode)
-            {
-                if (IsPaused || _playbackIndex >= _playbackLogEntries.Count) return;
-
-                long _playbackTargetUnixSeconds = _playbackBaseUnixSeconds + (int)PlaybackDuration.Value.TotalSeconds;
-
-                while (_playbackIndex < _playbackLogEntries.Count
-                    && _playbackLogEntries[_playbackIndex].UnixSeconds <= _playbackTargetUnixSeconds)
-                {
-                    CurrentFight.AddFightEvent(_playbackLogEntries[_playbackIndex]);
-                    _playbackIndex++;
-                }
-
-                if (_playbackIndex >= _playbackLogEntries.Count)
-                {
-                    IsPaused = true;
-                }
-            }
-            else
+            if (IsLiveMode || IsSummaryMode)
             {
                 string logLine;
                 while ((logLine = _logStreamReader.ReadLine()) != null)
@@ -126,6 +116,25 @@ namespace AODamageMeter
                     CurrentFight.AddFightEvent(logLine);
                 }
             }
+            else if (IsPlaybackMode)
+            {
+                if (IsPaused || _playbackLogIndex >= _playbackLogEntries.Count) return;
+
+                long _playbackTargetUnixSeconds = _playbackLogStartUnixSeconds + (int)PlaybackDuration.Value.TotalSeconds;
+
+                while (_playbackLogIndex < _playbackLogEntries.Count
+                    && _playbackLogEntries[_playbackLogIndex].UnixSeconds <= _playbackTargetUnixSeconds)
+                {
+                    CurrentFight.AddFightEvent(_playbackLogEntries[_playbackLogIndex]);
+                    _playbackLogIndex++;
+                }
+
+                if (_playbackLogIndex >= _playbackLogEntries.Count)
+                {
+                    IsPaused = true;
+                }
+            }
+            else throw new NotImplementedException();
         }
 
         public void SkipToStartOfLog()

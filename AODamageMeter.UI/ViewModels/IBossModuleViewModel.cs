@@ -4,5 +4,6 @@ namespace AODamageMeter.UI.ViewModels
     {
         void OnFightEventAdded(FightEvent fightEvent);
         void UpdateView();
+        void Reset();
     }
 }

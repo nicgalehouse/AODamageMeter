@@ -17,21 +17,20 @@ namespace AODamageMeter.UI.Views
 
             Title = bossModuleName;
 
-            IBossModuleViewModel viewModel;
-            UserControl view;
+            IBossModuleViewModel bossModuleViewModel;
+            UserControl bossModuleView;
 
             switch (bossModuleName)
             {
                 case "The Beast":
-                    viewModel = new TheBeastModuleViewModel();
-                    view = new TheBeastModuleView();
+                    bossModuleViewModel = new TheBeastModuleViewModel();
+                    bossModuleView = new TheBeastModuleView();
                     break;
                 default: throw new System.ArgumentException($"Unknown boss module: {bossModuleName}");
             }
 
-            view.DataContext = viewModel;
-            BossModuleViewModel = viewModel;
-            BossModuleViewContent.Content = view;
+            bossModuleView.DataContext = BossModuleViewModel = bossModuleViewModel;
+            BossModuleViewContent.Content = bossModuleView;
         }
 
         public IBossModuleViewModel BossModuleViewModel { get; private set; }

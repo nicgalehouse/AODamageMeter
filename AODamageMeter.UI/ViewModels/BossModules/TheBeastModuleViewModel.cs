@@ -10,19 +10,22 @@ namespace AODamageMeter.UI.ViewModels.BossModules
     public class TheBeastModuleViewModel : ViewModelBase, IBossModuleViewModel
     {
         private const string TheBeast = "The Beast";
-        private const int HitMeHitYouReflectDurationSeconds = 20;
-        private const int AddsAreProbablyDeadSeconds = 7;
-        private const int CastingDetectionThresholdSeconds = 3;
-        private const int CastingFullConfidenceSeconds = 7;
-        private readonly Stopwatch _timeSinceReflectDetected = new Stopwatch();
-        private readonly Stopwatch _timeSinceBeastLastHitSomeone = new Stopwatch();
-        private DateTime? _lastManualNanoProgramDeactivationTimestamp;
 
+        private DateTime? _lastManualNanoProgramDeactivationTimestamp;
         private readonly List<string> _wipedNanoPrograms = new List<string>();
         public List<string> WipedNanoPrograms => new List<string>(_wipedNanoPrograms);
         public bool HasWipedNanoPrograms => _wipedNanoPrograms.Count > 0;
+
+        private const int HitMeHitYouReflectDurationSeconds = 20;
+        private readonly Stopwatch _timeSinceReflectDetected = new Stopwatch();
         public bool IsReflectActive { get; private set; }
+
+        private const int AddsAreProbablyDeadSeconds = 5;
         public Dictionary<string, AddTracker> AddTrackers { get; }
+
+        private const int CastingDetectionThresholdSeconds = 3;
+        private const int CastingFullConfidenceSeconds = 7;
+        private readonly Stopwatch _timeSinceBeastLastHitSomeone = new Stopwatch();
         public bool IsCasting { get; private set; }
         public int CastingDurationSeconds { get; private set; }
         public double CastingOpacity { get; private set; }
@@ -148,10 +151,10 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                     // We don't know the source or target of absorbed hits--when adds are up, ignore them as a signal.
                     || attackEvent.AttackResult == AttackResult.Absorbed && !AreAnyAddsActive))
             {
+                _timeSinceBeastLastHitSomeone.Restart();
                 IsCasting = false;
                 CastingDurationSeconds = 0;
                 CastingOpacity = 0;
-                _timeSinceBeastLastHitSomeone.Restart();
             }
         }
 
@@ -185,6 +188,25 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(IsCasting));
             RaisePropertyChanged(nameof(CastingDurationSeconds));
             RaisePropertyChanged(nameof(CastingOpacity));
+        }
+
+        public void Reset()
+        {
+            _lastManualNanoProgramDeactivationTimestamp = null;
+            _wipedNanoPrograms.Clear();
+
+            _timeSinceReflectDetected.Reset();
+            IsReflectActive = false;
+
+            foreach (var tracker in AddTrackers.Values)
+            {
+                tracker.Deactivate();
+            }
+
+            _timeSinceBeastLastHitSomeone.Reset();
+            IsCasting = false;
+            CastingDurationSeconds = 0;
+            CastingOpacity = 0;
         }
     }
 }
