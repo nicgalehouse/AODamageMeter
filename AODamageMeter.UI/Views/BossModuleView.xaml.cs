@@ -45,6 +45,9 @@ namespace AODamageMeter.UI.Views
             }
         }
 
+        private void ResetButton_Click_Reset(object sender, RoutedEventArgs e)
+            => BossModuleViewModel.Reset();
+
         private void MinimizeButton_Click_Minimize(object sender, RoutedEventArgs e)
             => WindowState = WindowState.Minimized;
 
