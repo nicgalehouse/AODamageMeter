@@ -421,49 +421,49 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300")]
-        public double BossModuleViewHeight {
+        [global::System.Configuration.DefaultSettingValueAttribute("259")]
+        public double TheBeastViewHeight {
             get {
-                return ((double)(this["BossModuleViewHeight"]));
+                return ((double)(this["TheBeastViewHeight"]));
             }
             set {
-                this["BossModuleViewHeight"] = value;
+                this["TheBeastViewHeight"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("300")]
-        public double BossModuleViewWidth {
+        [global::System.Configuration.DefaultSettingValueAttribute("265")]
+        public double TheBeastViewWidth {
             get {
-                return ((double)(this["BossModuleViewWidth"]));
+                return ((double)(this["TheBeastViewWidth"]));
             }
             set {
-                this["BossModuleViewWidth"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
-        public double BossModuleViewTop {
-            get {
-                return ((double)(this["BossModuleViewTop"]));
-            }
-            set {
-                this["BossModuleViewTop"] = value;
+                this["TheBeastViewWidth"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
-        public double BossModuleViewLeft {
+        public double TheBeastViewTop {
             get {
-                return ((double)(this["BossModuleViewLeft"]));
+                return ((double)(this["TheBeastViewTop"]));
             }
             set {
-                this["BossModuleViewLeft"] = value;
+                this["TheBeastViewTop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double TheBeastViewLeft {
+            get {
+                return ((double)(this["TheBeastViewLeft"]));
+            }
+            set {
+                this["TheBeastViewLeft"] = value;
             }
         }
         

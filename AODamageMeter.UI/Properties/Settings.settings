@@ -101,16 +101,16 @@
     <Setting Name="BossModule" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BossModuleViewHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">300</Value>
+    <Setting Name="TheBeastViewHeight" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">259</Value>
     </Setting>
-    <Setting Name="BossModuleViewWidth" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">300</Value>
+    <Setting Name="TheBeastViewWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">265</Value>
     </Setting>
-    <Setting Name="BossModuleViewTop" Type="System.Double" Scope="User">
+    <Setting Name="TheBeastViewTop" Type="System.Double" Scope="User">
       <Value Profile="(Default)">NaN</Value>
     </Setting>
-    <Setting Name="BossModuleViewLeft" Type="System.Double" Scope="User">
+    <Setting Name="TheBeastViewLeft" Type="System.Double" Scope="User">
       <Value Profile="(Default)">NaN</Value>
     </Setting>
     <Setting Name="CharacterNames" Type="System.Collections.Specialized.StringCollection" Scope="User">

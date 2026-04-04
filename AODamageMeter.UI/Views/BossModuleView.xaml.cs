@@ -5,6 +5,7 @@ using AODamageMeter.UI.Views.BossModules;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace AODamageMeter.UI.Views
@@ -25,6 +26,10 @@ namespace AODamageMeter.UI.Views
                 case "The Beast":
                     bossModuleViewModel = new TheBeastModuleViewModel();
                     bossModuleView = new TheBeastModuleView();
+                    BindWindowPosition(nameof(Settings.Default.TheBeastViewHeight),
+                        nameof(Settings.Default.TheBeastViewWidth),
+                        nameof(Settings.Default.TheBeastViewTop),
+                        nameof(Settings.Default.TheBeastViewLeft));
                     break;
                 default: throw new System.ArgumentException($"Unknown boss module: {bossModuleName}");
             }
@@ -36,6 +41,14 @@ namespace AODamageMeter.UI.Views
         public IBossModuleViewModel BossModuleViewModel { get; private set; }
 
         public bool PreserveSelectedBossModuleOnClose { get; set; } = false;
+
+        private void BindWindowPosition(string heightProperty, string widthProperty, string topProperty, string leftProperty)
+        {
+            SetBinding(HeightProperty, new Binding(heightProperty) { Source = Settings.Default, Mode = BindingMode.TwoWay });
+            SetBinding(WidthProperty, new Binding(widthProperty) { Source = Settings.Default, Mode = BindingMode.TwoWay });
+            SetBinding(TopProperty, new Binding(topProperty) { Source = Settings.Default, Mode = BindingMode.TwoWay });
+            SetBinding(LeftProperty, new Binding(leftProperty) { Source = Settings.Default, Mode = BindingMode.TwoWay });
+        }
 
         private void HeaderRow_MouseDown_Drag(object sender, MouseButtonEventArgs e)
         {
