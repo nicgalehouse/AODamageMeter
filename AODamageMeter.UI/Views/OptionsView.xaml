@@ -10,6 +10,7 @@
         BorderBrush="{StaticResource LightBlueBrush50}" BorderThickness="1"
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewHeight, Mode=TwoWay}"
         Width="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewWidth, Mode=TwoWay}"
+        MinHeight="410"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewTop, Mode=TwoWay}"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewLeft, Mode=TwoWay}">
   <Window.Resources>

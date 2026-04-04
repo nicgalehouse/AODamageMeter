@@ -217,7 +217,7 @@ namespace AODamageMeter.UI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("420")]
+        [global::System.Configuration.DefaultSettingValueAttribute("410")]
         public double OptionsViewHeight {
             get {
                 return ((double)(this["OptionsViewHeight"]));

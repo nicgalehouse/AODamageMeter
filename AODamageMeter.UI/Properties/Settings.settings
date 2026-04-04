@@ -51,7 +51,7 @@
       <Value Profile="(Default)">265</Value>
     </Setting>
     <Setting Name="OptionsViewHeight" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">420</Value>
+      <Value Profile="(Default)">410</Value>
     </Setting>
     <Setting Name="OptionsViewWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
