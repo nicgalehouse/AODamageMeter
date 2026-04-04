@@ -166,12 +166,12 @@
         </ComboBox>
 
         <!-- TODO: Use binding instead of code-behind (tried, but keep running into problems). -->
-        <RadioButton x:Name="ShowPercentOfTotalRadioButton" GroupName="ShowPercent"
+        <RadioButton x:Name="ShowPercentOfMaxRadioButton" GroupName="ShowPercent"
+                     Content="Show percent of max"/>
+        <RadioButton x:Name="ShowPercentOfTotalRadioButton" GroupName="ShowPercent" Margin="0 2 0 10"
                      Checked="ShowPercentOfTotalRadioButton_Checked_Persist"
                      Unchecked="ShowPercentOfTotalRadioButton_Unchecked_Persist"
                      Content="Show percent of total"/>
-        <RadioButton x:Name="ShowPercentOfMaxRadioButton" GroupName="ShowPercent" Margin="0 2 0 10"
-                     Content="Show percent of max"/>
 
         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=ShowRowNumbers}"
                   Content="Show row numbers"/>

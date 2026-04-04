@@ -69,13 +69,13 @@
       <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="ShowPercentOfTotal" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="IncludeTopLevelZeroDamageRows" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="IncludeTopLevelNPCRows" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="LogFileSizeColumnWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">150</Value>
