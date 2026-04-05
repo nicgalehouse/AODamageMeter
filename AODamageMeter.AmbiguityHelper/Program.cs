@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AODamageMeter.Helpers;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace AODamageMeter.AmbiguityHelper
                 .Select(n => n.Trim())
                 .Where(n => !string.IsNullOrEmpty(n))
                 .Select(n => $"{char.ToUpperInvariant(n[0])}{n.Substring(1).ToLowerInvariant()}")
-                .Where(Character.FitsPlayerNamingRequirements)
+                .Where(NameHelper.FitsPlayerNamingRequirements)
                 .Distinct()
                 .OrderBy(n => n)
                 .ToArray();
@@ -32,7 +33,7 @@ namespace AODamageMeter.AmbiguityHelper
             string[] ambiguousPetNames = File.ReadAllLines("AmbiguousPetNames.txt") // Must be on different lines and capitalized properly.
                 .Select(n => n.Trim())
                 .Where(n => !string.IsNullOrEmpty(n))
-                .Where(Character.FitsPetNamingConventions)
+                .Where(NameHelper.FitsPetNamingConventions)
                 .Distinct()
                 .OrderBy(n => n)
                 .ToArray();

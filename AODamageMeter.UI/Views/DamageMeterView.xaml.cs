@@ -170,6 +170,7 @@ namespace AODamageMeter.UI.Views
             }
 
             Settings.Default.Save();
+            PlayerBioCache.Flush();
             _damageMeterViewModel.DisposeDamageMeter();
 
             base.OnClosing(e);

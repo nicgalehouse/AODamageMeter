@@ -140,14 +140,14 @@ namespace AODamageMeter
                     }
                     if (!HasObservedPVP
                         && attackEvent.Source.FightPetMaster?.Profession == Profession.Bureaucrat
-                        && !attackEvent.Source.Character.FitsPetNamingConventions() // Because if we do fit, we're definitely not a charm.
+                        && !attackEvent.Source.Character.FitsPetNamingConventions // Because if we do fit, we're definitely not a charm.
                         && attackEvent.Target.IsPlayer)
                     {
                         attackEvent.Source = GetOrCreateFightCharacter($"{attackEvent.Source.Name} (mob)", attackEvent.Timestamp);
                     }
                     if (!HasObservedPVP
                         && attackEvent.Target.FightPetMaster?.Profession == Profession.Bureaucrat
-                        && !attackEvent.Target.Character.FitsPetNamingConventions() // Because if we do fit, we're definitely not a charm.
+                        && !attackEvent.Target.Character.FitsPetNamingConventions // Because if we do fit, we're definitely not a charm.
                         && attackEvent.Source.IsPlayer)
                     {
                         attackEvent.Target = GetOrCreateFightCharacter($"{attackEvent.Target.Name} (mob)", attackEvent.Timestamp);
@@ -228,8 +228,12 @@ namespace AODamageMeter
             fightCharacter = new FightCharacter(this, character, enteredTime);
             _fightCharacters.Add(character, fightCharacter);
 
-            if (character.TryFitPetNamingConventions(out string petMasterName) && !Character.IsAmbiguousPetName(character.Name)
-                || (DamageMeter.PetRegistrations?.TryGetValue(character.Name, out petMasterName) ?? false))
+            if (character.FitsPetNamingConventions && !NameHelper.IsAmbiguousPetName(character.Name))
+            {
+                var fightPetMaster = GetOrCreateFightCharacter(character.PetMasterName, enteredTime);
+                TryRegisterFightPet(fightCharacter, fightPetMaster);
+            }
+            else if (DamageMeter.PetRegistrations?.TryGetValue(character.Name, out string petMasterName) ?? false)
             {
                 var fightPetMaster = GetOrCreateFightCharacter(petMasterName, enteredTime);
                 TryRegisterFightPet(fightCharacter, fightPetMaster);

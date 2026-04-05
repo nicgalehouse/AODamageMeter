@@ -2,6 +2,7 @@
 using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.FightEvents.Level;
+using AODamageMeter.Helpers;
 using System;
 using System.Text.RegularExpressions;
 
@@ -81,7 +82,7 @@ namespace AODamageMeter
         protected void SetSource(Match match, int index)
         {
             string name = match.Groups[index].Value;
-            string uncoloredName = Character.UncolorName(name);
+            string uncoloredName = NameHelper.UncolorName(name);
             if (uncoloredName == DamageMeter.Owner.Name)
             {
                 Source = Fight.GetOrCreateFightCharacter($"{uncoloredName}'s pets", Timestamp);
@@ -95,7 +96,7 @@ namespace AODamageMeter
         protected void SetTarget(Match match, int index)
         {
             string name = match.Groups[index].Value;
-            string uncoloredName = Character.UncolorName(name);
+            string uncoloredName = NameHelper.UncolorName(name);
             if (uncoloredName == DamageMeter.Owner.Name)
             {
                 Target = Fight.GetOrCreateFightCharacter($"{uncoloredName}'s pets", Timestamp);

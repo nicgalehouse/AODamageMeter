@@ -1,5 +1,6 @@
 ﻿using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
+using AODamageMeter.Helpers;
 using AODamageMeter.UI.Helpers;
 using System;
 using System.Collections.Generic;
@@ -132,7 +133,7 @@ namespace AODamageMeter.UI.ViewModels
                     CharacterName = loggedInCharacterNames.Length == 1 ? loggedInCharacterNames.Single() : unconfiguredCharacterNames.Single();
                 }
 
-                if (!Character.FitsPlayerNamingRequirements(CharacterName))
+                if (!NameHelper.FitsPlayerNamingRequirements(CharacterName))
                 {
                     AutoConfigureResult = $"Auto-configure failed. {CharacterName} is not a valid character name.";
                     return;
@@ -141,6 +142,7 @@ namespace AODamageMeter.UI.ViewModels
                 var characterAndBioRetriever = Character.GetOrCreateCharacterAndBioRetriever(CharacterName, Dimension);
                 var character = characterAndBioRetriever.character;
                 characterAndBioRetriever.bioRetriever.Wait(); // Not worth using await and binding IsEnableds.
+                character.IsPlayer = true;
                 if (!character.HasPlayerInfo)
                 {
                     if (long.TryParse(LogFilePath?.Split(':').Last(), out long characterID))
