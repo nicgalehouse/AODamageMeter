@@ -38,8 +38,7 @@ namespace AODamageMeter
             get => _isPaused;
             set
             {
-                if (DamageMeter.IsSummaryMode && !value) return;
-                if (DamageMeter.IsSummaryMode) throw new NotSupportedException("Pausing is not supported in summary mode.");
+                if (DamageMeter.IsSummaryMode) return;
 
                 _isPaused = value;
                 if (!HasStarted) return;

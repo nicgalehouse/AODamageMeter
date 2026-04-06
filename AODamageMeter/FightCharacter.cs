@@ -58,8 +58,7 @@ namespace AODamageMeter
             get => _isPaused;
             set
             {
-                if (DamageMeter.IsSummaryMode && !value) return;
-                if (DamageMeter.IsSummaryMode) throw new NotSupportedException("Pausing is not supported in summary mode.");
+                if (DamageMeter.IsSummaryMode) return;
                 if (!Fight.IsPaused && value) throw new NotSupportedException("Pausing a character while the fight is unpaused isn't supported yet.");
                 if (Fight.IsPaused && !value) throw new InvalidOperationException("Unpausing a character while the fight is paused doesn't make sense.");
 

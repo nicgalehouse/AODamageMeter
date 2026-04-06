@@ -94,15 +94,15 @@ namespace AODamageMeter.UI.ViewModels
             {
                 if (value == _bossModuleViewModel) return;
 
-                if (_bossModuleViewModel != null && CurrentFight != null)
+                if (CurrentFight != null && _bossModuleViewModel != null)
                 {
                     CurrentFight.FightEventAdded -= _bossModuleViewModel.OnFightEventAdded;
-                    _bossModuleViewModel.Reset();
                 }
 
+                _bossModuleViewModel?.Reset();
                 _bossModuleViewModel = value;
 
-                if (_bossModuleViewModel != null && CurrentFight != null)
+                if (CurrentFight != null && _bossModuleViewModel != null)
                 {
                     CurrentFight.FightEventAdded += _bossModuleViewModel.OnFightEventAdded;
                 }
@@ -153,13 +153,14 @@ namespace AODamageMeter.UI.ViewModels
         {
             StopDamageMeterUpdater();
 
-            if (BossModuleViewModel != null && CurrentFight != null)
+            if (CurrentFight != null && BossModuleViewModel != null)
             {
                 CurrentFight.FightEventAdded -= BossModuleViewModel.OnFightEventAdded;
-                BossModuleViewModel.Reset();
             }
 
+            BossModuleViewModel?.Reset();
             DamageMeter.InitializeNewFight(saveCurrentFight: saveCurrentFight);
+
             if (CurrentFightViewModel != null)
             {
                 if (saveCurrentFight)

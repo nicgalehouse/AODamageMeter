@@ -55,7 +55,7 @@ namespace AODamageMeter
         {
             if (CurrentFight != null)
             {
-                CurrentFight.IsPaused = !IsSummaryMode;
+                CurrentFight.IsPaused = true;
                 CurrentFight.EndTime = !IsSummaryMode ? DateTime.Now : CurrentFight.LatestEventTime;
 
                 if (saveCurrentFight)
@@ -85,8 +85,7 @@ namespace AODamageMeter
             get => _isPaused;
             set
             {
-                if (IsSummaryMode && !value) return;
-                if (IsSummaryMode) throw new NotSupportedException("Pausing is not supported in summary mode.");
+                if (IsSummaryMode) return;
 
                 _isPaused = value;
 

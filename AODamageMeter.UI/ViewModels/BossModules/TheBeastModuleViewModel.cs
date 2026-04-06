@@ -11,6 +11,8 @@ namespace AODamageMeter.UI.ViewModels.BossModules
     {
         private const string TheBeast = "The Beast";
 
+        private bool _theBeastFightHasStarted = false;
+
         private DateTime? _lastManualNanoProgramDeactivationTimestamp;
         private readonly List<string> _wipedNanoPrograms = new List<string>();
         public List<string> WipedNanoPrograms => new List<string>(_wipedNanoPrograms);
@@ -42,18 +44,20 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public void OnFightEventAdded(FightEvent fightEvent)
         {
-            // Catch the edge case where the fight begins with The Beast casting something.
-            if (!_timeSinceBeastLastHitSomeone.IsRunning
-                && fightEvent is AttackEvent attackEvent
-                && (attackEvent.Source.Name == TheBeast || attackEvent.Target.Name == TheBeast))
+            if (!_theBeastFightHasStarted
+                && (fightEvent.Source?.Name == TheBeast || fightEvent.Target?.Name == TheBeast))
             {
+                _theBeastFightHasStarted = true;
                 _timeSinceBeastLastHitSomeone.Start();
             }
 
-            CheckNcuWipe(fightEvent);
-            CheckReflectShield(fightEvent);
-            CheckAdds(fightEvent);
-            CheckCasting(fightEvent);
+            if (_theBeastFightHasStarted)
+            {
+                CheckNcuWipe(fightEvent);
+                CheckReflectShield(fightEvent);
+                CheckAdds(fightEvent);
+                CheckCasting(fightEvent);
+            }
         }
 
         // We add nano programs that get cancelled as part of a recast, but then immediately remove
@@ -167,45 +171,46 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public void UpdateView()
         {
-            if (IsReflectActive)
+            if (!_theBeastFightHasStarted)
+                return;
+
+            UpdateReflects();
+            UpdateCasting();
+            RaiseAllPropertyChanges();
+        }
+
+        private void UpdateReflects()
+        {
+            if (!IsReflectActive)
+                return;
+
+            int remainingReflectDuration = HitMeHitYouReflectDurationSeconds
+                - (int)_timeSinceReflectDetected.Elapsed.TotalSeconds;
+
+            if (remainingReflectDuration <= 0)
             {
-                int remainingReflectDuration = HitMeHitYouReflectDurationSeconds
-                    - (int)_timeSinceReflectDetected.Elapsed.TotalSeconds;
-
-                if (remainingReflectDuration <= 0)
-                {
-                    IsReflectActive = false;
-                    ReflectCountdown = null;
-                    _timeSinceReflectDetected.Reset();
-                }
-                else
-                {
-                    ReflectCountdown = $"<{remainingReflectDuration}s";
-                }
+                IsReflectActive = false;
+                ReflectCountdown = null;
+                _timeSinceReflectDetected.Reset();
             }
-
-            if (_timeSinceBeastLastHitSomeone.IsRunning)
+            else
             {
-                double secondsSinceLastHit = _timeSinceBeastLastHitSomeone.Elapsed.TotalSeconds;
-
-                if (secondsSinceLastHit >= CastingDetectionThresholdSeconds)
-                {
-                    IsCasting = true;
-                    CastingDurationSeconds = (int)secondsSinceLastHit;
-                    double progress = Math.Min(1.0, (secondsSinceLastHit - CastingDetectionThresholdSeconds)
-                        / (CastingFullConfidenceSeconds - CastingDetectionThresholdSeconds));
-                    CastingOpacity = 0.1 + (0.9 * progress);
-                }
+                ReflectCountdown = $"<{remainingReflectDuration}s";
             }
+        }
 
-            RaisePropertyChanged(nameof(WipedNanoPrograms));
-            RaisePropertyChanged(nameof(HasWipedNanoPrograms));
-            RaisePropertyChanged(nameof(IsReflectActive));
-            RaisePropertyChanged(nameof(ReflectCountdown));
-            RaisePropertyChanged(nameof(AddTrackers));
-            RaisePropertyChanged(nameof(IsCasting));
-            RaisePropertyChanged(nameof(CastingDurationSeconds));
-            RaisePropertyChanged(nameof(CastingOpacity));
+        private void UpdateCasting()
+        {
+            double secondsSinceLastHit = _timeSinceBeastLastHitSomeone.Elapsed.TotalSeconds;
+
+            if (secondsSinceLastHit >= CastingDetectionThresholdSeconds)
+            {
+                IsCasting = true;
+                CastingDurationSeconds = (int)secondsSinceLastHit;
+                double progress = Math.Min(1.0, (secondsSinceLastHit - CastingDetectionThresholdSeconds)
+                    / (CastingFullConfidenceSeconds - CastingDetectionThresholdSeconds));
+                CastingOpacity = 0.1 + (0.9 * progress);
+            }
         }
 
         private bool _isPaused;
@@ -223,14 +228,23 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 }
                 else
                 {
-                    if (_timeSinceReflectDetected.ElapsedTicks > 0) _timeSinceReflectDetected.Start();
-                    if (_timeSinceBeastLastHitSomeone.ElapsedTicks > 0) _timeSinceBeastLastHitSomeone.Start();
+                    if (_timeSinceReflectDetected.ElapsedTicks > 0)
+                    {
+                        _timeSinceReflectDetected.Start();
+                    }
+
+                    if (_timeSinceBeastLastHitSomeone.ElapsedTicks > 0)
+                    {
+                        _timeSinceBeastLastHitSomeone.Start();
+                    }
                 }
             }
         }
 
         public void Reset()
         {
+            _theBeastFightHasStarted = false;
+
             _lastManualNanoProgramDeactivationTimestamp = null;
             _wipedNanoPrograms.Clear();
 
@@ -247,6 +261,20 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             IsCasting = false;
             CastingDurationSeconds = 0;
             CastingOpacity = 0;
+
+            RaiseAllPropertyChanges();
+        }
+
+        private void RaiseAllPropertyChanges()
+        {
+            RaisePropertyChanged(nameof(WipedNanoPrograms));
+            RaisePropertyChanged(nameof(HasWipedNanoPrograms));
+            RaisePropertyChanged(nameof(IsReflectActive));
+            RaisePropertyChanged(nameof(ReflectCountdown));
+            RaisePropertyChanged(nameof(AddTrackers));
+            RaisePropertyChanged(nameof(IsCasting));
+            RaisePropertyChanged(nameof(CastingDurationSeconds));
+            RaisePropertyChanged(nameof(CastingOpacity));
         }
     }
 }
