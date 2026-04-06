@@ -70,6 +70,7 @@ namespace AODamageMeter
             }
             else if (IsPlaybackMode)
             {
+                _playbackLogIndex = 0;
                 _playbackLogStartUnixSeconds = _playbackLogEntries.Count != 0
                     ? _playbackLogEntries[_playbackLogIndex].UnixSeconds : 0;
                 _playbackSkipAheadSeconds = 0;
@@ -129,10 +130,6 @@ namespace AODamageMeter
                     _playbackLogIndex++;
                 }
 
-                if (_playbackLogIndex >= _playbackLogEntries.Count)
-                {
-                    IsPaused = true;
-                }
             }
             else throw new NotImplementedException();
         }
