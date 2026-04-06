@@ -18,6 +18,7 @@ namespace AODamageMeter
         private static readonly TimeSpan _maxAgeWithoutPlayerInfo = TimeSpan.FromHours(1);
         private static readonly TimeSpan _flushDelay = TimeSpan.FromMinutes(5);
         private static Timer _flushTimer;
+        private static bool _hasUpdated;
 
         static PlayerBioCache()
         {
@@ -64,6 +65,8 @@ namespace AODamageMeter
             lock (_lock)
             {
                 _cache[character.Key] = playerBioData;
+                _hasUpdated = true;
+
                 ScheduleFlush();
             }
         }
@@ -84,9 +87,23 @@ namespace AODamageMeter
         {
             lock (_lock)
             {
+                if (!_hasUpdated) return;
+
                 try
                 {
-                    File.WriteAllText(_cachePath, JsonConvert.SerializeObject(_cache, Formatting.Indented));
+                    string tempPath = _cachePath + ".tmp";
+                    File.WriteAllText(tempPath, JsonConvert.SerializeObject(_cache, Formatting.Indented));
+
+                    if (File.Exists(_cachePath))
+                    {
+                        File.Replace(tempPath, _cachePath, destinationBackupFileName: null);
+                    }
+                    else
+                    {
+                        File.Move(tempPath, _cachePath);
+                    }
+
+                    _hasUpdated = false;
                 }
                 catch
                 {
