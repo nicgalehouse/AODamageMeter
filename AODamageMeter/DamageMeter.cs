@@ -70,7 +70,8 @@ namespace AODamageMeter
             }
             else if (IsPlaybackMode)
             {
-                _playbackLogStartUnixSeconds = _playbackLogEntries[_playbackLogIndex].UnixSeconds;
+                _playbackLogStartUnixSeconds = _playbackLogEntries.Count != 0
+                    ? _playbackLogEntries[_playbackLogIndex].UnixSeconds : 0;
                 _playbackSkipAheadSeconds = 0;
                 if (IsPaused) _playbackStopwatch.Reset();
                 else _playbackStopwatch.Restart();

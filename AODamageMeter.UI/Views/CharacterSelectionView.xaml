@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:properties="clr-namespace:AODamageMeter.UI.Properties"
         xmlns:viewModels="clr-namespace:AODamageMeter.UI.ViewModels"
+        xmlns:behaviors="clr-namespace:AODamageMeter.UI.Behaviors"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:CharacterSelectionViewModel}"
         Title="Select Character"
         Style="{StaticResource WindowStyle}" Background="Transparent"
@@ -50,12 +51,16 @@
         <ListView.View>
           <GridView AllowsColumnReorder="False">
             <GridViewColumn Header="Name" DisplayMemberBinding="{Binding CharacterName}"
+                            behaviors:GridViewColumnMinWidthBehavior.MinWidth="50"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=NameColumnWidth, Mode=TwoWay}"/>
             <GridViewColumn Header="Dimension" DisplayMemberBinding="{Binding Dimension, Converter={StaticResource DimensionNameConverter}}"
+                            behaviors:GridViewColumnMinWidthBehavior.MinWidth="50"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=DimensionColumnWidth, Mode=TwoWay}"/>
             <GridViewColumn Header="Log File" DisplayMemberBinding="{Binding LogFilePath}"
+                            behaviors:GridViewColumnMinWidthBehavior.MinWidth="50"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=LogFileColumnWidth, Mode=TwoWay}"/>
             <GridViewColumn Header="File Size" DisplayMemberBinding="{Binding LogFileSize}"
+                            behaviors:GridViewColumnMinWidthBehavior.MinWidth="50"
                             Width="{Binding Source={x:Static properties:Settings.Default}, Path=LogFileSizeColumnWidth, Mode=TwoWay}"/>
           </GridView>
         </ListView.View>

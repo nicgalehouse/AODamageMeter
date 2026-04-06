@@ -98,6 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Compile>
     <Compile Include="Helpers\DamageMeterExtensions.cs" />
+    <Compile Include="Behaviors\GridViewColumnMinWidthBehavior.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\SharedTooltips.cs" />
     <Compile Include="PetRegistrationRepository.cs" />
