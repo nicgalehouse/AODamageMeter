@@ -16,8 +16,8 @@ namespace AODamageMeter.FightEvents.Level
             PvpTeam =  CreateRegex($"You gained {AMOUNT} PVP Team Score.", rightToLeft: true),
             Lost =     CreateRegex($"You lost {AMOUNT} xp.");
 
-        public MeGotXP(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeGotXP(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
 

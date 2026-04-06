@@ -20,8 +20,8 @@ namespace AODamageMeter.FightEvents.Heal
             Sourced =   CreateRegex($"You got healed by {SOURCE} for {AMOUNT} points of health."),
             Unsourced = CreateRegex($"You were healed for {AMOUNT} points.");
 
-        public MeGotHealth(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeGotHealth(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetTargetToOwner();
 

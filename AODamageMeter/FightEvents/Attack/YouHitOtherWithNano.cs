@@ -11,8 +11,8 @@ namespace AODamageMeter.FightEvents.Attack
         public static readonly Regex
             Basic = CreateRegex($"You hit {TARGET} with nanobots for {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        public YouHitOtherWithNano(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public YouHitOtherWithNano(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
             AttackResult = AttackResult.NanoHit;

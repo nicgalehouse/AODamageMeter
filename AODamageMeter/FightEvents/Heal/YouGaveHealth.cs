@@ -13,8 +13,8 @@ namespace AODamageMeter.FightEvents.Heal
         public static readonly Regex
             Basic = CreateRegex($"You healed {TARGET} for {AMOUNT} points of health.");
 
-        public YouGaveHealth(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public YouGaveHealth(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
             HealType = HealType.PotentialHealth;

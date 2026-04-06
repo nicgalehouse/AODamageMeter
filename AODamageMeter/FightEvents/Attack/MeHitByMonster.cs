@@ -16,8 +16,8 @@ namespace AODamageMeter.FightEvents.Attack
             Shield =  CreateRegex($"Someone's damage shield hit you for {AMOUNT} points of damage."),
             Absorb =  CreateRegex($"You absorbed {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        public MeHitByMonster(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeHitByMonster(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetTargetToOwner();
 
@@ -57,7 +57,8 @@ namespace AODamageMeter.FightEvents.Attack
         }
 
         public MeHitByMonster(SystemEvent youBlockedRegularEvent)
-            : base(youBlockedRegularEvent.Fight, youBlockedRegularEvent.Timestamp, youBlockedRegularEvent.Description)
+            : base(youBlockedRegularEvent.Fight, youBlockedRegularEvent.Timestamp,
+                  youBlockedRegularEvent.Description, youBlockedRegularEvent.LogUnixSeconds)
         {
             SetSourceToUnknown();
             SetTargetToOwner();

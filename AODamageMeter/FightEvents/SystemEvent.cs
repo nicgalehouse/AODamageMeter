@@ -32,8 +32,8 @@ namespace AODamageMeter.FightEvents
         public bool IsNanoExecutedByOther { get; protected set; }
         public string NanoProgram { get; protected set; }
 
-        public SystemEvent(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public SystemEvent(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             if (TryMatch(SelfNanoHeal, out Match match))
             {

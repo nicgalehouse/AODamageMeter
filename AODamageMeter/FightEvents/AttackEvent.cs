@@ -7,8 +7,12 @@ namespace AODamageMeter.FightEvents
     {
         protected const string DAMAGETYPE = "(.+?)";
 
-        protected AttackEvent(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        protected AttackEvent(Fight fight, DateTime timestamp, string description, long logUnixSeconds)
+            : base(fight, timestamp, description, logUnixSeconds)
+        { }
+
+        protected AttackEvent(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         { }
 
         public AttackResult AttackResult { get; protected set; }

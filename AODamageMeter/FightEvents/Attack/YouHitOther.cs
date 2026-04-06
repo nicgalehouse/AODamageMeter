@@ -15,8 +15,8 @@ namespace AODamageMeter.FightEvents.Attack
             Reflect = CreateRegex($"Your reflect shield hit {TARGET} for {AMOUNT} points of damage."),
             Shield =  CreateRegex($"Your damage shield hit {TARGET} for {AMOUNT} points of damage.");
 
-        public YouHitOther(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public YouHitOther(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
 
@@ -45,7 +45,8 @@ namespace AODamageMeter.FightEvents.Attack
         }
 
         public YouHitOther(SystemEvent yourRegularBlockedEvent)
-            : base(yourRegularBlockedEvent.Fight, yourRegularBlockedEvent.Timestamp, yourRegularBlockedEvent.Description)
+            : base(yourRegularBlockedEvent.Fight, yourRegularBlockedEvent.Timestamp,
+                  yourRegularBlockedEvent.Description, yourRegularBlockedEvent.LogUnixSeconds)
         {
             SetSourceToOwner();
             SetTargetToUnknown();

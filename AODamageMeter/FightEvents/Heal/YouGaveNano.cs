@@ -11,8 +11,8 @@ namespace AODamageMeter.FightEvents.Heal
         public static readonly Regex
             Basic = CreateRegex($"You increased nano on {TARGET} for {AMOUNT} points.");
 
-        public YouGaveNano(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public YouGaveNano(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
             HealType = HealType.Nano;

@@ -13,8 +13,8 @@ namespace AODamageMeter.FightEvents.Attack
             Crit =   CreateRegex($"(?:Player )?{SOURCE} hit you for {AMOUNT} points of {DAMAGETYPE} damage. Critical hit!", rightToLeft: true),
             Glance = CreateRegex($"(?:Player )?{SOURCE} hit you for {AMOUNT} points of {DAMAGETYPE} damage. Glancing hit.", rightToLeft: true);
 
-        public MeHitByPlayer(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeHitByPlayer(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetTargetToOwner();
             AttackResult = AttackResult.WeaponHit;

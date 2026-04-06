@@ -12,8 +12,8 @@ namespace AODamageMeter.FightEvents.Level
             Gained = CreateRegex($"You gained {AMOUNT} points of Shadowknowledge."),
             Lost =   CreateRegex($"You lost {AMOUNT} points of Shadowknowledge.");
 
-        public MeGotSK(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeGotSK(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
             LevelType = LevelType.Shadow;

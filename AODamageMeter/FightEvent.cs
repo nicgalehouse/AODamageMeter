@@ -12,12 +12,17 @@ namespace AODamageMeter
     {
         protected const string SOURCE = "(.+?)", TARGET = "(.+?)", AMOUNT = @"(\d+)";
 
-        protected FightEvent(Fight fight, DateTime timestamp, string description)
+        protected FightEvent(Fight fight, DateTime timestamp, string description, long logUnixSeconds)
         {
             Fight = fight;
             Timestamp = timestamp;
             Description = description;
+            LogUnixSeconds = logUnixSeconds;
         }
+
+        protected FightEvent(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : this(fight, timestamp, logEntry.Description, logEntry.UnixSeconds)
+        { }
 
         public static FightEvent Create(Fight fight, LogEntry logEntry)
         {
@@ -25,29 +30,29 @@ namespace AODamageMeter
 
             switch (logEntry.EventName)
             {
-                case MeCastNano.EventName: return new MeCastNano(fight, timestamp, logEntry.Description);
-                case MeGotHealth.EventName: return new MeGotHealth(fight, timestamp, logEntry.Description);
-                case MeGotNano.EventName: return new MeGotNano(fight, timestamp, logEntry.Description);
-                case MeGotSK.EventName: return new MeGotSK(fight, timestamp, logEntry.Description);
-                case MeGotXP.EventName: return new MeGotXP(fight, timestamp, logEntry.Description);
-                case MeHitByEnvironment.EventName: return new MeHitByEnvironment(fight, timestamp, logEntry.Description);
-                case MeHitByMonster.EventName: return new MeHitByMonster(fight, timestamp, logEntry.Description);
-                case MeHitByNano.EventName: return new MeHitByNano(fight, timestamp, logEntry.Description);
-                case MeHitByPlayer.EventName: return new MeHitByPlayer(fight, timestamp, logEntry.Description);
-                case OtherHitByNano.EventName: return new OtherHitByNano(fight, timestamp, logEntry.Description);
-                case OtherHitByOther.EventName: return new OtherHitByOther(fight, timestamp, logEntry.Description);
-                case OtherMisses.EventName: return new OtherMisses(fight, timestamp, logEntry.Description);
-                case Research.EventName: return new Research(fight, timestamp, logEntry.Description);
-                case SystemEvent.EventName: return new SystemEvent(fight, timestamp, logEntry.Description);
-                case YouGaveHealth.EventName: return new YouGaveHealth(fight, timestamp, logEntry.Description);
-                case YouGaveNano.EventName: return new YouGaveNano(fight, timestamp, logEntry.Description);
-                case YouHitOther.EventName: return new YouHitOther(fight, timestamp, logEntry.Description);
-                case YouHitOtherWithNano.EventName: return new YouHitOtherWithNano(fight, timestamp, logEntry.Description);
-                case YourMisses.EventName: return new YourMisses(fight, timestamp, logEntry.Description);
-                case YourPetHitByMonster.EventName: return new YourPetHitByMonster(fight, timestamp, logEntry.Description);
-                case YourPetHitByNano.EventName: return new YourPetHitByNano(fight, timestamp, logEntry.Description);
-                case YourPetHitByOther.EventName: return new YourPetHitByOther(fight, timestamp, logEntry.Description);
-                default: return new UnrecognizedEvent(fight, timestamp, logEntry.Description);
+                case MeCastNano.EventName: return new MeCastNano(fight, timestamp, logEntry);
+                case MeGotHealth.EventName: return new MeGotHealth(fight, timestamp, logEntry);
+                case MeGotNano.EventName: return new MeGotNano(fight, timestamp, logEntry);
+                case MeGotSK.EventName: return new MeGotSK(fight, timestamp, logEntry);
+                case MeGotXP.EventName: return new MeGotXP(fight, timestamp, logEntry);
+                case MeHitByEnvironment.EventName: return new MeHitByEnvironment(fight, timestamp, logEntry);
+                case MeHitByMonster.EventName: return new MeHitByMonster(fight, timestamp, logEntry);
+                case MeHitByNano.EventName: return new MeHitByNano(fight, timestamp, logEntry);
+                case MeHitByPlayer.EventName: return new MeHitByPlayer(fight, timestamp, logEntry);
+                case OtherHitByNano.EventName: return new OtherHitByNano(fight, timestamp, logEntry);
+                case OtherHitByOther.EventName: return new OtherHitByOther(fight, timestamp, logEntry);
+                case OtherMisses.EventName: return new OtherMisses(fight, timestamp, logEntry);
+                case Research.EventName: return new Research(fight, timestamp, logEntry);
+                case SystemEvent.EventName: return new SystemEvent(fight, timestamp, logEntry);
+                case YouGaveHealth.EventName: return new YouGaveHealth(fight, timestamp, logEntry);
+                case YouGaveNano.EventName: return new YouGaveNano(fight, timestamp, logEntry);
+                case YouHitOther.EventName: return new YouHitOther(fight, timestamp, logEntry);
+                case YouHitOtherWithNano.EventName: return new YouHitOtherWithNano(fight, timestamp, logEntry);
+                case YourMisses.EventName: return new YourMisses(fight, timestamp, logEntry);
+                case YourPetHitByMonster.EventName: return new YourPetHitByMonster(fight, timestamp, logEntry);
+                case YourPetHitByNano.EventName: return new YourPetHitByNano(fight, timestamp, logEntry);
+                case YourPetHitByOther.EventName: return new YourPetHitByOther(fight, timestamp, logEntry);
+                default: return new UnrecognizedEvent(fight, timestamp, logEntry);
             }
         }
 
@@ -57,6 +62,7 @@ namespace AODamageMeter
         public virtual bool CanStartFight => true;
         public DateTime Timestamp { get; }
         public string Description { get; }
+        public long LogUnixSeconds { get; }
         public bool IsUnmatched { get; protected set; }
         public FightCharacter Source { get; protected internal set; }
         public FightCharacter Target { get; protected internal set; }

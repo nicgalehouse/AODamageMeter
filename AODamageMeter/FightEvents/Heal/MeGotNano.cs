@@ -11,8 +11,8 @@ namespace AODamageMeter.FightEvents.Heal
         public static readonly Regex
             Basic = CreateRegex($"You got nano from {SOURCE} for {AMOUNT} points.");
 
-        public MeGotNano(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeGotNano(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetTargetToOwner();
             HealType = HealType.Nano;
@@ -27,7 +27,8 @@ namespace AODamageMeter.FightEvents.Heal
         }
 
         public MeGotNano(SystemEvent selfNanoHealEvent)
-            : base(selfNanoHealEvent.Fight, selfNanoHealEvent.Timestamp, selfNanoHealEvent.Description)
+            : base(selfNanoHealEvent.Fight, selfNanoHealEvent.Timestamp,
+                  selfNanoHealEvent.Description, selfNanoHealEvent.LogUnixSeconds)
         {
             SetSourceAndTargetToOwner();
             HealType = HealType.Nano;

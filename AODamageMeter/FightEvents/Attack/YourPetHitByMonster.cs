@@ -15,8 +15,8 @@ namespace AODamageMeter.FightEvents.Attack
         public static readonly Regex
             Environment = CreateRegex($"Your pet {TARGET} was damaged by a toxic substance for {AMOUNT} points of damage.");
 
-        public YourPetHitByMonster(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public YourPetHitByMonster(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             if (TryMatch(Environment, out Match match))
             {

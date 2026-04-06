@@ -82,8 +82,8 @@ namespace AODamageMeter.FightEvents
         public MeCastNano StartEvent { get; protected set; }
         public MeCastNano EndEvent { get; protected set; }
 
-        public MeCastNano(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeCastNano(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
 
@@ -93,8 +93,8 @@ namespace AODamageMeter.FightEvents
                 NanoProgram = match.Groups[1].Value;
                 if (_potentialStartEvent == null
                     // Try to handle the multi-bind scenario mentioned above by preferring the
-                    // first nano that we see is executing for a given timestamp.
-                    || _potentialStartEvent.Timestamp < timestamp)
+                    // first nano that we see is executing in the most recent log timestamp bucket.
+                    || _potentialStartEvent.LogUnixSeconds < LogUnixSeconds)
                 {
                     _potentialStartEvent = this;
                 }
@@ -152,7 +152,8 @@ namespace AODamageMeter.FightEvents
         }
 
         public MeCastNano(SystemEvent nanoInterruptEvent)
-            : base(nanoInterruptEvent.Fight, nanoInterruptEvent.Timestamp, nanoInterruptEvent.Description)
+            : base(nanoInterruptEvent.Fight, nanoInterruptEvent.Timestamp,
+                  nanoInterruptEvent.Description, nanoInterruptEvent.LogUnixSeconds)
         {
             SetSourceToOwner();
             CastResult = AODamageMeter.CastResult.Interrupted;

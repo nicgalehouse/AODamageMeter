@@ -12,8 +12,8 @@ namespace AODamageMeter.FightEvents.Attack
             Basic =   CreateRegex($"{SOURCE} tried to hit you, but missed!", rightToLeft: true),
             Special = CreateRegex($"{SOURCE} tries to attack you with {DAMAGETYPE}, but misses!", rightToLeft: true);
 
-        public OtherMisses(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public OtherMisses(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetTargetToOwner();
             AttackResult = AttackResult.Missed;

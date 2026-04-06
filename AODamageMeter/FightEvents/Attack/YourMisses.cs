@@ -12,8 +12,8 @@ namespace AODamageMeter.FightEvents.Attack
             Typed =   CreateRegex($"You try to attack {TARGET} with {DAMAGETYPE}, but you miss!"),
             Untyped = CreateRegex($"You tried to hit {TARGET}, but missed!");
 
-        public YourMisses(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public YourMisses(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
             AttackResult = AttackResult.Missed;

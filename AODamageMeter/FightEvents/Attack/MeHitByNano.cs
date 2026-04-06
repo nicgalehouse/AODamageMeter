@@ -12,8 +12,8 @@ namespace AODamageMeter.FightEvents.Attack
             Sourced =   CreateRegex($"You were attacked with nanobots from {SOURCE} for {AMOUNT} points of {DAMAGETYPE} damage."),
             Unsourced = CreateRegex($"You were attacked with nanobots for {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        public MeHitByNano(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeHitByNano(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetTargetToOwner();
             AttackResult = AttackResult.NanoHit;

@@ -18,8 +18,8 @@ namespace AODamageMeter.FightEvents.Attack
             WeirdShield =  CreateRegex($"Something hit {TARGET} for {AMOUNT} points of damage by damage shield.", rightToLeft: true),
             Absorb =       CreateRegex($"Someone absorbed {AMOUNT} points of {DAMAGETYPE} damage.");
 
-        public OtherHitByOther(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public OtherHitByOther(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             bool crit = false, glance = false, reflect = false, shield = false, weirdReflect = false, weirdShield = false;
             if (TryMatch(Basic, out Match match, out bool basic)

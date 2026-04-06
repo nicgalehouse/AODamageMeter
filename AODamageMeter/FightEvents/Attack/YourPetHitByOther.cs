@@ -17,8 +17,8 @@ namespace AODamageMeter.FightEvents.Attack
             Reflect = CreateRegex($"{SOURCE}'s reflect shield hit {TARGET} for {AMOUNT} points of damage.", rightToLeft: true),
             Shield =  CreateRegex($"{SOURCE}'s damage shield hit {TARGET} for {AMOUNT} points of damage.", rightToLeft: true);
 
-        public YourPetHitByOther(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public YourPetHitByOther(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             bool crit = false, glance = false, reflect = false, shield = false;
             if (TryMatch(Basic, out Match match, out bool basic)

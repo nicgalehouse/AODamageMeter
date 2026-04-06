@@ -11,8 +11,8 @@ namespace AODamageMeter.FightEvents.Attack
         public static readonly Regex
             Basic = CreateRegex($"You were damaged by a toxic substance for {AMOUNT} points of damage.");
 
-        public MeHitByEnvironment(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public MeHitByEnvironment(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToUnknown();
             SetTargetToOwner();

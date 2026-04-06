@@ -8,8 +8,8 @@ namespace AODamageMeter.FightEvents
         public override string Name => EventName;
         public override bool CanStartFight => false;
 
-        public UnrecognizedEvent(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public UnrecognizedEvent(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
             => IsUnmatched = true;
     }
 }

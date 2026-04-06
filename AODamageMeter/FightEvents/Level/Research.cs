@@ -13,8 +13,8 @@ namespace AODamageMeter.FightEvents.Level
             Completed = CreateRegex($"You have completed your research on \"(.+)\"."),
             NoGoal    = CreateRegex("You have assigned XP to research, but do not currently have a research goal.");
 
-        public Research(Fight fight, DateTime timestamp, string description)
-            : base(fight, timestamp, description)
+        public Research(Fight fight, DateTime timestamp, LogEntry logEntry)
+            : base(fight, timestamp, logEntry)
         {
             SetSourceToOwner();
             LevelType = LevelType.Research;
