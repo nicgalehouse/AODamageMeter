@@ -1,0 +1,7 @@
+Special attack not possible.
+You can't attack yourself.
+Unable to perform action
+Action is not available.
+You're unable to attack.
+Must be in combat mode.
+Target is already dead.

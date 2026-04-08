@@ -1,0 +1,1326 @@
+["#0000000040000002#","Vicinity","",1775604554]Welcome to AnarchyOnline
+["#0000000040000001#","System","",1775604564]1 rewards claimed.
+["#0000000040000001#","System","",1775604569]Ancient Matrix available.
+["#0000000040000001#","System","",1775604574]Attacking The Iron Reet...
+["#0000000042000018#","Me Cast Nano","",1775604574]Executing Nano Program: Self Illumination.
+["#0000000042000018#","Me Cast Nano","",1775604574]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000042000018#","Me Cast Nano","",1775604575]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604575]Unable to perform action Notum Source perk is locked, able in 00:02:50
+["#0000000040000001#","System","",1775604575]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604575]You are already running this action!
+["#0000000040000001#","System","",1775604575]Please wait until previous action has finished.
+["#0000000040000001#","System","",1775604576]You successfully perform Program Overload.
+["#0000000042000018#","Me Cast Nano","",1775604576]Nano program executed successfully.
+["#0000000040000001#","System","",1775604577]You successfully perform Flim Focus.
+["#0000000042000005#","You hit other with nano","",1775604577]You hit The Iron Reet with nanobots for 7421 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604577]Nano program executed successfully.
+["#0000000040000001#","System","",1775604577]Attacked by The Iron Reet!
+["#0000000042000005#","You hit other with nano","",1775604578]You hit The Iron Reet with nanobots for 1109 points of radiation damage.
+["#0000000040000001#","System","",1775604578]You successfully perform Pen.
+["#0000000040000001#","System","",1775604578]You increased your nanopool with 417 points.
+["#0000000042000008#","You hit other","",1775604578]You hit The Iron Reet for 1927 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604579]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604579]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604579]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604579]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604579]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604579]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604579]Unable to perform action Ancient Matrix perk is locked, able in 00:01:56
+["#0000000040000001#","System","",1775604579]Unable to perform action Ancient Matrix perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604579]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:28
+["#0000000040000001#","System","",1775604579]Unable to perform action Notum Source perk is locked, able in 00:02:46
+["#0000000040000001#","System","",1775604579]You are already running this action!
+["#0000000040000001#","System","",1775604579]You are already running this action!
+["#0000000040000001#","System","",1775604579]You are already running this action!
+["#0000000040000001#","System","",1775604579]Please wait until previous action has finished.
+["#0000000042000005#","You hit other with nano","",1775604579]You hit The Iron Reet with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604579]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604579]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604579]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604579]Unable to perform action Ancient Matrix perk is locked, able in 00:01:56
+["#0000000040000001#","System","",1775604579]Unable to perform action Ancient Matrix perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604579]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:28
+["#0000000042000018#","Me Cast Nano","",1775604580]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604580]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604580]Unable to perform action Notum Source perk is locked, able in 00:02:45
+["#0000000040000001#","System","",1775604580]You are already running this action!
+["#0000000040000001#","System","",1775604580]You are already running this action!
+["#0000000040000001#","System","",1775604580]You are already running this action!
+["#0000000040000001#","System","",1775604580]You are already running this action!
+["#0000000040000001#","System","",1775604580]Please wait until previous action has finished.
+["#0000000042000005#","You hit other with nano","",1775604580]You hit The Iron Reet with nanobots for 2257 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604580]You hit The Iron Reet with nanobots for 30646 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604580]Nano program executed successfully.
+["#0000000040000001#","System","",1775604580]You successfully perform Bot Confinement.
+["#0000000042000005#","You hit other with nano","",1775604580]You hit The Iron Reet with nanobots for 4789 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604580]Nano program executed successfully.
+["#0000000042000008#","You hit other","",1775604581]You hit The Iron Reet for 1617 points of radiation damage.
+["#0000000042000013#","Other misses","",1775604581]The Iron Reet tried to hit you, but missed!
+["#0000000042000018#","Me Cast Nano","",1775604581]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604581]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604581]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604581]Unable to perform action Ancient Matrix perk is locked, able in 00:01:55
+["#0000000040000001#","System","",1775604581]Unable to perform action Ancient Matrix perk is locked, able in 00:00:56
+["#0000000040000001#","System","",1775604581]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:27
+["#0000000040000001#","System","",1775604581]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:59
+["#0000000042000018#","Me Cast Nano","",1775604581]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604581]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604581]Unable to perform action Notum Source perk is locked, able in 00:02:44
+["#0000000040000001#","System","",1775604581]You are already running this action!
+["#0000000040000001#","System","",1775604581]You are already running this action!
+["#0000000040000001#","System","",1775604581]You are already running this action!
+["#0000000040000001#","System","",1775604581]Please wait until previous action has finished.
+["#0000000042000005#","You hit other with nano","",1775604581]You hit The Iron Reet with nanobots for 842 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604582]You hit The Iron Reet with nanobots for 4515 points of radiation damage.
+["#0000000040000001#","System","",1775604582]You successfully perform Nano Feast.
+["#0000000042000018#","Me Cast Nano","",1775604582]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604582]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604582]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604582]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604582]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604582]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604582]Unable to perform action Ancient Matrix perk is locked, able in 00:01:53
+["#0000000040000001#","System","",1775604582]Unable to perform action Ancient Matrix perk is locked, able in 00:00:54
+["#0000000040000001#","System","",1775604582]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:25
+["#0000000040000001#","System","",1775604582]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:57
+["#0000000040000001#","System","",1775604582]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604582]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604582]Must be in combat mode.
+["#0000000040000001#","System","",1775604582]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604582]Unable to perform action Notum Source perk is locked, able in 00:02:43
+["#0000000040000001#","System","",1775604582]You are already running this action!
+["#0000000042000018#","Me Cast Nano","",1775604582]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604582]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604582]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604582]Unable to perform action Ancient Matrix perk is locked, able in 00:01:53
+["#0000000040000001#","System","",1775604582]Unable to perform action Ancient Matrix perk is locked, able in 00:00:54
+["#0000000040000001#","System","",1775604582]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:25
+["#0000000040000001#","System","",1775604582]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:57
+["#0000000040000001#","System","",1775604582]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604582]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604583]Unable to perform action Notum Source perk is locked, able in 00:02:42
+["#0000000040000001#","System","",1775604583]You are already running this action!
+["#0000000040000001#","System","",1775604583]Please wait until previous action has finished.
+["#0000000040000001#","System","",1775604583]You increased your nanopool with 235 points.
+["#0000000042000018#","Me Cast Nano","",1775604583]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604583]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604583]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604583]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604583]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604583]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604583]Unable to perform action Ancient Matrix perk is locked, able in 00:01:52
+["#0000000040000001#","System","",1775604583]Unable to perform action Ancient Matrix perk is locked, able in 00:00:53
+["#0000000040000001#","System","",1775604583]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:24
+["#0000000040000001#","System","",1775604583]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:56
+["#0000000040000001#","System","",1775604583]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:03
+["#0000000040000001#","System","",1775604583]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:03
+["#0000000040000001#","System","",1775604583]Must be in combat mode.
+["#0000000040000001#","System","",1775604583]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604583]You increased your nanopool with 417 points.
+["#0000000040000001#","System","",1775604583]Unable to perform action Notum Source perk is locked, able in 00:02:42
+["#0000000040000001#","System","",1775604583]You are already running this action!
+["#0000000042000005#","You hit other with nano","",1775604583]You hit The Iron Reet with nanobots for 830 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604584]You hit The Iron Reet with nanobots for 3987 points of radiation damage.
+["#0000000040000001#","System","",1775604584]You successfully perform Utilize.
+["#0000000042000013#","Other misses","",1775604584]The Iron Reet tried to hit you, but missed!
+["#0000000042000005#","You hit other with nano","",1775604584]You hit The Iron Reet with nanobots for 11253 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604584]You hit The Iron Reet with nanobots for 17902 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604584]You hit The Iron Reet with nanobots for 1566 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604584]Nano program executed successfully.
+["#0000000042000008#","You hit other","",1775604585]You hit The Iron Reet for 1894 points of radiation damage.
+["#0000000040000001#","System","",1775604585]Your nano program Izgimmer's Tactical Nuke has stopped running on The Iron Reet...
+["#0000000040000001#","System","",1775604585]You can loot these remains.
+["#0000000040000001#","System","",1775604587]You received 280 credits from the corpse.
+["#0000000040000001#","System","",1775604588]You increased your nanopool with 417 points.
+["#0000000040000001#","System","",1775604593]You increased your nanopool with 417 points.
+["#0000000040000001#","System","",1775604606]Nanoprogram Program Overload terminated...
+["#0000000040000001#","System","",1775604612]Joining team.
+["#0000000040000001#","System","",1775604612]Warpbob04 joined your team.
+["#0000000040000001#","System","",1775604613]Raid created.
+["#0000000040000001#","System","",1775604621]Map Navigation skill available.
+["#0000000040000001#","System","",1775604636]Changing area. Please wait.
+["#0000000040000001#","System","",1775604636]Entering 'Rome Blue district'
+["#0000000040000001#","System","",1775604636]Team side is omni.
+["#0000000040000001#","System","",1775604637]Ancient Matrix available.
+["#0000000040000001#","System","",1775604644]Ancient Matrix available.
+["#0000000040000001#","System","",1775604647]Champion of Nano Combat available.
+["#0000000040000001#","System","",1775604662]You were kicked from the team.
+["#0000000040000001#","System","",1775604664]Changing area. Please wait.
+["#0000000040000001#","System","",1775604664]Entering 'Freelancers Inc. HQ - Rome'
+["#0000000040000001#","System","",1775604668]Nanobreed Secondary Genome available.
+["#0000000040000001#","System","",1775604671]You got a new mission.
+["#0000000040000001#","System","",1775604671]Waypoint uploaded to map and compass.
+["#0000000040000001#","System","",1775604671]Mission is not in this area. You will be informed when entering correct area.
+["#0000000040000001#","System","",1775604682]Joining team.
+["#0000000040000001#","System","",1775604682]Warpboi1 joined your team.
+["#0000000040000001#","System","",1775604683]Raid created.
+["#0000000040000001#","System","",1775604696]Ancient Matrix available.
+["#0000000040000001#","System","",1775604701]Champion of Nano Combat available.
+["#0000000040000001#","System","",1775604705]Changing area. Please wait.
+["#0000000040000001#","System","",1775604706]Entering 'Newland City'
+["#0000000040000001#","System","",1775604706]Team side is omni.
+["#0000000040000001#","System","",1775604707]You were kicked from the team.
+["#0000000040000001#","System","",1775604715]Changing area. Please wait.
+["#0000000040000001#","System","",1775604715]Entering 'Newland'
+["#0000000040000002#","Vicinity","",1775604738]Tod Zanter: I don't know you...
+["#0000000040000001#","System","",1775604747]Notum Source available.
+["#0000000040000001#","System","",1775604796]Changing area. Please wait.
+["#0000000040000001#","System","",1775604797]Entering 'Newland City'
+["#0000000040000001#","System","",1775604810]Changing area. Please wait.
+["#0000000040000001#","System","",1775604811]Entering 'Newland Desert'
+["#0000000040000001#","System","",1775604815]Changing area. Please wait.
+["#0000000040000001#","System","",1775604815]Entering 'Newland City'
+["#0000000040000001#","System","",1775604820]Changing area. Please wait.
+["#0000000040000001#","System","",1775604820]Entering 'Borealis City'
+["#0000000040000001#","System","",1775604825]Changing area. Please wait.
+["#0000000040000001#","System","",1775604825]Entering 'Stret West Bank'
+["#0000000040000001#","System","",1775604863]Changing area. Please wait.
+["#0000000040000001#","System","",1775604864]Entering 'Holes In the Wall'
+["#0000000040000002#","Vicinity","",1775604877]Mara Sotto: Man! Here they go again!
+["#0000000040000001#","System","",1775604877]Alien ambush has been detected.
+["#0000000040000001#","System","",1775604877]Mission accomplished.
+["#0000000040000001#","System","",1775604877]You got a new mission.
+["#0000000040000001#","System","",1775604877]Waypoint uploaded to map and compass.
+["#0000000040000001#","System","",1775604877]The waypoint is shown as a white dot on the map and a yellow indicator on the compass.
+["#0000000040000001#","System","",1775604884]Attacking Cloaked Assault Medic...
+["#0000000042000018#","Me Cast Nano","",1775604884]Executing Nano Program: Self Illumination.
+["#0000000042000018#","Me Cast Nano","",1775604884]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000042000018#","Me Cast Nano","",1775604884]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604885]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604885]You are already running this action!
+["#0000000040000001#","System","",1775604885]Please wait until previous action has finished.
+["#0000000040000001#","System","",1775604885]Attacked by Cloaked Assault Medic!
+["#0000000040000001#","System","",1775604885]You successfully perform Program Overload.
+["#0000000042000018#","Me Cast Nano","",1775604885]Nano program executed successfully.
+["#000000004200000a#","Other hit by other","",1775604886]Mara Sotto hit Cloaked Assault Medic for 8 points of melee damage. Critical hit!
+["#0000000042000013#","Other misses","",1775604886]Cloaked Assault Medic tried to hit you, but missed!
+["#0000000042000005#","You hit other with nano","",1775604887]You hit Cloaked Assault Medic with nanobots for 7178 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604887]Nano program executed successfully.
+["#0000000042000005#","You hit other with nano","",1775604887]You hit Cloaked Assault Medic with nanobots for 830 points of radiation damage.
+["#0000000040000001#","System","",1775604887]Attacked by Cloaked Kyr'Ozch Technician!
+["#0000000042000008#","You hit other","",1775604888]You hit Cloaked Assault Medic for 1607 points of radiation damage.
+["#0000000042000008#","You hit other","",1775604888]Your damage shield hit Cloaked Assault Medic for 25 points of damage.
+["#0000000042000006#","Me hit by monster","",1775604888]You absorbed 352 points of melee damage.
+["#000000004200000a#","Other hit by other","",1775604888]Mara Sotto hit Cloaked Assault Medic for 8 points of melee damage.
+["#0000000040000001#","System","",1775604889]You increased your nanopool with 417 points.
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604889]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604889]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604889]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604889]Unable to perform action Ancient Matrix perk is locked, able in 00:01:56
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]Please wait until previous action has finished.
+["#0000000042000005#","You hit other with nano","",1775604889]You hit Cloaked Assault Medic with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604889]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604889]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604889]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604889]Unable to perform action Ancient Matrix perk is locked, able in 00:01:56
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]Please wait until previous action has finished.
+["#0000000042000005#","You hit other with nano","",1775604889]You hit Cloaked Assault Medic with nanobots for 1847 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604889]You hit Cloaked Assault Medic with nanobots for 27480 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604889]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604889]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604889]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604889]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604889]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604889]Unable to perform action Ancient Matrix perk is locked, able in 00:01:56
+["#0000000040000001#","System","",1775604889]Must be in combat mode.
+["#0000000040000001#","System","",1775604889]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604889]You are already running this action!
+["#0000000040000001#","System","",1775604890]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000042000008#","You hit other","",1775604890]Your damage shield hit Cloaked Assault Medic for 25 points of damage.
+["#0000000042000006#","Me hit by monster","",1775604890]You absorbed 352 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1775604890]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604890]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604890]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604890]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604890]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604890]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604890]Unable to perform action Ancient Matrix perk is locked, able in 00:01:55
+["#0000000040000001#","System","",1775604890]Must be in combat mode.
+["#0000000040000001#","System","",1775604890]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000042000018#","Me Cast Nano","",1775604890]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604890]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604890]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604890]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604890]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604890]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604890]Unable to perform action Ancient Matrix perk is locked, able in 00:01:55
+["#0000000040000001#","System","",1775604890]Must be in combat mode.
+["#0000000040000001#","System","",1775604890]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000008#","You hit other","",1775604890]You hit Cloaked Assault Medic for 3272 points of radiation damage. Critical hit!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000042000018#","Me Cast Nano","",1775604890]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604890]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604890]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604890]Unable to perform action Ancient Matrix perk is locked, able in 00:01:55
+["#0000000042000018#","Me Cast Nano","",1775604890]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604890]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]You are already running this action!
+["#0000000040000001#","System","",1775604890]Please wait until previous action has finished.
+["#0000000042000018#","Me Cast Nano","",1775604891]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604891]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604891]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604891]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604891]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604891]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604891]Unable to perform action Ancient Matrix perk is locked, able in 00:01:55
+["#0000000040000001#","System","",1775604891]Must be in combat mode.
+["#0000000040000001#","System","",1775604891]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604891]You successfully perform a Notum Overflow attack.
+["#0000000040000001#","System","",1775604891]Unable to perform action Notum Source perk is locked, able in 00:06:00
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#000000004200000a#","Other hit by other","",1775604891]Mara Sotto hit Cloaked Assault Medic for 8 points of melee damage.
+["#0000000042000005#","You hit other with nano","",1775604891]You hit Cloaked Assault Medic with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604891]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604891]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604891]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604891]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604891]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604891]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604891]Unable to perform action Ancient Matrix perk is locked, able in 00:01:54
+["#0000000040000001#","System","",1775604891]Unable to perform action Notum Source perk is locked, able in 00:06:00
+["#0000000040000001#","System","",1775604891]Must be in combat mode.
+["#0000000040000001#","System","",1775604891]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]Attacked by Cloaked Kyr'Ozch Ensign!
+["#0000000040000001#","System","",1775604891]You must recently have Affected by Flim Focus running!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You are already running this action!
+["#0000000040000001#","System","",1775604891]You successfully perform Flim Focus.
+["#0000000042000018#","Me Cast Nano","",1775604892]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604892]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604892]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604892]Unable to perform action Ancient Matrix perk is locked, able in 00:01:53
+["#0000000040000001#","System","",1775604892]Unable to perform action Notum Source perk is locked, able in 00:05:59
+["#0000000040000001#","System","",1775604892]Unable to perform action Ancient Matrix perk is locked, able in 00:00:59
+["#0000000042000008#","You hit other","",1775604892]Your damage shield hit Cloaked Assault Medic for 25 points of damage.
+["#0000000042000006#","Me hit by monster","",1775604892]You absorbed 352 points of melee damage.
+["#0000000040000001#","System","",1775604892]You are already running this action!
+["#0000000040000001#","System","",1775604892]You are already running this action!
+["#0000000040000001#","System","",1775604892]You are already running this action!
+["#0000000040000001#","System","",1775604892]You are already running this action!
+["#0000000040000001#","System","",1775604892]Please wait until previous action has finished.
+["#0000000042000005#","You hit other with nano","",1775604893]You hit Cloaked Assault Medic with nanobots for 1067 points of radiation damage.
+["#0000000040000001#","System","",1775604893]You successfully perform Pen.
+["#0000000040000001#","System","",1775604893]Attacked by Cloaked Assault Medic!
+["#0000000042000018#","Me Cast Nano","",1775604893]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604893]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604893]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604893]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604893]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604893]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604893]Unable to perform action Ancient Matrix perk is locked, able in 00:01:52
+["#0000000040000001#","System","",1775604893]Unable to perform action Notum Source perk is locked, able in 00:05:58
+["#0000000040000001#","System","",1775604893]Unable to perform action Ancient Matrix perk is locked, able in 00:00:58
+["#0000000040000001#","System","",1775604893]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:29
+["#0000000040000001#","System","",1775604893]Must be in combat mode.
+["#0000000040000001#","System","",1775604893]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604893]You are already running this action!
+["#0000000040000001#","System","",1775604893]You are already running this action!
+["#0000000040000001#","System","",1775604893]You are already running this action!
+["#0000000040000001#","System","",1775604893]You are already running this action!
+["#0000000042000008#","You hit other","",1775604893]Your damage shield hit Cloaked Assault Medic for 25 points of damage.
+["#0000000042000006#","Me hit by monster","",1775604893]You absorbed 278 points of melee damage.
+["#0000000042000006#","Me hit by monster","",1775604893]Cloaked Assault Medic hit you for 56 points of melee damage.
+["#0000000042000005#","You hit other with nano","",1775604893]You hit Cloaked Assault Medic with nanobots for 830 points of radiation damage.
+["#0000000042000013#","Other misses","",1775604893]Cloaked Kyr'Ozch Ensign tried to hit you, but missed!
+["#0000000042000005#","You hit other with nano","",1775604893]You hit Cloaked Assault Medic with nanobots for 11861 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604893]You hit Cloaked Assault Medic with nanobots for 1620 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604893]Nano program executed successfully.
+["#0000000042000005#","You hit other with nano","",1775604893]You hit Cloaked Assault Medic with nanobots for 10362 points of radiation damage.
+["#000000004200000a#","Other hit by other","",1775604893]Mara Sotto hit Cloaked Assault Medic for 8 points of melee damage.
+["#0000000040000001#","System","",1775604893]You increased your nanopool with 235 points.
+["#0000000040000001#","System","",1775604894]You increased your nanopool with 417 points.
+["#0000000040000001#","System","",1775604894]You have to kill 2 more Cloaked Alien Citizen Ambush/Distress Call Combo - NO AXP to fulfill one of your missions!
+["#0000000040000001#","System","",1775604894]You can loot these remains.
+["#0000000042000015#","Me got health","",1775604894]You were healed for 56 points.
+["#0000000040000001#","System","",1775604895]You successfully perform Bot Confinement.
+["#0000000040000001#","System","",1775604895]Nano execution aborted because either you or your target is teleporting.
+["#0000000040000001#","System","",1775604895]Attacking Cloaked Kyr'Ozch Ensign...
+["#0000000042000018#","Me Cast Nano","",1775604895]Executing Nano Program: Self Illumination.
+["#0000000042000018#","Me Cast Nano","",1775604895]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604895]Unable to perform action Ancient Matrix perk is locked, able in 00:01:50
+["#0000000040000001#","System","",1775604895]Unable to perform action Notum Source perk is locked, able in 00:05:56
+["#0000000040000001#","System","",1775604895]Unable to perform action Ancient Matrix perk is locked, able in 00:00:56
+["#0000000040000001#","System","",1775604895]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:27
+["#0000000040000001#","System","",1775604895]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:59
+["#0000000042000018#","Me Cast Nano","",1775604895]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604895]You are already running this action!
+["#0000000040000001#","System","",1775604895]You are already running this action!
+["#0000000040000001#","System","",1775604895]You are already running this action!
+["#0000000040000001#","System","",1775604895]Please wait until previous action has finished.
+["#0000000042000013#","Other misses","",1775604896]Cloaked Kyr'Ozch Ensign tried to hit you, but missed!
+["#000000004200000a#","Other hit by other","",1775604896]Mara Sotto hit Cloaked Kyr'Ozch Ensign for 8 points of melee damage.
+["#0000000040000001#","System","",1775604897]You successfully perform Nano Feast.
+["#0000000042000005#","You hit other with nano","",1775604897]You hit Cloaked Kyr'Ozch Ensign with nanobots for 7178 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604897]Nano program executed successfully.
+["#0000000042000005#","You hit other with nano","",1775604897]You hit Cloaked Kyr'Ozch Ensign with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604897]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604897]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604897]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604897]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604897]Unable to perform action Ancient Matrix perk is locked, able in 00:01:48
+["#0000000040000001#","System","",1775604897]Unable to perform action Notum Source perk is locked, able in 00:05:54
+["#0000000040000001#","System","",1775604897]Unable to perform action Ancient Matrix perk is locked, able in 00:00:54
+["#0000000040000001#","System","",1775604897]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:25
+["#0000000040000001#","System","",1775604897]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:57
+["#0000000040000001#","System","",1775604897]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604897]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604897]Must be in combat mode.
+["#0000000040000001#","System","",1775604897]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604897]You are already running this action!
+["#0000000042000008#","You hit other","",1775604898]You hit Cloaked Kyr'Ozch Ensign for 3272 points of radiation damage. Critical hit!
+["#0000000042000013#","Other misses","",1775604898]Cloaked Kyr'Ozch Ensign tried to hit you, but missed!
+["#000000004200000a#","Other hit by other","",1775604898]Mara Sotto hit Cloaked Kyr'Ozch Ensign for 8 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1775604898]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604898]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604898]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604898]Unable to perform action Ancient Matrix perk is locked, able in 00:01:47
+["#0000000040000001#","System","",1775604898]Unable to perform action Notum Source perk is locked, able in 00:05:53
+["#0000000040000001#","System","",1775604898]Unable to perform action Ancient Matrix perk is locked, able in 00:00:53
+["#0000000040000001#","System","",1775604898]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:24
+["#0000000040000001#","System","",1775604898]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:56
+["#0000000040000001#","System","",1775604898]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:03
+["#0000000040000001#","System","",1775604898]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:03
+["#0000000040000001#","System","",1775604899]You successfully perform Utilize.
+["#0000000042000018#","Me Cast Nano","",1775604899]Nano program executed successfully.
+["#0000000040000001#","System","",1775604899]You increased your nanopool with 417 points.
+["#0000000042000018#","Me Cast Nano","",1775604899]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604899]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604899]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604899]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604899]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604899]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604899]Unable to perform action Ancient Matrix perk is locked, able in 00:01:46
+["#0000000040000001#","System","",1775604899]Unable to perform action Notum Source perk is locked, able in 00:05:52
+["#0000000040000001#","System","",1775604899]Unable to perform action Ancient Matrix perk is locked, able in 00:00:52
+["#0000000040000001#","System","",1775604899]Unable to perform action Ancient Matrix perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604899]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:23
+["#0000000040000001#","System","",1775604899]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:55
+["#0000000040000001#","System","",1775604899]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:02
+["#0000000040000001#","System","",1775604899]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:02
+["#0000000040000001#","System","",1775604899]Must be in combat mode.
+["#0000000040000001#","System","",1775604899]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604899]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604899]Unable to perform action Ancient Matrix perk is locked, able in 00:01:00
+["#0000000042000005#","You hit other with nano","",1775604899]You hit Cloaked Kyr'Ozch Ensign with nanobots for 2371 points of fire damage.
+["#0000000042000005#","You hit other with nano","",1775604899]You hit Cloaked Kyr'Ozch Ensign with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604900]Executing Nano Program: Optic Plague.
+["#0000000042000018#","Me Cast Nano","",1775604900]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604900]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604900]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000008#","You hit other","",1775604900]Your damage shield hit Cloaked Kyr'Ozch Ensign for 25 points of damage.
+["#0000000042000006#","Me hit by monster","",1775604900]Cloaked Kyr'Ozch Ensign hit you for 383 points of melee damage.
+["#0000000042000015#","Me got health","",1775604900]You were healed for 125 points.
+["#0000000042000018#","Me Cast Nano","",1775604901]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604901]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604901]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:01:44
+["#0000000040000001#","System","",1775604901]Unable to perform action Notum Source perk is locked, able in 00:05:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604901]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:21
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:53
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604901]Must be in combat mode.
+["#0000000040000001#","System","",1775604901]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000008#","You hit other","",1775604901]You hit Cloaked Kyr'Ozch Ensign for 1607 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604901]You hit Cloaked Kyr'Ozch Ensign with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604901]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604901]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604901]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604901]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604901]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:01:44
+["#0000000040000001#","System","",1775604901]Unable to perform action Notum Source perk is locked, able in 00:05:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604901]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:21
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:53
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604901]Must be in combat mode.
+["#0000000040000001#","System","",1775604901]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604901]Nano program failed. Already executing nanoprogram.
+["#000000004200000a#","Other hit by other","",1775604901]Mara Sotto hit Cloaked Kyr'Ozch Ensign for 8 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1775604901]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604901]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604901]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604901]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:01:44
+["#0000000040000001#","System","",1775604901]Unable to perform action Notum Source perk is locked, able in 00:05:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604901]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:21
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:53
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000042000005#","You hit other with nano","",1775604901]You hit Cloaked Kyr'Ozch Ensign with nanobots for 1847 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604901]You hit Cloaked Kyr'Ozch Ensign with nanobots for 28369 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604901]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604901]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604901]Unable to perform action, Sharp Obj skill is locked, able in 00:00:26
+["#0000000042000018#","Me Cast Nano","",1775604901]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604901]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604901]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604901]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604901]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604901]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:01:44
+["#0000000040000001#","System","",1775604901]Unable to perform action Notum Source perk is locked, able in 00:05:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:50
+["#0000000040000001#","System","",1775604901]Unable to perform action Ancient Matrix perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604901]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:21
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:53
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604901]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604901]Must be in combat mode.
+["#0000000040000001#","System","",1775604901]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000005#","You hit other with nano","",1775604902]You hit Cloaked Kyr'Ozch Ensign with nanobots for 9687 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:01:43
+["#0000000040000001#","System","",1775604902]Unable to perform action Notum Source perk is locked, able in 00:05:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:56
+["#0000000040000001#","System","",1775604902]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:20
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:52
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Must be in combat mode.
+["#0000000040000001#","System","",1775604902]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:01:43
+["#0000000040000001#","System","",1775604902]Unable to perform action Notum Source perk is locked, able in 00:05:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:56
+["#0000000040000001#","System","",1775604902]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:20
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:52
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Must be in combat mode.
+["#0000000040000001#","System","",1775604902]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:01:43
+["#0000000040000001#","System","",1775604902]Unable to perform action Notum Source perk is locked, able in 00:05:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:56
+["#0000000040000001#","System","",1775604902]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:20
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:52
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Must be in combat mode.
+["#0000000040000001#","System","",1775604902]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000015#","Me got health","",1775604902]You were healed for 125 points.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604902]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:01:43
+["#0000000040000001#","System","",1775604902]Unable to perform action Notum Source perk is locked, able in 00:05:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:49
+["#0000000040000001#","System","",1775604902]Unable to perform action Ancient Matrix perk is locked, able in 00:00:56
+["#0000000040000001#","System","",1775604902]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:20
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:52
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604902]Must be in combat mode.
+["#0000000040000001#","System","",1775604902]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604903]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604903]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604903]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604903]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604903]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604903]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604903]Unable to perform action Ancient Matrix perk is locked, able in 00:01:43
+["#0000000040000001#","System","",1775604903]Unable to perform action Notum Source perk is locked, able in 00:05:49
+["#0000000040000001#","System","",1775604903]Unable to perform action Ancient Matrix perk is locked, able in 00:00:49
+["#0000000040000001#","System","",1775604903]Unable to perform action Ancient Matrix perk is locked, able in 00:00:56
+["#0000000040000001#","System","",1775604903]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:20
+["#0000000040000001#","System","",1775604903]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:52
+["#0000000040000001#","System","",1775604903]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604903]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:59
+["#0000000040000001#","System","",1775604903]Must be in combat mode.
+["#0000000040000001#","System","",1775604903]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604903]Your nano program Izgimmer's Tactical Nuke has stopped running on Cloaked Kyr'Ozch Ensign...
+["#0000000042000005#","You hit other with nano","",1775604903]You hit Cloaked Kyr'Ozch Ensign with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604903]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604903]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604903]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604903]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604903]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604903]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604903]Unable to perform action Ancient Matrix perk is locked, able in 00:01:42
+["#0000000040000001#","System","",1775604903]Unable to perform action Notum Source perk is locked, able in 00:05:48
+["#0000000040000001#","System","",1775604903]Unable to perform action Ancient Matrix perk is locked, able in 00:00:48
+["#0000000040000001#","System","",1775604903]Unable to perform action Ancient Matrix perk is locked, able in 00:00:55
+["#0000000040000001#","System","",1775604903]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:19
+["#0000000040000001#","System","",1775604903]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:51
+["#0000000040000001#","System","",1775604903]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:58
+["#0000000040000001#","System","",1775604903]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:58
+["#0000000040000001#","System","",1775604903]Must be in combat mode.
+["#0000000040000001#","System","",1775604903]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000008#","You hit other","",1775604903]Your damage shield hit Cloaked Kyr'Ozch Ensign for 25 points of damage.
+["#0000000042000006#","Me hit by monster","",1775604903]Cloaked Kyr'Ozch Ensign hit you for 618 points of melee damage.
+["#000000004200000a#","Other hit by other","",1775604903]Mara Sotto hit Cloaked Kyr'Ozch Ensign for 8 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:01:42
+["#0000000040000001#","System","",1775604904]Unable to perform action Notum Source perk is locked, able in 00:05:48
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:00:48
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:00:55
+["#0000000040000001#","System","",1775604904]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:19
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:51
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:58
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:58
+["#0000000040000001#","System","",1775604904]Must be in combat mode.
+["#0000000040000001#","System","",1775604904]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604904]You increased your nanopool with 417 points.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:01:41
+["#0000000040000001#","System","",1775604904]Unable to perform action Notum Source perk is locked, able in 00:05:47
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:00:47
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:00:54
+["#0000000040000001#","System","",1775604904]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:18
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:50
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604904]Must be in combat mode.
+["#0000000040000001#","System","",1775604904]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000005#","You hit other with nano","",1775604904]You hit Cloaked Kyr'Ozch Ensign with nanobots for 14527 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604904]You hit Cloaked Kyr'Ozch Ensign with nanobots for 1566 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604904]Nano program executed successfully.
+["#0000000042000015#","Me got health","",1775604904]You were healed for 125 points.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604904]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604904]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:01:41
+["#0000000040000001#","System","",1775604904]Unable to perform action Notum Source perk is locked, able in 00:05:47
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:00:47
+["#0000000040000001#","System","",1775604904]Unable to perform action Ancient Matrix perk is locked, able in 00:00:54
+["#0000000040000001#","System","",1775604904]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:18
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:50
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604904]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:57
+["#0000000040000001#","System","",1775604904]Must be in combat mode.
+["#0000000040000001#","System","",1775604904]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000005#","You hit other with nano","",1775604905]You hit Cloaked Kyr'Ozch Ensign with nanobots for 830 points of radiation damage.
+["#0000000042000008#","You hit other","",1775604905]You hit Cloaked Kyr'Ozch Ensign for 1607 points of radiation damage.
+["#0000000042000013#","Other misses","",1775604905]Cloaked Kyr'Ozch Ensign tried to hit you, but missed!
+["#000000004200000a#","Other hit by other","",1775604906]Mara Sotto hit Cloaked Kyr'Ozch Ensign for 4 points of melee damage. Glancing hit.
+["#0000000042000015#","Me got health","",1775604906]You were healed for 125 points.
+["#0000000042000005#","You hit other with nano","",1775604907]You hit Cloaked Kyr'Ozch Ensign with nanobots for 830 points of radiation damage.
+["#0000000040000001#","System","",1775604907]You have to kill 1 more Cloaked Alien Citizen Ambush/Distress Call Combo - NO AXP to fulfill one of your missions!
+["#0000000040000001#","System","",1775604907]You can loot these remains.
+["#0000000040000001#","System","",1775604908]Attacking Cloaked Kyr'Ozch Technician...
+["#0000000042000015#","Me got health","",1775604908]You were healed for 125 points.
+["#0000000040000001#","System","",1775604908]You increased your nanopool with 235 points.
+["#0000000042000018#","Me Cast Nano","",1775604909]Executing Nano Program: Self Illumination.
+["#0000000042000018#","Me Cast Nano","",1775604909]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604909]Unable to perform action Ancient Matrix perk is locked, able in 00:01:37
+["#0000000040000001#","System","",1775604909]Unable to perform action Notum Source perk is locked, able in 00:05:43
+["#0000000040000001#","System","",1775604909]Unable to perform action Ancient Matrix perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604909]Unable to perform action Ancient Matrix perk is locked, able in 00:00:50
+["#0000000040000001#","System","",1775604909]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:14
+["#0000000040000001#","System","",1775604909]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:46
+["#0000000040000001#","System","",1775604909]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:53
+["#0000000040000001#","System","",1775604909]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:53
+["#0000000040000001#","System","",1775604909]You increased your nanopool with 417 points.
+["#0000000042000018#","Me Cast Nano","",1775604909]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604909]Unable to perform action, Sharp Obj skill is locked, able in 00:00:19
+["#0000000042000015#","Me got health","",1775604910]You were healed for 125 points.
+["#0000000042000005#","You hit other with nano","",1775604910]You hit Cloaked Kyr'Ozch Technician with nanobots for 7178 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604910]Nano program executed successfully.
+["#0000000042000005#","You hit other with nano","",1775604910]You hit Cloaked Kyr'Ozch Technician with nanobots for 830 points of radiation damage.
+["#000000004200000a#","Other hit by other","",1775604911]Mara Sotto hit Cloaked Kyr'Ozch Technician for 8 points of melee damage.
+["#0000000042000008#","You hit other","",1775604912]You hit Cloaked Kyr'Ozch Technician for 1607 points of radiation damage.
+["#0000000042000015#","Me got health","",1775604912]You were healed for 125 points.
+["#0000000042000018#","Me Cast Nano","",1775604912]Executing Nano Program: Superior Fleeting Immunity.
+["#0000000042000018#","Me Cast Nano","",1775604912]The molecular structure of this creature prohibits the use of this technology.
+["#0000000042000018#","Me Cast Nano","",1775604912]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000005#","You hit other with nano","",1775604912]You hit Cloaked Kyr'Ozch Technician with nanobots for 830 points of radiation damage.
+["#0000000040000001#","System","",1775604912]You successfully perform a Breach Defenses attack.
+["#0000000040000001#","System","",1775604912]Nanoprogram Superior Fleeting Immunity terminated...
+["#0000000042000018#","Me Cast Nano","",1775604912]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604913]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604913]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604913]The molecular structure of this creature prohibits the use of this technology.
+["#0000000042000018#","Me Cast Nano","",1775604913]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604913]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604913]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604913]The molecular structure of this creature prohibits the use of this technology.
+["#0000000042000018#","Me Cast Nano","",1775604913]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000008#","You hit other","",1775604914]You hit Cloaked Kyr'Ozch Technician for 1607 points of radiation damage.
+["#000000004200000a#","Other hit by other","",1775604914]Mara Sotto hit Cloaked Kyr'Ozch Technician for 8 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Self Illumination.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:01:32
+["#0000000040000001#","System","",1775604914]Unable to perform action Notum Source perk is locked, able in 00:05:38
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:00:38
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604914]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:09
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:41
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:48
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:48
+["#0000000040000001#","System","",1775604914]Must be in combat mode.
+["#0000000040000001#","System","",1775604914]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604914]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604914]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:01:31
+["#0000000040000001#","System","",1775604914]Unable to perform action Notum Source perk is locked, able in 00:05:37
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:00:44
+["#0000000040000001#","System","",1775604914]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:08
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:40
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:47
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:47
+["#0000000040000001#","System","",1775604914]Must be in combat mode.
+["#0000000040000001#","System","",1775604914]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604914]You increased your nanopool with 417 points.
+["#0000000042000006#","Me hit by monster","",1775604914]You absorbed 1334 points of cold damage.
+["#0000000042000002#","Me hit by nano","",1775604914]You were attacked with nanobots from Cloaked Kyr'Ozch Technician for 2162 points of cold damage.
+["#0000000040000001#","System","",1775604914]Cloaked Kyr'Ozch Technician forces your NCU to run Viral Fury...
+["#0000000042000018#","Me Cast Nano","",1775604914]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604914]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604914]Nano program failed. Already executing nanoprogram.
+["#0000000042000015#","Me got health","",1775604914]You were healed for 125 points.
+["#0000000042000005#","You hit other with nano","",1775604914]You hit Cloaked Kyr'Ozch Technician with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604914]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:01:31
+["#0000000040000001#","System","",1775604914]Unable to perform action Notum Source perk is locked, able in 00:05:37
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604914]Unable to perform action Ancient Matrix perk is locked, able in 00:00:44
+["#0000000040000001#","System","",1775604914]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:08
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:40
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:47
+["#0000000040000001#","System","",1775604914]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:47
+["#0000000042000018#","Me Cast Nano","",1775604915]Nano program failed. Already executing nanoprogram.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604915]Please wait until previous action has finished.
+["#0000000042000018#","Me Cast Nano","",1775604915]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:01:31
+["#0000000040000001#","System","",1775604915]Unable to perform action Notum Source perk is locked, able in 00:05:37
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:00:44
+["#0000000040000001#","System","",1775604915]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:08
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:40
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:47
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:47
+["#0000000040000001#","System","",1775604915]Must be in combat mode.
+["#0000000040000001#","System","",1775604915]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:01:30
+["#0000000040000001#","System","",1775604915]Unable to perform action Notum Source perk is locked, able in 00:05:36
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:00:36
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604915]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:07
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:39
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:46
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:46
+["#0000000040000001#","System","",1775604915]Must be in combat mode.
+["#0000000040000001#","System","",1775604915]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604915]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604915]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:01:30
+["#0000000040000001#","System","",1775604915]Unable to perform action Notum Source perk is locked, able in 00:05:36
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:00:36
+["#0000000040000001#","System","",1775604915]Unable to perform action Ancient Matrix perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604915]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:07
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:39
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:46
+["#0000000040000001#","System","",1775604915]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:46
+["#0000000040000001#","System","",1775604915]Must be in combat mode.
+["#0000000040000001#","System","",1775604915]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604916]Nanoprogram Program Overload terminated...
+["#0000000042000008#","You hit other","",1775604916]You hit Cloaked Kyr'Ozch Technician for 3272 points of radiation damage. Critical hit!
+["#0000000040000001#","System","",1775604916]Item must be applied on a friendly target.
+["#0000000040000001#","System","",1775604916]Item must be applied on a friendly target.
+["#0000000042000018#","Me Cast Nano","",1775604916]Executing Nano Program: Garuk's Improved Viral Assault.
+["#0000000042000018#","Me Cast Nano","",1775604916]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604916]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:01:29
+["#0000000040000001#","System","",1775604916]Unable to perform action Notum Source perk is locked, able in 00:05:35
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:00:35
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604916]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:06
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:38
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000042000018#","Me Cast Nano","",1775604916]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604916]Please wait until previous action has finished.
+["#0000000042000005#","You hit other with nano","",1775604916]You hit Cloaked Kyr'Ozch Technician with nanobots for 1722 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604916]You hit Cloaked Kyr'Ozch Technician with nanobots for 21139 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604916]Nano program executed successfully.
+["#000000004200000a#","Other hit by other","",1775604916]Mara Sotto hit Cloaked Kyr'Ozch Technician for 8 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1775604916]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604916]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604916]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604916]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604916]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604916]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:01:29
+["#0000000040000001#","System","",1775604916]Unable to perform action Notum Source perk is locked, able in 00:05:35
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:00:35
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604916]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:06
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:38
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604916]Must be in combat mode.
+["#0000000040000001#","System","",1775604916]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604916]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604916]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604916]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604916]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604916]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604916]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:01:29
+["#0000000040000001#","System","",1775604916]Unable to perform action Notum Source perk is locked, able in 00:05:35
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:00:35
+["#0000000040000001#","System","",1775604916]Unable to perform action Ancient Matrix perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604916]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:06
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:38
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604916]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604916]Must be in combat mode.
+["#0000000040000001#","System","",1775604916]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000015#","Me got health","",1775604916]You were healed for 125 points.
+["#0000000042000005#","You hit other with nano","",1775604916]You hit Cloaked Kyr'Ozch Technician with nanobots for 830 points of radiation damage.
+["#0000000040000001#","System","",1775604916]You successfully perform a Stop Notum Flow attack.
+["#0000000042000018#","Me Cast Nano","",1775604917]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604917]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604917]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604917]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604917]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604917]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604917]Unable to perform action Ancient Matrix perk is locked, able in 00:01:29
+["#0000000040000001#","System","",1775604917]Unable to perform action Notum Source perk is locked, able in 00:05:35
+["#0000000040000001#","System","",1775604917]Unable to perform action Ancient Matrix perk is locked, able in 00:00:35
+["#0000000040000001#","System","",1775604917]Unable to perform action Ancient Matrix perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604917]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:06
+["#0000000040000001#","System","",1775604917]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:38
+["#0000000040000001#","System","",1775604917]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604917]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:45
+["#0000000040000001#","System","",1775604917]Must be in combat mode.
+["#0000000040000001#","System","",1775604917]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604917]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604917]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604917]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604917]Unable to perform action Ancient Matrix perk is locked, able in 00:01:28
+["#0000000040000001#","System","",1775604917]Unable to perform action Notum Source perk is locked, able in 00:05:34
+["#0000000040000001#","System","",1775604917]Unable to perform action Ancient Matrix perk is locked, able in 00:00:34
+["#0000000040000001#","System","",1775604917]Unable to perform action Ancient Matrix perk is locked, able in 00:00:41
+["#0000000040000001#","System","",1775604917]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:05
+["#0000000040000001#","System","",1775604917]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:37
+["#0000000040000001#","System","",1775604917]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:44
+["#0000000040000001#","System","",1775604917]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:44
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:01:28
+["#0000000040000001#","System","",1775604918]Unable to perform action Notum Source perk is locked, able in 00:05:34
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:34
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:41
+["#0000000040000001#","System","",1775604918]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:05
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:37
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:44
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:44
+["#0000000040000001#","System","",1775604918]Must be in combat mode.
+["#0000000040000001#","System","",1775604918]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604918]Unable to perform action, Sharp Obj skill is locked, able in 00:00:11
+["#0000000042000005#","You hit other with nano","",1775604918]You hit Cloaked Kyr'Ozch Technician with nanobots for 9960 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:01:27
+["#0000000040000001#","System","",1775604918]Unable to perform action Notum Source perk is locked, able in 00:05:33
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:33
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604918]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:36
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604918]Must be in combat mode.
+["#0000000040000001#","System","",1775604918]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:01:27
+["#0000000040000001#","System","",1775604918]Unable to perform action Notum Source perk is locked, able in 00:05:33
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:33
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604918]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:36
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604918]Must be in combat mode.
+["#0000000040000001#","System","",1775604918]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604918]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604918]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:01:27
+["#0000000040000001#","System","",1775604918]Unable to perform action Notum Source perk is locked, able in 00:05:33
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:33
+["#0000000040000001#","System","",1775604918]Unable to perform action Ancient Matrix perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604918]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:04
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:36
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604918]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:43
+["#0000000040000001#","System","",1775604918]Must be in combat mode.
+["#0000000040000001#","System","",1775604918]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000015#","Me got health","",1775604919]You were healed for 125 points.
+["#0000000042000005#","You hit other with nano","",1775604919]You hit Cloaked Kyr'Ozch Technician with nanobots for 830 points of radiation damage.
+["#0000000040000001#","System","",1775604919]Your nano program Izgimmer's Tactical Nuke has stopped running on Cloaked Kyr'Ozch Technician...
+["#0000000040000001#","System","",1775604919]You increased your nanopool with 417 points.
+["#0000000042000005#","You hit other with nano","",1775604919]You hit Cloaked Kyr'Ozch Technician with nanobots for 9119 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604919]You hit Cloaked Kyr'Ozch Technician with nanobots for 1477 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604919]Nano program executed successfully.
+["#0000000042000018#","Me Cast Nano","",1775604919]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604919]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604919]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604919]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604919]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604919]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604919]Unable to perform action Ancient Matrix perk is locked, able in 00:01:26
+["#0000000040000001#","System","",1775604919]Unable to perform action Notum Source perk is locked, able in 00:05:32
+["#0000000040000001#","System","",1775604919]Unable to perform action Ancient Matrix perk is locked, able in 00:00:32
+["#0000000040000001#","System","",1775604919]Unable to perform action Ancient Matrix perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604919]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:03
+["#0000000040000001#","System","",1775604919]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:35
+["#0000000040000001#","System","",1775604919]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604919]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604919]Must be in combat mode.
+["#0000000040000001#","System","",1775604919]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604919]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604919]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604919]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604919]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604919]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604919]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604919]Unable to perform action Ancient Matrix perk is locked, able in 00:01:26
+["#0000000040000001#","System","",1775604919]Unable to perform action Notum Source perk is locked, able in 00:05:32
+["#0000000040000001#","System","",1775604919]Unable to perform action Ancient Matrix perk is locked, able in 00:00:32
+["#0000000040000001#","System","",1775604919]Unable to perform action Ancient Matrix perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604919]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:03
+["#0000000040000001#","System","",1775604919]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:35
+["#0000000040000001#","System","",1775604919]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604919]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:42
+["#0000000040000001#","System","",1775604919]Must be in combat mode.
+["#0000000040000001#","System","",1775604919]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604920]You are already running this action!
+["#0000000042000008#","You hit other","",1775604920]You hit Cloaked Kyr'Ozch Technician for 1607 points of radiation damage.
+["#0000000040000001#","System","",1775604920]You are already running this action!
+["#0000000042000015#","Me got health","",1775604920]You were healed for 125 points.
+["#0000000042000005#","You hit other with nano","",1775604920]You hit Cloaked Kyr'Ozch Technician with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604920]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604920]Executing Nano Program: Izgimmer's Tactical Nuke.
+["#0000000042000018#","Me Cast Nano","",1775604920]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604920]Unable to perform action Ancient Matrix perk is locked, able in 00:01:25
+["#0000000040000001#","System","",1775604920]Unable to perform action Notum Source perk is locked, able in 00:05:31
+["#0000000040000001#","System","",1775604920]Unable to perform action Ancient Matrix perk is locked, able in 00:00:31
+["#0000000040000001#","System","",1775604920]Unable to perform action Ancient Matrix perk is locked, able in 00:00:38
+["#0000000040000001#","System","",1775604920]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:02
+["#0000000040000001#","System","",1775604920]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:34
+["#0000000040000001#","System","",1775604920]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:41
+["#0000000040000001#","System","",1775604920]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:41
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000040000001#","System","",1775604921]Please wait until previous action has finished.
+["#0000000042000018#","Me Cast Nano","",1775604921]Nano program executed successfully.
+["#0000000040000001#","System","",1775604921]You increased your nanopool with 1050 points.
+["#0000000040000001#","System","",1775604921]You successfully perform Tap Notum Source.
+["#0000000040000001#","System","",1775604921]You increased your nanopool with 1050 points.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:01:25
+["#0000000040000001#","System","",1775604921]Unable to perform action Notum Source perk is locked, able in 00:05:31
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:31
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:38
+["#0000000040000001#","System","",1775604921]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:02
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:34
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:41
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:41
+["#0000000040000001#","System","",1775604921]Must be in combat mode.
+["#0000000040000001#","System","",1775604921]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:01:24
+["#0000000040000001#","System","",1775604921]Unable to perform action Notum Source perk is locked, able in 00:05:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604921]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:01
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:33
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Must be in combat mode.
+["#0000000040000001#","System","",1775604921]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:01:24
+["#0000000040000001#","System","",1775604921]Unable to perform action Notum Source perk is locked, able in 00:05:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604921]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:01
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:33
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Must be in combat mode.
+["#0000000040000001#","System","",1775604921]You're unable to perform this action; please check the requirements of the item.
+["#000000004200000a#","Other hit by other","",1775604921]Mara Sotto hit Cloaked Kyr'Ozch Technician for 8 points of melee damage.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:01:24
+["#0000000040000001#","System","",1775604921]Unable to perform action Notum Source perk is locked, able in 00:05:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604921]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:01
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:33
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Must be in combat mode.
+["#0000000040000001#","System","",1775604921]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604921]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604921]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:01:24
+["#0000000040000001#","System","",1775604921]Unable to perform action Notum Source perk is locked, able in 00:05:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:30
+["#0000000040000001#","System","",1775604921]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604921]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:01
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:33
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604921]Must be in combat mode.
+["#0000000040000001#","System","",1775604921]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604922]Executing Nano Program: Izgimmer's Ultimatum.
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:01:24
+["#0000000040000001#","System","",1775604922]Unable to perform action Notum Source perk is locked, able in 00:05:30
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:00:30
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:00:37
+["#0000000040000001#","System","",1775604922]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:01
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:33
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:40
+["#0000000040000001#","System","",1775604922]Must be in combat mode.
+["#0000000040000001#","System","",1775604922]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604922]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604922]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604922]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:01:23
+["#0000000040000001#","System","",1775604922]Unable to perform action Notum Source perk is locked, able in 00:05:29
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:00:29
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:00:36
+["#0000000040000001#","System","",1775604922]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:32
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604922]Must be in combat mode.
+["#0000000040000001#","System","",1775604922]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000018#","Me Cast Nano","",1775604922]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604922]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604922]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604922]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:01:23
+["#0000000040000001#","System","",1775604922]Unable to perform action Notum Source perk is locked, able in 00:05:29
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:00:29
+["#0000000040000001#","System","",1775604922]Unable to perform action Ancient Matrix perk is locked, able in 00:00:36
+["#0000000040000001#","System","",1775604922]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:32
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604922]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604922]Must be in combat mode.
+["#0000000040000001#","System","",1775604922]You're unable to perform this action; please check the requirements of the item.
+["#0000000042000015#","Me got health","",1775604922]You were healed for 125 points.
+["#0000000042000005#","You hit other with nano","",1775604922]You hit Cloaked Kyr'Ozch Technician with nanobots for 830 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604923]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604923]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604923]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604923]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000042000018#","Me Cast Nano","",1775604923]Wait for current nano program execution to finish.
+["#0000000042000018#","Me Cast Nano","",1775604923]Unable to execute nano program. You can't execute this nano on the target.
+["#0000000040000001#","System","",1775604923]Unable to perform action Ancient Matrix perk is locked, able in 00:01:23
+["#0000000040000001#","System","",1775604923]Unable to perform action Notum Source perk is locked, able in 00:05:29
+["#0000000040000001#","System","",1775604923]Unable to perform action Ancient Matrix perk is locked, able in 00:00:29
+["#0000000040000001#","System","",1775604923]Unable to perform action Ancient Matrix perk is locked, able in 00:00:36
+["#0000000040000001#","System","",1775604923]Unable to perform action Nanobreed Secondary Genome perk is locked, able in 00:01:00
+["#0000000040000001#","System","",1775604923]Unable to perform action Champion of Nano Combat perk is locked, able in 00:01:32
+["#0000000040000001#","System","",1775604923]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604923]Unable to perform action Champion of Nano Combat perk is locked, able in 00:00:39
+["#0000000040000001#","System","",1775604923]Must be in combat mode.
+["#0000000040000001#","System","",1775604923]You're unable to perform this action; please check the requirements of the item.
+["#0000000040000001#","System","",1775604923]You increased your nanopool with 1050 points.
+["#0000000042000005#","You hit other with nano","",1775604923]You hit Cloaked Kyr'Ozch Technician with nanobots for 13894 points of radiation damage.
+["#0000000042000005#","You hit other with nano","",1775604923]You hit Cloaked Kyr'Ozch Technician with nanobots for 1477 points of radiation damage.
+["#0000000042000018#","Me Cast Nano","",1775604923]Nano program executed successfully.
+["#0000000040000001#","System","",1775604924]You increased your nanopool with 235 points.
+["#0000000042000005#","You hit other with nano","",1775604924]You hit Cloaked Kyr'Ozch Technician with nanobots for 9427 points of radiation damage.
+["#0000000040000001#","System","",1775604924]You increased your nanopool with 417 points.
+["#0000000040000001#","System","",1775604924]You can loot these remains.
+["#0000000040000001#","System","",1775604924]Mission accomplished.
+["#0000000040000001#","System","",1775604924]You got a new mission.
+["#0000000040000001#","System","",1775604924]Waypoint uploaded to map and compass.
+["#0000000040000001#","System","",1775604924]The waypoint is shown as a white dot on the map and a yellow indicator on the compass.
+["#0000000042000015#","Me got health","",1775604925]You were healed for 125 points.
+["#0000000040000001#","System","",1775604925]You increased your nanopool with 1050 points.
+["#0000000042000015#","Me got health","",1775604927]You were healed for 125 points.
+["#0000000040000001#","System","",1775604927]You increased your nanopool with 1050 points.
+["#0000000040000001#","System","",1775604928]Knife or Sharp Object Throwing skill available.
+["#0000000042000015#","Me got health","",1775604929]You were healed for 125 points.
+["#0000000040000001#","System","",1775604929]Mission accomplished.
+["#0000000040000001#","System","",1775604929]You got a new mission.
+["#0000000040000002#","Vicinity","",1775604930]Mara Sotto: Give me a minute, please... Just a minute.
+["#0000000042000015#","Me got health","",1775604931]You were healed for 125 points.
+["#0000000040000002#","Vicinity","",1775604932]Mara Sotto: Help!
+["#0000000042000015#","Me got health","",1775604933]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604935]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604937]You were healed for 125 points.
+["#0000000040000001#","System","",1775604937]Joining team.
+["#0000000040000001#","System","",1775604937]Warpbob04 joined your team.
+["#0000000040000001#","System","",1775604937]Raid created.
+["#0000000042000015#","Me got health","",1775604939]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604941]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604943]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604945]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604947]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604949]You were healed for 125 points.
+["#0000000042000015#","Me got health","",1775604951]You were healed for 38 points.
+["#0000000040000001#","System","",1775604952]Ancient Matrix available.
+["#0000000040000001#","System","",1775604959]Ancient Matrix available.
+["#0000000040000001#","System","",1775604960]Changing area. Please wait.
+["#0000000040000001#","System","",1775604961]Entering 'Rome Blue district'
+["#0000000040000001#","System","",1775604961]Team side is omni.
+["#0000000040000001#","System","",1775604962]Champion of Nano Combat available.
+["#0000000042000009#","Your pet hit by other","",1775613164]Briefcase hit Masked Commando for 2775 points of melee damage.
+["#0000000042000008#","You hit other","",1775613164]Your reflect shield hit Masked Commando for 49 points of damage.
+["#0000000042000008#","You hit other","",1775613164]Your damage shield hit Masked Commando for 110 points of damage.
+["#0000000042000006#","Me hit by monster","",1775613164]Masked Commando hit you for 536 points of melee damage.
+["#0000000042000008#","You hit other","",1775613165]You hit Masked Commando for 1841 points of projectile damage.
+["#0000000042000015#","Me got health","",1775613165]You were healed for 304 points.
+["#0000000042000008#","You hit other","",1775613166]You hit Masked Commando for 2809 points of projectile damage. Critical hit!
+["#0000000040000001#","System","",1775613167]You can loot these remains.
+["#0000000042000015#","Me got health","",1775613167]You were healed for 232 points.
+["#0000000040000001#","System","",1775613178]Champion of Light Artillery available.
+["#0000000040000001#","System","",1775613182]Champion of Nano Combat available.
+["#0000000040000001#","System","",1775613185]Loophole available.
+["#0000000040000001#","System","",1775613377]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613377]Nanoprogram Composite Utility Expertise terminated...
+["#0000000040000001#","System","",1775613377]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613377]Nanoprogram Composite Martial Prowess Expertise terminated...
+["#0000000040000001#","System","",1775613377]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613377]Nanoprogram Composite Ranged Special Expertise terminated...
+["#0000000040000001#","System","",1775613377]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613377]Nanoprogram Composite Ranged Expertise terminated...
+["#0000000040000001#","System","",1775613378]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613378]Nanoprogram Composite Nano Expertise terminated...
+["#0000000040000001#","System","",1775613378]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613378]Nanoprogram Composite Attribute Boost terminated...
+["#0000000040000001#","System","",1775613378]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613378]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613378]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613378]Nanoprogram Composite Mochams (8 hours) terminated...
+["#0000000040000001#","System","",1775613378]Can't remove hostile timed nanoprogram.
+["#0000000040000001#","System","",1775613378]Can't remove hostile timed nanoprogram.
+["#0000000040000001#","System","",1775613378]Can't remove hostile timed nanoprogram.
+["#0000000040000001#","System","",1775613379]Can't remove hostile timed nanoprogram.
+["#0000000040000001#","System","",1775613379]Can't remove hostile timed nanoprogram.
+["#0000000040000001#","System","",1775613379]Can't remove hostile timed nanoprogram.
+["#0000000040000001#","System","",1775613380]Can't remove hostile timed nanoprogram.
+["#0000000040000001#","System","",1775613380]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613380]Nanoprogram Composite Tradeskill Expertise terminated...
+["#0000000040000001#","System","",1775613380]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613380]Nanoprogram Ranged Energy Weapon Mastery terminated...
+["#0000000040000001#","System","",1775613380]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613380]Nanoprogram Riot Control terminated...
+["#0000000040000001#","System","",1775613381]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613381]Nanoprogram Enhanced Senses terminated...
+["#0000000040000001#","System","",1775613381]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613381]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613381]Nanoprogram Full Automatic Targeting terminated...
+["#0000000040000001#","System","",1775613381]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613381]Nanoprogram Feline Grace terminated...
+["#0000000040000001#","System","",1775613382]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613382]Nanoprogram Improved Nano Repulsor terminated...
+["#0000000040000001#","System","",1775613382]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613382]Nanoprogram Prodigious Strength terminated...
+["#0000000040000001#","System","",1775613382]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613383]Nanoprogram Enhanced Sureshot terminated...
+["#0000000040000001#","System","",1775613383]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613383]Nanoprogram CrunchCom Nano Compressor terminated...
+["#0000000040000001#","System","",1775613383]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613383]Nanoprogram Extreme Prejudice terminated...
+["#0000000040000001#","System","",1775613383]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613383]Nanoprogram Reactive Reflective Field (Extended) terminated...
+["#0000000040000001#","System","",1775613383]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613384]Nanoprogram Assassin's Grin terminated...
+["#0000000040000001#","System","",1775613384]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613384]Nanoprogram Martial Arts Mastery terminated...
+["#0000000040000001#","System","",1775613385]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613385]Nanoprogram Continuous Reconstruction terminated...
+["#0000000040000001#","System","",1775613385]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613385]Nanoprogram Coruscating Screen terminated...
+["#0000000040000001#","System","",1775613385]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613385]Nanoprogram Greater Gunslinger terminated...
+["#0000000040000001#","System","",1775613385]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613385]Nanoprogram Soothing Calm terminated...
+["#0000000040000001#","System","",1775613385]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613385]Nanoprogram Neuronal Stimulator terminated...
+["#0000000040000001#","System","",1775613385]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613385]Nanoprogram Improved Cut Red Tape terminated...
+["#0000000040000001#","System","",1775613386]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613386]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613386]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613387]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613387]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613387]Nanoprogram Insight into the Shadowlands terminated...
+["#0000000040000001#","System","",1775613387]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613387]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613387]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613387]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613387]Nanoprogram Lasting Ultimatum terminated...
+["#0000000040000001#","System","",1775613387]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613388]Nanoprogram Gift of Assurance terminated...
+["#0000000040000001#","System","",1775613388]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613388]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613388]Nanoprogram Improved Instinctive Control terminated...
+["#0000000040000001#","System","",1775613388]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613388]Nanoprogram Improved Essence of Behemoth terminated...
+["#0000000040000001#","System","",1775613388]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613389]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613389]Nanoprogram Superior First Aid terminated...
+["#0000000040000001#","System","",1775613389]Deactivating friendly timed nanoprogram.
+["#0000000040000001#","System","",1775613389]Nanoprogram Motivational Speech: Improved Heroic Measures terminated...
+["#0000000040000001#","System","",1775613390]Deactivating friendly timed nanoprogram.

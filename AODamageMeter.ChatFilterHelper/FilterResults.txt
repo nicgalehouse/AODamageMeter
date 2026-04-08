@@ -1,0 +1,19 @@
+/filter add ^[EINPSTUWY][ahlnoptx][aeinru][abcgmorst' ][aceilmrstu ][aefimoprtu][aefilnorstu ][MPefgimnorstuw' ][acegmnostuv ][abceilnorstuy ][abcdeflnoprstu ][aceilmorstux ][abcdeginoqrstu ][acdefghklnrtu ][achilnoprstuy ][Taefghilnoprtu' ][aeilmnorstuwy ][deilnoprstuv ][abcdehilnopuw ][Wadefhinoprty. ][aefhinostuv ][Aabefhlnorsv ][acefgilnoprst -][APWaefgimoprstuv12 ][abefhloprtuxy -][Hacefghilmnoqrst ][Aabcdefghiklnoru ][acefgilmnorstuy. ][acdefghiklmnrstu ][Taegilmrst!. -]
+/filter add ^[AMSTUY][acnopu][aerstu][bcgit' ][ceilor ][abent][eln ][itu' ][ainost][ant ][abnpt ][acelot][ceort][aefkm ][abcot ][adknorv][amoty ][aity ][adlmot ][aceoptu][abdort][cdeils][ekos.]
+/filter add ^Executing Nano Program: Spirit Siphon.$
+/filter add ^Target resisted.$
+
+=== False Positive Test ===
+32195 messages tested across 8 files, 0 false positive(s) found.
+
+=== Filtered Logs ===
+UnfilteredBureaucratSampleLog.txt: 3367 of 5000 removed (67.3%), 1633 kept.
+UnfilteredDoctorSampleLog.txt: 1191 of 2418 removed (49.3%), 1227 kept.
+UnfilteredEnforcerSampleLog.txt: 3345 of 5000 removed (66.9%), 1655 kept.
+UnfilteredEngineerSampleLog.txt: 1823 of 3454 removed (52.8%), 1631 kept.
+UnfilteredKeeperSampleLog.txt: 2913 of 5000 removed (58.3%), 2087 kept.
+UnfilteredNanoTechnicianSampleLog.txt: 901 of 1326 removed (67.9%), 425 kept.
+UnfilteredShadeSampleLog.txt: 4258 of 4998 removed (85.2%), 740 kept.
+UnfilteredTraderSampleLog.txt: 2378 of 4999 removed (47.6%), 2621 kept.
+
+Total: 20176 of 32195 removed (62.7%). Filtered logs written to FilteredSampleLogs/.

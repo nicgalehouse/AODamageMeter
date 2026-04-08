@@ -1,0 +1,34 @@
+You're unable to perform this action; please check the requirements of the item.
+The molecular structure of this creature prohibits the use of this technology.
+You are not allowed to execute hostile nanoprogram on this target.
+Special attack not possible. The target is aware of your presence.
+Target Percentage of remaining health is not less than 
+This item requires a fighting-target to be applied on.
+You are currently unable to use perk special actions!
+This item requires a hostile target to be applied on.
+You must recently have 1-Handed Blunt Focus running!
+Nano program failed. Already executing nanoprogram.
+You must recently have 2-Handed Edge Focus running!
+Wait for current nano program execution to finish.
+Wait for your previous special attack to complete.
+Target evaded your Wen-Wen master of the universe!
+Target Monster Type is required to be at least 1!
+Please wait until previous action has finished.
+You can't use this nano program at the moment.
+Executing programs is currently unavailable.
+The target is outside special attack range!
+Item must be applied on a friendly target.
+You are not allowed to attack this target.
+You can't do this while you are falling!
+This effect can only be utilitized by
+You are already running this action!
+You must be in front of the target!
+Target must recently have Affected
+You must recently have Performed
+You must recently have Affected
+Unable to execute nano program.
+Target is not in line of sight!
+Special attack is unavailable.
+You can't fight at the moment!
+You must be behind the target!
+Your target can't be attacked.
