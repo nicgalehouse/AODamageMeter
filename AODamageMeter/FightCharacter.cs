@@ -50,7 +50,7 @@ namespace AODamageMeter
             ? _stopwatch.Elapsed : Fight.LatestEventTime.Value - EnteredTime;
         public TimeSpan ActiveDurationPlusPets => !DamageMeter.IsSummaryMode
             // We maintain _stopwatchPlusPets for live mode so we don't have to find the max active duration all the time.
-            ? _stopwatchPlusPets.Elapsed : SelfAndFightPets.Select(c => c.ActiveDuration).Max();
+            ? _stopwatchPlusPets.Elapsed : SelfAndFightPets.Max(c => c.ActiveDuration);
 
         protected bool _isPaused;
         public bool IsPaused
@@ -912,7 +912,9 @@ namespace AODamageMeter
             }
             else if (systemEvent.IsNanoDeactivated
                 || systemEvent.IsNanoTerminated
-                || systemEvent.IsNanoExecutedByOther)
+                || systemEvent.IsFriendlyNanoExecutedOnYou
+                || systemEvent.IsHostileNanoExecutedOnYou
+                || systemEvent.IsHostileNanoCounteredByYou)
             {
                 // No fight character tracking needed--just here for boss modules.
             }

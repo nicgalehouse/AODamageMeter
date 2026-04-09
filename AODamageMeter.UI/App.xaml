@@ -38,6 +38,7 @@
     <Color x:Key="DarkBlueColor">#0C1E2F</Color>
     <SolidColorBrush x:Key="DarkBlueBrush" Color="{StaticResource DarkBlueColor}" po:Freeze="True"/>
     <SolidColorBrush x:Key="DarkBlueBrush85" Color="{StaticResource DarkBlueColor}" Opacity=".85" po:Freeze="True"/>
+    <SolidColorBrush x:Key="DarkBlueBrush81" Color="{StaticResource DarkBlueColor}" Opacity=".81" po:Freeze="True"/>
     <SolidColorBrush x:Key="DarkBlueBrush20" Color="{StaticResource DarkBlueColor}" Opacity=".20" po:Freeze="True"/>
     <SolidColorBrush x:Key="DarkBlueBrush15" Color="{StaticResource DarkBlueColor}" Opacity=".15" po:Freeze="True"/>
 

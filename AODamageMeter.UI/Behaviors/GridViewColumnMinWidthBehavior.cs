@@ -13,8 +13,11 @@ namespace AODamageMeter.UI.Behaviors
                 typeof(GridViewColumnMinWidthBehavior),
                 new PropertyMetadata(0.0, OnMinWidthChanged));
 
-        public static double GetMinWidth(GridViewColumn column) => (double)column.GetValue(MinWidthProperty);
-        public static void SetMinWidth(GridViewColumn column, double value) => column.SetValue(MinWidthProperty, value);
+        public static double GetMinWidth(GridViewColumn column)
+            => (double)column.GetValue(MinWidthProperty);
+
+        public static void SetMinWidth(GridViewColumn column, double value)
+            => column.SetValue(MinWidthProperty, value);
 
         private static void OnMinWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -33,6 +36,7 @@ namespace AODamageMeter.UI.Behaviors
             if (sender is GridViewColumn column)
             {
                 double minWidth = GetMinWidth(column);
+
                 if (column.Width < minWidth)
                 {
                     column.Width = minWidth;

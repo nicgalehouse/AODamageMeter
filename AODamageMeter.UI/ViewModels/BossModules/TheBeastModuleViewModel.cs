@@ -1,18 +1,23 @@
 using AODamageMeter.FightEvents;
 using AODamageMeter.FightEvents.Attack;
+using AODamageMeter.UI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.BossModules
 {
-    public class TheBeastModuleViewModel : ViewModelBase, IBossModuleViewModel
+    public class TheBeastModuleViewModel : BossModuleViewModelBase
     {
         private const string TheBeast = "The Beast";
+        private const string TheBeastIconPath = "/Icons/TheBeast.png";
+        public override string IconPath => TheBeastIconPath;
 
         private bool _theBeastFightHasStarted = false;
 
+        private long? _lastManualNanoProgramDeactivationUnixSeconds;
         private DateTime? _lastManualNanoProgramDeactivationTimestamp;
         private readonly List<string> _wipedNanoPrograms = new List<string>();
         public List<string> WipedNanoPrograms => new List<string>(_wipedNanoPrograms);
@@ -28,10 +33,15 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         private const int CastingDetectionThresholdSeconds = 3;
         private const int CastingFullConfidenceSeconds = 7;
-        private readonly Stopwatch _timeSinceBeastLastHitSomeone = new Stopwatch();
+        private readonly Stopwatch _timeSinceBeastLastHitOrCast = new Stopwatch();
         public bool IsCasting { get; private set; }
         public int CastingDurationSeconds { get; private set; }
         public double CastingOpacity { get; private set; }
+
+        private const string DoomOfTheSpirits = "Doom Of The Spirits";
+        private const string DoomOfTheSpiritsIconPath = "/Icons/DoomOfTheSpirits.png";
+        private const int DoomOfTheSpiritsDurationSeconds = 18;
+        private static readonly Brush DoomOfTheSpiritsBarColor = new SolidColorBrush(Color.FromRgb(0x7C, 0x82, 0x89)).Frozen();
 
         public TheBeastModuleViewModel()
             => AddTrackers = new Dictionary<string, AddTracker>
@@ -42,13 +52,13 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 ["Corrupted Xan-Cur"] = new AddTracker("Corrupted Xan-Cur"),
             };
 
-        public void OnFightEventAdded(FightEvent fightEvent)
+        public override void OnFightEventAdded(FightEvent fightEvent)
         {
             if (!_theBeastFightHasStarted
                 && (fightEvent.Source?.Name == TheBeast || fightEvent.Target?.Name == TheBeast))
             {
                 _theBeastFightHasStarted = true;
-                _timeSinceBeastLastHitSomeone.Start();
+                _timeSinceBeastLastHitOrCast.Start();
             }
 
             if (_theBeastFightHasStarted)
@@ -57,6 +67,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 CheckReflectShield(fightEvent);
                 CheckAdds(fightEvent);
                 CheckCasting(fightEvent);
+                CheckDoomOfTheSpirits(fightEvent);
             }
         }
 
@@ -70,13 +81,15 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             {
                 if (systemEvent.IsNanoDeactivated)
                 {
+                    _lastManualNanoProgramDeactivationUnixSeconds = fightEvent.LogUnixSeconds;
                     _lastManualNanoProgramDeactivationTimestamp = fightEvent.Timestamp;
                 }
                 else if (systemEvent.IsNanoTerminated)
                 {
-                    // Manual deactivations can come in a second before the actual termination.
-                    bool isPurposeful = _lastManualNanoProgramDeactivationTimestamp
-                        ?.AddSeconds(1) >= fightEvent.Timestamp;
+                    // Manual deactivations can come in a bit before the actual termination.
+                    bool isPurposeful = _lastManualNanoProgramDeactivationUnixSeconds == fightEvent.LogUnixSeconds
+                        || _lastManualNanoProgramDeactivationTimestamp?.AddSeconds(.5) >= fightEvent.Timestamp;
+                    _lastManualNanoProgramDeactivationUnixSeconds = null;
                     _lastManualNanoProgramDeactivationTimestamp = null;
 
                     if (!isPurposeful && !_wipedNanoPrograms.Contains(systemEvent.NanoProgram))
@@ -84,7 +97,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                         _wipedNanoPrograms.Add(systemEvent.NanoProgram);
                     }
                 }
-                else if (systemEvent.IsNanoExecutedByOther)
+                else if (systemEvent.IsFriendlyNanoExecutedOnYou)
                 {
                     _wipedNanoPrograms.Remove(systemEvent.NanoProgram);
                 }
@@ -160,22 +173,34 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             if (fightEvent is AttackEvent attackEvent
                 && (attackEvent.Source.Name == TheBeast && attackEvent.AttackResult == AttackResult.WeaponHit
                     // We don't know the source or target of absorbed hits--when adds are up, ignore them as a signal.
-                    || attackEvent.AttackResult == AttackResult.Absorbed && !AreAnyAddsActive))
+                    || attackEvent.AttackResult == AttackResult.Absorbed && !AreAnyAddsActive)
+                || fightEvent is SystemEvent systemEvent && systemEvent.Source?.Name == TheBeast
+                    && (systemEvent.IsHostileNanoExecutedOnYou || systemEvent.IsHostileNanoCounteredByYou))
             {
-                _timeSinceBeastLastHitSomeone.Restart();
                 IsCasting = false;
                 CastingDurationSeconds = 0;
                 CastingOpacity = 0;
+                _timeSinceBeastLastHitOrCast.Restart();
             }
         }
 
-        public void UpdateView()
+        private void CheckDoomOfTheSpirits(FightEvent fightEvent)
+        {
+            if (fightEvent is SystemEvent systemEvent && systemEvent.Source?.Name == TheBeast
+                && systemEvent.IsHostileNanoExecutedOnYou && systemEvent.NanoProgram == DoomOfTheSpirits)
+            {
+                RequestStatusBar(DoomOfTheSpirits, DoomOfTheSpiritsDurationSeconds, DoomOfTheSpiritsBarColor, DoomOfTheSpiritsIconPath);
+            }
+        }
+
+        public override void UpdateView()
         {
             if (!_theBeastFightHasStarted)
                 return;
 
             UpdateReflects();
             UpdateCasting();
+            UpdateStatusBars();
             RaiseAllPropertyChanges();
         }
 
@@ -201,7 +226,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         private void UpdateCasting()
         {
-            double secondsSinceLastHit = _timeSinceBeastLastHitSomeone.Elapsed.TotalSeconds;
+            double secondsSinceLastHit = _timeSinceBeastLastHitOrCast.Elapsed.TotalSeconds;
 
             if (secondsSinceLastHit >= CastingDetectionThresholdSeconds)
             {
@@ -214,37 +239,26 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         }
 
         private bool _isPaused;
-        public bool IsPaused
+        public override bool IsPaused
         {
             get => _isPaused;
             set
             {
                 _isPaused = value;
 
-                if (IsPaused)
+                if (_isPaused)
                 {
-                    _timeSinceReflectDetected.Stop();
-                    _timeSinceBeastLastHitSomeone.Stop();
-                }
-                else
-                {
-                    if (_timeSinceReflectDetected.ElapsedTicks > 0)
-                    {
-                        _timeSinceReflectDetected.Start();
-                    }
-
-                    if (_timeSinceBeastLastHitSomeone.ElapsedTicks > 0)
-                    {
-                        _timeSinceBeastLastHitSomeone.Start();
-                    }
+                    // Can't pause boss fights in-world, so for simplicity we just reset when paused.
+                    Reset();
                 }
             }
         }
 
-        public void Reset()
+        public override void Reset()
         {
             _theBeastFightHasStarted = false;
 
+            _lastManualNanoProgramDeactivationUnixSeconds = null;
             _lastManualNanoProgramDeactivationTimestamp = null;
             _wipedNanoPrograms.Clear();
 
@@ -257,11 +271,12 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 tracker.Deactivate();
             }
 
-            _timeSinceBeastLastHitSomeone.Reset();
+            _timeSinceBeastLastHitOrCast.Reset();
             IsCasting = false;
             CastingDurationSeconds = 0;
             CastingOpacity = 0;
 
+            ResetStatusBars();
             RaiseAllPropertyChanges();
         }
 

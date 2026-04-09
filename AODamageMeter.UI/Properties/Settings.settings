@@ -84,7 +84,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="RefreshInterval" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">300</Value>
+      <Value Profile="(Default)">200</Value>
     </Setting>
     <Setting Name="MaxNumberOfDetailRows" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">6</Value>

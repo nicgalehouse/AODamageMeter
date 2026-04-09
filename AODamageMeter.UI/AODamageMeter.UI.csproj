@@ -100,6 +100,7 @@
     <Compile Include="Helpers\DamageMeterExtensions.cs" />
     <Compile Include="Behaviors\GridViewColumnMinWidthBehavior.cs" />
     <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\FreezableHelper.cs" />
     <Compile Include="Helpers\SharedTooltips.cs" />
     <Compile Include="PetRegistrationRepository.cs" />
     <Compile Include="RowViewModelDataGrid.cs" />
@@ -193,7 +194,10 @@
     <Compile Include="ViewModels\Rows\DamageDoneMainRow.cs" />
     <Compile Include="ViewModels\RowBase.cs" />
     <Compile Include="ViewModels\IBossModuleViewModel.cs" />
+    <Compile Include="Behaviors\StatusBarAnimation.cs" />
     <Compile Include="ViewModels\BossModules\AddTracker.cs" />
+    <Compile Include="ViewModels\BossModules\BossModuleViewModelBase.cs" />
+    <Compile Include="ViewModels\BossModules\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\BossModules\TheBeastModuleViewModel.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -320,6 +324,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\XP.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\DoomOfTheSpirits.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
