@@ -94,7 +94,7 @@
               <Grid Grid.Column="1">
                 <ProgressBar Minimum="0"
                              Maximum="{Binding TotalSeconds, Mode=OneWay}"
-                             Foreground="{Binding BarColor}"
+                             Foreground="{Binding BarColor, Converter={StaticResource ColorToRowBrushConverter}}"
                              Background="{StaticResource DarkBlueBrush81}"
                              behaviors:StatusBarAnimation.StatusBarViewModel="{Binding}">
                   <ProgressBar.Template>
@@ -102,12 +102,7 @@
                       <Grid>
                         <Border x:Name="PART_Track" Background="{TemplateBinding Background}"/>
                         <Decorator x:Name="PART_Indicator" HorizontalAlignment="Left">
-                          <Grid>
-                            <Rectangle Fill="{TemplateBinding Foreground}"/>
-                            <Rectangle Width="2"
-                                       Fill="{StaticResource LightBlueBrush50}"
-                                       HorizontalAlignment="Right"/>
-                          </Grid>
+                          <Rectangle Fill="{TemplateBinding Foreground}"/>
                         </Decorator>
                       </Grid>
                     </ControlTemplate>

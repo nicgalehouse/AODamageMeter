@@ -1,12 +1,10 @@
-﻿using System.Drawing;
-
-namespace AODamageMeter.Professions
+﻿namespace AODamageMeter.Professions
 {
     public class Unknown : Profession
     {
         protected internal Unknown() { }
 
         public override string Name => "Unknown";
-        public override Color Color => Color.FromArgb(51, 73, 61);
+        public override string Color => "#33493D";
     }
 }

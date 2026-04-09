@@ -1,6 +1,5 @@
 ﻿using AODamageMeter.Professions;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace AODamageMeter
 {
@@ -29,7 +28,7 @@ namespace AODamageMeter
         };
 
         public abstract string Name { get; }
-        public abstract Color Color { get; }
+        public abstract string Color { get; }
 
         public override string ToString()
             => Name;

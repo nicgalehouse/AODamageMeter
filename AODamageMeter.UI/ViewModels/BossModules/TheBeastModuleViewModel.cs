@@ -1,11 +1,9 @@
 using AODamageMeter.FightEvents;
 using AODamageMeter.FightEvents.Attack;
-using AODamageMeter.UI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.BossModules
 {
@@ -13,9 +11,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
     {
         private const string TheBeast = "The Beast";
         private const string TheBeastIconPath = "/Icons/TheBeast.png";
-        public override string IconPath => TheBeastIconPath;
 
-        private bool _theBeastFightHasStarted = false;
+        public override string BossName => TheBeast;
+        public override string IconPath => TheBeastIconPath;
 
         private long? _lastManualNanoProgramDeactivationUnixSeconds;
         private DateTime? _lastManualNanoProgramDeactivationTimestamp;
@@ -41,7 +39,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private const string DoomOfTheSpirits = "Doom Of The Spirits";
         private const string DoomOfTheSpiritsIconPath = "/Icons/DoomOfTheSpirits.png";
         private const int DoomOfTheSpiritsDurationSeconds = 18;
-        private static readonly Brush DoomOfTheSpiritsBarColor = new SolidColorBrush(Color.FromRgb(0x7C, 0x82, 0x89)).Frozen();
+        private const string DoomOfTheSpiritsBarColor = "#7C8289";
 
         public TheBeastModuleViewModel()
             => AddTrackers = new Dictionary<string, AddTracker>
@@ -54,22 +52,19 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public override void OnFightEventAdded(FightEvent fightEvent)
         {
-            if (!_theBeastFightHasStarted
-                && (fightEvent.Source?.Name == TheBeast || fightEvent.Target?.Name == TheBeast))
-            {
-                _theBeastFightHasStarted = true;
-                _timeSinceBeastLastHitOrCast.Start();
-            }
-
-            if (_theBeastFightHasStarted)
+            if (HasFightStarted || CheckForFightStart(fightEvent))
             {
                 CheckNcuWipe(fightEvent);
                 CheckReflectShield(fightEvent);
                 CheckAdds(fightEvent);
                 CheckCasting(fightEvent);
                 CheckDoomOfTheSpirits(fightEvent);
+                CheckImportantBuffs(fightEvent);
             }
         }
+
+        protected override void OnFightStarted()
+            => _timeSinceBeastLastHitOrCast.Start();
 
         // We add nano programs that get cancelled as part of a recast, but then immediately remove
         // them once the recast is proven. So it should be okay--there shouldn't be any UI flicker.
@@ -195,7 +190,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public override void UpdateView()
         {
-            if (!_theBeastFightHasStarted)
+            if (!HasFightStarted)
                 return;
 
             UpdateReflects();
@@ -256,7 +251,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public override void Reset()
         {
-            _theBeastFightHasStarted = false;
+            HasFightStarted = false;
 
             _lastManualNanoProgramDeactivationUnixSeconds = null;
             _lastManualNanoProgramDeactivationTimestamp = null;

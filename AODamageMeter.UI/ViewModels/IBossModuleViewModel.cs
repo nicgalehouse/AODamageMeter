@@ -5,7 +5,9 @@ namespace AODamageMeter.UI.ViewModels
 {
     public interface IBossModuleViewModel
     {
+        string BossName { get; }
         string IconPath { get; }
+        bool HasFightStarted { get; }
         void OnFightEventAdded(FightEvent fightEvent);
         void UpdateView();
         bool IsPaused { get; set; }

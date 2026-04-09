@@ -1,12 +1,10 @@
-﻿using System.Drawing;
-
-namespace AODamageMeter.Professions
+﻿namespace AODamageMeter.Professions
 {
     public class Agent : Profession
     {
         protected internal Agent() { }
 
         public override string Name => "Agent";
-        public override Color Color => Color.FromArgb(84, 117, 165);
+        public override string Color => "#5475A5";
     }
 }

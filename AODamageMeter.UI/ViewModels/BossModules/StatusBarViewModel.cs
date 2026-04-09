@@ -7,19 +7,19 @@ namespace AODamageMeter.UI.ViewModels.BossModules
     {
         private readonly DateTime _startTimeUtc;
 
-        public StatusBarViewModel(string label, double totalSeconds, Brush barColor, string iconPath)
+        public StatusBarViewModel(string label, double totalSeconds, string barColor, string iconPath)
         {
             _startTimeUtc = DateTime.UtcNow;
             Label = label;
             TotalSeconds = totalSeconds;
-            BarColor = barColor;
+            BarColor = (Color)ColorConverter.ConvertFromString(barColor);
             IconPath = iconPath ?? throw new ArgumentNullException(nameof(iconPath));
         }
 
         public string Label { get; }
         public string Key => Label;
         public double TotalSeconds { get; }
-        public Brush BarColor { get; }
+        public Color BarColor { get; }
         public string IconPath { get; }
         public TimeSpan AnimationDuration => TimeSpan.FromSeconds(TotalSeconds);
         public double RemainingSeconds => Math.Max(0, TotalSeconds - (DateTime.UtcNow - _startTimeUtc).TotalSeconds);

@@ -1,7 +1,8 @@
+using AODamageMeter.Buffs;
+using AODamageMeter.FightEvents;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.BossModules
 {
@@ -10,7 +11,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private readonly ConcurrentQueue<StatusBarViewModel> _pendingStatusBars
             = new ConcurrentQueue<StatusBarViewModel>();
 
+        public abstract string BossName { get; }
         public abstract string IconPath { get; }
+        public bool HasFightStarted { get; protected set; }
         public abstract void OnFightEventAdded(FightEvent fightEvent);
         public abstract void UpdateView();
         public abstract bool IsPaused { get; set; }
@@ -21,7 +24,34 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public bool HasStatusBars => StatusBars.Count > 0;
 
-        protected void RequestStatusBar(string label, double totalSeconds, Brush color, string iconPath)
+        protected virtual void OnFightStarted() { }
+
+        protected bool CheckForFightStart(FightEvent fightEvent)
+        {
+            if (!HasFightStarted
+                && (fightEvent.Source?.Name == BossName || fightEvent.Target?.Name == BossName))
+            {
+                HasFightStarted = true;
+                OnFightStarted();
+            }
+
+            return HasFightStarted;
+        }
+
+        protected void CheckImportantBuffs(FightEvent fightEvent)
+        {
+            if (!(fightEvent is MeCastNano castEvent)
+                || castEvent.CastResult != CastResult.Success
+                || castEvent.NanoProgram == null)
+                return;
+
+            if (TotalMirrorShield.Nanoline.TryGetBuff(castEvent.NanoProgram, out var buff))
+            {
+                RequestStatusBar(buff.ShortName, buff.DurationSeconds, buff.Color, buff.IconPath);
+            }
+        }
+
+        protected void RequestStatusBar(string label, double totalSeconds, string color, string iconPath)
             => _pendingStatusBars.Enqueue(new StatusBarViewModel(label, totalSeconds, color, iconPath));
 
         protected void UpdateStatusBars()

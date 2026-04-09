@@ -328,6 +328,18 @@
   <ItemGroup>
     <Resource Include="Icons\DoomOfTheSpirits.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\TotalMirrorShieldMkIXAndAbove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\TotalMirrorShieldMkVIIToVIII.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\TotalMirrorShieldMkIIIToIV.png" />
+    <Resource Include="Icons\TotalMirrorShieldMkIToII.png" />
+    <Resource Include="Icons\TotalMirrorShieldMkV.png" />
+    <Resource Include="Icons\TotalMirrorShieldMkVI.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

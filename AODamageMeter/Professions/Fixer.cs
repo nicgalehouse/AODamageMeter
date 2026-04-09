@@ -1,12 +1,10 @@
-﻿using System.Drawing;
-
-namespace AODamageMeter.Professions
+﻿namespace AODamageMeter.Professions
 {
     public class Fixer : Profession
     {
         protected internal Fixer() { }
 
         public override string Name => "Fixer";
-        public override Color Color => Color.FromArgb(43, 105, 220);
+        public override string Color => "#2B69DC";
     }
 }

@@ -10,7 +10,7 @@ namespace AODamageMeter.UI.Helpers
             .ToDictionary(p => p, p => $"/Icons/{p.GetType().Name}.png");
 
         private static readonly Dictionary<Profession, Color> _professionColors = Profession.All
-            .ToDictionary(p => p, p => Color.FromRgb(p.Color.R, p.Color.G, p.Color.B));
+            .ToDictionary(p => p, p => (Color)ColorConverter.ConvertFromString(p.Color));
 
         public static string GetIconPath(this Profession profession)
             => profession == null ? $"/Icons/NPC.png" : _professionIconPaths[profession];
