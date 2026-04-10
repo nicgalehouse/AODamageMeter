@@ -102,6 +102,7 @@
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\FreezableHelper.cs" />
     <Compile Include="Helpers\SharedTooltips.cs" />
+    <Compile Include="Helpers\SynchronizedStopwatch.cs" />
     <Compile Include="PetRegistrationRepository.cs" />
     <Compile Include="RowViewModelDataGrid.cs" />
     <Compile Include="ViewingMode.cs" />

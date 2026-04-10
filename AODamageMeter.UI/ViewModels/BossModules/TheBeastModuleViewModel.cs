@@ -1,8 +1,8 @@
 using AODamageMeter.FightEvents;
 using AODamageMeter.FightEvents.Attack;
+using AODamageMeter.UI.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels.BossModules
@@ -16,7 +16,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         public override string IconPath => TheBeastIconPath;
 
         private const int HitMeHitYouReflectDurationSeconds = 20;
-        private readonly Stopwatch _timeSinceReflectDetected = new Stopwatch();
+        private readonly SynchronizedStopwatch _timeSinceReflectDetected = new SynchronizedStopwatch();
         public bool IsReflectActive { get; private set; }
         public string ReflectCountdown { get; private set; }
 
@@ -26,7 +26,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         private const int CastingDetectionThresholdSeconds = 3;
         private const int CastingFullConfidenceSeconds = 7;
-        private readonly Stopwatch _timeSinceBeastLastHitOrCast = new Stopwatch();
+        private readonly SynchronizedStopwatch _timeSinceBeastLastHitOrCast = new SynchronizedStopwatch();
         public bool IsCasting { get; private set; }
         public int CastingDurationSeconds { get; private set; }
         public double CastingOpacity { get; private set; }
