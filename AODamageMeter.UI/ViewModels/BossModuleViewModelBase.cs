@@ -45,7 +45,8 @@ namespace AODamageMeter.UI.ViewModels
             .ToList();
         public bool HasWipedNanoPrograms => !_wipedNanoPrograms.IsEmpty;
 
-        private readonly ConcurrentQueue<StatusBarViewModel> _pendingStatusBars = new ConcurrentQueue<StatusBarViewModel>();
+        private readonly ConcurrentQueue<(StatusBarViewModel pendingStatusBar, string pendingExpiredStatusBarKey)>
+            _pendingStatusBarUpdates = new ConcurrentQueue<(StatusBarViewModel, string)>();
         public ObservableCollection<StatusBarViewModel> StatusBars { get; } = new ObservableCollection<StatusBarViewModel>();
         public bool HasStatusBars => StatusBars.Count > 0;
 
@@ -113,20 +114,32 @@ namespace AODamageMeter.UI.ViewModels
 
         protected virtual void CheckStatusBars(FightEvent fightEvent)
         {
-            if (!(fightEvent is MeCastNano castEvent)
-                || castEvent.CastResult != CastResult.Success
-                || castEvent.NanoProgram == null)
-                return;
-
-            if (TotalMirrorShield.Nanoline.TryGetBuff(castEvent.NanoProgram, out var buff)
-                || NullitySphere.Nanoline.TryGetBuff(castEvent.NanoProgram, out buff))
+            if (fightEvent is MeCastNano castEvent
+                && castEvent.CastResult == CastResult.Success
+                && castEvent.NanoProgram != null)
             {
-                RequestStatusBar(buff.ShortName, buff.DurationSeconds, buff.Color, buff.IconPath);
+                if (TotalMirrorShield.Nanoline.TryGetBuff(castEvent.NanoProgram, out var buff)
+                    || NullitySphere.Nanoline.TryGetBuff(castEvent.NanoProgram, out buff))
+                {
+                    RequestStatusBar(buff.ShortName, buff.DurationSeconds, buff.Color, buff.IconPath);
+                }
+            }
+            else if (fightEvent is SystemEvent systemEvent
+                && systemEvent.IsNanoTerminated)
+            {
+                if (TotalMirrorShield.Nanoline.TryGetBuff(systemEvent.NanoProgram, out var buff)
+                    || NullitySphere.Nanoline.TryGetBuff(systemEvent.NanoProgram, out buff))
+                {
+                    ExpireStatusBar(buff.ShortName);
+                }
             }
         }
 
         protected void RequestStatusBar(string label, double totalSeconds, string color, string iconPath)
-            => _pendingStatusBars.Enqueue(new StatusBarViewModel(label, totalSeconds, color, iconPath));
+            => _pendingStatusBarUpdates.Enqueue((new StatusBarViewModel(label, totalSeconds, color, iconPath), null));
+
+        protected void ExpireStatusBar(string key)
+            => _pendingStatusBarUpdates.Enqueue((null, key));
 
         public virtual void UpdateView()
         {
@@ -147,18 +160,33 @@ namespace AODamageMeter.UI.ViewModels
         {
             bool statusBarsCollectionChanged = false;
 
-            while (_pendingStatusBars.TryDequeue(out var pendingStatusBar))
+            while (_pendingStatusBarUpdates.TryDequeue(out var update))
             {
-                var existingStatusBar = StatusBars.FirstOrDefault(b => b.Key == pendingStatusBar.Key);
-
-                if (existingStatusBar != null)
+                if (update.pendingStatusBar != null)
                 {
-                    StatusBars[StatusBars.IndexOf(existingStatusBar)] = pendingStatusBar;
+                    var existingStatusBar = StatusBars
+                        .FirstOrDefault(b => b.Key == update.pendingStatusBar.Key);
+
+                    if (existingStatusBar != null)
+                    {
+                        StatusBars[StatusBars.IndexOf(existingStatusBar)] = update.pendingStatusBar;
+                    }
+                    else
+                    {
+                        StatusBars.Add(update.pendingStatusBar);
+                        statusBarsCollectionChanged = true;
+                    }
                 }
                 else
                 {
-                    StatusBars.Add(pendingStatusBar);
-                    statusBarsCollectionChanged = true;
+                    var existingStatusBar = StatusBars
+                        .FirstOrDefault(b => b.Key == update.pendingExpiredStatusBarKey);
+
+                    if (existingStatusBar != null)
+                    {
+                        StatusBars.Remove(existingStatusBar);
+                        statusBarsCollectionChanged = true;
+                    }
                 }
             }
 
@@ -200,8 +228,8 @@ namespace AODamageMeter.UI.ViewModels
 
         private void ResetStatusBars()
         {
+            while (_pendingStatusBarUpdates.TryDequeue(out _)) { }
             StatusBars.Clear();
-            while (_pendingStatusBars.TryDequeue(out _)) { }
 
             RaisePropertyChanged(nameof(HasStatusBars));
         }
