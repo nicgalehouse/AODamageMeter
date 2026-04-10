@@ -62,8 +62,7 @@
           <Button Style="{StaticResource TextButtonStyle}"
                   Content="Choose..." Click="ChooseButton_Click_ShowFileDialog"/>
           <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}" MinWidth="120"
-                  Content="Auto-configure" Command="{Binding AutoConfigureCommand}"
-                  ToolTipService.ShowOnDisabled="True">
+                  Content="Auto-configure" Click="AutoConfigureButton_Click">
             <Button.ToolTip>
               <TextBlock>
                 Auto-configuring tries to find a properly configured chat window/log file for the character, and creates one if it can't.

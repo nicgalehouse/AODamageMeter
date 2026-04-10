@@ -137,6 +137,9 @@
     <Compile Include="ViewModels\Rows\OwnersHealingTakenViewingModeMainRow.cs" />
     <Compile Include="ViewModels\Rows\OwnersXPViewingModeMainRow.cs" />
     <Compile Include="ViewModels\ViewingModeMainRowBase.cs" />
+    <Compile Include="Views\AutoConfigureView.xaml.cs">
+      <DependentUpon>AutoConfigureView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CharacterInfoView.xaml.cs">
       <DependentUpon>CharacterInfoView.xaml</DependentUpon>
     </Compile>
@@ -164,6 +167,10 @@
     <Compile Include="Views\BossModules\TheBeastModuleView.xaml.cs">
       <DependentUpon>TheBeastModuleView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AutoConfigureView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\CharacterInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -518,5 +518,65 @@ namespace AODamageMeter.UI.Properties {
                 this["Dimensions"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("275")]
+        public double AutoConfigureViewHeight {
+            get {
+                return ((double)(this["AutoConfigureViewHeight"]));
+            }
+            set {
+                this["AutoConfigureViewHeight"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("225")]
+        public double AutoConfigureViewWidth {
+            get {
+                return ((double)(this["AutoConfigureViewWidth"]));
+            }
+            set {
+                this["AutoConfigureViewWidth"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double AutoConfigureViewTop {
+            get {
+                return ((double)(this["AutoConfigureViewTop"]));
+            }
+            set {
+                this["AutoConfigureViewTop"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NaN")]
+        public double AutoConfigureViewLeft {
+            get {
+                return ((double)(this["AutoConfigureViewLeft"]));
+            }
+            set {
+                this["AutoConfigureViewLeft"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IncludeSystemChannel {
+            get {
+                return ((bool)(this["IncludeSystemChannel"]));
+            }
+            set {
+                this["IncludeSystemChannel"] = value;
+            }
+        }
     }
 }

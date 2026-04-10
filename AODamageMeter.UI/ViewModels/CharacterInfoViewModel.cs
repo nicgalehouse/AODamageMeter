@@ -1,4 +1,5 @@
-﻿using AODamageMeter.FightEvents.Attack;
+﻿using AODamageMeter.FightEvents;
+using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.Helpers;
 using AODamageMeter.UI.Helpers;
@@ -7,7 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Input;
 
 namespace AODamageMeter.UI.ViewModels
 {
@@ -22,7 +22,6 @@ namespace AODamageMeter.UI.ViewModels
             CharacterName = characterName;
             Dimension = dimension;
             LogFilePath = logFilePath;
-            AutoConfigureCommand = new RelayCommand(ExecuteAutoConfigureCommand);
         }
 
         private string _characterName;
@@ -106,8 +105,7 @@ namespace AODamageMeter.UI.ViewModels
             set => Set(ref _autoConfigureResult, value);
         }
 
-        public ICommand AutoConfigureCommand { get; }
-        private void ExecuteAutoConfigureCommand()
+        public void AutoConfigure(bool includeSystemChannel)
         {
             try
             {
@@ -177,13 +175,19 @@ namespace AODamageMeter.UI.ViewModels
                     return;
                 }
 
+                bool isAlreadyLoggedIn = Process.GetProcessesByName("AnarchyOnline")
+                    .Any(p => p.MainWindowTitle?.Contains(CharacterName) ?? false);
+
                 // C:\Users\{user}\AppData\Local\Funcom\Anarchy Online\{installation ID}\Anarchy Online\Prefs\{account name}\Char#########\Chat\Windows\Window#
                 foreach (string path in Directory.EnumerateDirectories(chatWindowsPath, "Window*")
                     .Where(p => File.Exists($@"{p}\Config.xml")))
                 {
                     string configText = File.ReadAllText($@"{path}\Config.xml");
+                    bool hasSystemChannel = configText.Contains($"&quot;{SystemEvent.EventName}&quot;");
+                    bool systemChannelMatches = includeSystemChannel == hasSystemChannel;
                     if (_requiredConfigGroupNames.All(n => configText.Contains(n))
-                        && configText.Contains("name=\"is_logged\" value=\"true\""))
+                        && configText.Contains("name=\"is_logged\" value=\"true\"")
+                        && systemChannelMatches)
                     {
                         LogFilePath = $@"{path}\Log.txt";
                         if (!File.Exists(LogFilePath))
@@ -197,14 +201,16 @@ namespace AODamageMeter.UI.ViewModels
                     else if (configText.Contains("Damage Meter Window")
                         || configText.Contains("Damage Meter Log"))
                     {
-                        File.WriteAllText($@"{path}\Config.xml", GetAutoConfigureConfigXml(path.Split('\\').Last()));
+                        File.WriteAllText($@"{path}\Config.xml", GetAutoConfigureConfigXml(path.Split('\\').Last(), includeSystemChannel));
                         LogFilePath = $@"{path}\Log.txt";
                         if (!File.Exists(LogFilePath))
                         {
                             FileHelper.CreateEmptyFile(LogFilePath);
                             RefreshLogFileSize();
                         }
-                        AutoConfigureResult = "Auto-configure succeeded. An existing log file was found and reconfigured.";
+                        AutoConfigureResult = isAlreadyLoggedIn
+                            ? "Auto-configure found an existing log file to reconfigure, but you'll need to completely exit AO and try again."
+                            : "Auto-configure succeeded. An existing log file was found and reconfigured.";
                         return;
                     }
                 }
@@ -216,12 +222,10 @@ namespace AODamageMeter.UI.ViewModels
                 }
                 string newWindowName = $@"Window{firstAvailableWindowNumber}";
                 Directory.CreateDirectory($@"{chatWindowsPath}\{newWindowName}");
-                File.WriteAllText($@"{chatWindowsPath}\{newWindowName}\Config.xml", GetAutoConfigureConfigXml(newWindowName));
+                File.WriteAllText($@"{chatWindowsPath}\{newWindowName}\Config.xml", GetAutoConfigureConfigXml(newWindowName, includeSystemChannel));
                 LogFilePath = $@"{chatWindowsPath}\{newWindowName}\Log.txt";
                 FileHelper.CreateEmptyFile(LogFilePath);
                 RefreshLogFileSize();
-                bool isAlreadyLoggedIn = Process.GetProcessesByName("AnarchyOnline")
-                    .Any(p => p.MainWindowTitle?.Contains(CharacterName) ?? false);
                 AutoConfigureResult = isAlreadyLoggedIn
                     ? "Auto-configure succeeded. A new log file was created, but you'll need to relog (a fast quit is fine)."
                     : "Auto-configure succeeded. A new log file was created.";
@@ -241,9 +245,10 @@ namespace AODamageMeter.UI.ViewModels
             YouGaveHealth.EventName, YouGaveNano.EventName
         };
 
-        private static string GetAutoConfigureConfigXml(string windowName) =>
+        private static string GetAutoConfigureConfigXml(string windowName, bool includeSystemChannel) =>
 $@"<Archive code=""0"">
-    <Array name=""selected_group_ids"">
+    <Array name=""selected_group_ids"">{(includeSystemChannel ? @"
+        <Int64 value=""1073741825"" />" : "")}
         <Int64 value=""1107296260"" />
         <Int64 value=""1107296262"" />
         <Int64 value=""1107296263"" />
@@ -266,7 +271,8 @@ $@"<Archive code=""0"">
         <Int64 value=""1107296278"" />
         <Int64 value=""1107296276"" />
     </Array>
-    <Array name=""selected_group_names"">
+    <Array name=""selected_group_names"">{(includeSystemChannel ? @"
+        <String value='&quot;System&quot;' />" : "")}
         <String value='&quot;Other hit by nano&quot;' />
         <String value='&quot;Me hit by monster&quot;' />
         <String value='&quot;Me hit by player&quot;' />

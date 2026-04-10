@@ -1,4 +1,5 @@
-﻿using AODamageMeter.UI.ViewModels;
+﻿using AODamageMeter.UI.Properties;
+using AODamageMeter.UI.ViewModels;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.Windows;
@@ -34,6 +35,15 @@ namespace AODamageMeter.UI.Views
             if (dialog.ShowDialog() == true)
             {
                 CharacterInfoViewModel.LogFilePath = dialog.FileName;
+            }
+        }
+
+        private void AutoConfigureButton_Click(object sender, RoutedEventArgs e)
+        {
+            var autoConfigureView = new AutoConfigureView { Owner = this };
+            if (autoConfigureView.ShowDialog() == true)
+            {
+                CharacterInfoViewModel.AutoConfigure(Settings.Default.IncludeSystemChannel);
             }
         }
 

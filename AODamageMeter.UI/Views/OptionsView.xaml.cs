@@ -7,15 +7,15 @@ namespace AODamageMeter.UI.Views
 {
     public partial class OptionsView : Window
     {
-        private string _previousBossModule = Settings.Default.BossModule;
-        private string _previousFontFamily = Settings.Default.FontFamily;
-        private double _previousFontSize = Settings.Default.FontSize;
-        private int _previousRefreshInterval = Settings.Default.RefreshInterval;
-        private int _previousMaxNumberOfDetailRows = Settings.Default.MaxNumberOfDetailRows;
-        private bool _previousShowPercentOfTotal = Settings.Default.ShowPercentOfTotal;
-        private bool _previousShowRowNumbers = Settings.Default.ShowRowNumbers;
-        private bool _previousIncludeTopLevelNPCRows = Settings.Default.IncludeTopLevelNPCRows;
-        private bool _previousIncludeTopLevelZeroDamageRows = Settings.Default.IncludeTopLevelZeroDamageRows;
+        private readonly string _previousBossModule = Settings.Default.BossModule;
+        private readonly string _previousFontFamily = Settings.Default.FontFamily;
+        private readonly double _previousFontSize = Settings.Default.FontSize;
+        private readonly int _previousRefreshInterval = Settings.Default.RefreshInterval;
+        private readonly int _previousMaxNumberOfDetailRows = Settings.Default.MaxNumberOfDetailRows;
+        private readonly bool _previousShowPercentOfTotal = Settings.Default.ShowPercentOfTotal;
+        private readonly bool _previousShowRowNumbers = Settings.Default.ShowRowNumbers;
+        private readonly bool _previousIncludeTopLevelNPCRows = Settings.Default.IncludeTopLevelNPCRows;
+        private readonly bool _previousIncludeTopLevelZeroDamageRows = Settings.Default.IncludeTopLevelZeroDamageRows;
 
         public OptionsView()
         {
