@@ -44,6 +44,7 @@ namespace AODamageMeter
                 case OtherMisses.EventName: return new OtherMisses(fight, timestamp, logEntry);
                 case Research.EventName: return new Research(fight, timestamp, logEntry);
                 case SystemEvent.EventName: return new SystemEvent(fight, timestamp, logEntry);
+                case VicinityEvent.EventName: return new VicinityEvent(fight, timestamp, logEntry);
                 case YouGaveHealth.EventName: return new YouGaveHealth(fight, timestamp, logEntry);
                 case YouGaveNano.EventName: return new YouGaveNano(fight, timestamp, logEntry);
                 case YouHitOther.EventName: return new YouHitOther(fight, timestamp, logEntry);

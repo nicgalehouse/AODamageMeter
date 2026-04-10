@@ -173,6 +173,8 @@ namespace AODamageMeter
                         HasObservedBlockedHits = true;
                     }
                     break;
+                case VicinityEvent vicinityEvent:
+                    break; // No fight character tracking needed--just here for boss modules.
                 default: throw new NotImplementedException();
             }
 

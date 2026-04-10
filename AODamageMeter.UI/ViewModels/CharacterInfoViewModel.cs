@@ -242,13 +242,14 @@ namespace AODamageMeter.UI.ViewModels
             MeHitByEnvironment.EventName, MeHitByMonster.EventName, MeHitByNano.EventName, MeHitByPlayer.EventName, OtherHitByNano.EventName,
             OtherHitByOther.EventName, OtherMisses.EventName, YouHitOther.EventName, YouHitOtherWithNano.EventName, YourMisses.EventName,
             YourPetHitByMonster.EventName, YourPetHitByNano.EventName, YourPetHitByOther.EventName, MeGotHealth.EventName, MeGotNano.EventName,
-            YouGaveHealth.EventName, YouGaveNano.EventName
+            YouGaveHealth.EventName, YouGaveNano.EventName, VicinityEvent.EventName
         };
 
         private static string GetAutoConfigureConfigXml(string windowName, bool includeSystemChannel) =>
 $@"<Archive code=""0"">
     <Array name=""selected_group_ids"">{(includeSystemChannel ? @"
         <Int64 value=""1073741825"" />" : "")}
+        <Int64 value=""1073741826"" />
         <Int64 value=""1107296260"" />
         <Int64 value=""1107296262"" />
         <Int64 value=""1107296263"" />
@@ -273,6 +274,7 @@ $@"<Archive code=""0"">
     </Array>
     <Array name=""selected_group_names"">{(includeSystemChannel ? @"
         <String value='&quot;System&quot;' />" : "")}
+        <String value='&quot;Vicinity&quot;' />
         <String value='&quot;Other hit by nano&quot;' />
         <String value='&quot;Me hit by monster&quot;' />
         <String value='&quot;Me hit by player&quot;' />
