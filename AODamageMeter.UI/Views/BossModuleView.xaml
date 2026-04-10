@@ -108,14 +108,19 @@
                     </ControlTemplate>
                   </ProgressBar.Template>
                 </ProgressBar>
-                <TextBlock Text="{Binding Label}"
-                           Style="{StaticResource StatusBarLabelStyle}"
-                           HorizontalAlignment="Left"
-                           Margin="4 0 0 0"/>
-                <TextBlock Text="{Binding TimeRemainingText}"
-                           Style="{StaticResource StatusBarLabelStyle}"
-                           HorizontalAlignment="Right"
-                           Margin="0 0 4 0"/>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Column="0" Text="{Binding Label}"
+                             Style="{StaticResource StatusBarLabelStyle}"
+                             TextTrimming="CharacterEllipsis"
+                             Margin="4 0 0 0"/>
+                  <TextBlock Grid.Column="1" Text="{Binding TimeRemainingText}"
+                             Style="{StaticResource StatusBarLabelStyle}"
+                             Margin="0 0 4 0"/>
+                </Grid>
               </Grid>
             </Grid>
           </DataTemplate>
