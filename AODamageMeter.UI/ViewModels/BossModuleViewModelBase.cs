@@ -118,7 +118,8 @@ namespace AODamageMeter.UI.ViewModels
                 || castEvent.NanoProgram == null)
                 return;
 
-            if (TotalMirrorShield.Nanoline.TryGetBuff(castEvent.NanoProgram, out var buff))
+            if (TotalMirrorShield.Nanoline.TryGetBuff(castEvent.NanoProgram, out var buff)
+                || NullitySphere.Nanoline.TryGetBuff(castEvent.NanoProgram, out buff))
             {
                 RequestStatusBar(buff.ShortName, buff.DurationSeconds, buff.Color, buff.IconPath);
             }

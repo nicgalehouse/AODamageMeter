@@ -6,7 +6,7 @@ namespace AODamageMeter.Buffs
         private const string AMS = "Augmented Mirror Shield MK";
 
         public static readonly Buff TMSMkI =    new Buff($"{TMS} I",    shortName: "TMS I",    durationSeconds: 20, iconPath: "/Icons/TotalMirrorShieldMkIToII.png",      color: "#6E9DFF");
-        public static readonly Buff TMSMkII  =  new Buff($"{TMS} II",   shortName: "TMS II",   durationSeconds: 26, iconPath: "/Icons/TotalMirrorShieldMkIToII.png",      color: "#6E9DFF");
+        public static readonly Buff TMSMkII =   new Buff($"{TMS} II",   shortName: "TMS II",   durationSeconds: 26, iconPath: "/Icons/TotalMirrorShieldMkIToII.png",      color: "#6E9DFF");
         public static readonly Buff TMSMkIII =  new Buff($"{TMS} III",  shortName: "TMS III",  durationSeconds: 31, iconPath: "/Icons/TotalMirrorShieldMkIIIToIV.png",    color: "#9FF4FF");
         public static readonly Buff TMSMkIV =   new Buff($"{TMS} IV",   shortName: "TMS IV",   durationSeconds: 35, iconPath: "/Icons/TotalMirrorShieldMkIIIToIV.png",    color: "#9FF4FF");
         public static readonly Buff TMSMkV =    new Buff($"{TMS} V",    shortName: "TMS V",    durationSeconds: 41, iconPath: "/Icons/TotalMirrorShieldMkV.png",          color: "#C54242");

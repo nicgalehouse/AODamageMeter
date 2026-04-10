@@ -2,10 +2,10 @@ namespace AODamageMeter
 {
     public class Buff
     {
-        public Buff(string name, string shortName, double durationSeconds, string iconPath, string color)
+        public Buff(string name, double durationSeconds, string iconPath, string color, string shortName = null)
         {
             Name = name;
-            ShortName = shortName;
+            ShortName = shortName ?? name;
             DurationSeconds = durationSeconds;
             IconPath = iconPath;
             Color = color;
