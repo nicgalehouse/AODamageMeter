@@ -33,6 +33,12 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public override bool NeedsIsBossTargetingYouWarning => true;
 
+        private const int RingOfFireDisplaySeconds = 2;
+        private readonly SynchronizedStopwatch _timeSinceRingOfFire = new SynchronizedStopwatch();
+        private long _lastBeastNanoHitUnixSeconds;
+        private int _beastNanoHitCount;
+        public bool IsRingOfFireActive { get; private set; }
+
         private const string DoomOfTheSpirits = "Doom Of The Spirits";
         private const string DoomOfTheSpiritsIconPath = "/Icons/DoomOfTheSpirits.png";
         private const int DoomOfTheSpiritsDurationSeconds = 18;
@@ -59,6 +65,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 CheckReflectShield(fightEvent);
                 CheckAdds(fightEvent);
                 CheckCasting(fightEvent);
+                CheckRingOfFire(fightEvent);
             }
         }
 
@@ -120,7 +127,8 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private void CheckCasting(FightEvent fightEvent)
         {
             if (fightEvent is AttackEvent attackEvent
-                && (attackEvent.Source.Name == TheBeast && attackEvent.AttackResult == AttackResult.WeaponHit
+                && (attackEvent.Source.Name == TheBeast
+                    && (attackEvent.AttackResult == AttackResult.WeaponHit || attackEvent.AttackResult == AttackResult.NanoHit)
                     // We don't know the source or target of absorbed hits--when adds are up, ignore them as a signal.
                     || attackEvent.AttackResult == AttackResult.Absorbed && !AreAnyAddsActive)
                 || fightEvent is SystemEvent systemEvent
@@ -132,6 +140,30 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 CastingDurationSeconds = 0;
                 CastingOpacity = 0;
                 _timeSinceBeastLastHitOrCast.Restart();
+            }
+        }
+
+        private void CheckRingOfFire(FightEvent fightEvent)
+        {
+            if (fightEvent is AttackEvent attackEvent
+                && attackEvent.Source.Name == TheBeast
+                && attackEvent.AttackResult == AttackResult.NanoHit)
+            {
+                if (fightEvent.LogUnixSeconds == _lastBeastNanoHitUnixSeconds)
+                {
+                    _beastNanoHitCount++;
+                }
+                else
+                {
+                    _lastBeastNanoHitUnixSeconds = fightEvent.LogUnixSeconds;
+                    _beastNanoHitCount = 1;
+                }
+
+                if (_beastNanoHitCount >= 2)
+                {
+                    IsRingOfFireActive = true;
+                    _timeSinceRingOfFire.Restart();
+                }
             }
         }
 
@@ -156,6 +188,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             UpdateReflects();
             UpdateAdds();
             UpdateCasting();
+            UpdateRingOfFire();
         }
 
         private void UpdateReflects()
@@ -202,6 +235,18 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(CastingOpacity));
         }
 
+        private void UpdateRingOfFire()
+        {
+            if (IsRingOfFireActive
+                && _timeSinceRingOfFire.Elapsed.TotalSeconds >= RingOfFireDisplaySeconds)
+            {
+                _timeSinceRingOfFire.Reset();
+                IsRingOfFireActive = false;
+            }
+
+            RaisePropertyChanged(nameof(IsRingOfFireActive));
+        }
+
         public override void Reset()
         {
             base.Reset();
@@ -209,6 +254,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             ResetReflects();
             ResetAdds();
             ResetCasting();
+            ResetRingOfFire();
         }
 
         private void ResetReflects()
@@ -241,6 +287,16 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(IsCasting));
             RaisePropertyChanged(nameof(CastingDurationSeconds));
             RaisePropertyChanged(nameof(CastingOpacity));
+        }
+
+        private void ResetRingOfFire()
+        {
+            _timeSinceRingOfFire.Reset();
+            _lastBeastNanoHitUnixSeconds = 0;
+            _beastNanoHitCount = 0;
+            IsRingOfFireActive = false;
+
+            RaisePropertyChanged(nameof(IsRingOfFireActive));
         }
     }
 }

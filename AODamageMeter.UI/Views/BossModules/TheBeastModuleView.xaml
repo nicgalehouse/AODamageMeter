@@ -85,7 +85,33 @@
           <Binding Path="CastingOpacity" FallbackValue="0"/>
         </Border.Opacity>
       </Border>
-      <TextBlock Text="Casting" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+      <Border>
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsRingOfFireActive}" Value="True">
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/RingOfFire.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+      </Border>
+      <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="Text" Value="Casting"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsRingOfFireActive}" Value="True">
+                <Setter Property="Text" Value="Ring of Fire"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
         <TextBlock.Effect>
           <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
         </TextBlock.Effect>
