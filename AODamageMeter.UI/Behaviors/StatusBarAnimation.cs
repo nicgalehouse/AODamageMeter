@@ -1,4 +1,4 @@
-using AODamageMeter.UI.ViewModels.BossModules;
+using AODamageMeter.UI.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Controls;

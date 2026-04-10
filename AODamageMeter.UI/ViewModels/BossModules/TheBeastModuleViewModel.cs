@@ -15,19 +15,14 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         public override string BossName => TheBeast;
         public override string IconPath => TheBeastIconPath;
 
-        private long? _lastManualNanoProgramDeactivationUnixSeconds;
-        private DateTime? _lastManualNanoProgramDeactivationTimestamp;
-        private readonly List<string> _wipedNanoPrograms = new List<string>();
-        public List<string> WipedNanoPrograms => new List<string>(_wipedNanoPrograms);
-        public bool HasWipedNanoPrograms => _wipedNanoPrograms.Count > 0;
-
         private const int HitMeHitYouReflectDurationSeconds = 20;
         private readonly Stopwatch _timeSinceReflectDetected = new Stopwatch();
         public bool IsReflectActive { get; private set; }
         public string ReflectCountdown { get; private set; }
 
         private const int AddsAreProbablyDeadSeconds = 5;
-        public Dictionary<string, AddTracker> AddTrackers { get; }
+        public Dictionary<string, AddTrackerViewModel> AddTrackers { get; }
+        private bool AreAnyAddsActive => AddTrackers.Values.Any(t => t.IsActive);
 
         private const int CastingDetectionThresholdSeconds = 3;
         private const int CastingFullConfidenceSeconds = 7;
@@ -42,66 +37,26 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private const string DoomOfTheSpiritsBarColor = "#7C8289";
 
         public TheBeastModuleViewModel()
-            => AddTrackers = new Dictionary<string, AddTracker>
+            => AddTrackers = new Dictionary<string, AddTrackerViewModel>
             {
-                ["Corrupted Xan-Kuir"] = new AddTracker("Corrupted Xan-Kuir"),
-                ["Corrupted Xan-Len"] = new AddTracker("Corrupted Xan-Len"),
-                ["Corrupted Hiisi Berserker"] = new AddTracker("Corrupted Hiisi Berserker"),
-                ["Corrupted Xan-Cur"] = new AddTracker("Corrupted Xan-Cur"),
+                ["Corrupted Xan-Kuir"] = new AddTrackerViewModel("Corrupted Xan-Kuir"),
+                ["Corrupted Xan-Len"] = new AddTrackerViewModel("Corrupted Xan-Len"),
+                ["Corrupted Hiisi Berserker"] = new AddTrackerViewModel("Corrupted Hiisi Berserker"),
+                ["Corrupted Xan-Cur"] = new AddTrackerViewModel("Corrupted Xan-Cur"),
             };
-
-        public override void OnFightEventAdded(FightEvent fightEvent)
-        {
-            if (HasFightStarted || CheckForFightStart(fightEvent))
-            {
-                CheckNcuWipe(fightEvent);
-                CheckReflectShield(fightEvent);
-                CheckAdds(fightEvent);
-                CheckCasting(fightEvent);
-                CheckDoomOfTheSpirits(fightEvent);
-                CheckImportantBuffs(fightEvent);
-            }
-        }
 
         protected override void OnFightStarted()
             => _timeSinceBeastLastHitOrCast.Start();
 
-        // We add nano programs that get cancelled as part of a recast, but then immediately remove
-        // them once the recast is proven. So it should be okay--there shouldn't be any UI flicker.
-        // One thing we can't easily do is recognize when nanoprograms are terminated by being
-        // overwritten by a better nanoprogram. Ideally we wouldn't show those terminations.
-        private void CheckNcuWipe(FightEvent fightEvent)
+        public override void OnFightEventAdded(FightEvent fightEvent)
         {
-            if (fightEvent is SystemEvent systemEvent)
-            {
-                if (systemEvent.IsNanoDeactivated)
-                {
-                    _lastManualNanoProgramDeactivationUnixSeconds = fightEvent.LogUnixSeconds;
-                    _lastManualNanoProgramDeactivationTimestamp = fightEvent.Timestamp;
-                }
-                else if (systemEvent.IsNanoTerminated)
-                {
-                    // Manual deactivations can come in a bit before the actual termination.
-                    bool isPurposeful = _lastManualNanoProgramDeactivationUnixSeconds == fightEvent.LogUnixSeconds
-                        || _lastManualNanoProgramDeactivationTimestamp?.AddSeconds(.5) >= fightEvent.Timestamp;
-                    _lastManualNanoProgramDeactivationUnixSeconds = null;
-                    _lastManualNanoProgramDeactivationTimestamp = null;
+            base.OnFightEventAdded(fightEvent);
 
-                    if (!isPurposeful && !_wipedNanoPrograms.Contains(systemEvent.NanoProgram))
-                    {
-                        _wipedNanoPrograms.Add(systemEvent.NanoProgram);
-                    }
-                }
-                else if (systemEvent.IsFriendlyNanoExecutedOnYou)
-                {
-                    _wipedNanoPrograms.Remove(systemEvent.NanoProgram);
-                }
-            }
-            else if (fightEvent is MeCastNano castEvent
-                && castEvent.CastResult == CastResult.Success
-                && castEvent.NanoProgram != null)
+            if (HasFightStarted)
             {
-                _wipedNanoPrograms.Remove(castEvent.NanoProgram);
+                CheckReflectShield(fightEvent);
+                CheckAdds(fightEvent);
+                CheckCasting(fightEvent);
             }
         }
 
@@ -160,9 +115,6 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
-        private bool AreAnyAddsActive
-            => AddTrackers.Values.Any(t => t.IsActive);
-
         private void CheckCasting(FightEvent fightEvent)
         {
             if (fightEvent is AttackEvent attackEvent
@@ -179,8 +131,10 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
-        private void CheckDoomOfTheSpirits(FightEvent fightEvent)
+        protected override void CheckStatusBars(FightEvent fightEvent)
         {
+            base.CheckStatusBars(fightEvent);
+
             if (fightEvent is SystemEvent systemEvent && systemEvent.Source?.Name == TheBeast
                 && systemEvent.IsHostileNanoExecutedOnYou && systemEvent.NanoProgram == DoomOfTheSpirits)
             {
@@ -190,34 +144,41 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         public override void UpdateView()
         {
+            base.UpdateView();
+
             if (!HasFightStarted)
                 return;
 
             UpdateReflects();
+            UpdateAdds();
             UpdateCasting();
-            UpdateStatusBars();
-            RaiseAllPropertyChanges();
         }
 
         private void UpdateReflects()
         {
-            if (!IsReflectActive)
-                return;
-
-            int remainingReflectDuration = HitMeHitYouReflectDurationSeconds
-                - (int)_timeSinceReflectDetected.Elapsed.TotalSeconds;
-
-            if (remainingReflectDuration <= 0)
+            if (IsReflectActive)
             {
-                IsReflectActive = false;
-                ReflectCountdown = null;
-                _timeSinceReflectDetected.Reset();
+                int remainingReflectDuration = HitMeHitYouReflectDurationSeconds
+                    - (int)_timeSinceReflectDetected.Elapsed.TotalSeconds;
+
+                if (remainingReflectDuration <= 0)
+                {
+                    IsReflectActive = false;
+                    ReflectCountdown = null;
+                    _timeSinceReflectDetected.Reset();
+                }
+                else
+                {
+                    ReflectCountdown = $"<{remainingReflectDuration}s";
+                }
             }
-            else
-            {
-                ReflectCountdown = $"<{remainingReflectDuration}s";
-            }
+
+            RaisePropertyChanged(nameof(IsReflectActive));
+            RaisePropertyChanged(nameof(ReflectCountdown));
         }
+
+        private void UpdateAdds()
+            => RaisePropertyChanged(nameof(AddTrackers));
 
         private void UpdateCasting()
         {
@@ -231,57 +192,48 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                     / (CastingFullConfidenceSeconds - CastingDetectionThresholdSeconds));
                 CastingOpacity = 0.1 + (0.9 * progress);
             }
-        }
 
-        private bool _isPaused;
-        public override bool IsPaused
-        {
-            get => _isPaused;
-            set
-            {
-                _isPaused = value;
-
-                if (_isPaused)
-                {
-                    // Can't pause boss fights in-world, so for simplicity we just reset when paused.
-                    Reset();
-                }
-            }
+            RaisePropertyChanged(nameof(IsCasting));
+            RaisePropertyChanged(nameof(CastingDurationSeconds));
+            RaisePropertyChanged(nameof(CastingOpacity));
         }
 
         public override void Reset()
         {
-            HasFightStarted = false;
+            base.Reset();
 
-            _lastManualNanoProgramDeactivationUnixSeconds = null;
-            _lastManualNanoProgramDeactivationTimestamp = null;
-            _wipedNanoPrograms.Clear();
+            ResetReflects();
+            ResetAdds();
+            ResetCasting();
+        }
 
+        private void ResetReflects()
+        {
             _timeSinceReflectDetected.Reset();
             IsReflectActive = false;
             ReflectCountdown = null;
 
+            RaisePropertyChanged(nameof(IsReflectActive));
+            RaisePropertyChanged(nameof(ReflectCountdown));
+        }
+
+        private void ResetAdds()
+        {
             foreach (var tracker in AddTrackers.Values)
             {
                 tracker.Deactivate();
             }
 
+            RaisePropertyChanged(nameof(AddTrackers));
+        }
+
+        private void ResetCasting()
+        {
             _timeSinceBeastLastHitOrCast.Reset();
             IsCasting = false;
             CastingDurationSeconds = 0;
             CastingOpacity = 0;
 
-            ResetStatusBars();
-            RaiseAllPropertyChanges();
-        }
-
-        private void RaiseAllPropertyChanges()
-        {
-            RaisePropertyChanged(nameof(WipedNanoPrograms));
-            RaisePropertyChanged(nameof(HasWipedNanoPrograms));
-            RaisePropertyChanged(nameof(IsReflectActive));
-            RaisePropertyChanged(nameof(ReflectCountdown));
-            RaisePropertyChanged(nameof(AddTrackers));
             RaisePropertyChanged(nameof(IsCasting));
             RaisePropertyChanged(nameof(CastingDurationSeconds));
             RaisePropertyChanged(nameof(CastingOpacity));

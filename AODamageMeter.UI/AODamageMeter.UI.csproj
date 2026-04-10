@@ -193,11 +193,10 @@
     <Compile Include="RelayCommandParameterized.cs" />
     <Compile Include="ViewModels\Rows\DamageDoneMainRow.cs" />
     <Compile Include="ViewModels\RowBase.cs" />
-    <Compile Include="ViewModels\IBossModuleViewModel.cs" />
     <Compile Include="Behaviors\StatusBarAnimation.cs" />
-    <Compile Include="ViewModels\BossModules\AddTracker.cs" />
-    <Compile Include="ViewModels\BossModules\BossModuleViewModelBase.cs" />
-    <Compile Include="ViewModels\BossModules\StatusBarViewModel.cs" />
+    <Compile Include="ViewModels\AddTrackerViewModel.cs" />
+    <Compile Include="ViewModels\BossModuleViewModelBase.cs" />
+    <Compile Include="ViewModels\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\BossModules\TheBeastModuleViewModel.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

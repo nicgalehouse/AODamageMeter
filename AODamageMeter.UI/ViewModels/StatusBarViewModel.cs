@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Media;
 
-namespace AODamageMeter.UI.ViewModels.BossModules
+namespace AODamageMeter.UI.ViewModels
 {
     public class StatusBarViewModel : ViewModelBase
     {

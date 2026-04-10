@@ -86,8 +86,8 @@ namespace AODamageMeter.UI.ViewModels
             private set => Set(ref _displayedRows, value);
         }
 
-        private IBossModuleViewModel _bossModuleViewModel;
-        public IBossModuleViewModel BossModuleViewModel
+        private BossModuleViewModelBase _bossModuleViewModel;
+        public BossModuleViewModelBase BossModuleViewModel
         {
             get => _bossModuleViewModel;
             set

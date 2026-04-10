@@ -1,14 +1,14 @@
 using System;
 
-namespace AODamageMeter.UI.ViewModels.BossModules
+namespace AODamageMeter.UI.ViewModels
 {
-    public class AddTracker
+    public class AddTrackerViewModel : ViewModelBase
     {
         public string Name { get; }
         public bool IsActive { get; private set; }
         public DateTime? DetectedTimestamp { get; private set; }
 
-        public AddTracker(string name)
+        public AddTrackerViewModel(string name)
             => Name = name;
 
         public void Activate(DateTime timestamp)

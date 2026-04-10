@@ -20,7 +20,7 @@ namespace AODamageMeter.UI.Views
 
             Title = bossModuleName;
 
-            IBossModuleViewModel bossModuleViewModel;
+            BossModuleViewModelBase bossModuleViewModel;
             UserControl bossModuleView;
 
             switch (bossModuleName)
@@ -44,7 +44,7 @@ namespace AODamageMeter.UI.Views
             StatusBarsPopup.CustomPopupPlacementCallback = PlaceStatusBarsPopup;
         }
 
-        public IBossModuleViewModel BossModuleViewModel { get; private set; }
+        public BossModuleViewModelBase BossModuleViewModel { get; private set; }
         public bool PreserveSelectedBossModuleOnClose { get; set; } = false;
 
         private void BindWindowPosition(string heightProperty, string widthProperty, string topProperty, string leftProperty)
