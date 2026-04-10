@@ -140,12 +140,8 @@
 
 {fightCharacter.GetDamageTypesTakenInfo()}");
 
-        public static string GetOwnersCastsTooltip(this CastInfo castInfo,
-            string title, int displayIndex, double? percentOfTotal, double? percentOfMax)
+        public static string GetOwnersCastsTooltip(this CastInfo castInfo, string title, int displayIndex)
 => $@"{displayIndex}. {title}
-
-{percentOfTotal.FormatPercent()} of total casts
-{percentOfMax.FormatPercent()} of max casts
 
 {castInfo.CastSuccesses:N0} ({castInfo.CastSuccessChance.FormatPercent()}) succeeded
 {castInfo.CastCountereds:N0} ({castInfo.CastCounteredChance.FormatPercent()}) countered

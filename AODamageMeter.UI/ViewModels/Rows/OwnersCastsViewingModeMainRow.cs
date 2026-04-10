@@ -46,11 +46,11 @@ $@"{Title}
         {
             if (FightOwner == null)
             {
-                RightText = $"{EmDash} ({EmDash}, {EmDash})";
+                RightText = $"{EmDash}/{EmDash} ({EmDashPercent})";
             }
             else
             {
-                RightText = $"{FightOwner.CastSuccesses:N0} ({FightOwner.CastSuccessesPM.Format()}, {FightOwner.CastSuccessChance.FormatPercent()})";
+                RightText = $"{FightOwner.CastSuccesses:N0}/{FightOwner.CastAttempts:N0} ({FightOwner.CastSuccessChance.FormatPercent()})";
 
                 var topCastInfos = FightOwner.CastInfos
                     .OrderByDescending(i => i.CastSuccesses)

@@ -1,5 +1,4 @@
 ﻿using AODamageMeter.UI.Helpers;
-using AODamageMeter.UI.Properties;
 using System.Windows.Media;
 
 namespace AODamageMeter.UI.ViewModels.Rows
@@ -20,9 +19,7 @@ namespace AODamageMeter.UI.ViewModels.Rows
         public override string UnnumberedLeftText => CastInfo.NanoProgram;
         public override string LeftTextToolTip => $"{DisplayIndex}. {CastInfo.NanoProgram}";
 
-        public double? PercentOfTotal { get; private set; }
         public double? PercentOfMax { get; private set; }
-        public double? DisplayedPercent => Settings.Default.ShowPercentOfTotal ? PercentOfTotal : PercentOfMax;
 
         public override string RightTextToolTip
         {
@@ -30,17 +27,16 @@ namespace AODamageMeter.UI.ViewModels.Rows
             {
                 lock (Fight)
                 {
-                    return CastInfo.GetOwnersCastsTooltip(Title, DisplayIndex, PercentOfTotal, PercentOfMax);
+                    return CastInfo.GetOwnersCastsTooltip(Title, DisplayIndex);
                 }
             }
         }
 
         public override void Update(int? displayIndex = null)
         {
-            PercentOfTotal = CastInfo.PercentOfSourcesCastSuccesses;
             PercentOfMax = CastInfo.PercentOfSourcesMaxCastSuccesses;
             PercentWidth = PercentOfMax ?? 0;
-            RightText = $"{CastInfo.CastSuccesses:N0} ({CastInfo.CastSuccessesPM.Format()}, {CastInfo.CastSuccessChance.FormatPercent()}, {DisplayedPercent.FormatPercent()})";
+            RightText = $"{CastInfo.CastSuccesses:N0}/{CastInfo.CastAttempts:N0} ({CastInfo.CastSuccessChance.FormatPercent()})";
 
             base.Update(displayIndex);
         }
