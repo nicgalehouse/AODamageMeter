@@ -94,7 +94,10 @@ namespace AODamageMeter.UI.ViewModels
                     _lastManualNanoProgramDeactivationUnixSeconds = null;
                     _lastManualNanoProgramDeactivationTimestamp = null;
 
-                    if (!isPurposeful)
+                    if (!isPurposeful
+                        // Just rely on the status bar expiring to signal wipes for these buffs.
+                        && !TotalMirrorShield.Nanoline.HasBuff(systemEvent.NanoProgram)
+                        && !NullitySphere.Nanoline.HasBuff(systemEvent.NanoProgram))
                     {
                         _wipedNanoPrograms.TryAdd(systemEvent.NanoProgram, fightEvent.LogUnixSeconds);
                     }

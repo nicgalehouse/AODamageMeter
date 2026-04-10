@@ -17,6 +17,9 @@ namespace AODamageMeter
         public string Name { get; }
         public IReadOnlyList<Buff> Buffs { get; }
 
+        public bool HasBuff(string name)
+            => _buffsByName.ContainsKey(name);
+
         public bool TryGetBuff(string name, out Buff buff)
             => _buffsByName.TryGetValue(name, out buff);
     }
