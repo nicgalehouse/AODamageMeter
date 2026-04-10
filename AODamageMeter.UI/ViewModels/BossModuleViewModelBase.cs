@@ -37,9 +37,13 @@ namespace AODamageMeter.UI.ViewModels
 
         private long? _lastManualNanoProgramDeactivationUnixSeconds;
         private DateTime? _lastManualNanoProgramDeactivationTimestamp;
-        private readonly List<string> _wipedNanoPrograms = new List<string>();
-        public List<string> WipedNanoPrograms => new List<string>(_wipedNanoPrograms);
-        public bool HasWipedNanoPrograms => WipedNanoPrograms.Count > 0;
+        private readonly ConcurrentDictionary<string, long> _wipedNanoPrograms = new ConcurrentDictionary<string, long>();
+        public IReadOnlyList<string> WipedNanoPrograms => _wipedNanoPrograms
+            .OrderBy(kvp => kvp.Value)
+            .ThenBy(kvp => kvp.Key, StringComparer.Ordinal)
+            .Select(kvp => kvp.Key)
+            .ToList();
+        public bool HasWipedNanoPrograms => !_wipedNanoPrograms.IsEmpty;
 
         private readonly ConcurrentQueue<StatusBarViewModel> _pendingStatusBars = new ConcurrentQueue<StatusBarViewModel>();
         public ObservableCollection<StatusBarViewModel> StatusBars { get; } = new ObservableCollection<StatusBarViewModel>();
@@ -89,21 +93,21 @@ namespace AODamageMeter.UI.ViewModels
                     _lastManualNanoProgramDeactivationUnixSeconds = null;
                     _lastManualNanoProgramDeactivationTimestamp = null;
 
-                    if (!isPurposeful && !_wipedNanoPrograms.Contains(systemEvent.NanoProgram))
+                    if (!isPurposeful)
                     {
-                        _wipedNanoPrograms.Add(systemEvent.NanoProgram);
+                        _wipedNanoPrograms.TryAdd(systemEvent.NanoProgram, fightEvent.LogUnixSeconds);
                     }
                 }
                 else if (systemEvent.IsFriendlyNanoExecutedOnYou)
                 {
-                    _wipedNanoPrograms.Remove(systemEvent.NanoProgram);
+                    _wipedNanoPrograms.TryRemove(systemEvent.NanoProgram, out _);
                 }
             }
             else if (fightEvent is MeCastNano castEvent
                 && castEvent.CastResult == CastResult.Success
                 && castEvent.NanoProgram != null)
             {
-                _wipedNanoPrograms.Remove(castEvent.NanoProgram);
+                _wipedNanoPrograms.TryRemove(castEvent.NanoProgram, out _);
             }
         }
 
