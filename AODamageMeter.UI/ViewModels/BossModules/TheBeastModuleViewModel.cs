@@ -121,8 +121,10 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 && (attackEvent.Source.Name == TheBeast && attackEvent.AttackResult == AttackResult.WeaponHit
                     // We don't know the source or target of absorbed hits--when adds are up, ignore them as a signal.
                     || attackEvent.AttackResult == AttackResult.Absorbed && !AreAnyAddsActive)
-                || fightEvent is SystemEvent systemEvent && systemEvent.Source?.Name == TheBeast
-                    && (systemEvent.IsHostileNanoExecutedOnYou || systemEvent.IsHostileNanoCounteredByYou))
+                || fightEvent is SystemEvent systemEvent
+                    && (systemEvent.Source?.Name == TheBeast && (systemEvent.IsHostileNanoExecutedOnYou || systemEvent.IsHostileNanoCounteredByYou)
+                        // We don't know the source of blocked hits--when adds are up, ignore them as a signal.
+                        || systemEvent.IsYouBlockedRegular && !AreAnyAddsActive))
             {
                 IsCasting = false;
                 CastingDurationSeconds = 0;
