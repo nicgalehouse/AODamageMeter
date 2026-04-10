@@ -3,8 +3,19 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:behaviors="clr-namespace:AODamageMeter.UI.Behaviors"
-        Style="{StaticResource WindowStyle}" Background="Transparent"
-        BorderBrush="{StaticResource LightBlueBrush50}" BorderThickness="1">
+        Background="Transparent">
+  <Window.Style>
+    <Style TargetType="Window" BasedOn="{StaticResource WindowStyle}">
+      <Setter Property="BorderBrush" Value="{StaticResource LightBlueBrush50}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
+          <Setter Property="BorderBrush" Value="#AA2222"/>
+          <Setter Property="BorderThickness" Value="2"/>
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </Window.Style>
   <Window.Resources>
     <Style x:Key="StatusBarLabelStyle" TargetType="TextBlock">
       <Setter Property="Foreground" Value="White"/>
@@ -24,9 +35,17 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0"
-          Background="{StaticResource Black40}"
-          MouseDown="HeaderRow_MouseDown_Drag">
+    <Grid Grid.Row="0" MouseDown="HeaderRow_MouseDown_Drag">
+      <Grid.Style>
+        <Style TargetType="Grid">
+          <Setter Property="Background" Value="{StaticResource Black40}"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
+              <Setter Property="Background" Value="#AA2222"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Grid.Style>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="*"/>
@@ -37,7 +56,19 @@
 
       <Image Grid.Column="0" Source="{Binding IconPath}" Width="20" Height="20" Margin="2 0 0 0"/>
       <TextBlock Grid.Column="1" Margin="3 0 0 0" VerticalAlignment="Center"
-                 Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                 TextTrimming="CharacterEllipsis">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="Text" Value="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
+                <Setter Property="Text" Value="{Binding IsBossTargetingYouText}"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+      </TextBlock>
       <Button Grid.Column="2"
               Click="ResetButton_Click_Reset"
               ToolTip="Reset">
@@ -55,15 +86,13 @@
       </Button>
     </Grid>
 
-    <Grid Grid.Row="1" Margin="1"
+    <Grid Grid.Row="1"
           Background="{StaticResource DarkBlueBrush85}">
       <ContentControl x:Name="BossModuleViewContent"/>
     </Grid>
 
     <Border Grid.Row="1"
-            BorderBrush="{StaticResource Black40}" BorderThickness="1"/>
-    <Border Grid.Row="1" Margin="2 0 2 2"
-            BorderBrush="{StaticResource LightBlueBrush}" BorderThickness="1"/>
+            BorderBrush="{StaticResource LightBlueBrush}" BorderThickness="0 1 0 0"/>
 
     <Popup x:Name="StatusBarsPopup"
            PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"

@@ -914,7 +914,8 @@ namespace AODamageMeter
                 || systemEvent.IsNanoTerminated
                 || systemEvent.IsFriendlyNanoExecutedOnYou
                 || systemEvent.IsHostileNanoExecutedOnYou
-                || systemEvent.IsHostileNanoCounteredByYou)
+                || systemEvent.IsHostileNanoCounteredByYou
+                || systemEvent.IsAttackedByOther)
             {
                 // No fight character tracking needed--just here for boss modules.
             }

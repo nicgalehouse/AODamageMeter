@@ -11,7 +11,7 @@
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <Border Grid.Row="0" Grid.Column="0" BorderBrush="Gray" BorderThickness="0 0 1 1">
+    <Border Grid.Row="0" Grid.Column="0">
       <Border.Style>
         <Style TargetType="Border">
           <Style.Triggers>
@@ -37,7 +37,7 @@
       </StackPanel>
     </Border>
 
-    <Border Grid.Row="0" Grid.Column="1" BorderBrush="Gray" BorderThickness="0 0 0 1">
+    <Border Grid.Row="0" Grid.Column="1">
       <Border.Style>
         <Style TargetType="Border">
           <Style.Triggers>
@@ -85,7 +85,6 @@
           <Binding Path="CastingOpacity" FallbackValue="0"/>
         </Border.Opacity>
       </Border>
-      <Border BorderBrush="Gray" BorderThickness="0 0 1 0"/>
       <TextBlock Text="Casting" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">
         <TextBlock.Effect>
           <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
@@ -188,5 +187,8 @@
       <TextBlock Grid.RowSpan="2" Grid.ColumnSpan="2"
                  Text="Adds" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
     </Grid>
+
+    <Rectangle Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="1" Fill="Gray"/>
+    <Rectangle Grid.Column="0" Grid.RowSpan="2" HorizontalAlignment="Right" Width="1" Fill="Gray"/>
   </Grid>
 </UserControl>

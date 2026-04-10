@@ -1,5 +1,6 @@
 using AODamageMeter.Buffs;
 using AODamageMeter.FightEvents;
+using AODamageMeter.FightEvents.Attack;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -50,6 +51,10 @@ namespace AODamageMeter.UI.ViewModels
         public ObservableCollection<StatusBarViewModel> StatusBars { get; } = new ObservableCollection<StatusBarViewModel>();
         public bool HasStatusBars => StatusBars.Count > 0;
 
+        public virtual bool NeedsIsBossTargetingYouWarning => false;
+        public bool IsBossTargetingYou { get; private set; }
+        public string IsBossTargetingYouText => $"{BossName} is on you!";
+
         protected virtual void OnFightStarted() { }
 
         protected bool CheckForFightStart(FightEvent fightEvent)
@@ -70,6 +75,11 @@ namespace AODamageMeter.UI.ViewModels
             {
                 CheckNcuWipes(fightEvent);
                 CheckStatusBars(fightEvent);
+
+                if (NeedsIsBossTargetingYouWarning)
+                {
+                    CheckIsBossTargetingYou(fightEvent);
+                }
             }
         }
 
@@ -138,6 +148,26 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        private void CheckIsBossTargetingYou(FightEvent fightEvent)
+        {
+            if (fightEvent is SystemEvent systemEvent
+                && systemEvent.IsAttackedByOther && systemEvent.Source?.Name == BossName)
+            {
+                IsBossTargetingYou = true;
+            }
+            else if (fightEvent is AttackEvent attackEvent
+                && attackEvent.Source.Name == BossName && attackEvent.Target.IsOwner
+                && (attackEvent.AttackResult == AttackResult.WeaponHit || attackEvent.AttackResult == AttackResult.Missed))
+            {
+                IsBossTargetingYou = true;
+            }
+            else if (fightEvent is OtherHitByOther otherHitByOther
+                && otherHitByOther.Source.Name == BossName && otherHitByOther.AttackResult == AttackResult.WeaponHit)
+            {
+                IsBossTargetingYou = false;
+            }
+        }
+
         protected void RequestStatusBar(string label, double totalSeconds, string color, string iconPath)
             => _pendingStatusBarUpdates.Enqueue((new StatusBarViewModel(label, totalSeconds, color, iconPath), null));
 
@@ -151,6 +181,7 @@ namespace AODamageMeter.UI.ViewModels
 
             UpdateNcuWipes();
             UpdateStatusBars();
+            UpdateIsBossTargetingYou();
         }
 
         private void UpdateNcuWipes()
@@ -211,12 +242,21 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        private void UpdateIsBossTargetingYou()
+        {
+            if (NeedsIsBossTargetingYouWarning)
+            {
+                RaisePropertyChanged(nameof(IsBossTargetingYou));
+            }
+        }
+
         public virtual void Reset()
         {
             HasFightStarted = false;
 
             ResetNcuWipes();
             ResetStatusBars();
+            ResetIsBossTargetingYou();
         }
 
         private void ResetNcuWipes()
@@ -235,6 +275,13 @@ namespace AODamageMeter.UI.ViewModels
             StatusBars.Clear();
 
             RaisePropertyChanged(nameof(HasStatusBars));
+        }
+
+        private void ResetIsBossTargetingYou()
+        {
+            IsBossTargetingYou = false;
+
+            RaisePropertyChanged(nameof(IsBossTargetingYou));
         }
     }
 }

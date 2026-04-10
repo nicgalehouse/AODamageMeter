@@ -21,7 +21,8 @@ namespace AODamageMeter.FightEvents
             NanoTerminated =            CreateRegex($"Nanoprogram (.+) terminated..."),
             FriendlyNanoExecutedOnYou = CreateRegex($"{SOURCE} executes (.+) within your NCU..."),
             HostileNanoExecutedOnYou =  CreateRegex($"{SOURCE} forces your NCU to run (.+)..."),
-            HostileNanoCounteredByYou = CreateRegex($"You countered {SOURCE}'s attempt to run (.+) within your NCU.");
+            HostileNanoCounteredByYou = CreateRegex($"You countered {SOURCE}'s attempt to run (.+) within your NCU."),
+            AttackedByOther =           CreateRegex($"Attacked by {SOURCE}!");
 
         public bool IsSelfNanoHeal { get; protected set; }
         public bool IsHealthDrain { get; protected set; }
@@ -34,6 +35,7 @@ namespace AODamageMeter.FightEvents
         public bool IsFriendlyNanoExecutedOnYou { get; protected set; }
         public bool IsHostileNanoExecutedOnYou { get; protected set; }
         public bool IsHostileNanoCounteredByYou { get; protected set; }
+        public bool IsAttackedByOther { get; protected set; }
         public string NanoProgram { get; protected set; }
 
         public SystemEvent(Fight fight, DateTime timestamp, LogEntry logEntry)
@@ -92,6 +94,11 @@ namespace AODamageMeter.FightEvents
                 IsHostileNanoCounteredByYou = true;
                 SetSource(match, 1);
                 NanoProgram = match.Groups[2].Value;
+            }
+            else if (TryMatch(AttackedByOther, out match))
+            {
+                IsAttackedByOther = true;
+                SetSource(match, 1);
             }
             else IsUnmatched = true;
         }

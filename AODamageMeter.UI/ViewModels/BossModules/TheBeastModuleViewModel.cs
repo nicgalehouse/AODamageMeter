@@ -31,6 +31,8 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         public int CastingDurationSeconds { get; private set; }
         public double CastingOpacity { get; private set; }
 
+        public override bool NeedsIsBossTargetingYouWarning => true;
+
         private const string DoomOfTheSpirits = "Doom Of The Spirits";
         private const string DoomOfTheSpiritsIconPath = "/Icons/DoomOfTheSpirits.png";
         private const int DoomOfTheSpiritsDurationSeconds = 18;
