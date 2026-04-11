@@ -9,6 +9,10 @@
       <Setter Property="BorderBrush" Value="{StaticResource LightBlueBrush50}"/>
       <Setter Property="BorderThickness" Value="1"/>
       <Style.Triggers>
+        <DataTrigger Binding="{Binding IsAggroSwapRecent, FallbackValue=False}" Value="True">
+          <Setter Property="BorderBrush" Value="#D4A030"/>
+          <Setter Property="BorderThickness" Value="2"/>
+        </DataTrigger>
         <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
           <Setter Property="BorderBrush" Value="#AA2222"/>
           <Setter Property="BorderThickness" Value="2"/>
@@ -40,6 +44,9 @@
         <Style TargetType="Grid">
           <Setter Property="Background" Value="{StaticResource Black40}"/>
           <Style.Triggers>
+            <DataTrigger Binding="{Binding IsAggroSwapRecent, FallbackValue=False}" Value="True">
+              <Setter Property="Background" Value="#D4A030"/>
+            </DataTrigger>
             <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
               <Setter Property="Background" Value="#AA2222"/>
             </DataTrigger>
@@ -62,6 +69,9 @@
             <Setter Property="Text" Value="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"/>
             <Setter Property="Foreground" Value="White"/>
             <Style.Triggers>
+              <DataTrigger Binding="{Binding IsBossTargetingSomeoneElse, FallbackValue=False}" Value="True">
+                <Setter Property="Text" Value="{Binding AggroTargetText}"/>
+              </DataTrigger>
               <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
                 <Setter Property="Text" Value="{Binding IsBossTargetingYouText}"/>
               </DataTrigger>

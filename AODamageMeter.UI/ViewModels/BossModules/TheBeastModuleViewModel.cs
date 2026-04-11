@@ -41,7 +41,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private const int DoomOfTheSpiritsDurationSeconds = 18;
         private const string DoomOfTheSpiritsBarColor = "#7C8289";
 
-        public override bool NeedsIsBossTargetingYouWarning => true;
+        public override bool NeedsIsBossTargetingSomeoneWarning => true;
         public override bool NeedsTauntStatusBar => true;
 
         public TheBeastModuleViewModel()

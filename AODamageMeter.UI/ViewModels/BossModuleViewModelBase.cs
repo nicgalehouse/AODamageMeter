@@ -53,9 +53,16 @@ namespace AODamageMeter.UI.ViewModels
         public ObservableCollection<StatusBarViewModelBase> StatusBars { get; } = new ObservableCollection<StatusBarViewModelBase>();
         public bool HasStatusBars => StatusBars.Count > 0;
 
-        public virtual bool NeedsIsBossTargetingYouWarning => false;
+        public virtual bool NeedsIsBossTargetingSomeoneWarning => false;
         public bool IsBossTargetingYou { get; private set; }
-        public string IsBossTargetingYouText => $"{BossName} is on you!";
+        public string IsBossTargetingYouText => $"You have aggro!";
+        private string _aggroTargetName;
+        private readonly SynchronizedStopwatch _aggroSwapStopwatch = new SynchronizedStopwatch();
+        public bool IsBossTargetingSomeoneElse { get; private set; }
+        public bool IsAggroSwapRecent { get; private set; }
+        public string AggroTargetText => IsAggroSwapRecent
+            ? $"{_aggroTargetName} has aggro!"
+            : $"{_aggroTargetName} has aggro";
 
         public virtual bool NeedsTauntStatusBar => false;
         private const string TauntLabel = "Taunt Estimate";
@@ -103,9 +110,9 @@ namespace AODamageMeter.UI.ViewModels
                 CheckNcuWipes(fightEvent);
                 CheckStatusBars(fightEvent);
 
-                if (NeedsIsBossTargetingYouWarning)
+                if (NeedsIsBossTargetingSomeoneWarning)
                 {
-                    CheckIsBossTargetingYou(fightEvent);
+                    CheckIsBossTargetingSomeone(fightEvent);
                 }
 
                 if (NeedsTauntStatusBar)
@@ -180,23 +187,36 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
-        private void CheckIsBossTargetingYou(FightEvent fightEvent)
+        private void CheckIsBossTargetingSomeone(FightEvent fightEvent)
         {
             if (fightEvent is SystemEvent systemEvent
                 && systemEvent.IsAttackedByOther && systemEvent.Source?.Name == BossName)
             {
+                _aggroTargetName = null;
+                _aggroSwapStopwatch.Reset();
                 IsBossTargetingYou = true;
+                IsBossTargetingSomeoneElse = false;
             }
             else if (fightEvent is AttackEvent attackEvent
                 && attackEvent.Source.Name == BossName && attackEvent.Target.IsOwner
                 && (attackEvent.AttackResult == AttackResult.WeaponHit || attackEvent.AttackResult == AttackResult.Missed))
             {
+                _aggroTargetName = null;
+                _aggroSwapStopwatch.Reset();
                 IsBossTargetingYou = true;
+                IsBossTargetingSomeoneElse = false;
             }
             else if (fightEvent is OtherHitByOther otherHitByOther
                 && otherHitByOther.Source.Name == BossName && otherHitByOther.AttackResult == AttackResult.WeaponHit)
             {
+                if (_aggroTargetName != otherHitByOther.Target.Name)
+                {
+                    _aggroTargetName = otherHitByOther.Target.Name;
+                    _aggroSwapStopwatch.Restart();
+                }
+
                 IsBossTargetingYou = false;
+                IsBossTargetingSomeoneElse = true;
             }
         }
 
@@ -287,7 +307,7 @@ namespace AODamageMeter.UI.ViewModels
 
             UpdateNcuWipes();
             UpdateStatusBars();
-            UpdateIsBossTargetingYou();
+            UpdateIsBossTargetingSomeone();
             UpdateTaunt();
         }
 
@@ -349,11 +369,23 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
-        private void UpdateIsBossTargetingYou()
+        private void UpdateIsBossTargetingSomeone()
         {
-            if (NeedsIsBossTargetingYouWarning)
+            if (NeedsIsBossTargetingSomeoneWarning)
             {
+                if (IsBossTargetingSomeoneElse)
+                {
+                    IsAggroSwapRecent = _aggroSwapStopwatch.Elapsed.TotalSeconds <= 5;
+                }
+                else
+                {
+                    IsAggroSwapRecent = false;
+                }
+
                 RaisePropertyChanged(nameof(IsBossTargetingYou));
+                RaisePropertyChanged(nameof(IsBossTargetingSomeoneElse));
+                RaisePropertyChanged(nameof(IsAggroSwapRecent));
+                RaisePropertyChanged(nameof(AggroTargetText));
             }
         }
 
@@ -371,7 +403,7 @@ namespace AODamageMeter.UI.ViewModels
 
             ResetNcuWipes();
             ResetStatusBars();
-            ResetIsBossTargetingYou();
+            ResetIsBossTargetingSomeone();
             ResetTaunt();
         }
 
@@ -393,11 +425,18 @@ namespace AODamageMeter.UI.ViewModels
             RaisePropertyChanged(nameof(HasStatusBars));
         }
 
-        private void ResetIsBossTargetingYou()
+        private void ResetIsBossTargetingSomeone()
         {
             IsBossTargetingYou = false;
+            _aggroTargetName = null;
+            _aggroSwapStopwatch.Reset();
+            IsBossTargetingSomeoneElse = false;
+            IsAggroSwapRecent = false;
 
             RaisePropertyChanged(nameof(IsBossTargetingYou));
+            RaisePropertyChanged(nameof(IsBossTargetingSomeoneElse));
+            RaisePropertyChanged(nameof(IsAggroSwapRecent));
+            RaisePropertyChanged(nameof(AggroTargetText));
         }
 
         private void ResetTaunt()
