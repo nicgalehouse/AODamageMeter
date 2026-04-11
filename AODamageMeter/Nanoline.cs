@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace AODamageMeter
         {
             Name = name;
             Nanos = nanos;
-            _nanosByName = nanos.ToDictionary(b => b.Name);
+            _nanosByName = nanos.ToDictionary(n => n.Name, n => n, StringComparer.OrdinalIgnoreCase);
         }
 
         public string Name { get; }
