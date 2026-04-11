@@ -69,9 +69,11 @@ namespace AODamageMeter.UI.ViewModels
         private bool _ownerHasBeenCastingResonanceBlast;
         private long _ownersDamageDone;
         private long _ownersHealingDone;
-        private long _ownersDetaunt;
-        private long OwnersTaunt => _ownersDamageDone + (long)(_ownersHealingDone * HealingToTauntFactor) - _ownersDetaunt;
-        private double OwnersTauntPM => OwnersTaunt / _timeSinceBossFightStarted.Elapsed.TotalMinutes;
+        private long _ownersNanoTauntAmount;
+        private long _ownersNanoDetauntAmount;
+        private long OwnersTauntAmount => _ownersDamageDone + (long)(_ownersHealingDone * HealingToTauntFactor)
+            + _ownersNanoTauntAmount - _ownersNanoDetauntAmount;
+        private double OwnersTauntAmountPM => OwnersTauntAmount / _timeSinceBossFightStarted.Elapsed.TotalMinutes;
 
         protected virtual void OnFightStarted()
         {
@@ -147,22 +149,22 @@ namespace AODamageMeter.UI.ViewModels
                     _wipedNanoPrograms.TryRemove(systemEvent.NanoProgram, out _);
                 }
             }
-            else if (fightEvent is MeCastNano castEvent
-                && castEvent.CastResult == CastResult.Success
-                && castEvent.NanoProgram != null)
+            else if (fightEvent is MeCastNano meCastNanoEvent
+                && meCastNanoEvent.CastResult == CastResult.Success
+                && meCastNanoEvent.NanoProgram != null)
             {
-                _wipedNanoPrograms.TryRemove(castEvent.NanoProgram, out _);
+                _wipedNanoPrograms.TryRemove(meCastNanoEvent.NanoProgram, out _);
             }
         }
 
         protected virtual void CheckStatusBars(FightEvent fightEvent)
         {
-            if (fightEvent is MeCastNano castEvent
-                && castEvent.CastResult == CastResult.Success
-                && castEvent.NanoProgram != null)
+            if (fightEvent is MeCastNano meCastNanoEvent
+                && meCastNanoEvent.CastResult == CastResult.Success
+                && meCastNanoEvent.NanoProgram != null)
             {
-                if (TotalMirrorShield.Nanoline.TryGetNano(castEvent.NanoProgram, out var nano)
-                    || NullitySphere.Nanoline.TryGetNano(castEvent.NanoProgram, out nano))
+                if (TotalMirrorShield.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out var nano)
+                    || NullitySphere.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out nano))
                 {
                     RequestAnimatedStatusBar(nano.ShortName, nano.DurationSeconds.Value, nano.Color, nano.IconPath);
                 }
@@ -200,11 +202,26 @@ namespace AODamageMeter.UI.ViewModels
 
         private void CheckTaunt(FightEvent fightEvent)
         {
-            if (fightEvent is MeCastNano meCastNanoEvent
-                // Common detaunt used by Froob NTs, only one worth worrying about right now.
-                && meCastNanoEvent.NanoProgram == "Resonance Blast")
+            if (fightEvent is MeCastNano meCastNanoEvent)
             {
-                _ownerHasBeenCastingResonanceBlast = true;
+                // Common detaunt used by Froob NTs, only one worth worrying about right now.
+                if (meCastNanoEvent.NanoProgram == "Resonance Blast")
+                {
+                    _ownerHasBeenCastingResonanceBlast = true;
+                }
+                // Assume taunts and detaunts will only be used on the boss, and not any adds.
+                else if (meCastNanoEvent.CastResult == CastResult.Success
+                    && meCastNanoEvent.NanoProgram != null)
+                {
+                    if (SoldierTaunt.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out var nano))
+                    {
+                        _ownersNanoTauntAmount += nano.TauntAmount.Value;
+                    }
+                    else if (SoldierDetaunt.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out nano))
+                    {
+                        _ownersNanoDetauntAmount += nano.DetauntAmount.Value;
+                    }
+                }
             }
 
             if (fightEvent is AttackEvent attackEvent
@@ -218,7 +235,7 @@ namespace AODamageMeter.UI.ViewModels
                     && attackEvent.Amount > 3000
                     && attackEvent.DamageType == DamageType.Radiation)
                 {
-                    _ownersDetaunt += 3000;
+                    _ownersNanoDetauntAmount += 3000;
                 }
             }
             else if (fightEvent is HealEvent healEvent
@@ -344,7 +361,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             if (!NeedsTauntStatusBar || _tauntStatusBar == null) return;
 
-            _tauntStatusBar.Value = $"{OwnersTaunt.Format()} ({OwnersTauntPM.Format()})";
+            _tauntStatusBar.Value = $"{OwnersTauntAmount.Format()} ({OwnersTauntAmountPM.Format()})";
             _tauntStatusBar.RaisePropertyChanged(nameof(FixedStatusBarViewModel.RightText));
         }
 
@@ -388,7 +405,8 @@ namespace AODamageMeter.UI.ViewModels
             _ownerHasBeenCastingResonanceBlast = false;
             _ownersDamageDone = 0;
             _ownersHealingDone = 0;
-            _ownersDetaunt = 0;
+            _ownersNanoTauntAmount = 0;
+            _ownersNanoDetauntAmount = 0;
             _timeSinceBossFightStarted.Reset();
             _tauntStatusBar = null;
         }
