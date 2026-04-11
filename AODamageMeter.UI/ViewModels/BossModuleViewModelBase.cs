@@ -66,9 +66,11 @@ namespace AODamageMeter.UI.ViewModels
         private const int MaxHealingFromTeamEnhancedDeathlessBlessing = 347;
         private readonly SynchronizedStopwatch _timeSinceBossFightStarted = new SynchronizedStopwatch();
         private FixedStatusBarViewModel _tauntStatusBar;
+        private bool _ownerHasBeenCastingResonanceBlast;
         private long _ownersDamageDone;
         private long _ownersHealingDone;
-        private long OwnersTaunt => _ownersDamageDone + (long)(_ownersHealingDone * HealingToTauntFactor);
+        private long _ownersDetaunt;
+        private long OwnersTaunt => _ownersDamageDone + (long)(_ownersHealingDone * HealingToTauntFactor) - _ownersDetaunt;
         private double OwnersTauntPM => OwnersTaunt / _timeSinceBossFightStarted.Elapsed.TotalMinutes;
 
         protected virtual void OnFightStarted()
@@ -198,12 +200,26 @@ namespace AODamageMeter.UI.ViewModels
 
         private void CheckTaunt(FightEvent fightEvent)
         {
+            if (fightEvent is MeCastNano meCastNanoEvent
+                // Common detaunt used by Froob NTs, only one worth worrying about right now.
+                && meCastNanoEvent.NanoProgram == "Resonance Blast")
+            {
+                _ownerHasBeenCastingResonanceBlast = true;
+            }
+
             if (fightEvent is AttackEvent attackEvent
                 && attackEvent.Source.IsOwner
                 && attackEvent.Target.Name == BossName
                 && attackEvent.Amount > 0)
             {
                 _ownersDamageDone += attackEvent.Amount.Value;
+
+                if (_ownerHasBeenCastingResonanceBlast
+                    && attackEvent.Amount > 3000
+                    && attackEvent.DamageType == DamageType.Radiation)
+                {
+                    _ownersDetaunt += 3000;
+                }
             }
             else if (fightEvent is HealEvent healEvent
                 && healEvent.Source?.IsOwner == true
@@ -369,8 +385,10 @@ namespace AODamageMeter.UI.ViewModels
 
         private void ResetTaunt()
         {
+            _ownerHasBeenCastingResonanceBlast = false;
             _ownersDamageDone = 0;
             _ownersHealingDone = 0;
+            _ownersDetaunt = 0;
             _timeSinceBossFightStarted.Reset();
             _tauntStatusBar = null;
         }
