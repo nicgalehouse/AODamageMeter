@@ -38,7 +38,6 @@ namespace AODamageMeter.FightEvents
     {
         public const string EventName = "Me Cast Nano";
         public override string Name => EventName;
-        public override bool CanStartFight => false;
 
         protected static MeCastNano _potentialStartEvent;
 

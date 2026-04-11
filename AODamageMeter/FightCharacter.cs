@@ -841,9 +841,6 @@ namespace AODamageMeter
 
         public void AddCastEvent(MeCastNano castEvent)
         {
-            if (!Fight.HasStarted)
-                return;
-
             if (castEvent.IsEndOfCast)
             {
                 switch (castEvent.CastResult.Value)
