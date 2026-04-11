@@ -5,22 +5,22 @@ namespace AODamageMeter
 {
     public class Nanoline
     {
-        private readonly Dictionary<string, Buff> _buffsByName;
+        private readonly Dictionary<string, Nano> _nanosByName;
 
-        public Nanoline(string name, params Buff[] buffs)
+        public Nanoline(string name, params Nano[] nanos)
         {
             Name = name;
-            Buffs = buffs;
-            _buffsByName = buffs.ToDictionary(b => b.Name);
+            Nanos = nanos;
+            _nanosByName = nanos.ToDictionary(b => b.Name);
         }
 
         public string Name { get; }
-        public IReadOnlyList<Buff> Buffs { get; }
+        public IReadOnlyList<Nano> Nanos { get; }
 
-        public bool HasBuff(string name)
-            => _buffsByName.ContainsKey(name);
+        public bool HasNano(string name)
+            => _nanosByName.ContainsKey(name);
 
-        public bool TryGetBuff(string name, out Buff buff)
-            => _buffsByName.TryGetValue(name, out buff);
+        public bool TryGetNano(string name, out Nano nano)
+            => _nanosByName.TryGetValue(name, out nano);
     }
 }

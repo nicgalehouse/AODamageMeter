@@ -1,8 +1,8 @@
 namespace AODamageMeter
 {
-    public class Buff
+    public class Nano
     {
-        public Buff(string name, double durationSeconds, string iconPath, string color, string shortName = null)
+        public Nano(string name, double? durationSeconds, string iconPath, string color, string shortName = null)
         {
             Name = name;
             ShortName = shortName ?? name;
@@ -13,7 +13,7 @@ namespace AODamageMeter
 
         public string Name { get; }
         public string ShortName { get; }
-        public double DurationSeconds { get; }
+        public double? DurationSeconds { get; }
         public string IconPath { get; }
         public string Color { get; }
     }

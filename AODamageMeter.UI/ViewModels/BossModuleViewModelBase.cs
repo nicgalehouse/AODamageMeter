@@ -1,7 +1,7 @@
-using AODamageMeter.Buffs;
 using AODamageMeter.FightEvents;
 using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
+using AODamageMeter.Nanolines;
 using AODamageMeter.UI.Helpers;
 using System;
 using System.Collections.Concurrent;
@@ -135,9 +135,9 @@ namespace AODamageMeter.UI.ViewModels
                     _lastManualNanoProgramDeactivationTimestamp = null;
 
                     if (!isPurposeful
-                        // Just rely on the status bar expiring to signal wipes for these buffs.
-                        && !TotalMirrorShield.Nanoline.HasBuff(systemEvent.NanoProgram)
-                        && !NullitySphere.Nanoline.HasBuff(systemEvent.NanoProgram))
+                        // Just rely on the status bar expiring to signal wipes for these nanos.
+                        && !TotalMirrorShield.Nanoline.HasNano(systemEvent.NanoProgram)
+                        && !NullitySphere.Nanoline.HasNano(systemEvent.NanoProgram))
                     {
                         _wipedNanoPrograms.TryAdd(systemEvent.NanoProgram, fightEvent.LogUnixSeconds);
                     }
@@ -161,19 +161,19 @@ namespace AODamageMeter.UI.ViewModels
                 && castEvent.CastResult == CastResult.Success
                 && castEvent.NanoProgram != null)
             {
-                if (TotalMirrorShield.Nanoline.TryGetBuff(castEvent.NanoProgram, out var buff)
-                    || NullitySphere.Nanoline.TryGetBuff(castEvent.NanoProgram, out buff))
+                if (TotalMirrorShield.Nanoline.TryGetNano(castEvent.NanoProgram, out var nano)
+                    || NullitySphere.Nanoline.TryGetNano(castEvent.NanoProgram, out nano))
                 {
-                    RequestAnimatedStatusBar(buff.ShortName, buff.DurationSeconds, buff.Color, buff.IconPath);
+                    RequestAnimatedStatusBar(nano.ShortName, nano.DurationSeconds.Value, nano.Color, nano.IconPath);
                 }
             }
             else if (fightEvent is SystemEvent systemEvent
                 && systemEvent.IsNanoTerminated)
             {
-                if (TotalMirrorShield.Nanoline.TryGetBuff(systemEvent.NanoProgram, out var buff)
-                    || NullitySphere.Nanoline.TryGetBuff(systemEvent.NanoProgram, out buff))
+                if (TotalMirrorShield.Nanoline.TryGetNano(systemEvent.NanoProgram, out var nano)
+                    || NullitySphere.Nanoline.TryGetNano(systemEvent.NanoProgram, out nano))
                 {
-                    ExpireStatusBar(buff.ShortName);
+                    ExpireStatusBar(nano.ShortName);
                 }
             }
         }
