@@ -204,7 +204,9 @@
     <Compile Include="Behaviors\StatusBarAnimation.cs" />
     <Compile Include="ViewModels\AddTrackerViewModel.cs" />
     <Compile Include="ViewModels\BossModuleViewModelBase.cs" />
-    <Compile Include="ViewModels\StatusBarViewModel.cs" />
+    <Compile Include="ViewModels\StatusBarViewModelBase.cs" />
+    <Compile Include="ViewModels\AnimatedStatusBarViewModel.cs" />
+    <Compile Include="ViewModels\FixedStatusBarViewModel.cs" />
     <Compile Include="ViewModels\BossModules\TheBeastModuleViewModel.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -352,6 +354,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\RingOfFire.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Taunt.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

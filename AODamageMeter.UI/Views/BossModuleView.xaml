@@ -122,7 +122,6 @@
                      Stretch="UniformToFill"/>
               <Grid Grid.Column="1">
                 <ProgressBar Minimum="0"
-                             Maximum="{Binding TotalSeconds, Mode=OneWay}"
                              Foreground="{Binding BarColor, Converter={StaticResource ColorToRowBrushConverter}}"
                              Background="{StaticResource DarkBlueBrush81}"
                              behaviors:StatusBarAnimation.StatusBarViewModel="{Binding}">
@@ -146,7 +145,7 @@
                              Style="{StaticResource StatusBarLabelStyle}"
                              TextTrimming="CharacterEllipsis"
                              Margin="4 0 0 0"/>
-                  <TextBlock Grid.Column="1" Text="{Binding TimeRemainingText}"
+                  <TextBlock Grid.Column="1" Text="{Binding RightText}"
                              Style="{StaticResource StatusBarLabelStyle}"
                              Margin="0 0 4 0"/>
                 </Grid>

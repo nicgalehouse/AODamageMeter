@@ -30,9 +30,6 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         public bool IsCasting { get; private set; }
         public int CastingDurationSeconds { get; private set; }
         public double CastingOpacity { get; private set; }
-
-        public override bool NeedsIsBossTargetingYouWarning => true;
-
         private const int RingOfFireDisplaySeconds = 2;
         private readonly SynchronizedStopwatch _timeSinceRingOfFire = new SynchronizedStopwatch();
         private long _lastBeastNanoHitUnixSeconds;
@@ -44,6 +41,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private const int DoomOfTheSpiritsDurationSeconds = 18;
         private const string DoomOfTheSpiritsBarColor = "#7C8289";
 
+        public override bool NeedsIsBossTargetingYouWarning => true;
+        public override bool NeedsTauntStatusBar => true;
+
         public TheBeastModuleViewModel()
             => AddTrackers = new Dictionary<string, AddTrackerViewModel>
             {
@@ -54,7 +54,10 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             };
 
         protected override void OnFightStarted()
-            => _timeSinceBeastLastHitOrCast.Start();
+        {
+            base.OnFightStarted();
+            _timeSinceBeastLastHitOrCast.Start();
+        }
 
         public override void OnFightEventAdded(FightEvent fightEvent)
         {
@@ -174,7 +177,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             if (fightEvent is SystemEvent systemEvent && systemEvent.Source?.Name == TheBeast
                 && systemEvent.IsHostileNanoExecutedOnYou && systemEvent.NanoProgram == DoomOfTheSpirits)
             {
-                RequestStatusBar(DoomOfTheSpirits, DoomOfTheSpiritsDurationSeconds, DoomOfTheSpiritsBarColor, DoomOfTheSpiritsIconPath);
+                RequestAnimatedStatusBar(DoomOfTheSpirits, DoomOfTheSpiritsDurationSeconds, DoomOfTheSpiritsBarColor, DoomOfTheSpiritsIconPath);
             }
         }
 

@@ -1,6 +1,8 @@
 using AODamageMeter.Buffs;
 using AODamageMeter.FightEvents;
 using AODamageMeter.FightEvents.Attack;
+using AODamageMeter.FightEvents.Heal;
+using AODamageMeter.UI.Helpers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -46,16 +48,37 @@ namespace AODamageMeter.UI.ViewModels
             .ToList();
         public bool HasWipedNanoPrograms => !_wipedNanoPrograms.IsEmpty;
 
-        private readonly ConcurrentQueue<(StatusBarViewModel pendingStatusBar, string pendingExpiredStatusBarKey)>
-            _pendingStatusBarUpdates = new ConcurrentQueue<(StatusBarViewModel, string)>();
-        public ObservableCollection<StatusBarViewModel> StatusBars { get; } = new ObservableCollection<StatusBarViewModel>();
+        private readonly ConcurrentQueue<(StatusBarViewModelBase pendingStatusBar, string pendingExpiredStatusBarKey)>
+            _pendingStatusBarUpdates = new ConcurrentQueue<(StatusBarViewModelBase, string)>();
+        public ObservableCollection<StatusBarViewModelBase> StatusBars { get; } = new ObservableCollection<StatusBarViewModelBase>();
         public bool HasStatusBars => StatusBars.Count > 0;
 
         public virtual bool NeedsIsBossTargetingYouWarning => false;
         public bool IsBossTargetingYou { get; private set; }
         public string IsBossTargetingYouText => $"{BossName} is on you!";
 
-        protected virtual void OnFightStarted() { }
+        public virtual bool NeedsTauntStatusBar => false;
+        private const string TauntLabel = "Taunt Estimate";
+        private const string TauntIconPath = "/Icons/Taunt.png";
+        private const string TauntBarColor = "#D4A030";
+        private const double HealingToTauntFactor = 0.5;
+        private const double PercentageOverhealingEstimate = 0.25;
+        private const int MaxHealingFromTeamEnhancedDeathlessBlessing = 347;
+        private readonly SynchronizedStopwatch _timeSinceBossFightStarted = new SynchronizedStopwatch();
+        private FixedStatusBarViewModel _tauntStatusBar;
+        private long _ownersDamageDone;
+        private long _ownersHealingDone;
+        private long OwnersTaunt => _ownersDamageDone + (long)(_ownersHealingDone * HealingToTauntFactor);
+        private double OwnersTauntPM => OwnersTaunt / _timeSinceBossFightStarted.Elapsed.TotalMinutes;
+
+        protected virtual void OnFightStarted()
+        {
+            if (NeedsTauntStatusBar)
+            {
+                _timeSinceBossFightStarted.Start();
+                _tauntStatusBar = RequestFixedStatusBar(TauntLabel, "0", TauntBarColor, TauntIconPath);
+            }
+        }
 
         protected bool CheckForFightStart(FightEvent fightEvent)
         {
@@ -79,6 +102,11 @@ namespace AODamageMeter.UI.ViewModels
                 if (NeedsIsBossTargetingYouWarning)
                 {
                     CheckIsBossTargetingYou(fightEvent);
+                }
+
+                if (NeedsTauntStatusBar)
+                {
+                    CheckTaunt(fightEvent);
                 }
             }
         }
@@ -134,7 +162,7 @@ namespace AODamageMeter.UI.ViewModels
                 if (TotalMirrorShield.Nanoline.TryGetBuff(castEvent.NanoProgram, out var buff)
                     || NullitySphere.Nanoline.TryGetBuff(castEvent.NanoProgram, out buff))
                 {
-                    RequestStatusBar(buff.ShortName, buff.DurationSeconds, buff.Color, buff.IconPath);
+                    RequestAnimatedStatusBar(buff.ShortName, buff.DurationSeconds, buff.Color, buff.IconPath);
                 }
             }
             else if (fightEvent is SystemEvent systemEvent
@@ -168,8 +196,53 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
-        protected void RequestStatusBar(string label, double totalSeconds, string color, string iconPath)
-            => _pendingStatusBarUpdates.Enqueue((new StatusBarViewModel(label, totalSeconds, color, iconPath), null));
+        private void CheckTaunt(FightEvent fightEvent)
+        {
+            if (fightEvent is AttackEvent attackEvent
+                && attackEvent.Source.IsOwner
+                && attackEvent.Target.Name == BossName
+                && attackEvent.Amount > 0)
+            {
+                _ownersDamageDone += attackEvent.Amount.Value;
+            }
+            else if (fightEvent is HealEvent healEvent
+                && healEvent.Source?.IsOwner == true
+                && healEvent.HealType != HealType.Nano
+                // We believe HoTs don't generate taunt. This excludes self-healing from heal delta but I'm
+                // not sure if that generates taunt or not, and that usually won't be a significant factor.
+                && healEvent.Amount > MaxHealingFromTeamEnhancedDeathlessBlessing)
+            {
+                // We know the owner is the one healing--if they're giving health to someone else we can only see
+                // potential healing (oof), and if they're healing themselves, we can only see the realized healing.
+                // I'm guessing that only realized healing contributes to taunt.
+                if (healEvent is YouGaveHealth)
+                {
+                    _ownersHealingDone += (long)(healEvent.Amount.Value * (1 - PercentageOverhealingEstimate));
+                }
+                else if (healEvent is MeGotHealth)
+                {
+                    _ownersHealingDone += healEvent.Amount.Value;
+                }
+            }
+        }
+
+        protected AnimatedStatusBarViewModel RequestAnimatedStatusBar(
+            string label, double totalSeconds, string color, string iconPath)
+        {
+            var animatedStatusBarViewModel = new AnimatedStatusBarViewModel(label, totalSeconds, color, iconPath);
+            _pendingStatusBarUpdates.Enqueue((animatedStatusBarViewModel, null));
+
+            return animatedStatusBarViewModel;
+        }
+
+        protected FixedStatusBarViewModel RequestFixedStatusBar(
+            string label, string value, string color, string iconPath)
+        {
+            var fixedStatusBarViewModel = new FixedStatusBarViewModel(label, value, color, iconPath);
+            _pendingStatusBarUpdates.Enqueue((fixedStatusBarViewModel, null));
+
+            return fixedStatusBarViewModel;
+        }
 
         protected void ExpireStatusBar(string key)
             => _pendingStatusBarUpdates.Enqueue((null, key));
@@ -182,6 +255,7 @@ namespace AODamageMeter.UI.ViewModels
             UpdateNcuWipes();
             UpdateStatusBars();
             UpdateIsBossTargetingYou();
+            UpdateTaunt();
         }
 
         private void UpdateNcuWipes()
@@ -250,6 +324,14 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        private void UpdateTaunt()
+        {
+            if (!NeedsTauntStatusBar || _tauntStatusBar == null) return;
+
+            _tauntStatusBar.Value = $"{OwnersTaunt.Format()} ({OwnersTauntPM.Format()})";
+            _tauntStatusBar.RaisePropertyChanged(nameof(FixedStatusBarViewModel.RightText));
+        }
+
         public virtual void Reset()
         {
             HasFightStarted = false;
@@ -257,6 +339,7 @@ namespace AODamageMeter.UI.ViewModels
             ResetNcuWipes();
             ResetStatusBars();
             ResetIsBossTargetingYou();
+            ResetTaunt();
         }
 
         private void ResetNcuWipes()
@@ -282,6 +365,14 @@ namespace AODamageMeter.UI.ViewModels
             IsBossTargetingYou = false;
 
             RaisePropertyChanged(nameof(IsBossTargetingYou));
+        }
+
+        private void ResetTaunt()
+        {
+            _ownersDamageDone = 0;
+            _ownersHealingDone = 0;
+            _timeSinceBossFightStarted.Reset();
+            _tauntStatusBar = null;
         }
     }
 }
