@@ -98,11 +98,81 @@
 
     <Grid Grid.Row="1"
           Background="{StaticResource DarkBlueBrush85}">
-      <ContentControl x:Name="BossModuleViewContent"/>
+      <ContentControl x:Name="BossModuleViewContent">
+        <ContentControl.Style>
+          <Style TargetType="ContentControl">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsNcuWipeRecent, FallbackValue=False}" Value="True">
+                <Setter Property="Opacity" Value="0.5"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </ContentControl.Style>
+      </ContentControl>
     </Grid>
 
     <Border Grid.Row="1"
             BorderBrush="{StaticResource LightBlueBrush}" BorderThickness="0 1 0 0"/>
+
+    <Border Grid.Row="1" IsHitTestVisible="False">
+      <Border.Style>
+        <Style TargetType="Border">
+          <Setter Property="Visibility" Value="Collapsed"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsNcuWipeRecent, FallbackValue=False}" Value="True">
+              <Setter Property="Visibility" Value="Visible"/>
+              <DataTrigger.EnterActions>
+                <BeginStoryboard x:Name="NcuWipePulse">
+                  <Storyboard>
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" RepeatBehavior="Forever">
+                      <LinearDoubleKeyFrame Value="0"   KeyTime="0:0:1.25"/>
+                      <LinearDoubleKeyFrame Value="0"   KeyTime="0:0:1.75"/>
+                      <LinearDoubleKeyFrame Value="1"   KeyTime="0:0:1.25"/>
+                    </DoubleAnimationUsingKeyFrames>
+                  </Storyboard>
+                </BeginStoryboard>
+              </DataTrigger.EnterActions>
+              <DataTrigger.ExitActions>
+                <StopStoryboard BeginStoryboardName="NcuWipePulse"/>
+              </DataTrigger.ExitActions>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Border.Style>
+      <Border.Background>
+        <ImageBrush ImageSource="/Icons/NcuWipe.png" Stretch="UniformToFill"/>
+      </Border.Background>
+    </Border>
+    <StackPanel Grid.Row="1" IsHitTestVisible="False"
+                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4 0">
+      <StackPanel.Style>
+        <Style TargetType="StackPanel">
+          <Setter Property="Visibility" Value="Collapsed"/>
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsNcuWipeRecent, FallbackValue=False}" Value="True">
+              <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </StackPanel.Style>
+      <TextBlock Text="NCU Wiped!" Foreground="White" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center">
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
+        </TextBlock.Effect>
+      </TextBlock>
+      <ItemsControl ItemsSource="{Binding RecentlyWipedNanoPrograms}" Margin="0 4 0 0">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding}" Foreground="White" FontSize="11" FontWeight="Bold"
+                       TextTrimming="CharacterEllipsis" HorizontalAlignment="Center">
+              <TextBlock.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="4" Color="Black" Opacity="1"/>
+              </TextBlock.Effect>
+            </TextBlock>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </StackPanel>
 
     <Popup x:Name="StatusBarsPopup"
            PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType=Window}, Mode=OneTime}"

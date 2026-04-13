@@ -40,12 +40,20 @@ namespace AODamageMeter.UI.ViewModels
 
         private long? _lastManualNanoProgramDeactivationUnixSeconds;
         private DateTime? _lastManualNanoProgramDeactivationTimestamp;
+        private readonly SynchronizedStopwatch _timeSinceNcuWiped = new SynchronizedStopwatch();
         private readonly ConcurrentDictionary<string, long> _wipedNanoPrograms = new ConcurrentDictionary<string, long>();
         public IReadOnlyList<string> WipedNanoPrograms => _wipedNanoPrograms
             .OrderBy(kvp => kvp.Value)
             .ThenBy(kvp => kvp.Key, StringComparer.Ordinal)
             .Select(kvp => kvp.Key)
             .ToList();
+        private readonly ConcurrentDictionary<string, long> _recentlyWipedNanoPrograms = new ConcurrentDictionary<string, long>();
+        public IReadOnlyList<string> RecentlyWipedNanoPrograms => _recentlyWipedNanoPrograms
+            .OrderBy(kvp => kvp.Value)
+            .ThenBy(kvp => kvp.Key, StringComparer.Ordinal)
+            .Select(kvp => kvp.Key)
+            .ToList();
+        public bool IsNcuWipeRecent { get; private set; }
         public bool HasWipedNanoPrograms => !_wipedNanoPrograms.IsEmpty;
 
         private readonly ConcurrentQueue<(StatusBarViewModelBase pendingStatusBar, string pendingExpiredStatusBarKey)>
@@ -57,7 +65,7 @@ namespace AODamageMeter.UI.ViewModels
         public bool IsBossTargetingYou { get; private set; }
         public string IsBossTargetingYouText => $"You have aggro!";
         private string _aggroTargetName;
-        private readonly SynchronizedStopwatch _aggroSwapStopwatch = new SynchronizedStopwatch();
+        private readonly SynchronizedStopwatch _timeSinceAggroSwapped = new SynchronizedStopwatch();
         public bool IsBossTargetingSomeoneElse { get; private set; }
         public bool IsAggroSwapRecent { get; private set; }
         public string AggroTargetText => IsAggroSwapRecent
@@ -148,12 +156,17 @@ namespace AODamageMeter.UI.ViewModels
                         && !TotalMirrorShield.Nanoline.HasNano(systemEvent.NanoProgram)
                         && !NullitySphere.Nanoline.HasNano(systemEvent.NanoProgram))
                     {
-                        _wipedNanoPrograms.TryAdd(systemEvent.NanoProgram, fightEvent.LogUnixSeconds);
+                        if (_wipedNanoPrograms.TryAdd(systemEvent.NanoProgram, fightEvent.LogUnixSeconds))
+                        {
+                            _recentlyWipedNanoPrograms.TryAdd(systemEvent.NanoProgram, fightEvent.LogUnixSeconds);
+                            _timeSinceNcuWiped.Restart();
+                        }
                     }
                 }
                 else if (systemEvent.IsFriendlyNanoExecutedOnYou)
                 {
                     _wipedNanoPrograms.TryRemove(systemEvent.NanoProgram, out _);
+                    _recentlyWipedNanoPrograms.TryRemove(systemEvent.NanoProgram, out _);
                 }
             }
             else if (fightEvent is MeCastNano meCastNanoEvent
@@ -161,6 +174,7 @@ namespace AODamageMeter.UI.ViewModels
                 && meCastNanoEvent.NanoProgram != null)
             {
                 _wipedNanoPrograms.TryRemove(meCastNanoEvent.NanoProgram, out _);
+                _recentlyWipedNanoPrograms.TryRemove(meCastNanoEvent.NanoProgram, out _);
             }
         }
 
@@ -193,7 +207,7 @@ namespace AODamageMeter.UI.ViewModels
                 && systemEvent.IsAttackedByOther && systemEvent.Source?.Name == BossName)
             {
                 _aggroTargetName = null;
-                _aggroSwapStopwatch.Reset();
+                _timeSinceAggroSwapped.Reset();
                 IsBossTargetingYou = true;
                 IsBossTargetingSomeoneElse = false;
             }
@@ -202,7 +216,7 @@ namespace AODamageMeter.UI.ViewModels
                 && (attackEvent.AttackResult == AttackResult.WeaponHit || attackEvent.AttackResult == AttackResult.Missed))
             {
                 _aggroTargetName = null;
-                _aggroSwapStopwatch.Reset();
+                _timeSinceAggroSwapped.Reset();
                 IsBossTargetingYou = true;
                 IsBossTargetingSomeoneElse = false;
             }
@@ -212,7 +226,7 @@ namespace AODamageMeter.UI.ViewModels
                 if (_aggroTargetName != otherHitByOther.Target.Name)
                 {
                     _aggroTargetName = otherHitByOther.Target.Name;
-                    _aggroSwapStopwatch.Restart();
+                    _timeSinceAggroSwapped.Restart();
                 }
 
                 IsBossTargetingYou = false;
@@ -313,8 +327,17 @@ namespace AODamageMeter.UI.ViewModels
 
         private void UpdateNcuWipes()
         {
+            IsNcuWipeRecent = !_recentlyWipedNanoPrograms.IsEmpty && _timeSinceNcuWiped.Elapsed.TotalSeconds <= 4;
+
+            if (!IsNcuWipeRecent)
+            {
+                _recentlyWipedNanoPrograms.Clear();
+            }
+
             RaisePropertyChanged(nameof(WipedNanoPrograms));
             RaisePropertyChanged(nameof(HasWipedNanoPrograms));
+            RaisePropertyChanged(nameof(RecentlyWipedNanoPrograms));
+            RaisePropertyChanged(nameof(IsNcuWipeRecent));
         }
 
         private void UpdateStatusBars()
@@ -375,7 +398,7 @@ namespace AODamageMeter.UI.ViewModels
             {
                 if (IsBossTargetingSomeoneElse)
                 {
-                    IsAggroSwapRecent = _aggroSwapStopwatch.Elapsed.TotalSeconds <= 5;
+                    IsAggroSwapRecent = _timeSinceAggroSwapped.Elapsed.TotalSeconds <= 5;
                 }
                 else
                 {
@@ -411,10 +434,15 @@ namespace AODamageMeter.UI.ViewModels
         {
             _lastManualNanoProgramDeactivationUnixSeconds = null;
             _lastManualNanoProgramDeactivationTimestamp = null;
+            _timeSinceNcuWiped.Reset();
             _wipedNanoPrograms.Clear();
+            _recentlyWipedNanoPrograms.Clear();
+            IsNcuWipeRecent = false;
 
             RaisePropertyChanged(nameof(WipedNanoPrograms));
             RaisePropertyChanged(nameof(HasWipedNanoPrograms));
+            RaisePropertyChanged(nameof(RecentlyWipedNanoPrograms));
+            RaisePropertyChanged(nameof(IsNcuWipeRecent));
         }
 
         private void ResetStatusBars()
@@ -429,7 +457,7 @@ namespace AODamageMeter.UI.ViewModels
         {
             IsBossTargetingYou = false;
             _aggroTargetName = null;
-            _aggroSwapStopwatch.Reset();
+            _timeSinceAggroSwapped.Reset();
             IsBossTargetingSomeoneElse = false;
             IsAggroSwapRecent = false;
 
