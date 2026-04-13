@@ -3,6 +3,7 @@ using AODamageMeter.UI.ViewModels;
 using AODamageMeter.UI.ViewModels.Rows;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -60,6 +61,14 @@ namespace AODamageMeter.UI.Views
                 {
                     _damageMeterViewModel.TryInitializeDamageMeter(
                         Settings.Default.SelectedCharacterName, Settings.Default.SelectedDimension, Settings.Default.SelectedLogFilePath);
+                }
+
+                if (_bossModuleView != null
+                    && Settings.Default.BossModule == "The Beast (dual-logged)"
+                    && !TryResolveDualLoggedCharacterInfo(out _, out _, out _))
+                {
+                    Settings.Default.BossModule = "";
+                    ShowOrCloseBossModuleView();
                 }
             }
         }
@@ -145,11 +154,51 @@ namespace AODamageMeter.UI.Views
 
             if (!string.IsNullOrEmpty(selectedBossModule))
             {
+                if (selectedBossModule == "The Beast (dual-logged)"
+                    && !TryResolveDualLoggedCharacterInfo(out _, out _, out _))
+                {
+                    Settings.Default.BossModule = "";
+                    return;
+                }
+
                 _bossModuleView = new BossModuleView(selectedBossModule) { Owner = this };
                 _damageMeterViewModel.BossModuleViewModel = _bossModuleView.BossModuleViewModel;
                 _bossModuleView.Closing += BossModuleView_Closing;
                 _bossModuleView.Show();
             }
+        }
+
+        private bool TryResolveDualLoggedCharacterInfo(
+            out string characterName, out Dimension dimension, out string logFilePath)
+        {
+            characterName = null;
+            dimension = default;
+            logFilePath = null;
+            string dualLoggedCharacter = Settings.Default.TheBeastDualLoggedCharacter;
+            if (string.IsNullOrEmpty(dualLoggedCharacter))
+                return false;
+
+            string[] characterNames = Settings.Default.CharacterNames.Cast<string>().ToArray();
+            string[] dimensions = Settings.Default.Dimensions.Cast<string>().ToArray();
+            string[] logFilePaths = Settings.Default.LogFilePaths.Cast<string>().ToArray();
+
+            for (int i = 0; i < characterNames.Length; i++)
+            {
+                var parsedDimension = DimensionHelpers.GetDimensionOrDefault(dimensions[i]);
+                if ($"{characterNames[i]} ({parsedDimension.GetName()})" == dualLoggedCharacter
+                    && characterNames[i] != Settings.Default.SelectedCharacterName
+                    && parsedDimension == Settings.Default.SelectedDimension
+                    && !string.IsNullOrWhiteSpace(logFilePaths[i])
+                    && File.Exists(logFilePaths[i]))
+                {
+                    characterName = characterNames[i];
+                    dimension = parsedDimension;
+                    logFilePath = logFilePaths[i];
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void BossModuleView_Closing(object sender, CancelEventArgs e)

@@ -10,7 +10,7 @@
         BorderBrush="{StaticResource LightBlueBrush50}" BorderThickness="1"
         Height="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewHeight, Mode=TwoWay}"
         Width="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewWidth, Mode=TwoWay}"
-        MinHeight="410"
+        MinHeight="460"
         Top="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewTop, Mode=TwoWay}"
         Left="{Binding Source={x:Static properties:Settings.Default}, Path=OptionsViewLeft, Mode=TwoWay}">
   <Window.Resources>
@@ -58,9 +58,14 @@
             <x:Array Type="{x:Type System:String}">
               <x:Static Member="System:String.Empty"/>
               <System:String>The Beast</System:String>
+              <System:String>The Beast (dual-logged)</System:String>
             </x:Array>
           </ComboBox.ItemsSource>
         </ComboBox>
+
+        <TextBlock x:Name="DualLoggedCharacterLabel" Text="Dual-logged character:" Visibility="Collapsed"/>
+        <ComboBox x:Name="DualLoggedCharacterComboBox" Margin="0 2 0 10" Visibility="Collapsed"
+                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=TheBeastDualLoggedCharacter}"/>
 
         <TextBlock Text="Font:"/>
         <ComboBox x:Name="FontFamilyComboBox" Margin="0 2 0 10"
@@ -184,7 +189,7 @@
 
       <StackPanel Grid.Row="1" Margin="10 0 10 10" Orientation="Horizontal"
               HorizontalAlignment="Right" VerticalAlignment="Bottom">
-        <Button Style="{StaticResource TextButtonStyle}"
+        <Button x:Name="OKButton" Style="{StaticResource TextButtonStyle}"
                 Content="OK" Click="OKButton_Click_CloseDialog"/>
         <Button Margin="5 0 0 0" Style="{StaticResource TextButtonStyle}"
                 Content="Cancel" IsCancel="True"/>

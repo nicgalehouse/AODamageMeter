@@ -26,6 +26,7 @@ namespace AODamageMeter.UI.Views
             switch (bossModuleName)
             {
                 case "The Beast":
+                case "The Beast (dual-logged)":
                     bossModuleViewModel = new TheBeastModuleViewModel();
                     bossModuleView = new TheBeastModuleView();
                     BindWindowPosition(nameof(Settings.Default.TheBeastViewHeight),

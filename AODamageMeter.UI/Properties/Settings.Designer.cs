@@ -578,5 +578,17 @@ namespace AODamageMeter.UI.Properties {
                 this["IncludeSystemChannel"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string TheBeastDualLoggedCharacter {
+            get {
+                return ((string)(this["TheBeastDualLoggedCharacter"]));
+            }
+            set {
+                this["TheBeastDualLoggedCharacter"] = value;
+            }
+        }
     }
 }
