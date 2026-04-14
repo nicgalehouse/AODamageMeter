@@ -53,9 +53,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 ["Corrupted Xan-Cur"] = new AddTrackerViewModel("Corrupted Xan-Cur"),
             };
 
-        protected override void OnFightStarted()
+        protected override void OnFightStarted(FightEvent fightEvent)
         {
-            base.OnFightStarted();
+            base.OnFightStarted(fightEvent);
             _timeSinceBeastLastHitOrCast.Start();
         }
 

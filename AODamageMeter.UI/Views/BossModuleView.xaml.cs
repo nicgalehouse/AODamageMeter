@@ -14,7 +14,11 @@ namespace AODamageMeter.UI.Views
 {
     public partial class BossModuleView : Window
     {
-        public BossModuleView(string bossModuleName)
+        public BossModuleView(string bossModuleName,
+            string secondaryCharacterName = null,
+            Dimension secondaryDimension = default,
+            string secondaryLogFilePath = null,
+            DamageMeterMode secondaryMode = DamageMeterMode.Live)
         {
             InitializeComponent();
 
@@ -26,9 +30,17 @@ namespace AODamageMeter.UI.Views
             switch (bossModuleName)
             {
                 case "The Beast":
-                case "The Beast (dual-logged)":
                     bossModuleViewModel = new TheBeastModuleViewModel();
                     bossModuleView = new TheBeastModuleView();
+                    BindWindowPosition(nameof(Settings.Default.TheBeastViewHeight),
+                        nameof(Settings.Default.TheBeastViewWidth),
+                        nameof(Settings.Default.TheBeastViewTop),
+                        nameof(Settings.Default.TheBeastViewLeft));
+                    break;
+                case "The Beast (dual-logged)":
+                    bossModuleViewModel = new TheBeastDualLoggedModuleViewModel(
+                        secondaryCharacterName, secondaryDimension, secondaryLogFilePath, secondaryMode);
+                    bossModuleView = new TheBeastDualLoggedModuleView();
                     BindWindowPosition(nameof(Settings.Default.TheBeastViewHeight),
                         nameof(Settings.Default.TheBeastViewWidth),
                         nameof(Settings.Default.TheBeastViewTop),
@@ -102,6 +114,8 @@ namespace AODamageMeter.UI.Views
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            BossModuleViewModel.Dispose();
+
             if (!PreserveSelectedBossModuleOnClose)
             {
                 Settings.Default.BossModule = "";

@@ -167,6 +167,9 @@
     <Compile Include="Views\BossModules\TheBeastModuleView.xaml.cs">
       <DependentUpon>TheBeastModuleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\BossModules\TheBeastDualLoggedModuleView.xaml.cs">
+      <DependentUpon>TheBeastDualLoggedModuleView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\AutoConfigureView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -208,6 +211,7 @@
     <Compile Include="ViewModels\AnimatedStatusBarViewModel.cs" />
     <Compile Include="ViewModels\FixedStatusBarViewModel.cs" />
     <Compile Include="ViewModels\BossModules\TheBeastModuleViewModel.cs" />
+    <Compile Include="ViewModels\BossModules\TheBeastDualLoggedModuleViewModel.cs" />
     <Compile Include="ViewModels\DamageMeterViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Converters\RowWidthConverter.cs" />
@@ -232,6 +236,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BossModules\TheBeastModuleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BossModules\TheBeastDualLoggedModuleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

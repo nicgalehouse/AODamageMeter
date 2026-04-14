@@ -154,14 +154,23 @@ namespace AODamageMeter.UI.Views
 
             if (!string.IsNullOrEmpty(selectedBossModule))
             {
-                if (selectedBossModule == "The Beast (dual-logged)"
-                    && !TryResolveDualLoggedCharacterInfo(out _, out _, out _))
+                if (selectedBossModule == "The Beast (dual-logged)")
                 {
-                    Settings.Default.BossModule = "";
-                    return;
-                }
+                    if (!TryResolveDualLoggedCharacterInfo(
+                        out string secondaryCharacterName, out Dimension secondaryDimension, out string secondaryLogFilePath))
+                    {
+                        Settings.Default.BossModule = "";
+                        return;
+                    }
 
-                _bossModuleView = new BossModuleView(selectedBossModule) { Owner = this };
+                    _bossModuleView = new BossModuleView(selectedBossModule,
+                        secondaryCharacterName, secondaryDimension, secondaryLogFilePath,
+                        _damageMeterViewModel.DamageMeter?.Mode ?? DamageMeterMode.Live) { Owner = this };
+                }
+                else
+                {
+                    _bossModuleView = new BossModuleView(selectedBossModule) { Owner = this };
+                }
                 _damageMeterViewModel.BossModuleViewModel = _bossModuleView.BossModuleViewModel;
                 _bossModuleView.Closing += BossModuleView_Closing;
                 _bossModuleView.Show();

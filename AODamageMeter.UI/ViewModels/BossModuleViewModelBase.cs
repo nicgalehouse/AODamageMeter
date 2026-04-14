@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace AODamageMeter.UI.ViewModels
 {
-    public abstract class BossModuleViewModelBase : ViewModelBase
+    public abstract class BossModuleViewModelBase : ViewModelBase, IDisposable
     {
         public abstract string BossName { get; }
         public abstract string IconPath { get; }
@@ -90,7 +90,7 @@ namespace AODamageMeter.UI.ViewModels
             + _ownersNanoTauntAmount - _ownersNanoDetauntAmount;
         private double OwnersTauntAmountPM => OwnersTauntAmount / _timeSinceBossFightStarted.Elapsed.TotalMinutes;
 
-        protected virtual void OnFightStarted()
+        protected virtual void OnFightStarted(FightEvent fightEvent)
         {
             if (NeedsTauntStatusBar)
             {
@@ -105,7 +105,7 @@ namespace AODamageMeter.UI.ViewModels
                 && (fightEvent.Source?.Name == BossName || fightEvent.Target?.Name == BossName))
             {
                 HasFightStarted = true;
-                OnFightStarted();
+                OnFightStarted(fightEvent);
             }
 
             return HasFightStarted;
@@ -477,5 +477,7 @@ namespace AODamageMeter.UI.ViewModels
             _timeSinceBossFightStarted.Reset();
             _tauntStatusBar = null;
         }
+
+        public virtual void Dispose() { }
     }
 }
