@@ -1,10 +1,13 @@
+using System.Diagnostics;
+
 namespace AODamageMeter.UI.ViewModels.BossModules
 {
     public class TheBeastDualLoggedModuleViewModel : TheBeastModuleViewModel
     {
-        private volatile bool _needsSecondaryFightInitialization;
-        private long _fightStartUnixSeconds;
+        private readonly object _secondaryFightLock = new object();
         private readonly DamageMeter _secondaryDamageMeter;
+        private readonly Stopwatch _timeSinceSecondaryUpdate = new Stopwatch();
+        private long _primaryFightStartUnixSeconds;
         private Fight _secondaryFight;
 
         public string SecondaryCharacterName { get; }
@@ -22,30 +25,11 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         protected override void OnFightStarted(FightEvent fightEvent)
         {
             base.OnFightStarted(fightEvent);
-            _fightStartUnixSeconds = fightEvent.LogUnixSeconds;
-            _needsSecondaryFightInitialization = true;
-        }
 
-        private void OnSecondaryFightEventAdded(FightEvent fightEvent)
-        {
-            if (fightEvent.LogUnixSeconds < _fightStartUnixSeconds)
-                return;
-
-            // Stub -- secondary character event handling will be built out here.
-        }
-
-        public override void UpdateView()
-        {
-            base.UpdateView();
-
-            if (!HasFightStarted)
+            lock (_secondaryFightLock)
             {
-                _needsSecondaryFightInitialization = false;
-                return;
-            }
+                _primaryFightStartUnixSeconds = fightEvent.LogUnixSeconds;
 
-            if (_needsSecondaryFightInitialization)
-            {
                 if (_secondaryFight != null)
                 {
                     _secondaryFight.FightEventAdded -= OnSecondaryFightEventAdded;
@@ -54,28 +38,50 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 _secondaryDamageMeter.InitializeNewFight();
                 _secondaryFight = _secondaryDamageMeter.CurrentFight;
                 _secondaryFight.FightEventAdded += OnSecondaryFightEventAdded;
-
-                _needsSecondaryFightInitialization = false;
             }
+        }
 
-            _secondaryDamageMeter.Update();
+        public override void OnFightEventAdded(FightEvent fightEvent)
+        {
+            base.OnFightEventAdded(fightEvent);
+
+            if (!_timeSinceSecondaryUpdate.IsRunning || _timeSinceSecondaryUpdate.ElapsedMilliseconds >= 100)
+            {
+                _secondaryDamageMeter.Update();
+                _timeSinceSecondaryUpdate.Restart();
+            }
+        }
+
+        private void OnSecondaryFightEventAdded(FightEvent fightEvent)
+        {
+            if (fightEvent.LogUnixSeconds < _primaryFightStartUnixSeconds)
+                return;
+
+            // Stub -- secondary character event handling will be built out here.
         }
 
         public override void Reset()
         {
             base.Reset();
 
-            _needsSecondaryFightInitialization = false;
-            _fightStartUnixSeconds = 0;
-
-            if (_secondaryFight != null)
+            lock (_secondaryFightLock)
             {
-                _secondaryFight.FightEventAdded -= OnSecondaryFightEventAdded;
-                _secondaryFight = null;
+                _primaryFightStartUnixSeconds = 0;
+
+                if (_secondaryFight != null)
+                {
+                    _secondaryFight.FightEventAdded -= OnSecondaryFightEventAdded;
+                    _secondaryFight = null;
+                }
+
+                _timeSinceSecondaryUpdate.Reset();
             }
         }
 
         public override void Dispose()
-            => _secondaryDamageMeter.Dispose();
+        {
+            Reset();
+            _secondaryDamageMeter.Dispose();
+        }
     }
 }
