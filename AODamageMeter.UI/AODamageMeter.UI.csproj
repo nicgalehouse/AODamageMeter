@@ -89,6 +89,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\BoolToNegationConverter.cs" />
+    <Compile Include="Converters\BoolOrMultiValueConverter.cs" />
     <Compile Include="Converters\ColorToRowBrushConverter.cs" />
     <Compile Include="Converters\DimensionNameConverter.cs" />
     <Compile Include="Converters\IconPathToBitmapImageConverter.cs" />

@@ -13,6 +13,7 @@ namespace AODamageMeter.UI.Views
     {
         private readonly DamageMeterViewModel _damageMeterViewModel;
         private BossModuleView _bossModuleView;
+        private string _currentDualLoggedCharacterInfo;
 
         public DamageMeterView()
         {
@@ -140,7 +141,8 @@ namespace AODamageMeter.UI.Views
             string selectedBossModule = Settings.Default.BossModule;
             string currentBossModule = _bossModuleView?.Title;
 
-            if ((selectedBossModule ?? "") == (currentBossModule ?? ""))
+            if ((selectedBossModule ?? "") == (currentBossModule ?? "")
+                && Settings.Default.TheBeastDualLoggedCharacterInfo == _currentDualLoggedCharacterInfo)
                 return;
 
             if (_bossModuleView != null)
@@ -150,6 +152,7 @@ namespace AODamageMeter.UI.Views
                 _bossModuleView.PreserveSelectedBossModuleOnClose = true;
                 _bossModuleView.Close();
                 _bossModuleView = null;
+                _currentDualLoggedCharacterInfo = null;
             }
 
             if (!string.IsNullOrEmpty(selectedBossModule))
@@ -171,6 +174,7 @@ namespace AODamageMeter.UI.Views
                 {
                     _bossModuleView = new BossModuleView(selectedBossModule) { Owner = this };
                 }
+                _currentDualLoggedCharacterInfo = Settings.Default.TheBeastDualLoggedCharacterInfo;
                 _damageMeterViewModel.BossModuleViewModel = _bossModuleView.BossModuleViewModel;
                 _bossModuleView.Closing += BossModuleView_Closing;
                 _bossModuleView.Show();
@@ -183,8 +187,8 @@ namespace AODamageMeter.UI.Views
             characterName = null;
             dimension = default;
             logFilePath = null;
-            string dualLoggedCharacter = Settings.Default.TheBeastDualLoggedCharacter;
-            if (string.IsNullOrEmpty(dualLoggedCharacter))
+            string dualLoggedCharacterInfo = Settings.Default.TheBeastDualLoggedCharacterInfo;
+            if (string.IsNullOrEmpty(dualLoggedCharacterInfo))
                 return false;
 
             string[] characterNames = Settings.Default.CharacterNames.Cast<string>().ToArray();
@@ -194,7 +198,7 @@ namespace AODamageMeter.UI.Views
             for (int i = 0; i < characterNames.Length; i++)
             {
                 var parsedDimension = DimensionHelpers.GetDimensionOrDefault(dimensions[i]);
-                if ($"{characterNames[i]} ({parsedDimension.GetName()})" == dualLoggedCharacter
+                if ($"{characterNames[i]} ({parsedDimension.GetName()})" == dualLoggedCharacterInfo
                     && characterNames[i] != Settings.Default.SelectedCharacterName
                     && parsedDimension == Settings.Default.SelectedDimension
                     && !string.IsNullOrWhiteSpace(logFilePaths[i])

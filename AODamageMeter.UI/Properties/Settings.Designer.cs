@@ -582,12 +582,12 @@ namespace AODamageMeter.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TheBeastDualLoggedCharacter {
+        public string TheBeastDualLoggedCharacterInfo {
             get {
-                return ((string)(this["TheBeastDualLoggedCharacter"]));
+                return ((string)(this["TheBeastDualLoggedCharacterInfo"]));
             }
             set {
-                this["TheBeastDualLoggedCharacter"] = value;
+                this["TheBeastDualLoggedCharacterInfo"] = value;
             }
         }
     }

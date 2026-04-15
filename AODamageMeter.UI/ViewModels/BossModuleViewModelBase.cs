@@ -130,6 +130,7 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        // NOTE: keep in sync with CheckNcuWipes in TheBeastDualLoggedModuleViewModel.
         // We add nano programs that get cancelled as part of a recast, but then immediately remove
         // them once the recast is proven. So it should be okay--there shouldn't be any UI flicker.
         // One thing we can't easily do is recognize when nanoprograms are terminated by being
@@ -327,7 +328,8 @@ namespace AODamageMeter.UI.ViewModels
 
         private void UpdateNcuWipes()
         {
-            IsNcuWipeRecent = !_recentlyWipedNanoPrograms.IsEmpty && _timeSinceNcuWiped.Elapsed.TotalSeconds <= 4;
+            IsNcuWipeRecent = !_recentlyWipedNanoPrograms.IsEmpty
+                && _timeSinceNcuWiped.Elapsed.TotalSeconds <= 5;
 
             if (!IsNcuWipeRecent)
             {

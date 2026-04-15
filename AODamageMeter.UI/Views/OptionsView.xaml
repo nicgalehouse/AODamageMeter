@@ -65,7 +65,7 @@
 
         <TextBlock x:Name="DualLoggedCharacterLabel" Text="Dual-logged character:" Visibility="Collapsed"/>
         <ComboBox x:Name="DualLoggedCharacterComboBox" Margin="0 2 0 10" Visibility="Collapsed"
-                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=TheBeastDualLoggedCharacter}"/>
+                  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=TheBeastDualLoggedCharacterInfo}"/>
 
         <TextBlock Text="Font:"/>
         <ComboBox x:Name="FontFamilyComboBox" Margin="0 2 0 10"

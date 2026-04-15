@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace AODamageMeter.FightEvents
@@ -39,7 +40,7 @@ namespace AODamageMeter.FightEvents
         public const string EventName = "Me Cast Nano";
         public override string Name => EventName;
 
-        protected static MeCastNano _potentialStartEvent;
+        protected static readonly Dictionary<Fight, MeCastNano> _potentialStartEvents = new Dictionary<Fight, MeCastNano>();
 
         public static readonly Regex
             Executing =   CreateRegex("Executing Nano Program: (.+)."),
@@ -91,12 +92,12 @@ namespace AODamageMeter.FightEvents
             if (TryMatch(Executing, out Match match))
             {
                 NanoProgram = match.Groups[1].Value;
-                if (_potentialStartEvent == null
+                if (!_potentialStartEvents.TryGetValue(fight, out var potentialStartEvent)
                     // Try to handle the multi-bind scenario mentioned above by preferring the
                     // first nano that we see is executing in the most recent log timestamp bucket.
-                    || _potentialStartEvent.LogUnixSeconds < LogUnixSeconds)
+                    || potentialStartEvent.LogUnixSeconds < LogUnixSeconds)
                 {
-                    _potentialStartEvent = this;
+                    _potentialStartEvents[fight] = this;
                 }
             }
             else if (TryMatch(Success, out match, out bool success)
@@ -109,14 +110,14 @@ namespace AODamageMeter.FightEvents
                     : resisted ? AODamageMeter.CastResult.Resisted
                     : AODamageMeter.CastResult.Aborted;
 
-                if (_potentialStartEvent != null && _potentialStartEvent.Fight == fight)
+                if (_potentialStartEvents.TryGetValue(fight, out var potentialStartEvent))
                 {
-                    _potentialStartEvent.CastResult = CastResult;
-                    NanoProgram = _potentialStartEvent.NanoProgram;
+                    potentialStartEvent.CastResult = CastResult;
+                    NanoProgram = potentialStartEvent.NanoProgram;
 
-                    StartEvent = _potentialStartEvent;
-                    _potentialStartEvent.EndEvent = this;
-                    _potentialStartEvent = null;
+                    StartEvent = potentialStartEvent;
+                    potentialStartEvent.EndEvent = this;
+                    _potentialStartEvents.Remove(fight);
                 }
             }
 #if DEBUG
@@ -158,14 +159,14 @@ namespace AODamageMeter.FightEvents
             SetSourceToOwner();
             CastResult = AODamageMeter.CastResult.Interrupted;
 
-            if (_potentialStartEvent != null && _potentialStartEvent.Fight == nanoInterruptEvent.Fight)
+            if (_potentialStartEvents.TryGetValue(nanoInterruptEvent.Fight, out var potentialStartEvent))
             {
-                _potentialStartEvent.CastResult = CastResult;
-                NanoProgram = _potentialStartEvent.NanoProgram;
+                potentialStartEvent.CastResult = CastResult;
+                NanoProgram = potentialStartEvent.NanoProgram;
 
-                StartEvent = _potentialStartEvent;
-                _potentialStartEvent.EndEvent = this;
-                _potentialStartEvent = null;
+                StartEvent = potentialStartEvent;
+                potentialStartEvent.EndEvent = this;
+                _potentialStartEvents.Remove(nanoInterruptEvent.Fight);
             }
         }
     }

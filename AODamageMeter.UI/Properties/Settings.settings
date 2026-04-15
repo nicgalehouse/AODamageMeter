@@ -144,7 +144,7 @@
     <Setting Name="IncludeSystemChannel" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="TheBeastDualLoggedCharacter" Type="System.String" Scope="User">
+    <Setting Name="TheBeastDualLoggedCharacterInfo" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

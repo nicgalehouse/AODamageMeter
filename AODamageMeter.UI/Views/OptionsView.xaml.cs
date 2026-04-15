@@ -18,7 +18,7 @@ namespace AODamageMeter.UI.Views
         private readonly bool _previousShowRowNumbers = Settings.Default.ShowRowNumbers;
         private readonly bool _previousIncludeTopLevelNPCRows = Settings.Default.IncludeTopLevelNPCRows;
         private readonly bool _previousIncludeTopLevelZeroDamageRows = Settings.Default.IncludeTopLevelZeroDamageRows;
-        private readonly string _previousTheBeastDualLoggedCharacter = Settings.Default.TheBeastDualLoggedCharacter;
+        private readonly string _previousTheBeastDualLoggedCharacterInfo = Settings.Default.TheBeastDualLoggedCharacterInfo;
 
         public OptionsView()
         {
@@ -90,9 +90,9 @@ namespace AODamageMeter.UI.Views
 
             DualLoggedCharacterComboBox.ItemsSource = dualLoggableCharacters;
 
-            if (!dualLoggableCharacters.Contains(Settings.Default.TheBeastDualLoggedCharacter))
+            if (!dualLoggableCharacters.Contains(Settings.Default.TheBeastDualLoggedCharacterInfo))
             {
-                Settings.Default.TheBeastDualLoggedCharacter = "";
+                Settings.Default.TheBeastDualLoggedCharacterInfo = "";
             }
         }
 
@@ -101,7 +101,7 @@ namespace AODamageMeter.UI.Views
             if (DialogResult != true)
             {
                 Settings.Default.BossModule = _previousBossModule;
-                Settings.Default.TheBeastDualLoggedCharacter = _previousTheBeastDualLoggedCharacter;
+                Settings.Default.TheBeastDualLoggedCharacterInfo = _previousTheBeastDualLoggedCharacterInfo;
                 Settings.Default.FontFamily = _previousFontFamily;
                 Settings.Default.FontSize = _previousFontSize;
                 Settings.Default.RefreshInterval = _previousRefreshInterval;

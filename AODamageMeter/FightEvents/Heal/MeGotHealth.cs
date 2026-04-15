@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace AODamageMeter.FightEvents.Heal
@@ -14,7 +15,7 @@ namespace AODamageMeter.FightEvents.Heal
         public const string EventName = "Me got health";
         public override string Name => EventName;
 
-        protected static MeGotHealth _latestStartEvent;
+        protected static readonly Dictionary<Fight, MeGotHealth> _latestStartEvents = new Dictionary<Fight, MeGotHealth>();
 
         public static readonly Regex
             Sourced =   CreateRegex($"You got healed by {SOURCE} for {AMOUNT} points of health."),
@@ -30,20 +31,20 @@ namespace AODamageMeter.FightEvents.Heal
                 SetSource(match, 1);
                 HealType = HealType.PotentialHealth;
                 SetAmount(match, 2);
-                _latestStartEvent = this;
+                _latestStartEvents[fight] = this;
             }
             else if (TryMatch(Unsourced, out match))
             {
                 HealType = HealType.RealizedHealth;
                 SetAmount(match, 1);
 
-                if (_latestStartEvent != null && _latestStartEvent.Fight == fight)
+                if (_latestStartEvents.TryGetValue(fight, out var latestStartEvent))
                 {
-                    Source = _latestStartEvent.Source;
+                    Source = latestStartEvent.Source;
 
-                    StartEvent = _latestStartEvent;
-                    _latestStartEvent.EndEvent = this;
-                    _latestStartEvent = null;
+                    StartEvent = latestStartEvent;
+                    latestStartEvent.EndEvent = this;
+                    _latestStartEvents.Remove(fight);
                 }
                 else
                 {

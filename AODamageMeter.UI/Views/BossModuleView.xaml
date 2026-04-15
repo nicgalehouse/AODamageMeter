@@ -102,8 +102,14 @@
         <ContentControl.Style>
           <Style TargetType="ContentControl">
             <Style.Triggers>
-              <DataTrigger Binding="{Binding IsNcuWipeRecent, FallbackValue=False}" Value="True">
-                <Setter Property="Opacity" Value="0.5"/>
+              <DataTrigger Value="True">
+                <DataTrigger.Binding>
+                  <MultiBinding Converter="{StaticResource BoolOrMultiValueConverter}">
+                    <Binding Path="IsNcuWipeRecent" FallbackValue="False"/>
+                    <Binding Path="IsSecondaryNcuWipeRecent" FallbackValue="False"/>
+                  </MultiBinding>
+                </DataTrigger.Binding>
+                <Setter Property="Opacity" Value="0.3"/>
               </DataTrigger>
             </Style.Triggers>
           </Style>
@@ -119,15 +125,24 @@
         <Style TargetType="Border">
           <Setter Property="Visibility" Value="Collapsed"/>
           <Style.Triggers>
-            <DataTrigger Binding="{Binding IsNcuWipeRecent, FallbackValue=False}" Value="True">
+            <DataTrigger Value="True">
+              <DataTrigger.Binding>
+                <MultiBinding Converter="{StaticResource BoolOrMultiValueConverter}">
+                  <Binding Path="IsNcuWipeRecent" FallbackValue="False"/>
+                  <Binding Path="IsSecondaryNcuWipeRecent" FallbackValue="False"/>
+                </MultiBinding>
+              </DataTrigger.Binding>
               <Setter Property="Visibility" Value="Visible"/>
               <DataTrigger.EnterActions>
                 <BeginStoryboard x:Name="NcuWipePulse">
                   <Storyboard>
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" RepeatBehavior="Forever">
-                      <LinearDoubleKeyFrame Value="0"   KeyTime="0:0:1.25"/>
-                      <LinearDoubleKeyFrame Value="0"   KeyTime="0:0:1.75"/>
-                      <LinearDoubleKeyFrame Value="1"   KeyTime="0:0:1.25"/>
+                      <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0.65"/>
+                      <LinearDoubleKeyFrame Value="0" KeyTime="0:0:0.8"/>
+                      <LinearDoubleKeyFrame Value="1" KeyTime="0:0:0.95"/>
+                      <LinearDoubleKeyFrame Value="0" KeyTime="0:0:1.10"/>
+                      <LinearDoubleKeyFrame Value="1" KeyTime="0:0:1.15"/>
+                      <LinearDoubleKeyFrame Value="1" KeyTime="0:0:1.45"/>
                     </DoubleAnimationUsingKeyFrames>
                   </Storyboard>
                 </BeginStoryboard>
@@ -149,7 +164,13 @@
         <Style TargetType="StackPanel">
           <Setter Property="Visibility" Value="Collapsed"/>
           <Style.Triggers>
-            <DataTrigger Binding="{Binding IsNcuWipeRecent, FallbackValue=False}" Value="True">
+            <DataTrigger Value="True">
+              <DataTrigger.Binding>
+                <MultiBinding Converter="{StaticResource BoolOrMultiValueConverter}">
+                  <Binding Path="IsNcuWipeRecent" FallbackValue="False"/>
+                  <Binding Path="IsSecondaryNcuWipeRecent" FallbackValue="False"/>
+                </MultiBinding>
+              </DataTrigger.Binding>
               <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
           </Style.Triggers>
@@ -160,7 +181,68 @@
           <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
         </TextBlock.Effect>
       </TextBlock>
-      <ItemsControl ItemsSource="{Binding RecentlyWipedNanoPrograms}" Margin="0 4 0 0">
+
+      <!-- Primary character wipes (name shown only in dual-logged mode). -->
+      <TextBlock Foreground="White" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 4 0 0"
+                 Text="{Binding PrimaryCharacterName, FallbackValue={x:Null}}">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding PrimaryCharacterName, FallbackValue={x:Null}}" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding IsNcuWipeRecent, FallbackValue=False}" Value="False">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="4" Color="Black" Opacity="1"/>
+        </TextBlock.Effect>
+      </TextBlock>
+      <ItemsControl ItemsSource="{Binding RecentlyWipedNanoPrograms}" Margin="0 2 0 0">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding}" Foreground="White" FontSize="11" FontWeight="Bold"
+                       TextTrimming="CharacterEllipsis" HorizontalAlignment="Center">
+              <TextBlock.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="4" Color="Black" Opacity="1"/>
+              </TextBlock.Effect>
+            </TextBlock>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <!-- Secondary character wipes (only in dual-logged mode). -->
+      <TextBlock Foreground="White" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center" Margin="0 4 0 0"
+                 Text="{Binding SecondaryCharacterName, FallbackValue={x:Null}}">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding SecondaryCharacterName, FallbackValue={x:Null}}" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding IsSecondaryNcuWipeRecent, FallbackValue=False}" Value="False">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="4" Color="Black" Opacity="1"/>
+        </TextBlock.Effect>
+      </TextBlock>
+      <ItemsControl ItemsSource="{Binding SecondaryRecentlyWipedNanoPrograms, FallbackValue={x:Null}}" Margin="0 2 0 0">
+        <ItemsControl.Style>
+          <Style TargetType="ItemsControl">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding SecondaryRecentlyWipedNanoPrograms, FallbackValue={x:Null}}" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </ItemsControl.Style>
         <ItemsControl.ItemTemplate>
           <DataTemplate>
             <TextBlock Text="{Binding}" Foreground="White" FontSize="11" FontWeight="Bold"
