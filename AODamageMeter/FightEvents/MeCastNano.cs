@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace AODamageMeter.FightEvents
@@ -40,7 +40,7 @@ namespace AODamageMeter.FightEvents
         public const string EventName = "Me Cast Nano";
         public override string Name => EventName;
 
-        protected static readonly Dictionary<Fight, MeCastNano> _potentialStartEvents = new Dictionary<Fight, MeCastNano>();
+        protected static readonly ConditionalWeakTable<Fight, MeCastNano> _potentialStartEvents = new ConditionalWeakTable<Fight, MeCastNano>();
 
         public static readonly Regex
             Executing =   CreateRegex("Executing Nano Program: (.+)."),
@@ -97,7 +97,8 @@ namespace AODamageMeter.FightEvents
                     // first nano that we see is executing in the most recent log timestamp bucket.
                     || potentialStartEvent.LogUnixSeconds < LogUnixSeconds)
                 {
-                    _potentialStartEvents[fight] = this;
+                    _potentialStartEvents.Remove(fight);
+                    _potentialStartEvents.Add(fight, this);
                 }
             }
             else if (TryMatch(Success, out match, out bool success)
