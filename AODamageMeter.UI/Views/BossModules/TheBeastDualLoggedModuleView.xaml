@@ -89,6 +89,31 @@
     </Grid>
 
     <Border Grid.Row="1" Grid.Column="1">
+      <Border.Style>
+        <Style TargetType="Border">
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsReflectActive}" Value="True">
+              <Setter Property="Background">
+                <Setter.Value>
+                  <ImageBrush ImageSource="/Icons/ReflectShield.png" Stretch="UniformToFill"/>
+                </Setter.Value>
+              </Setter>
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Border.Style>
+      <Grid>
+        <TextBlock Text="Reflects" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+          <TextBlock.Effect>
+            <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
+          </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock Text="{Binding ReflectCountdown}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 36 0 0">
+          <TextBlock.Effect>
+            <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
+          </TextBlock.Effect>
+        </TextBlock>
+      </Grid>
     </Border>
 
     <Rectangle Grid.Row="0" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Height="1" Fill="Gray"/>
