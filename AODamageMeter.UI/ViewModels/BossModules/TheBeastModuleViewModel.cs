@@ -72,7 +72,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
-        protected void CheckReflectShield(FightEvent fightEvent)
+        private void CheckReflectShield(FightEvent fightEvent)
         {
             if (fightEvent is AttackEvent attackEvent)
             {
