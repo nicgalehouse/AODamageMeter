@@ -1,4 +1,5 @@
 using AODamageMeter.FightEvents;
+using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.Nanolines;
 using AODamageMeter.UI.Helpers;
 using AODamageMeter.UI.Properties;
@@ -41,6 +42,19 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         public bool HasSecondaryWipedNanoPrograms => !_secondaryWipedNanoPrograms.IsEmpty;
         public bool IsSecondaryNcuWipeRecent { get; private set; }
 
+        protected override string TauntLabel => $"Taunt - {PrimaryCharacterName}";
+        protected string SecondaryTauntLabel => $"Taunt - {SecondaryCharacterName}";
+        private readonly SynchronizedStopwatch _timeSinceSecondaryBossFightStarted = new SynchronizedStopwatch();
+        private FixedStatusBarViewModel _secondaryTauntStatusBar;
+        private bool _secondaryOwnerHasBeenCastingResonanceBlast;
+        private long _secondaryOwnersDamageDone;
+        private long _secondaryOwnersHealingDone;
+        private long _secondaryOwnersNanoTauntAmount;
+        private long _secondaryOwnersNanoDetauntAmount;
+        private long SecondaryOwnersTauntAmount => _secondaryOwnersDamageDone + (long)(_secondaryOwnersHealingDone * HealingToTauntFactor)
+            + _secondaryOwnersNanoTauntAmount - _secondaryOwnersNanoDetauntAmount;
+        private double SecondaryOwnersTauntAmountPM => SecondaryOwnersTauntAmount / _timeSinceSecondaryBossFightStarted.Elapsed.TotalMinutes;
+
         public TheBeastDualLoggedModuleViewModel(
             string secondaryCharacterName,
             Dimension secondaryDimension,
@@ -68,6 +82,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 _secondaryFight = _secondaryDamageMeter.CurrentFight;
                 _secondaryFight.FightEventAdded += OnSecondaryFightEventAdded;
             }
+
+            _timeSinceSecondaryBossFightStarted.Start();
+            _secondaryTauntStatusBar = RequestFixedStatusBar(SecondaryTauntLabel, "0", TauntBarColor, TauntIconPath);
         }
 
         public override void OnFightEventAdded(FightEvent fightEvent)
@@ -105,6 +122,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
 
             CheckSecondaryNcuWipes(fightEvent);
+            CheckSecondaryTaunt(fightEvent);
         }
 
         // NOTE: keep in sync with CheckNcuWipes in BossModuleViewModelBase.
@@ -156,6 +174,66 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
+        // NOTE: keep in sync with CheckTaunt in BossModuleViewModelBase.
+        private void CheckSecondaryTaunt(FightEvent fightEvent)
+        {
+            if (fightEvent is MeCastNano meCastNanoEvent)
+            {
+                // Common detaunt used by Froob NTs, only one worth worrying about right now.
+                if (meCastNanoEvent.NanoProgram == "Resonance Blast")
+                {
+                    _secondaryOwnerHasBeenCastingResonanceBlast = true;
+                }
+                // Assume taunts and detaunts will only be used on the boss, and not any adds.
+                else if (meCastNanoEvent.CastResult == CastResult.Success
+                    && meCastNanoEvent.NanoProgram != null)
+                {
+                    if (SoldierTaunt.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out var nano))
+                    {
+                        _secondaryOwnersNanoTauntAmount += nano.TauntAmount.Value;
+                    }
+                    else if (SoldierDetaunt.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out nano))
+                    {
+                        _secondaryOwnersNanoDetauntAmount += nano.DetauntAmount.Value;
+                    }
+                }
+            }
+
+            if (fightEvent is AttackEvent attackEvent
+                && attackEvent.Source.IsOwner
+                && attackEvent.Target.Name == BossName
+                && attackEvent.Amount > 0)
+            {
+                _secondaryOwnersDamageDone += attackEvent.Amount.Value;
+
+                if (_secondaryOwnerHasBeenCastingResonanceBlast
+                    && attackEvent.Amount > 3000
+                    && attackEvent.DamageType == DamageType.Radiation)
+                {
+                    _secondaryOwnersNanoDetauntAmount += 3000;
+                }
+            }
+            else if (fightEvent is HealEvent healEvent
+                && healEvent.Source?.IsOwner == true
+                && healEvent.HealType != HealType.Nano
+                // We believe HoTs don't generate taunt. This excludes self-healing from heal delta but I'm
+                // not sure if that generates taunt or not, and that usually won't be a significant factor.
+                && healEvent.Amount > MaxHealingFromTeamEnhancedDeathlessBlessing)
+            {
+                // We know the owner is the one healing--if they're giving health to someone else we can only see
+                // potential healing (oof), and if they're healing themselves, we can only see the realized healing.
+                // I'm guessing that only realized healing contributes to taunt.
+                if (healEvent is YouGaveHealth)
+                {
+                    _secondaryOwnersHealingDone += (long)(healEvent.Amount.Value * (1 - PercentageOverhealingEstimate));
+                }
+                else if (healEvent is MeGotHealth)
+                {
+                    _secondaryOwnersHealingDone += healEvent.Amount.Value;
+                }
+            }
+        }
+
         public override void UpdateView()
         {
             base.UpdateView();
@@ -167,6 +245,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 return;
 
             UpdateSecondaryNcuWipes();
+            UpdateSecondaryTaunt();
         }
 
         private void UpdateSecondaryNcuWipes()
@@ -183,6 +262,14 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(HasSecondaryWipedNanoPrograms));
             RaisePropertyChanged(nameof(SecondaryRecentlyWipedNanoPrograms));
             RaisePropertyChanged(nameof(IsSecondaryNcuWipeRecent));
+        }
+
+        private void UpdateSecondaryTaunt()
+        {
+            if (_secondaryTauntStatusBar == null) return;
+
+            _secondaryTauntStatusBar.Value = $"{SecondaryOwnersTauntAmount.Format()} ({SecondaryOwnersTauntAmountPM.Format()})";
+            _secondaryTauntStatusBar.RaisePropertyChanged(nameof(FixedStatusBarViewModel.RightText));
         }
 
         public override void Reset()
@@ -205,6 +292,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
 
             ResetSecondaryNcuWipes();
+            ResetSecondaryTaunt();
         }
 
         private void ResetSecondaryNcuWipes()
@@ -220,6 +308,17 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(HasSecondaryWipedNanoPrograms));
             RaisePropertyChanged(nameof(SecondaryRecentlyWipedNanoPrograms));
             RaisePropertyChanged(nameof(IsSecondaryNcuWipeRecent));
+        }
+
+        private void ResetSecondaryTaunt()
+        {
+            _secondaryOwnerHasBeenCastingResonanceBlast = false;
+            _secondaryOwnersDamageDone = 0;
+            _secondaryOwnersHealingDone = 0;
+            _secondaryOwnersNanoTauntAmount = 0;
+            _secondaryOwnersNanoDetauntAmount = 0;
+            _timeSinceSecondaryBossFightStarted.Reset();
+            _secondaryTauntStatusBar = null;
         }
 
         public override void Dispose()

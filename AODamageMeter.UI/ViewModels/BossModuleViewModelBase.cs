@@ -73,12 +73,12 @@ namespace AODamageMeter.UI.ViewModels
             : $"{_aggroTargetName} has aggro";
 
         public virtual bool NeedsTauntStatusBar => false;
-        private const string TauntLabel = "Taunt Estimate";
-        private const string TauntIconPath = "/Icons/Taunt.png";
-        private const string TauntBarColor = "#D4A030";
-        private const double HealingToTauntFactor = 0.5;
-        private const double PercentageOverhealingEstimate = 0.25;
-        private const int MaxHealingFromTeamEnhancedDeathlessBlessing = 347;
+        protected virtual string TauntLabel => "Taunt Estimate";
+        protected const string TauntIconPath = "/Icons/Taunt.png";
+        protected const string TauntBarColor = "#D4A030";
+        protected const double HealingToTauntFactor = 0.5;
+        protected const double PercentageOverhealingEstimate = 0.25;
+        protected const int MaxHealingFromTeamEnhancedDeathlessBlessing = 347;
         private readonly SynchronizedStopwatch _timeSinceBossFightStarted = new SynchronizedStopwatch();
         private FixedStatusBarViewModel _tauntStatusBar;
         private bool _ownerHasBeenCastingResonanceBlast;
@@ -235,6 +235,7 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        // NOTE: keep in sync with CheckTaunt in TheBeastDualLoggedModuleViewModel.
         private void CheckTaunt(FightEvent fightEvent)
         {
             if (fightEvent is MeCastNano meCastNanoEvent)
