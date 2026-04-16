@@ -86,6 +86,74 @@
     </Border>
 
     <Grid Grid.Row="1" Grid.Column="0">
+      <Border>
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsCasting}" Value="True">
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/Casting.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+        <Border.Opacity>
+          <Binding Path="CastingOpacity" FallbackValue="0"/>
+        </Border.Opacity>
+      </Border>
+      <Border>
+        <Border.Style>
+          <Style TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsRingOfFireActive}" Value="True">
+                <Setter Property="Background">
+                  <Setter.Value>
+                    <ImageBrush ImageSource="/Icons/RingOfFire.png" Stretch="UniformToFill"/>
+                  </Setter.Value>
+                </Setter>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Border.Style>
+      </Border>
+      <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="Text" Value="Casting"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsRingOfFireActive}" Value="True">
+                <Setter Property="Text" Value="Ring of Fire"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
+        </TextBlock.Effect>
+      </TextBlock>
+      <TextBlock Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 36 0 0">
+        <TextBlock.Style>
+          <Style TargetType="TextBlock">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding IsCasting}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </TextBlock.Style>
+        <TextBlock.Effect>
+          <DropShadowEffect ShadowDepth="0" BlurRadius="5" Color="Black" Opacity="1"/>
+        </TextBlock.Effect>
+        <TextBlock.Text>
+          <Binding Path="CastingDurationSeconds" StringFormat="{}{0}s"/>
+        </TextBlock.Text>
+      </TextBlock>
     </Grid>
 
     <Border Grid.Row="1" Grid.Column="1">
