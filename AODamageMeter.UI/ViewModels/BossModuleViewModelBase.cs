@@ -56,6 +56,7 @@ namespace AODamageMeter.UI.ViewModels
         public bool IsNcuWipeRecent { get; private set; }
         public bool HasWipedNanoPrograms => !_wipedNanoPrograms.IsEmpty;
 
+        protected virtual string StatusBarLabelSuffix { get; }
         private readonly ConcurrentQueue<(StatusBarViewModelBase pendingStatusBar, string pendingExpiredStatusBarKey)>
             _pendingStatusBarUpdates = new ConcurrentQueue<(StatusBarViewModelBase, string)>();
         public ObservableCollection<StatusBarViewModelBase> StatusBars { get; } = new ObservableCollection<StatusBarViewModelBase>();
@@ -95,7 +96,8 @@ namespace AODamageMeter.UI.ViewModels
             if (NeedsTauntStatusBar)
             {
                 _timeSinceBossFightStarted.Start();
-                _tauntStatusBar = RequestFixedStatusBar(TauntLabel, "0", TauntBarColor, TauntIconPath);
+                _tauntStatusBar = RequestFixedStatusBar(
+                    $"{TauntLabel}{StatusBarLabelSuffix}", "0", TauntBarColor, TauntIconPath);
             }
         }
 
@@ -179,6 +181,7 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
+        // NOTE: keep in sync with CheckSecondaryStatusBars in TheBeastDualLoggedModuleViewModel.
         protected virtual void CheckStatusBars(FightEvent fightEvent)
         {
             if (fightEvent is MeCastNano meCastNanoEvent
@@ -188,7 +191,7 @@ namespace AODamageMeter.UI.ViewModels
                 if (TotalMirrorShield.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out var nano)
                     || NullitySphere.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out nano))
                 {
-                    RequestAnimatedStatusBar(nano.ShortName, nano.DurationSeconds.Value, nano.Color, nano.IconPath);
+                    RequestAnimatedStatusBar($"{nano.ShortName}{StatusBarLabelSuffix}", nano.DurationSeconds.Value, nano.Color, nano.IconPath);
                 }
             }
             else if (fightEvent is SystemEvent systemEvent
@@ -197,7 +200,7 @@ namespace AODamageMeter.UI.ViewModels
                 if (TotalMirrorShield.Nanoline.TryGetNano(systemEvent.NanoProgram, out var nano)
                     || NullitySphere.Nanoline.TryGetNano(systemEvent.NanoProgram, out nano))
                 {
-                    ExpireStatusBar(nano.ShortName);
+                    ExpireStatusBar($"{nano.ShortName}{StatusBarLabelSuffix}");
                 }
             }
         }

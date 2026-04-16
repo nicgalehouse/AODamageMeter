@@ -9,7 +9,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 {
     public class TheBeastModuleViewModel : BossModuleViewModelBase
     {
-        private const string TheBeast = "The Beast";
+        protected const string TheBeast = "The Beast";
         private const string TheBeastIconPath = "/Icons/TheBeast.png";
 
         public override string BossName => TheBeast;
@@ -36,10 +36,11 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private int _beastNanoHitCount;
         public bool IsRingOfFireActive { get; private set; }
 
-        private const string DoomOfTheSpirits = "Doom Of The Spirits";
-        private const string DoomOfTheSpiritsIconPath = "/Icons/DoomOfTheSpirits.png";
-        private const int DoomOfTheSpiritsDurationSeconds = 18;
-        private const string DoomOfTheSpiritsBarColor = "#7C8289";
+        protected const string DoomOfTheSpirits = "Doom Of The Spirits";
+        protected virtual string DoomOfTheSpiritsLabel => "Doom Of The Spirits";
+        protected const string DoomOfTheSpiritsIconPath = "/Icons/DoomOfTheSpirits.png";
+        protected const int DoomOfTheSpiritsDurationSeconds = 18;
+        protected const string DoomOfTheSpiritsBarColor = "#7C8289";
 
         public override bool NeedsIsBossTargetingSomeoneWarning => true;
         public override bool NeedsTauntStatusBar => true;
@@ -170,6 +171,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
+        // NOTE: keep in sync with CheckSecondaryStatusBars in TheBeastDualLoggedModuleViewModel.
         protected override void CheckStatusBars(FightEvent fightEvent)
         {
             base.CheckStatusBars(fightEvent);
@@ -177,7 +179,8 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             if (fightEvent is SystemEvent systemEvent && systemEvent.Source?.Name == TheBeast
                 && systemEvent.IsHostileNanoExecutedOnYou && systemEvent.NanoProgram == DoomOfTheSpirits)
             {
-                RequestAnimatedStatusBar(DoomOfTheSpirits, DoomOfTheSpiritsDurationSeconds, DoomOfTheSpiritsBarColor, DoomOfTheSpiritsIconPath);
+                RequestAnimatedStatusBar($"{DoomOfTheSpiritsLabel}{StatusBarLabelSuffix}",
+                    DoomOfTheSpiritsDurationSeconds, DoomOfTheSpiritsBarColor, DoomOfTheSpiritsIconPath);
             }
         }
 

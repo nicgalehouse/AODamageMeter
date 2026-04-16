@@ -42,8 +42,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         public bool HasSecondaryWipedNanoPrograms => !_secondaryWipedNanoPrograms.IsEmpty;
         public bool IsSecondaryNcuWipeRecent { get; private set; }
 
-        protected override string TauntLabel => $"Taunt - {PrimaryCharacterName}";
-        protected string SecondaryTauntLabel => $"Taunt - {SecondaryCharacterName}";
+        protected override string StatusBarLabelSuffix => $" - {PrimaryCharacterName}";
+        protected string SecondaryStatusBarLabelSuffix => $" - {SecondaryCharacterName}";
+        protected override string TauntLabel => $"Taunt";
         private readonly SynchronizedStopwatch _timeSinceSecondaryBossFightStarted = new SynchronizedStopwatch();
         private FixedStatusBarViewModel _secondaryTauntStatusBar;
         private bool _secondaryOwnerHasBeenCastingResonanceBlast;
@@ -54,6 +55,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
         private long SecondaryOwnersTauntAmount => _secondaryOwnersDamageDone + (long)(_secondaryOwnersHealingDone * HealingToTauntFactor)
             + _secondaryOwnersNanoTauntAmount - _secondaryOwnersNanoDetauntAmount;
         private double SecondaryOwnersTauntAmountPM => SecondaryOwnersTauntAmount / _timeSinceSecondaryBossFightStarted.Elapsed.TotalMinutes;
+        protected override string DoomOfTheSpiritsLabel => "Doom";
 
         public TheBeastDualLoggedModuleViewModel(
             string secondaryCharacterName,
@@ -84,7 +86,8 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
 
             _timeSinceSecondaryBossFightStarted.Start();
-            _secondaryTauntStatusBar = RequestFixedStatusBar(SecondaryTauntLabel, "0", TauntBarColor, TauntIconPath);
+            _secondaryTauntStatusBar = RequestFixedStatusBar(
+                $"{TauntLabel}{SecondaryStatusBarLabelSuffix}", "0", TauntBarColor, TauntIconPath);
         }
 
         public override void OnFightEventAdded(FightEvent fightEvent)
@@ -123,6 +126,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
             CheckSecondaryNcuWipes(fightEvent);
             CheckSecondaryTaunt(fightEvent);
+            CheckSecondaryStatusBars(fightEvent);
         }
 
         // NOTE: keep in sync with CheckNcuWipes in BossModuleViewModelBase.
@@ -231,6 +235,38 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 {
                     _secondaryOwnersHealingDone += healEvent.Amount.Value;
                 }
+            }
+        }
+
+        // NOTE: keep in sync with CheckStatusBars in TheBeastModuleViewModel and BossModuleViewModelBase.
+        private void CheckSecondaryStatusBars(FightEvent fightEvent)
+        {
+            if (fightEvent is MeCastNano meCastNanoEvent
+                && meCastNanoEvent.CastResult == CastResult.Success
+                && meCastNanoEvent.NanoProgram != null)
+            {
+                if (TotalMirrorShield.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out var nano)
+                    || NullitySphere.Nanoline.TryGetNano(meCastNanoEvent.NanoProgram, out nano))
+                {
+                    RequestAnimatedStatusBar($"{nano.ShortName}{SecondaryStatusBarLabelSuffix}",
+                        nano.DurationSeconds.Value, nano.Color, nano.IconPath);
+                }
+            }
+            else if (fightEvent is SystemEvent systemEvent
+                && systemEvent.IsNanoTerminated)
+            {
+                if (TotalMirrorShield.Nanoline.TryGetNano(systemEvent.NanoProgram, out var nano)
+                    || NullitySphere.Nanoline.TryGetNano(systemEvent.NanoProgram, out nano))
+                {
+                    ExpireStatusBar($"{nano.ShortName}{SecondaryStatusBarLabelSuffix}");
+                }
+            }
+
+            if (fightEvent is SystemEvent beastSystemEvent && beastSystemEvent.Source?.Name == TheBeast
+                && beastSystemEvent.IsHostileNanoExecutedOnYou && beastSystemEvent.NanoProgram == DoomOfTheSpirits)
+            {
+                RequestAnimatedStatusBar($"{DoomOfTheSpiritsLabel}{SecondaryStatusBarLabelSuffix}",
+                    DoomOfTheSpiritsDurationSeconds, DoomOfTheSpiritsBarColor, DoomOfTheSpiritsIconPath);
             }
         }
 
