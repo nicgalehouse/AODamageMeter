@@ -124,6 +124,9 @@ namespace AODamageMeter.UI.ViewModels.BossModules
                 }
             }
 
+            CheckReflectShield(fightEvent);
+            CheckAdds(fightEvent);
+            CheckCasting(fightEvent);
             CheckSecondaryNcuWipes(fightEvent);
             CheckSecondaryTaunt(fightEvent);
             CheckSecondaryStatusBars(fightEvent);

@@ -73,7 +73,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
-        private void CheckReflectShield(FightEvent fightEvent)
+        protected void CheckReflectShield(FightEvent fightEvent)
         {
             if (fightEvent is AttackEvent attackEvent)
             {
@@ -97,7 +97,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
-        private void CheckAdds(FightEvent fightEvent)
+        protected void CheckAdds(FightEvent fightEvent)
         {
             if (fightEvent is AttackEvent attackEvent
                 && (attackEvent.AttackResult == AttackResult.WeaponHit
@@ -128,15 +128,18 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
-        private void CheckCasting(FightEvent fightEvent)
+        protected void CheckCasting(FightEvent fightEvent)
         {
             if (fightEvent is AttackEvent attackEvent
                 && (attackEvent.Source.Name == TheBeast
-                    && (attackEvent.AttackResult == AttackResult.WeaponHit || attackEvent.AttackResult == AttackResult.NanoHit)
+                    && (attackEvent.AttackResult == AttackResult.WeaponHit
+                        || attackEvent.AttackResult == AttackResult.NanoHit
+                        || attackEvent.AttackResult == AttackResult.Missed)
                     // We don't know the source or target of absorbed hits--when adds are up, ignore them as a signal.
                     || attackEvent.AttackResult == AttackResult.Absorbed && !AreAnyAddsActive)
                 || fightEvent is SystemEvent systemEvent
-                    && (systemEvent.Source?.Name == TheBeast && (systemEvent.IsHostileNanoExecutedOnYou || systemEvent.IsHostileNanoCounteredByYou)
+                    && (systemEvent.Source?.Name == TheBeast
+                        && (systemEvent.IsHostileNanoExecutedOnYou || systemEvent.IsHostileNanoCounteredByYou)
                         // We don't know the source of blocked hits--when adds are up, ignore them as a signal.
                         || systemEvent.IsYouBlockedRegular && !AreAnyAddsActive))
             {
