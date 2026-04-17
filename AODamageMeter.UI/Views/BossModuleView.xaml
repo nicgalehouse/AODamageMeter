@@ -17,6 +17,10 @@
           <Setter Property="BorderBrush" Value="#AA2222"/>
           <Setter Property="BorderThickness" Value="2"/>
         </DataTrigger>
+        <DataTrigger Binding="{Binding IsBossTargetingSecondary, FallbackValue=False}" Value="True">
+          <Setter Property="BorderBrush" Value="#884499"/>
+          <Setter Property="BorderThickness" Value="2"/>
+        </DataTrigger>
       </Style.Triggers>
     </Style>
   </Window.Style>
@@ -50,6 +54,9 @@
             <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
               <Setter Property="Background" Value="#AA2222"/>
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsBossTargetingSecondary, FallbackValue=False}" Value="True">
+              <Setter Property="Background" Value="#884499"/>
+            </DataTrigger>
           </Style.Triggers>
         </Style>
       </Grid.Style>
@@ -74,6 +81,9 @@
               </DataTrigger>
               <DataTrigger Binding="{Binding IsBossTargetingYou, FallbackValue=False}" Value="True">
                 <Setter Property="Text" Value="{Binding IsBossTargetingYouText}"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding IsBossTargetingSecondary, FallbackValue=False}" Value="True">
+                <Setter Property="Text" Value="{Binding IsBossTargetingSecondaryText}"/>
               </DataTrigger>
             </Style.Triggers>
           </Style>

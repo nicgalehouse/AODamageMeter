@@ -63,12 +63,12 @@ namespace AODamageMeter.UI.ViewModels
         public bool HasStatusBars => StatusBars.Count > 0;
 
         public virtual bool NeedsIsBossTargetingSomeoneWarning => false;
-        public bool IsBossTargetingYou { get; private set; }
-        public string IsBossTargetingYouText => $"You have aggro!";
-        private string _aggroTargetName;
-        private readonly SynchronizedStopwatch _timeSinceAggroSwapped = new SynchronizedStopwatch();
-        public bool IsBossTargetingSomeoneElse { get; private set; }
-        public bool IsAggroSwapRecent { get; private set; }
+        public bool IsBossTargetingYou { get; protected set; }
+        public virtual string IsBossTargetingYouText => $"You have aggro!";
+        protected string _aggroTargetName;
+        protected readonly SynchronizedStopwatch _timeSinceAggroSwapped = new SynchronizedStopwatch();
+        public bool IsBossTargetingSomeoneElse { get; protected set; }
+        public bool IsAggroSwapRecent { get; protected set; }
         public string AggroTargetText => IsAggroSwapRecent
             ? $"{_aggroTargetName} has aggro!"
             : $"{_aggroTargetName} has aggro";
@@ -205,19 +205,14 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
-        private void CheckIsBossTargetingSomeone(FightEvent fightEvent)
+        protected virtual void CheckIsBossTargetingSomeone(FightEvent fightEvent)
         {
             if (fightEvent is SystemEvent systemEvent
-                && systemEvent.IsAttackedByOther && systemEvent.Source?.Name == BossName)
-            {
-                _aggroTargetName = null;
-                _timeSinceAggroSwapped.Reset();
-                IsBossTargetingYou = true;
-                IsBossTargetingSomeoneElse = false;
-            }
-            else if (fightEvent is AttackEvent attackEvent
-                && attackEvent.Source.Name == BossName && attackEvent.Target.IsOwner
-                && (attackEvent.AttackResult == AttackResult.WeaponHit || attackEvent.AttackResult == AttackResult.Missed))
+                && systemEvent.IsAttackedByOther && systemEvent.Source?.Name == BossName
+                || fightEvent is AttackEvent attackEvent
+                    && attackEvent.Source.Name == BossName && attackEvent.Target.IsOwner
+                    && (attackEvent.AttackResult == AttackResult.WeaponHit
+                        || attackEvent.AttackResult == AttackResult.Missed))
             {
                 _aggroTargetName = null;
                 _timeSinceAggroSwapped.Reset();
@@ -398,7 +393,7 @@ namespace AODamageMeter.UI.ViewModels
             }
         }
 
-        private void UpdateIsBossTargetingSomeone()
+        protected virtual void UpdateIsBossTargetingSomeone()
         {
             if (NeedsIsBossTargetingSomeoneWarning)
             {
@@ -459,7 +454,7 @@ namespace AODamageMeter.UI.ViewModels
             RaisePropertyChanged(nameof(HasStatusBars));
         }
 
-        private void ResetIsBossTargetingSomeone()
+        protected virtual void ResetIsBossTargetingSomeone()
         {
             IsBossTargetingYou = false;
             _aggroTargetName = null;

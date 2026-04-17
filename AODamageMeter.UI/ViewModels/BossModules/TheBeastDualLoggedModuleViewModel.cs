@@ -1,4 +1,5 @@
 using AODamageMeter.FightEvents;
+using AODamageMeter.FightEvents.Attack;
 using AODamageMeter.FightEvents.Heal;
 using AODamageMeter.Nanolines;
 using AODamageMeter.UI.Helpers;
@@ -41,6 +42,13 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             .ToList();
         public bool HasSecondaryWipedNanoPrograms => !_secondaryWipedNanoPrograms.IsEmpty;
         public bool IsSecondaryNcuWipeRecent { get; private set; }
+
+        public override string IsBossTargetingYouText => $"{PrimaryCharacterName} has aggro!";
+        public bool IsBossTargetingSecondary { get; private set; }
+        public string IsBossTargetingSecondaryText => $"{SecondaryCharacterName} has aggro!";
+        // Guards against stale primary-POV events clobbering fresh secondary-POV aggro state (and vice versa),
+        // since the secondary meter's batch can process chronologically-later events mid-way through the primary's batch.
+        private long _latestAggroChangeUnixSeconds;
 
         protected override string StatusBarLabelSuffix => $" - {PrimaryCharacterName}";
         protected string SecondaryStatusBarLabelSuffix => $" - {SecondaryCharacterName}";
@@ -128,6 +136,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             CheckAdds(fightEvent);
             CheckCasting(fightEvent);
             CheckSecondaryNcuWipes(fightEvent);
+            CheckSecondaryIsBossTargetingSomeone(fightEvent);
             CheckSecondaryTaunt(fightEvent);
             CheckSecondaryStatusBars(fightEvent);
         }
@@ -273,6 +282,85 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             }
         }
 
+        protected override void CheckIsBossTargetingSomeone(FightEvent fightEvent)
+        {
+            if (fightEvent is SystemEvent systemEvent
+                && systemEvent.IsAttackedByOther && systemEvent.Source?.Name == BossName
+                || fightEvent is AttackEvent attackEvent
+                    && attackEvent.Source.Name == BossName && attackEvent.Target.IsOwner
+                    && (attackEvent.AttackResult == AttackResult.WeaponHit
+                        || attackEvent.AttackResult == AttackResult.Missed))
+            {
+                if (IsBossTargetingYou && !IsBossTargetingSecondary && !IsBossTargetingSomeoneElse
+                    || fightEvent.LogUnixSeconds <= _latestAggroChangeUnixSeconds)
+                    return;
+
+                _aggroTargetName = null;
+                _timeSinceAggroSwapped.Reset();
+                IsBossTargetingYou = true;
+                IsBossTargetingSecondary = false;
+                IsBossTargetingSomeoneElse = false;
+                _latestAggroChangeUnixSeconds = fightEvent.LogUnixSeconds;
+            }
+            else if (fightEvent is OtherHitByOther otherHitByOther
+                && otherHitByOther.Source.Name == BossName && otherHitByOther.AttackResult == AttackResult.WeaponHit
+                // Defer to the secondary's POV--we'll learn about the swap faster and more reliably that way.
+                && otherHitByOther.Target.Name != SecondaryCharacterName)
+            {
+                if (!IsBossTargetingYou && !IsBossTargetingSecondary && IsBossTargetingSomeoneElse
+                    && _aggroTargetName == otherHitByOther.Target.Name
+                    || fightEvent.LogUnixSeconds <= _latestAggroChangeUnixSeconds)
+                    return;
+
+                _aggroTargetName = otherHitByOther.Target.Name;
+                _timeSinceAggroSwapped.Restart();
+                IsBossTargetingYou = false;
+                IsBossTargetingSecondary = false;
+                IsBossTargetingSomeoneElse = true;
+                _latestAggroChangeUnixSeconds = fightEvent.LogUnixSeconds;
+            }
+        }
+
+        // Secondary POV counterpart--detects the secondary getting aggro via their own first-person signals.
+        private void CheckSecondaryIsBossTargetingSomeone(FightEvent fightEvent)
+        {
+            if (fightEvent is SystemEvent systemEvent
+                && systemEvent.IsAttackedByOther && systemEvent.Source?.Name == BossName
+                || fightEvent is AttackEvent attackEvent
+                    && attackEvent.Source.Name == BossName && attackEvent.Target.IsOwner
+                    && (attackEvent.AttackResult == AttackResult.WeaponHit
+                        || attackEvent.AttackResult == AttackResult.Missed))
+            {
+                if (!IsBossTargetingYou && IsBossTargetingSecondary && !IsBossTargetingSomeoneElse
+                    || fightEvent.LogUnixSeconds <= _latestAggroChangeUnixSeconds)
+                    return;
+
+                _aggroTargetName = null;
+                _timeSinceAggroSwapped.Reset();
+                IsBossTargetingYou = false;
+                IsBossTargetingSecondary = true;
+                IsBossTargetingSomeoneElse = false;
+                _latestAggroChangeUnixSeconds = fightEvent.LogUnixSeconds;
+            }
+            else if (fightEvent is OtherHitByOther otherHitByOther
+                && otherHitByOther.Source.Name == BossName && otherHitByOther.AttackResult == AttackResult.WeaponHit
+                // Defer to the primary's POV--we'll learn about the swap faster and more reliably that way.
+                && otherHitByOther.Target.Name != PrimaryCharacterName)
+            {
+                if (!IsBossTargetingYou && !IsBossTargetingSecondary && IsBossTargetingSomeoneElse
+                    && _aggroTargetName == otherHitByOther.Target.Name
+                    || fightEvent.LogUnixSeconds <= _latestAggroChangeUnixSeconds)
+                    return;
+
+                _aggroTargetName = otherHitByOther.Target.Name;
+                _timeSinceAggroSwapped.Restart();
+                IsBossTargetingYou = false;
+                IsBossTargetingSecondary = false;
+                IsBossTargetingSomeoneElse = true;
+                _latestAggroChangeUnixSeconds = fightEvent.LogUnixSeconds;
+            }
+        }
+
         public override void UpdateView()
         {
             base.UpdateView();
@@ -301,6 +389,13 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(HasSecondaryWipedNanoPrograms));
             RaisePropertyChanged(nameof(SecondaryRecentlyWipedNanoPrograms));
             RaisePropertyChanged(nameof(IsSecondaryNcuWipeRecent));
+        }
+
+        protected override void UpdateIsBossTargetingSomeone()
+        {
+            base.UpdateIsBossTargetingSomeone();
+
+            RaisePropertyChanged(nameof(IsBossTargetingSecondary));
         }
 
         private void UpdateSecondaryTaunt()
@@ -347,6 +442,16 @@ namespace AODamageMeter.UI.ViewModels.BossModules
             RaisePropertyChanged(nameof(HasSecondaryWipedNanoPrograms));
             RaisePropertyChanged(nameof(SecondaryRecentlyWipedNanoPrograms));
             RaisePropertyChanged(nameof(IsSecondaryNcuWipeRecent));
+        }
+
+        protected override void ResetIsBossTargetingSomeone()
+        {
+            base.ResetIsBossTargetingSomeone();
+
+            IsBossTargetingSecondary = false;
+            _latestAggroChangeUnixSeconds = 0;
+
+            RaisePropertyChanged(nameof(IsBossTargetingSecondary));
         }
 
         private void ResetSecondaryTaunt()
