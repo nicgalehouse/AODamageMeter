@@ -52,7 +52,7 @@ namespace AODamageMeter.UI.ViewModels.BossModules
 
         protected override string StatusBarLabelSuffix => $" - {PrimaryCharacterName}";
         protected string SecondaryStatusBarLabelSuffix => $" - {SecondaryCharacterName}";
-        protected override string TauntLabel => $"Taunt";
+        protected override string TauntLabel => "Taunt";
         private readonly SynchronizedStopwatch _timeSinceSecondaryBossFightStarted = new SynchronizedStopwatch();
         private FixedStatusBarViewModel _secondaryTauntStatusBar;
         private bool _secondaryOwnerHasBeenCastingResonanceBlast;
