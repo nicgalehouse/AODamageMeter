@@ -157,7 +157,8 @@ namespace AODamageMeter.UI.ViewModels
                     if (!isPurposeful
                         // Just rely on the status bar expiring to signal wipes for these nanos.
                         && !TotalMirrorShield.Nanoline.HasNano(systemEvent.NanoProgram)
-                        && !NullitySphere.Nanoline.HasNano(systemEvent.NanoProgram))
+                        && !NullitySphere.Nanoline.HasNano(systemEvent.NanoProgram)
+                        && systemEvent.NanoProgram != "Kel's Neutronium Plaything")
                     {
                         if (_wipedNanoPrograms.TryAdd(systemEvent.NanoProgram, fightEvent.LogUnixSeconds))
                         {
